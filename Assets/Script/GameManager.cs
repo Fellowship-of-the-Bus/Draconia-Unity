@@ -25,4 +25,20 @@ public class GameManager : MonoBehaviour {
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     SelectedPiece = null;
   }
+
+  // Get the object being clicked on
+  public GameObject getClicked(Camera PlayerCam) {
+    Ray _ray;
+    RaycastHit _hitInfo;
+
+    if(Input.GetMouseButtonDown(0)) {
+      _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
+      // Raycast and verify that it collided
+      if(Physics.Raycast (_ray,out _hitInfo)) {
+         return _hitInfo.collider.gameObject;
+      }
+    }
+
+    return null;
+  }
 }

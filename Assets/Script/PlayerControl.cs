@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
-  
-  
   private Camera PlayerCam;     // Camera used by the player
   private GameManager gameManager;  // GameObject responsible for the management of the game
   
@@ -20,36 +18,22 @@ public class PlayerControl : MonoBehaviour {
   
   // Detect Mouse Inputs
   void GetMouseInputs() { 
-    Ray _ray;
-    RaycastHit _hitInfo;
-    
+    GameObject clickedObject = gameManager.getClicked(PlayerCam);
+
     // Select a piece
-    // On Left Click
-    if(Input.GetMouseButtonDown(0)) {
-      _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
-      
-      // Raycast and verify that it collided
-      if(Physics.Raycast (_ray,out _hitInfo)) {
-        // Select the piece if it has the good Tag
-        if(_hitInfo.collider.gameObject.tag == ("PiecePlayer1")) {
-          gameManager.SelectPiece(_hitInfo.collider.gameObject);
+    if(clickedObject) {
+      if(clickedObject.tag == ("PiecePlayer1")) {
+        gameManager.SelectPiece(clickedObject);
+      }
+
+      if (gameManager.SelectedPiece) {
+        Vector2 selectedCoord;
+        
+        if(clickedObject.tag == ("Cube")) {
+          selectedCoord = new Vector2(clickedObject.transform.position.x, clickedObject.transform.position.y);
+          gameManager.MovePiece(selectedCoord);
         }
       }
-    }
-    
-    if (gameManager.SelectedPiece) {
-      Vector2 selectedCoord;
-      
-      // On Left Click
-      if(Input.GetMouseButtonDown(0)) {
-        _ray = PlayerCam.ScreenPointToRay(Input.mousePosition);
-        if(Physics.Raycast (_ray,out _hitInfo)) {
-          if(_hitInfo.collider.gameObject.tag == ("Cube")) {
-            selectedCoord = new Vector2(_hitInfo.collider.gameObject.transform.position.x,_hitInfo.collider.gameObject.transform.position.y);
-            gameManager.MovePiece(selectedCoord);
-          }
-        }
-      } 
     }
   }
 }
