@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 136: {fileID: 13600000}
   - 23: {fileID: 2300000}
+  - 114: {fileID: 114000011268872340}
   m_Layer: 0
   m_Name: Pawn
   m_TagString: PiecePlayer1
@@ -91,3 +92,15 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
+--- !u!114 &114000011268872340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce243ebf50290b4184f70d01124355b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveRange: 4
