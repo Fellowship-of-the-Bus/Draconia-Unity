@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour {
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
     
-  
   //Update SelectedPiece with the GameObject inputted to this function
   public void SelectPiece(GameObject _PieceToSelect) {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
@@ -140,5 +139,9 @@ public class GameManager : MonoBehaviour {
     foreach (Tile tile in tiles) {
       tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
+  }
+  public GameObject piece;
+  public void createPiece() {
+    Instantiate(piece);
   }
 }
