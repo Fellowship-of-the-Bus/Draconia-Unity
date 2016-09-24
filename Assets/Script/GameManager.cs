@@ -12,11 +12,11 @@ public class GameManager : MonoBehaviour {
   public void SelectPiece(GameObject _PieceToSelect) {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
+    clearColour();
     if (SelectedPiece) {
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       if (SelectedPiece == _PieceToSelect) {
         SelectedPiece = null;
-        clearColour();
         return;
       }
     }
