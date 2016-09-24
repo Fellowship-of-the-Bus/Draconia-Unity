@@ -4,9 +4,23 @@ using System.Collections.Generic;
 using System;
 
 public class GameManager : MonoBehaviour {
-  public GameObject SelectedPiece { get; private set; } // Selected Piece
+  public GameObject SelectedPiece { get; private set; }
+  // Selected Piece
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
+  LineRenderer line;
+
+  void Start() {
+    cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
+    tiles = new List<Tile>();
+    foreach (GameObject cube in cubes) {
+      cube.AddComponent<Tile>();
+      Tile t = cube.GetComponent<Tile>();
+      tiles.Add(t);
+    }
+
+    line = gameObject.GetComponent<LineRenderer>();
+  }
     
   //Update SelectedPiece with the GameObject inputted to this function
   public void SelectPiece(GameObject _PieceToSelect) {
@@ -23,6 +37,10 @@ public class GameManager : MonoBehaviour {
 
     SelectedPiece = _PieceToSelect;
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
+    Vector3 piecePosition = SelectedPiece.transform.position;
+    line.SetPosition(0, new Vector3(piecePosition.x, 1.5f, piecePosition.z));
+    line.SetPosition(1, new Vector3(piecePosition.x, 1.5f, piecePosition.z));
+
 
     Vector3 position = SelectedPiece.transform.position;
     djikstra(position);
@@ -31,17 +49,6 @@ public class GameManager : MonoBehaviour {
         tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
       }
     }
-
-  }
-
-  void Start() {
-    cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
-    tiles = new List<Tile>();
-    foreach (GameObject cube in cubes) {
-      cube.AddComponent<Tile>();
-      Tile t = cube.GetComponent<Tile>();
-      tiles.Add(t);
-    }   
   }
   
   // Move the SelectedPiece to the inputted coords
@@ -55,17 +62,31 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  // Draw line to piece
+  public void lineTo(GameObject piece) {
+    if (SelectedPiece && piece) {
+      line.SetPosition(1, new Vector3(piece.transform.position.x, 1.5f, piece.transform.position.z));
+    }
+  }
+
   // Get the object being clicked on
   public GameObject getClicked(Camera PlayerCam) {
+    if (Input.GetMouseButtonDown(0)) {
+      return  getHovered(PlayerCam);
+    }
+
+    return null;
+  }
+
+  // Get the object being hovered over
+  public GameObject getHovered(Camera PlayerCam) {
     Ray _ray;
     RaycastHit _hitInfo;
 
-    if(Input.GetMouseButtonDown(0)) {
-      _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
-      // Raycast and verify that it collided
-      if(Physics.Raycast (_ray,out _hitInfo)) {
-         return _hitInfo.collider.gameObject;
-      }
+    _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
+    // Raycast and verify that it collided
+    if (Physics.Raycast(_ray, out _hitInfo)) {
+      return _hitInfo.collider.gameObject;
     }
 
     return null;
@@ -127,8 +148,8 @@ public class GameManager : MonoBehaviour {
 
   public Tile getTile(Vector3 location, IEnumerable<Tile> list) {
     foreach (Tile tile in list) {
-      if (Math.Abs(tile.gameObject.transform.position.x - location.x) < 0.05f&& 
-        Math.Abs(tile.gameObject.transform.position.z - location.z)< 0.05f) {
+      if (Math.Abs(tile.gameObject.transform.position.x - location.x) < 0.05f &&
+          Math.Abs(tile.gameObject.transform.position.z - location.z) < 0.05f) {
         return tile;
       }
     }
@@ -140,7 +161,9 @@ public class GameManager : MonoBehaviour {
       tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
   }
+
   public GameObject piece;
+
   public void createPiece() {
     Instantiate(piece);
   }
