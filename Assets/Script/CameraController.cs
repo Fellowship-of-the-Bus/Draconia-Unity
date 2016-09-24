@@ -28,12 +28,10 @@ public class CameraController : MonoBehaviour {
 
 
 		if (rotationTime > 0) {
-			Debug.Log("going");
 			float rotationAmount = rotationTime < Time.deltaTime ? rotationTime : Time.deltaTime;
 			transform.RotateAround (rotateAbout, rotationDirection, 90 * rotationAmount);
 			rotationTime -= Time.deltaTime;
 		} else if (wasRotating) {
-			Debug.Log("done");
 			wasRotating = false;
 			transform.rotation = preTransform.rotation;
 		} else {
@@ -42,8 +40,6 @@ public class CameraController : MonoBehaviour {
 			}
 
 			if (Input.GetMouseButton (0)) {
-				Debug.Log ("test");
-
 				Vector3 delta = Input.mousePosition - lastPosition;
 				Quaternion rotation = transform.rotation;
 				Quaternion baseRotation = Quaternion.Euler (-45, 0, 0);
