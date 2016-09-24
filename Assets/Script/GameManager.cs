@@ -4,35 +4,11 @@ using System.Collections.Generic;
 using System;
 
 public class GameManager : MonoBehaviour {
-  public GameObject SelectedPiece { get; private set; } // Selected Piece
+  public GameObject SelectedPiece { get; private set; }
+  // Selected Piece
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
-
-  //Update SelectedPiece with the GameObject inputted to this function
-  public void SelectPiece(GameObject _PieceToSelect) {
-    // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
-    // change color of the board squares that it can move to.
-    if (SelectedPiece) {
-      SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      if (SelectedPiece == _PieceToSelect) {
-        SelectedPiece = null;
-        clearColour();
-        return;
-      }
-    }
-
-    SelectedPiece = _PieceToSelect;
-    SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
-
-    Vector3 position = SelectedPiece.transform.position;
-    djikstra(position);
-    foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
-      }
-    }
-
-  }
+  LineRenderer line;
 
   void Start() {
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
@@ -41,6 +17,37 @@ public class GameManager : MonoBehaviour {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
+    }
+
+    line = gameObject.GetComponent<LineRenderer>();
+  }
+
+  //Update SelectedPiece with the GameObject inputted to this function
+  public void SelectPiece(GameObject _PieceToSelect) {
+    // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
+    // change color of the board squares that it can move to.
+    clearColour();
+    if (SelectedPiece) {
+      SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+      if (SelectedPiece == _PieceToSelect) {
+        SelectedPiece = null;
+        return;
+      }
+    }
+
+    SelectedPiece = _PieceToSelect;
+    SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
+    Vector3 piecePosition = SelectedPiece.transform.position;
+    line.SetPosition(0, new Vector3(piecePosition.x, 1.5f, piecePosition.z));
+    line.SetPosition(1, new Vector3(piecePosition.x, 1.5f, piecePosition.z));
+
+
+    Vector3 position = SelectedPiece.transform.position;
+    djikstra(position);
+    foreach (Tile tile in tiles) {
+      if (tile.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
+        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
+      }
     }
   }
 
@@ -55,17 +62,31 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  // Draw line to piece
+  public void lineTo(GameObject piece) {
+    if (SelectedPiece && piece) {
+      line.SetPosition(1, new Vector3(piece.transform.position.x, 1.5f, piece.transform.position.z));
+    }
+  }
+
   // Get the object being clicked on
   public GameObject getClicked(Camera PlayerCam) {
+    if (Input.GetMouseButtonDown(0)) {
+      return  getHovered(PlayerCam);
+    }
+
+    return null;
+  }
+
+  // Get the object being hovered over
+  public GameObject getHovered(Camera PlayerCam) {
     Ray _ray;
     RaycastHit _hitInfo;
 
-    if(Input.GetMouseButtonDown(0)) {
-      _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
-      // Raycast and verify that it collided
-      if(Physics.Raycast (_ray,out _hitInfo)) {
-         return _hitInfo.collider.gameObject;
-      }
+    _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
+    // Raycast and verify that it collided
+    if (Physics.Raycast(_ray, out _hitInfo)) {
+      return _hitInfo.collider.gameObject;
     }
 
     return null;
@@ -127,8 +148,8 @@ public class GameManager : MonoBehaviour {
 
   public Tile getTile(Vector3 location, IEnumerable<Tile> list) {
     foreach (Tile tile in list) {
-      if (Math.Abs(tile.gameObject.transform.position.x - location.x) < 0.05f&&
-        Math.Abs(tile.gameObject.transform.position.z - location.z)< 0.05f) {
+      if (Math.Abs(tile.gameObject.transform.position.x - location.x) < 0.05f &&
+          Math.Abs(tile.gameObject.transform.position.z - location.z) < 0.05f) {
         return tile;
       }
     }
@@ -140,7 +161,9 @@ public class GameManager : MonoBehaviour {
       tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
   }
+
   public GameObject piece;
+
   public void createPiece() {
     Instantiate(piece, new Vector3(-0.5f, 1f, 1.5f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
   }

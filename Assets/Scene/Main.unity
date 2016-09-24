@@ -2318,6 +2318,7 @@ GameObject:
   - 4: {fileID: 870542036}
   - 114: {fileID: 870542037}
   - 114: {fileID: 870542038}
+  - 120: {fileID: 870542039}
   m_Layer: 0
   m_Name: __GameManager
   m_TagString: Untagged
@@ -2362,6 +2363,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveRange: 4
+--- !u!120 &870542039
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 870542035}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 1.5, z: 0}
+  - {x: 0, y: 1.5, z: 0}
+  m_Parameters:
+    startWidth: 0.1
+    endWidth: 0.1
+    m_StartColor:
+      serializedVersion: 2
+      rgba: 4280303858
+    m_EndColor:
+      serializedVersion: 2
+      rgba: 4280303858
+  m_UseWorldSpace: 1
 --- !u!1001 &871068620
 Prefab:
   m_ObjectHideFlags: 0
@@ -3133,7 +3176,7 @@ GameObject:
   - 4: {fileID: 1308082809}
   m_Layer: 0
   m_Name: _ChessModels
-  m_TagString: Untagged
+  m_TagString: ChessModels
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
