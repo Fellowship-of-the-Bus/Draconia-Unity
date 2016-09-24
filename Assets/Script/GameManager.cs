@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
   public GameObject SelectedPiece { get; private set; } // Selected Piece
-  
+
   //Update SelectedPiece with the GameObject inputted to this function
   public void SelectPiece(GameObject _PieceToSelect) {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
@@ -40,5 +40,10 @@ public class GameManager : MonoBehaviour {
     }
 
     return null;
+  }
+
+  public GameObject piece;
+  public void createPiece() {
+    Instantiate(piece);
   }
 }
