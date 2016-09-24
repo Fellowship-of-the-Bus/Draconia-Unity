@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerControl : MonoBehaviour {
   private Camera PlayerCam;     // Camera used by the player
   private GameManager gameManager;  // GameObject responsible for the management of the game
+
+  public int moveRange = 4;
   
   // Use this for initialization
   void Start () {
@@ -28,10 +30,10 @@ public class PlayerControl : MonoBehaviour {
       }
 
       if (gameManager.SelectedPiece) {
-        Vector2 selectedCoord;
+        Vector3 selectedCoord;
         
         if(clickedObject.tag == ("Cube")) {
-          selectedCoord = new Vector2(clickedObject.transform.position.x, clickedObject.transform.position.y);
+          selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y, clickedObject.transform.position.z);
           gameManager.MovePiece(selectedCoord);
         }
       }
