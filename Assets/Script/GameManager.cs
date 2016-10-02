@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour {
   public void MovePiece(Vector3 _coordToMove) {
     Tile destination = getTile(_coordToMove);
     if (destination.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
+      _coordToMove.y = destination.transform.position.y + getHeight(destination);
       SelectedPiece.transform.position = _coordToMove;
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       clearColour();
@@ -143,6 +144,11 @@ public class GameManager : MonoBehaviour {
   public int distance(Tile from, Tile to) {
     //check heights
     return to.movePointSpent;
+  }
+
+  public float getHeight(Tile t) {
+    float scale = t.gameObject.transform.localScale.y;
+    return scale/2 + 0.5f;
   }
 
 
