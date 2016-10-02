@@ -65,7 +65,22 @@ public class GameManager : MonoBehaviour {
   // Draw line to piece
   public void lineTo(GameObject piece) {
     if (SelectedPiece && piece) {
-      line.SetPosition(1, piece.transform.position);
+      if (SelectedPiece == piece) {
+        line.SetPosition(1, SelectedPiece.transform.position);
+      } else {
+        Vector3 toTarget = piece.transform.position - SelectedPiece.transform.position;
+        Ray ray = new Ray(SelectedPiece.transform.position, toTarget.normalized);
+        RaycastHit hitInfo;
+        Physics.Raycast(ray, out hitInfo);
+
+        if (hitInfo.collider.gameObject == piece) {
+           line.GetComponent<Renderer>().material.color = Color.red;
+        } else {
+          line.GetComponent<Renderer>().material.color = Color.black;
+        }
+      
+        line.SetPosition(1, hitInfo.point);
+      }
     }
   }
 

@@ -26,7 +26,6 @@ public class PlayerControl : MonoBehaviour {
 
     // Select a piece
     if (clickedObject) {
-      Debug.Log(clickedObject.tag);
       if (clickedObject.tag == ("PiecePlayer1")) {
         gameManager.SelectPiece(clickedObject);
       }
