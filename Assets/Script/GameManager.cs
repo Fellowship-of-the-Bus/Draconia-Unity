@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
   }
-    
+
   //Update SelectedPiece with the GameObject inputted to this function
   public void SelectPiece(GameObject _PieceToSelect) {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour {
       }
     }
   }
-  
+
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
     Tile destination = getTile(_coordToMove);
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour {
 
       //above
       Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
-      Tile neighbourTile = getTile(neighbour, tilesToGo); 
+      Tile neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
         neighbourTile.distance = minTile.distance + minTile.movePointSpent;
       }
@@ -165,6 +165,6 @@ public class GameManager : MonoBehaviour {
   public GameObject piece;
 
   public void createPiece() {
-    Instantiate(piece);
+    Instantiate(piece, new Vector3(-0.5f, 1f, 1.5f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
   }
 }
