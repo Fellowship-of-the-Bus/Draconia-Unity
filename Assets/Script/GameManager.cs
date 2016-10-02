@@ -115,29 +115,34 @@ public class GameManager : MonoBehaviour {
       Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
       Tile neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = minTile.distance + minTile.movePointSpent;
+        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
       //below
       neighbour = minTile.gameObject.transform.position + Vector3.back;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = minTile.distance + minTile.movePointSpent;
+        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
       //right
       neighbour = minTile.gameObject.transform.position + Vector3.right;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = minTile.distance + minTile.movePointSpent;
+        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
       //left
       neighbour = minTile.gameObject.transform.position + Vector3.left;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = minTile.distance + minTile.movePointSpent;
+        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
 
       tilesToGo.Remove(minTile);
     }
+  }
+
+  public int distance(Tile from, Tile to) {
+    //check heights
+    return to.movePointSpent;
   }
 
 
