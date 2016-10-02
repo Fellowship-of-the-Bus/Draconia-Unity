@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 	public float mouseSensitivity = 0.01f;
+  public float scrollSensitivity = 10f;
 	private Vector3 lastPosition;
 	private Vector3 rotationDirection = Vector3.up;
 	private float rotationTime;
@@ -26,6 +27,11 @@ public class CameraController : MonoBehaviour {
 		hPlane.Raycast(ray, out distance);
 		rotateAbout = ray.GetPoint(distance);
 
+    float scroll = Input.GetAxis("Mouse ScrollWheel");
+    if ((scroll > 0 && transform.position.y > 5f) || (scroll < 0 && transform.position.y < 15f)) {
+      float scrollFactor = scrollSensitivity / (Mathf.Abs(transform.position.y - 10f) + 1);
+      transform.Translate (Vector3.forward * scroll * scrollFactor);
+    }
 
 		if (rotationTime > 0) {
 			float rotationAmount = rotationTime < Time.deltaTime ? rotationTime : Time.deltaTime;
