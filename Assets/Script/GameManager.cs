@@ -37,9 +37,8 @@ public class GameManager : MonoBehaviour {
 
     SelectedPiece = _PieceToSelect;
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
-    Vector3 piecePosition = SelectedPiece.transform.position;
-    line.SetPosition(0, new Vector3(piecePosition.x, 1.5f, piecePosition.z));
-    line.SetPosition(1, new Vector3(piecePosition.x, 1.5f, piecePosition.z));
+    line.SetPosition(0, SelectedPiece.transform.position);
+    line.SetPosition(1, SelectedPiece.transform.position);
 
 
     Vector3 position = SelectedPiece.transform.position;
@@ -65,7 +64,7 @@ public class GameManager : MonoBehaviour {
   // Draw line to piece
   public void lineTo(GameObject piece) {
     if (SelectedPiece && piece) {
-      line.SetPosition(1, new Vector3(piece.transform.position.x, 1.5f, piece.transform.position.z));
+      line.SetPosition(1, piece.transform.position);
     }
   }
 
