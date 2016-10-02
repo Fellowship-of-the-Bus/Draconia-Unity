@@ -1,9 +1,10 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class Skill : MonoBehaviour {
+public abstract class Skill : MonoBehaviour {
   public int id;
-  public double calcDamage(Character attacker, Character defender) {
-    return 0;
-  }
+  public int level;
+  public Character self;
+  public abstract void activate(List<Character> targets);
+  public abstract List<GameObject> getTargets();
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -9,6 +8,9 @@ public class GameManager : MonoBehaviour {
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
   LineRenderer line;
+
+  //EventManager
+  public EventManager eventManager = new EventManager();
 
   void Start() {
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
@@ -158,6 +160,9 @@ public class GameManager : MonoBehaviour {
 
   public int distance(Tile from, Tile to) {
     //check heights
+    if (Math.Abs(getHeight(from) - getHeight(to)) > 1.0f) {
+      return Int32.MaxValue/2;
+    }
     return to.movePointSpent;
   }
 
