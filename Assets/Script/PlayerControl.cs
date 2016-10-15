@@ -33,9 +33,9 @@ public class PlayerControl : MonoBehaviour {
           gameManager.MovePiece(selectedCoord);
         }
       }
-    } else {
+    } else if (!gameManager.moving) {
       GameObject hoveredObject = gameManager.getHovered(PlayerCam);
-      if (hoveredObject && hoveredObject.tag == "PiecePlayer1") {
+      if (hoveredObject && (hoveredObject.tag == "PiecePlayer1" || hoveredObject.tag == "PiecePlayer2")) {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube") {
         gameManager.path.Clear();

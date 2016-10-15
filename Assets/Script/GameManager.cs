@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
   public EventManager eventManager = new EventManager();
 
   void Start() {
+    moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     tiles = new List<Tile>();
     foreach (GameObject cube in cubes) {
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour {
 
   public void resetTileColors() {
     foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
+      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
         tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
       } else {
         tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -105,7 +106,7 @@ public class GameManager : MonoBehaviour {
     moving = false;
   }
 
-  bool moving = false;
+  public bool moving {get; private set;}
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
     // don't start moving twice
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour {
     Tile origin = c.curTile;
 
 
-    if (destination.distance <= c.moveRange) {
+    if (destination.distance <= c.moveRange && !destination.occupied()) {
       //after moving, remove from origin tile,
       //add to new tile
       origin.occupant = null;
