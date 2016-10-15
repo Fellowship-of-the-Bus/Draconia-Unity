@@ -12,6 +12,8 @@ public class Character : MonoBehaviour {
 
   List<Skill> equippedSkills = new List<Skill>();
 
+  public Tile curTile = null;
+
   public int curHealth;
   // TODO: Maintain current action bar amount
   public float curAction = 0;

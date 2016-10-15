@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
   public EventManager eventManager = new EventManager();
 
   void Start() {
+    moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     tiles = new List<Tile>();
     foreach (GameObject cube in cubes) {
@@ -32,17 +33,32 @@ public class GameManager : MonoBehaviour {
 
     actionQueue = new SimplePriorityQueue<GameObject>();
     GameObject[] characterObjects = GameObject.FindGameObjectsWithTag("PiecePlayer1");
+    GameObject[] enemies = GameObject.FindGameObjectsWithTag("PiecePlayer2");
 
-    for (int i = 0; i < characterObjects.Length; i++) {
-      float time = characterObjects[i].GetComponent<Character>().calcMoveTime(0f);
-      actionQueue.Enqueue(characterObjects[i], time);
+    foreach (GameObject o in characterObjects) {
+      float time = o.GetComponent<Character>().calcMoveTime(0f);
+      actionQueue.Enqueue(o, time);
+      Character c = o.GetComponent<Character>();
+      Tile t = getTile(o.transform.position);
+      t.occupant = o;
+      c.curTile = t;
+    }
+
+    foreach (GameObject o in enemies) {
+      float time = o.GetComponent<Character>().calcMoveTime(0f);
+      actionQueue.Enqueue(o, time);
+      Character c = o.GetComponent<Character>();
+      Tile t = getTile(o.transform.position);
+      t.occupant = o;
+      c.curTile = t;
     }
     SelectPiece();
+    //set occupants
   }
 
   public void resetTileColors() {
     foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
+      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
         tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
       } else {
         tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -75,26 +91,51 @@ public class GameManager : MonoBehaviour {
     resetTileColors();
   }
 
-  IEnumerator IterateMove(Vector3 dest) {
+  IEnumerator IterateMove(LinkedList<Tile> path) {
     const float FPS = 60f;
+    const float speed = 4f;
 
-	Vector3 d = (dest-SelectedPiece.transform.position)/FPS;
-    for (int i = 0; i < FPS; i++) {
-	  SelectedPiece.transform.Translate(d);
-      yield return new WaitForSeconds(1/FPS);
+    foreach (Tile destination in path) {
+      // fix height
+      Vector3 pos = destination.gameObject.transform.position;
+      pos.y = destination.transform.position.y + getHeight(destination);
+
+      // move piece
+      Vector3 d = speed*(pos-SelectedPiece.transform.position)/FPS;
+      for (int i = 0; i < FPS/speed; i++) {
+      SelectedPiece.transform.Translate(d);
+        yield return new WaitForSeconds(1/FPS);
+      }
     }
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     clearColour();
     SelectPiece();
+    moving = false;
   }
 
+  public bool moving {get; private set;}
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
+    // don't start moving twice
+    if (moving) return;
+
     Tile destination = getTile(_coordToMove);
-    if (destination.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
+    Character c = SelectedPiece.GetComponent<Character>();
+    Tile origin = c.curTile;
+
+
+    if (destination.distance <= c.moveRange && !destination.occupied()) {
+      //after moving, remove from origin tile,
+      //add to new tile
+      origin.occupant = null;
+      c.curTile = destination;
+      c.curTile.occupant = c.gameObject;
+
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
-      StartCoroutine(IterateMove(_coordToMove));
+      path.RemoveFirst(); // discard current position
+      moving = true;
+      StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
   }
 
@@ -149,7 +190,7 @@ public class GameManager : MonoBehaviour {
 
   public void djikstra(Vector3 unitLocation) {
     foreach (Tile tile in tiles) {
-      tile.distance = System.Int32.MaxValue;
+      tile.distance = System.Int32.MaxValue/2;
       tile.dir = Direction.None;
     }
 
@@ -219,6 +260,9 @@ public class GameManager : MonoBehaviour {
   public int distance(Tile from, Tile to) {
     //check heights
     if (Math.Abs(getHeight(from) - getHeight(to)) > 1.0f) {
+      return Int32.MaxValue/2;
+    }
+    if (from.occupied() && !(from.occupant.tag.Equals(SelectedPiece.tag))) {
       return Int32.MaxValue/2;
     }
     return to.movePointSpent;
