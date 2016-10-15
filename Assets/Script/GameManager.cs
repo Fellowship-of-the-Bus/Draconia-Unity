@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour {
 
   public void djikstra(Vector3 unitLocation) {
     foreach (Tile tile in tiles) {
-      tile.distance = System.Int32.MaxValue;
+      tile.distance = System.Int32.MaxValue/2;
       tile.dir = Direction.None;
     }
 
