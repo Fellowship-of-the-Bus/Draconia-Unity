@@ -66,13 +66,21 @@ public class GameManager : MonoBehaviour {
     resetTileColors();
   }
 
-  IEnumerator IterateMove(Vector3 dest) {
+  IEnumerator IterateMove(LinkedList<Tile> path) {
     const float FPS = 60f;
+    const float speed = 4f;
 
-	Vector3 d = (dest-SelectedPiece.transform.position)/FPS;
-    for (int i = 0; i < FPS; i++) {
-	  SelectedPiece.transform.Translate(d);
-      yield return new WaitForSeconds(1/FPS);
+    foreach (Tile destination in path) {
+      // fix height
+      Vector3 pos = destination.gameObject.transform.position;
+      pos.y = destination.transform.position.y + getHeight(destination);
+
+      // move piece
+      Vector3 d = speed*(pos-SelectedPiece.transform.position)/FPS;
+      for (int i = 0; i < FPS/speed; i++) {
+      SelectedPiece.transform.Translate(d);
+        yield return new WaitForSeconds(1/FPS);
+      }
     }
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
@@ -85,7 +93,8 @@ public class GameManager : MonoBehaviour {
     Tile destination = getTile(_coordToMove);
     if (destination.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
-      StartCoroutine(IterateMove(_coordToMove));
+      path.RemoveFirst(); // discard current position
+      StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
   }
 
