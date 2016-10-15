@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
   LineRenderer line;
+  GameObject[] characters;
+  int selectedIndex = 0;
 
   //EventManager
   public EventManager eventManager = new EventManager();
@@ -22,22 +24,22 @@ public class GameManager : MonoBehaviour {
     }
 
     line = gameObject.GetComponent<LineRenderer>();
+
+    characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
+    SelectPiece();
   }
 
-  //Update SelectedPiece with the GameObject inputted to this function
-  public void SelectPiece(GameObject _PieceToSelect) {
+  //Update SelectedPiece
+  public void SelectPiece() {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
     clearColour();
     if (SelectedPiece) {
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      if (SelectedPiece == _PieceToSelect) {
-        SelectedPiece = null;
-        return;
-      }
     }
 
-    SelectedPiece = _PieceToSelect;
+    selectedIndex = (selectedIndex + 1) % characters.Length;
+    SelectedPiece = characters[(selectedIndex + 1) % characters.Length];
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
     line.SetPosition(1, SelectedPiece.transform.position);
@@ -60,7 +62,7 @@ public class GameManager : MonoBehaviour {
       SelectedPiece.transform.position = _coordToMove;
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       clearColour();
-      SelectedPiece = null;
+      SelectPiece();
     }
   }
 

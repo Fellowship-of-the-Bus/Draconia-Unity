@@ -25,10 +25,6 @@ public class PlayerControl : MonoBehaviour {
 
     // Select a piece
     if (clickedObject) {
-      if (clickedObject.tag == ("PiecePlayer1")) {
-        gameManager.SelectPiece(clickedObject);
-      }
-
       if (gameManager.SelectedPiece) {
         Vector3 selectedCoord;
 
