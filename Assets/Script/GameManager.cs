@@ -60,8 +60,7 @@ public class GameManager : MonoBehaviour {
     if (destination.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
       SelectedPiece.transform.position = _coordToMove;
-      SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      clearColour();
+
       SelectPiece();
     }
   }
@@ -196,7 +195,9 @@ public class GameManager : MonoBehaviour {
 
   public GameObject piece;
 
+  // Test function that instantiates a character
   public void createPiece() {
-    Instantiate(piece, new Vector3(-0.5f, 1f, 1.5f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
+    Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
+    characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
   }
 }
