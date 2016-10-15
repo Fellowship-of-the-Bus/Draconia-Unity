@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 public class GameManager : MonoBehaviour {
   public GameObject SelectedPiece { get; private set; }
@@ -54,15 +55,26 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  IEnumerator IterateMove(Vector3 dest) {
+    const float FPS = 60f;
+
+	Vector3 d = (dest-SelectedPiece.transform.position)/FPS;
+    for (int i = 0; i < FPS; i++) {
+	  SelectedPiece.transform.Translate(d);
+      yield return new WaitForSeconds(1/FPS);
+    }
+
+    SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    clearColour();
+    SelectPiece();
+  }
+
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
     Tile destination = getTile(_coordToMove);
     if (destination.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
-      _coordToMove.y = destination.transform.position.y + getHeight(destination);
-      SelectedPiece.transform.position = _coordToMove;
-      SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      clearColour();
-      SelectPiece();
+	  _coordToMove.y = destination.transform.position.y + getHeight(destination);
+	  StartCoroutine(IterateMove(_coordToMove));
     }
   }
 
