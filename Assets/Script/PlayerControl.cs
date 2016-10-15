@@ -38,12 +38,13 @@ public class PlayerControl : MonoBehaviour {
       if (hoveredObject && hoveredObject.tag == "PiecePlayer1") {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube") {
+        gameManager.path.Clear();
         gameManager.resetTileColors();
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = gameManager.getTile(coord);
         if (t.distance <= gameManager.SelectedPiece.GetComponent<Player>().moveRange) {
+          gameManager.path.AddFirst(t);
           while (t.dir != Direction.None) {
-            t.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             switch (t.dir) {
               case Direction.Forward:
                 coord = coord - Vector3.forward;
@@ -59,6 +60,10 @@ public class PlayerControl : MonoBehaviour {
                 break;
             }
             t = gameManager.getTile(coord);
+            gameManager.path.AddFirst(t);
+          }
+          foreach (Tile ti in gameManager.path) {
+            ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
           }
         }
         gameManager.lineTo(gameManager.SelectedPiece);
