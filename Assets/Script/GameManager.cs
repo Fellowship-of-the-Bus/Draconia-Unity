@@ -1,14 +1,26 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 using System.Collections;
 using Priority_Queue;
 
+public enum GameState {
+  moving,
+  attacking
+}
+
 public class GameManager : MonoBehaviour {
   public GameObject SelectedPiece { get; private set; }
+  public int SelectedSkill {get; private set;}
+  List<GameObject> skillTargets;
+  public GameState gameState = GameState.moving;
+
+
   // Selected Piece
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
+  List<Button> skillButtons = null;
   LineRenderer line;
   SimplePriorityQueue<GameObject> actionQueue;
 
@@ -21,6 +33,12 @@ public class GameManager : MonoBehaviour {
     moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     tiles = new List<Tile>();
+
+    skillButtons = new List<Button>();
+    foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
+      skillButtons.Add(o.GetComponent<Button>());
+    }
+    Debug.Log(skillButtons.Count);
     foreach (GameObject cube in cubes) {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
@@ -66,6 +84,16 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  public void setAttackingTileColours(int range) {
+    List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
+    foreach (Tile tile in inRangeTiles) {
+      tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+    }
+    foreach (GameObject o in skillTargets) {
+      getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+    }
+  }
+
   //Update SelectedPiece
   public void SelectPiece() {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
@@ -89,6 +117,58 @@ public class GameManager : MonoBehaviour {
     djikstra(position);
 
     resetTileColors();
+
+    //set skill buttons to the selected piece's skills, enable those that actually have skills
+    for (int i = 0; i < skillButtons.Count; i++) {
+      Debug.Log(i);
+      int j = i;
+      skillButtons[i].onClick.AddListener(() => {
+        selectSkill(j);
+        });
+      skillButtons[i].enabled = false;
+    }
+    for (int i = 0; i < SelectedPiece.GetComponent<Character>().equippedSkills.Count; i++) {
+      skillButtons[i].enabled = true;
+    }
+  }
+
+  //make sure only those with valid skills are enabled
+  public void selectSkill(int i) {
+    //unselect
+    if (gameState == GameState.attacking && SelectedSkill == i) {
+      gameState = GameState.moving;
+      //change colours for tiles
+      resetTileColors();
+      return;
+    }
+
+    gameState = GameState.attacking;
+    Debug.Log(i);
+    Skill skill = SelectedPiece.GetComponent<Character>().equippedSkills[i];
+
+    skillTargets = skill.getTargets();
+    //change colours of the tiles for attacking
+    //check for range skill if not put 1 else put the range
+    setAttackingTileColours(skill.range);
+
+  }
+
+  public void selectTarget(GameObject target) {
+    if (skillTargets.Contains(target)) {
+      //todo aoe stuff
+      List<Character> targets = new List<Character>();
+      targets.Add(target.GetComponent<Character>());
+      SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
+    }
+    endTurn();
+  }
+
+  public void endTurn() {
+
+    SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    clearColour();
+    SelectPiece();
+    gameState = GameState.moving;
   }
 
   IEnumerator IterateMove(LinkedList<Tile> path) {
@@ -107,11 +187,8 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(1/FPS);
       }
     }
-
-    SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-    clearColour();
-    SelectPiece();
     moving = false;
+    gameState = GameState.attacking;
   }
 
   public bool moving {get; private set;}
@@ -286,6 +363,21 @@ public class GameManager : MonoBehaviour {
       }
     }
     return null;
+  }
+
+  public List<Tile> getTilesWithinRange(Tile t, int range) {
+    List<Tile> inRangeTiles = new List<Tile>();
+    foreach (Tile other in tiles) {
+      if (l1Distance(t, other) <= range && l1Distance(t, other) != 0) {
+        inRangeTiles.Add(other);
+      }
+    }
+    return inRangeTiles;
+  }
+
+  public int l1Distance(Tile t1, Tile t2) {
+    return (int)Math.Floor(Math.Abs(t1.gameObject.transform.position.x - t2.gameObject.transform.position.x) + 0.5f)  +
+          (int)Math.Floor(Math.Abs(t1.gameObject.transform.position.z - t2.gameObject.transform.position.z) + 0.5f) ;
   }
 
   public void clearColour() {

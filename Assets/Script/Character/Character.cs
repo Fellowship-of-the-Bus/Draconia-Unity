@@ -10,7 +10,7 @@ public class Character : MonoBehaviour {
   //stats
   public Attributes attr = new Attributes();
 
-  List<Skill> equippedSkills = new List<Skill>();
+  public List<Skill> equippedSkills = new List<Skill>();
 
   public Tile curTile = null;
 
@@ -24,6 +24,13 @@ public class Character : MonoBehaviour {
   void Start() {
     skills = new SkillTree(this);
     applyPassives();
+
+    Skill punch = new PunchSkill();
+    punch.level = 1;
+    punch.self = this;
+    equippedSkills.Add(punch);
+
+    curHealth = attr.maxHealth;
   }
 
   void Update() {
@@ -77,4 +84,14 @@ public class Character : MonoBehaviour {
     l.Add(effect);
   }
 
+  public void selectSkill(int i) {
+
+  }
+
+  public void takeDamage(int damage) {
+    curHealth -= damage;
+    if (curHealth < 0) {
+      /// do something later
+    }
+  }
 }

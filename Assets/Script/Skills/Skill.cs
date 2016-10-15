@@ -7,4 +7,7 @@ public abstract class Skill {
   public Character self;
   public abstract void activate(List<Character> targets);
   public abstract List<GameObject> getTargets();
+
+  public int range {get; set;}
+  public bool useLos {get; set;}
 }
