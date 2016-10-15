@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour {
   List<Tile> tiles = null;
   LineRenderer line;
   GameObject[] characters;
-  int selectedIndex = 0;
+  GameObject[] enemies;
+  int selectedIndex = -1;
 
   public LinkedList<Tile> path = null;
 
@@ -31,14 +32,21 @@ public class GameManager : MonoBehaviour {
     line = gameObject.GetComponent<LineRenderer>();
 
     characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
-    SelectPiece();
-    //set occupants
+    enemies = GameObject.FindGameObjectsWithTag("PiecePlayer2");
     foreach (GameObject o in characters) {
       Character c = o.GetComponent<Character>();
       Tile t = getTile(o.transform.position);
       t.occupant = o;
       c.curTile = t;
     }
+    foreach (GameObject o in enemies) {
+      Character c = o.GetComponent<Character>();
+      Tile t = getTile(o.transform.position);
+      t.occupant = o;
+      c.curTile = t;
+    }
+    SelectPiece();
+    //set occupants
   }
 
   public void resetTileColors() {
@@ -60,8 +68,9 @@ public class GameManager : MonoBehaviour {
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     }
 
-    selectedIndex = (selectedIndex + 1) % characters.Length;
-    SelectedPiece = characters[(selectedIndex + 1) % characters.Length];
+    selectedIndex = (selectedIndex + 1) % (characters.Length + enemies.Length);
+    if (selectedIndex < characters.Length) SelectedPiece = characters[selectedIndex];
+    else SelectedPiece = enemies[selectedIndex - characters.Length];
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
     line.SetPosition(1, SelectedPiece.transform.position);
@@ -106,13 +115,14 @@ public class GameManager : MonoBehaviour {
     Character c = SelectedPiece.GetComponent<Character>();
     Tile origin = c.curTile;
 
-    //after moving, remove from origin tile,
-    //add to new tile
-    origin.occupant = null;
-    c.curTile = getTile(c.gameObject.transform.position);
-    c.curTile.occupant = c.gameObject;
 
     if (destination.distance <= c.moveRange) {
+      //after moving, remove from origin tile,
+      //add to new tile
+      origin.occupant = null;
+      c.curTile = destination;
+      c.curTile.occupant = c.gameObject;
+
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
       path.RemoveFirst(); // discard current position
       moving = true;
@@ -241,6 +251,9 @@ public class GameManager : MonoBehaviour {
   public int distance(Tile from, Tile to) {
     //check heights
     if (Math.Abs(getHeight(from) - getHeight(to)) > 1.0f) {
+      return Int32.MaxValue/2;
+    }
+    if (from.occupied() && !(from.occupant.tag.Equals(SelectedPiece.tag))) {
       return Int32.MaxValue/2;
     }
     return to.movePointSpent;

@@ -15,6 +15,6 @@ public class Tile : MonoBehaviour {
   public GameObject occupant = null;
 
   public bool occupied() {
-    return occupant == null;
+    return occupant != null;
   }
 }
