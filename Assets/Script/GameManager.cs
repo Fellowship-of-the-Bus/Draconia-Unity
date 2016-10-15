@@ -93,24 +93,31 @@ public class GameManager : MonoBehaviour {
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     clearColour();
     SelectPiece();
+    moving = false;
   }
 
+  bool moving = false;
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
+    // don't start moving twice
+    if (moving) return;
+
     Tile destination = getTile(_coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
     Tile origin = c.curTile;
-    if (destination.distance <= c.moveRange) {
-      _coordToMove.y = destination.transform.position.y + getHeight(destination);
-      path.RemoveFirst(); // discard current position
-      StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
-    }
 
     //after moving, remove from origin tile,
     //add to new tile
     origin.occupant = null;
     c.curTile = getTile(c.gameObject.transform.position);
     c.curTile.occupant = c.gameObject;
+
+    if (destination.distance <= c.moveRange) {
+      _coordToMove.y = destination.transform.position.y + getHeight(destination);
+      path.RemoveFirst(); // discard current position
+      moving = true;
+      StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
+    }
   }
 
   // Draw line to piece
