@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class Skill : MonoBehaviour {
+public abstract class Skill {
   public int id;
   public int level;
   public Character self;

@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
     Vector3 position = SelectedPiece.transform.position;
     djikstra(position);
     foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
+      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
         tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
       }
     }
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour {
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
     Tile destination = getTile(_coordToMove);
-    if (destination.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
+    if (destination.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
       StartCoroutine(IterateMove(_coordToMove));
     }
@@ -97,9 +97,7 @@ public class GameManager : MonoBehaviour {
         } else {
           line.GetComponent<Renderer>().material.color = Color.black;
         }
-      
         line.SetPosition(0, source);
-        line.SetPosition(1, hitInfo.point);
       }
     }
   }

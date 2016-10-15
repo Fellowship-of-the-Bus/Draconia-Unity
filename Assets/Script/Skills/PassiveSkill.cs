@@ -1,4 +1,4 @@
 using UnityEngine;
 
-public abstract class PassiveSkill : MonoBehaviour {
+public abstract class PassiveSkill : Skill {
 }
