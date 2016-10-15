@@ -9,10 +9,15 @@ public class Character : MonoBehaviour {
   public SkillTree skills = null;
   //stats
   public Attributes attr = new Attributes();
+
   List<Skill> equippedSkills = new List<Skill>();
 
   public int curHealth;
+  // TODO: Maintain current action bar amount
+  public float curAction = 0;
+  public float nextMoveTime;
   public int moveRange = 4;
+  public int speed = 5;
 
   void Start() {
     skills = new SkillTree(this);
@@ -31,6 +36,11 @@ public class Character : MonoBehaviour {
       }
       passive.activate(targets);
     }
+  }
+
+  public float calcMoveTime(float time) {
+    // TODO: Replace 1000 with max action constant and use attr.speed
+    return nextMoveTime = time + ((1000f - curAction) / speed);
   }
 
   public void applyEffect(Effect effect) {

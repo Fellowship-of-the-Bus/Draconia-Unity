@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using Priority_Queue;
 
 public class GameManager : MonoBehaviour {
   public GameObject SelectedPiece { get; private set; }
@@ -9,8 +10,7 @@ public class GameManager : MonoBehaviour {
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
   LineRenderer line;
-  GameObject[] characters;
-  int selectedIndex = 0;
+  SimplePriorityQueue<GameObject> actionQueue;
 
   public LinkedList<Tile> path = null;
 
@@ -30,7 +30,13 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
 
-    characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
+    actionQueue = new SimplePriorityQueue<GameObject>();
+    GameObject[] characterObjects = GameObject.FindGameObjectsWithTag("PiecePlayer1");
+
+    for (int i = 0; i < characterObjects.Length; i++) {
+      float time = characterObjects[i].GetComponent<Character>().calcMoveTime(0f);
+      actionQueue.Enqueue(characterObjects[i], time);
+    }
     SelectPiece();
   }
 
@@ -53,8 +59,11 @@ public class GameManager : MonoBehaviour {
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     }
 
-    selectedIndex = (selectedIndex + 1) % characters.Length;
-    SelectedPiece = characters[(selectedIndex + 1) % characters.Length];
+    float time = actionQueue.topPriority();
+    SelectedPiece = actionQueue.Dequeue();
+    Character SelectedCharacter = SelectedPiece.GetComponent<Character>();
+    actionQueue.Enqueue(SelectedPiece, SelectedCharacter.calcMoveTime(time));
+
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
     line.SetPosition(1, SelectedPiece.transform.position);
@@ -245,7 +254,9 @@ public class GameManager : MonoBehaviour {
 
   // Test function that instantiates a character
   public void createPiece() {
-    Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
-    characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
+    GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
+
+    float time = newCharObj.GetComponent<Character>().calcMoveTime(0f);
+    actionQueue.Enqueue(newCharObj, time);
   }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Attributes {
   public int strength;
   public int intelligence;
-  public int speed;
+  public int speed = 5;
   public int maxHealth;
   public int physicalDefense;
   public int magicDefense;
