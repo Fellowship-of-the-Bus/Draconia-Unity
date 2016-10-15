@@ -62,6 +62,7 @@ public class PlayerControl : MonoBehaviour {
             t = gameManager.getTile(coord);
             gameManager.path.AddFirst(t);
           }
+          gameManager.path.RemoveFirst();
           foreach (Tile ti in gameManager.path) {
             ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
           }
