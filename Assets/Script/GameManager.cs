@@ -71,8 +71,11 @@ public class GameManager : MonoBehaviour {
       if (SelectedPiece == piece) {
         line.SetPosition(1, SelectedPiece.transform.position);
       } else {
-        Vector3 toTarget = piece.transform.position - SelectedPiece.transform.position;
-        Ray ray = new Ray(SelectedPiece.transform.position, toTarget.normalized);
+        Vector3 source = new Vector3(SelectedPiece.transform.position.x, SelectedPiece.transform.position.y + 0.25f, SelectedPiece.transform.position.z);
+        Vector3 target = new Vector3(piece.transform.position.x, piece.transform.position.y + 0.25f, piece.transform.position.z);
+        Vector3 toTarget = target - source;
+
+        Ray ray = new Ray(source, toTarget.normalized);
         RaycastHit hitInfo;
         Physics.Raycast(ray, out hitInfo);
 
@@ -82,6 +85,7 @@ public class GameManager : MonoBehaviour {
           line.GetComponent<Renderer>().material.color = Color.black;
         }
       
+        line.SetPosition(0, source);
         line.SetPosition(1, hitInfo.point);
       }
     }
