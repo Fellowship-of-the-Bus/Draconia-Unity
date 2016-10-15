@@ -30,6 +30,16 @@ public class GameManager : MonoBehaviour {
     SelectPiece();
   }
 
+  public void resetTileColors() {
+    foreach (Tile tile in tiles) {
+      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
+        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
+      } else {
+        tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
+      }
+    }
+  }
+
   //Update SelectedPiece
   public void SelectPiece() {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
@@ -48,11 +58,8 @@ public class GameManager : MonoBehaviour {
 
     Vector3 position = SelectedPiece.transform.position;
     djikstra(position);
-    foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
-      }
-    }
+
+    resetTileColors();
   }
 
   IEnumerator IterateMove(Vector3 dest) {
@@ -97,7 +104,9 @@ public class GameManager : MonoBehaviour {
         } else {
           line.GetComponent<Renderer>().material.color = Color.black;
         }
+
         line.SetPosition(0, source);
+        line.SetPosition(1, hitInfo.point);
       }
     }
   }
@@ -128,6 +137,7 @@ public class GameManager : MonoBehaviour {
   public void djikstra(Vector3 unitLocation) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue;
+      tile.dir = Direction.None;
     }
 
     HashSet<Tile> tilesToGo = new HashSet<Tile>(tiles);
@@ -145,31 +155,51 @@ public class GameManager : MonoBehaviour {
         }
       }
 
+      Direction dir = Direction.None;
       //above
       Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
       Tile neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+        int d = minTile.distance + distance(neighbourTile, minTile);
+        if (d < neighbourTile.distance) {
+          neighbourTile.distance = d;
+          neighbourTile.dir = Direction.Forward;
+        }
+        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
       //below
       neighbour = minTile.gameObject.transform.position + Vector3.back;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+        int d = minTile.distance + distance(neighbourTile, minTile);
+        if (d < neighbourTile.distance) {
+          neighbourTile.distance = d;
+          neighbourTile.dir = Direction.Back;
+        }
+        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
       //right
       neighbour = minTile.gameObject.transform.position + Vector3.right;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+        int d = minTile.distance + distance(neighbourTile, minTile);
+        if (d < neighbourTile.distance) {
+          neighbourTile.distance = d;
+          neighbourTile.dir = Direction.Right;
+        }
+        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
       //left
       neighbour = minTile.gameObject.transform.position + Vector3.left;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+        int d = minTile.distance + distance(neighbourTile, minTile);
+        if (d < neighbourTile.distance) {
+          neighbourTile.distance = d;
+          neighbourTile.dir = Direction.Left;
+        }
+        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
       }
-
       tilesToGo.Remove(minTile);
     }
   }
