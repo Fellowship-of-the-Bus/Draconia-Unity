@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
   GameObject[] characters;
   int selectedIndex = 0;
 
+  public LinkedList<Tile> path = null;
+
   //EventManager
   public EventManager eventManager = new EventManager();
 
@@ -23,6 +25,8 @@ public class GameManager : MonoBehaviour {
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
     }
+
+    path = new LinkedList<Tile>();
 
     line = gameObject.GetComponent<LineRenderer>();
 
@@ -155,7 +159,6 @@ public class GameManager : MonoBehaviour {
         }
       }
 
-      Direction dir = Direction.None;
       //above
       Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
       Tile neighbourTile = getTile(neighbour, tilesToGo);
