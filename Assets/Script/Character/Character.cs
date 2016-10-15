@@ -11,6 +11,8 @@ public class Character : MonoBehaviour {
   public Attributes attr = new Attributes();
   List<Skill> equippedSkills = new List<Skill>();
 
+  public Tile curTile = null;
+
   public int curHealth;
   public int moveRange = 4;
 

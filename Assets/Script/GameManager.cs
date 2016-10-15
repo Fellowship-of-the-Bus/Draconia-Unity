@@ -32,6 +32,13 @@ public class GameManager : MonoBehaviour {
 
     characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
     SelectPiece();
+    //set occupants
+    foreach (GameObject o in characters) {
+      Character c = o.GetComponent<Character>();
+      Tile t = getTile(o.transform.position);
+      t.occupant = o;
+      c.curTile = t;
+    }
   }
 
   public void resetTileColors() {
@@ -91,11 +98,19 @@ public class GameManager : MonoBehaviour {
   // Move the SelectedPiece to the inputted coords
   public void MovePiece(Vector3 _coordToMove) {
     Tile destination = getTile(_coordToMove);
-    if (destination.distance <= SelectedPiece.GetComponent<Character>().moveRange) {
+    Character c = SelectedPiece.GetComponent<Character>();
+    Tile origin = c.curTile;
+    if (destination.distance <= c.moveRange) {
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
       path.RemoveFirst(); // discard current position
       StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
+
+    //after moving, remove from origin tile,
+    //add to new tile
+    origin.occupant = null;
+    c.curTile = getTile(c.gameObject.transform.position);
+    c.curTile.occupant = c.gameObject;
   }
 
   // Draw line to piece
