@@ -73,8 +73,8 @@ public class GameManager : MonoBehaviour {
   public void MovePiece(Vector3 _coordToMove) {
     Tile destination = getTile(_coordToMove);
     if (destination.distance <= SelectedPiece.GetComponent<Player>().moveRange) {
-	  _coordToMove.y = destination.transform.position.y + getHeight(destination);
-	  StartCoroutine(IterateMove(_coordToMove));
+      _coordToMove.y = destination.transform.position.y + getHeight(destination);
+      StartCoroutine(IterateMove(_coordToMove));
     }
   }
 
@@ -84,8 +84,11 @@ public class GameManager : MonoBehaviour {
       if (SelectedPiece == piece) {
         line.SetPosition(1, SelectedPiece.transform.position);
       } else {
-        Vector3 toTarget = piece.transform.position - SelectedPiece.transform.position;
-        Ray ray = new Ray(SelectedPiece.transform.position, toTarget.normalized);
+        Vector3 source = new Vector3(SelectedPiece.transform.position.x, SelectedPiece.transform.position.y + 0.25f, SelectedPiece.transform.position.z);
+        Vector3 target = new Vector3(piece.transform.position.x, piece.transform.position.y + 0.25f, piece.transform.position.z);
+        Vector3 toTarget = target - source;
+
+        Ray ray = new Ray(source, toTarget.normalized);
         RaycastHit hitInfo;
         Physics.Raycast(ray, out hitInfo);
 
@@ -95,6 +98,7 @@ public class GameManager : MonoBehaviour {
           line.GetComponent<Renderer>().material.color = Color.black;
         }
       
+        line.SetPosition(0, source);
         line.SetPosition(1, hitInfo.point);
       }
     }
@@ -208,7 +212,9 @@ public class GameManager : MonoBehaviour {
 
   public GameObject piece;
 
+  // Test function that instantiates a character
   public void createPiece() {
-    Instantiate(piece, new Vector3(-0.5f, 1f, 1.5f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
+    Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform);
+    characters = GameObject.FindGameObjectsWithTag("PiecePlayer1");
   }
 }
