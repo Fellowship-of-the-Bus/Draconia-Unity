@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
   List<Tile> tiles = null;
   List<Button> skillButtons = null;
   LineRenderer line;
-  SimplePriorityQueue<GameObject> actionQueue;
+  public SimplePriorityQueue<GameObject> actionQueue;
 
   public LinkedList<Tile> path = null;
 
