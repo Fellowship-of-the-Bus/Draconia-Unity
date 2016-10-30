@@ -19,7 +19,6 @@ public class Character : MonoBehaviour {
   public float curAction = 0;
   public float nextMoveTime = 0f;
   public int moveRange = 4;
-  public int speed = 5;
 
   public int previewDamage;
   public int PreviewDamage{
@@ -54,8 +53,8 @@ public class Character : MonoBehaviour {
   }
 
   public float calcMoveTime(float time) {
-    // TODO: Replace 1000 with max action constant and use attr.speed
-    return nextMoveTime = time + ((1000f - curAction) / speed);
+    // TODO: Replace 1000 with max action constant
+    return nextMoveTime = time + ((1000f - curAction) / attr.speed);
   }
 
   public void applyEffect(Effect effect) {

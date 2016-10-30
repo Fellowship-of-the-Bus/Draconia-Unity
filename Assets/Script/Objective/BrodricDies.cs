@@ -10,7 +10,7 @@ public class BrodricDies : Objective {
     //TODO: change brodric detection from speed == 10
     if (allies.Length == 0) return true;
     foreach(GameObject o in allies) {
-      if (o.GetComponent<Character>().speed == 10) {
+      if (o.GetComponent<Character>().attr.speed == 10) {
         return false;
       }
     }
