@@ -119,14 +119,11 @@ public class GameManager : MonoBehaviour {
     resetTileColors();
 
     //set skill buttons to the selected piece's skills, enable those that actually have skills
-    for (int i = 0; i < skillButtons.Count; i++) {
-      Debug.Log(i);
-      int j = i;
-      skillButtons[i].onClick.AddListener(() => {
-        selectSkill(j);
-        });
+    new Range(0, skillButtons.Count).ForEach(i => {
+      skillButtons[i].onClick.AddListener(() => selectSkill(i));
       skillButtons[i].enabled = false;
-    }
+    });
+
     for (int i = 0; i < SelectedPiece.GetComponent<Character>().equippedSkills.Count; i++) {
       skillButtons[i].enabled = true;
     }
@@ -164,7 +161,6 @@ public class GameManager : MonoBehaviour {
   }
 
   public void endTurn() {
-
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     clearColour();
     SelectPiece();
@@ -183,7 +179,7 @@ public class GameManager : MonoBehaviour {
       // move piece
       Vector3 d = speed*(pos-SelectedPiece.transform.position)/FPS;
       for (int i = 0; i < FPS/speed; i++) {
-      SelectedPiece.transform.Translate(d);
+        SelectedPiece.transform.Translate(d);
         yield return new WaitForSeconds(1/FPS);
       }
     }
@@ -214,6 +210,10 @@ public class GameManager : MonoBehaviour {
       moving = true;
       StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
+
+    // To avoid concurrency problems, avoid putting any code after StartCoroutine.
+    // Any code that should be executed when the coroutine finishes should just
+    // go at the end of the coroutine.
   }
 
   // Draw line to piece
