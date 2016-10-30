@@ -41,20 +41,32 @@ public class CameraController : MonoBehaviour {
 			wasRotating = false;
 			transform.rotation = preTransform.rotation;
 		} else {
+      float dx = 0;
+      float dy = 0;
+
 			if (Input.GetMouseButtonDown (0)) {
 				lastPosition = Input.mousePosition;
 			}
 
 			if (Input.GetMouseButton (0)) {
 				Vector3 delta = Input.mousePosition - lastPosition;
-				Quaternion rotation = transform.rotation;
-				Quaternion baseRotation = Quaternion.Euler (-45, 0, 0);
-				Vector3 myVector = new Vector3 (delta.x * -mouseSensitivity, 0f, delta.y * -mouseSensitivity);
-				Vector3 rotateVector = rotation * baseRotation * myVector;
-
-				transform.Translate (rotateVector, Space.World);
 				lastPosition = Input.mousePosition;
+        dx = delta.x;
+        dy = delta.y;
 			}
+        
+      if (Input.GetKey(KeyCode.UpArrow))
+        dy = -5;
+      if (Input.GetKey(KeyCode.DownArrow))
+        dy = 5;
+      if (Input.GetKey(KeyCode.LeftArrow))
+        dx = 5;
+      if (Input.GetKey(KeyCode.RightArrow))
+        dx = -5;
+
+      if (dx != 0 || dy != 0) {
+        pan(dx, dy);
+      }
 		}
 	}
 
@@ -77,4 +89,13 @@ public class CameraController : MonoBehaviour {
 			preTransform.RotateAround(rotateAbout, rotationDirection, 90);
 		}
 	}
+
+  private void pan(float x, float y) {
+    Quaternion rotation = transform.rotation;
+    Quaternion baseRotation = Quaternion.Euler (-45, 0, 0);
+    Vector3 myVector = new Vector3 (x * -mouseSensitivity, 0f, y * -mouseSensitivity);
+    Vector3 rotateVector = rotation * baseRotation * myVector;
+
+    transform.Translate (rotateVector, Space.World);
+  }
 }

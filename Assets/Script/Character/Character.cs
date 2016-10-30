@@ -17,7 +17,7 @@ public class Character : MonoBehaviour {
   public int curHealth;
   // TODO: Maintain current action bar amount
   public float curAction = 0;
-  public float nextMoveTime;
+  public float nextMoveTime = 0f;
   public int moveRange = 4;
   public int speed = 5;
 

@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 using System.Collections;
-using Priority_Queue;
 
 public enum GameState {
   moving,
@@ -19,7 +18,7 @@ public class GameManager : MonoBehaviour {
   List<Tile> tiles = null;
   List<Button> skillButtons = null;
   LineRenderer line;
-  SimplePriorityQueue<GameObject> actionQueue;
+  ActionQueue actionQueue;
 
   public LinkedList<Tile> path = null;
 
@@ -54,13 +53,12 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
 
-    actionQueue = new SimplePriorityQueue<GameObject>();
+    actionQueue = new ActionQueue();
     GameObject[] characterObjects = GameObject.FindGameObjectsWithTag("PiecePlayer1");
     GameObject[] enemies = GameObject.FindGameObjectsWithTag("PiecePlayer2");
 
     foreach (GameObject o in characterObjects) {
-      float time = o.GetComponent<Character>().calcMoveTime(0f);
-      actionQueue.Enqueue(o, time);
+      actionQueue.add(o);
       Character c = o.GetComponent<Character>();
       Tile t = getTile(o.transform.position);
       t.occupant = o;
@@ -68,8 +66,7 @@ public class GameManager : MonoBehaviour {
     }
 
     foreach (GameObject o in enemies) {
-      float time = o.GetComponent<Character>().calcMoveTime(0f);
-      actionQueue.Enqueue(o, time);
+      actionQueue.add(o);
       Character c = o.GetComponent<Character>();
       Tile t = getTile(o.transform.position);
       t.occupant = o;
@@ -118,10 +115,7 @@ public class GameManager : MonoBehaviour {
 
     //get character whose turn it is
     //do something different for ai
-    float time = actionQueue.topPriority();
-    SelectedPiece = actionQueue.Dequeue();
-    Character SelectedCharacter = SelectedPiece.GetComponent<Character>();
-    actionQueue.Enqueue(SelectedPiece, SelectedCharacter.calcMoveTime(time));
+    SelectedPiece = actionQueue.getNext();
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -185,6 +179,7 @@ public class GameManager : MonoBehaviour {
 
   public void endTurn() {
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    actionQueue.endTurn();
     clearColour();
     startTurn();
   }
@@ -454,7 +449,6 @@ public class GameManager : MonoBehaviour {
   public void createPiece() {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
 
-    float time = newCharObj.GetComponent<Character>().calcMoveTime(0f);
-    actionQueue.Enqueue(newCharObj, time);
+    actionQueue.add(newCharObj);
   }
 }
