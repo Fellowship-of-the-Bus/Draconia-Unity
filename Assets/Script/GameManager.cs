@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviour {
       _coordToMove.y = destination.transform.position.y + getHeight(destination);
       path.RemoveFirst(); // discard current position
       moving = true;
+      line.GetComponent<Renderer>().material.color = Color.clear;
       StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
   }
