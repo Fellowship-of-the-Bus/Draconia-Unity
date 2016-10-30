@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; private set;}
   List<GameObject> skillTargets;
+  GameObject previewTarget;
 
   public GameState gameState = GameState.moving;
 
@@ -43,7 +44,6 @@ public class GameManager : MonoBehaviour {
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
       skillButtons.Add(o.GetComponent<Button>());
     }
-    //Debug.Log(skillButtons.Count);
     foreach (GameObject cube in cubes) {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
@@ -75,11 +75,35 @@ public class GameManager : MonoBehaviour {
       t.occupant = o;
       c.curTile = t;
     }
+
+    //set skill buttons to the selected piece's skills, enable those that actually have skills
+    new Range(0, skillButtons.Count).ForEach(i => {
+      skillButtons[i].onClick.AddListener(() => selectSkill(i));
+      skillButtons[i].enabled = false;
+    });
+
     startTurn();
     //set occupants
   }
 
+  void Update() {
+    //enable the line only when attacking
+    if (gameState == GameState.attacking) {
+      line.enabled = true;
+    } else {
+      line.enabled = false;
+    }
+  }
+
   // Game State functions //
+
+  void changeState(GameState newState) {
+    if (newState == GameState.moving) {
+      SelectedSkill = -1;
+    }
+    gameState = newState;
+    setTileColours();
+  }
 
   //start the next turn,
   //select the piece whose turn it is from the queue
@@ -92,6 +116,8 @@ public class GameManager : MonoBehaviour {
       SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     }
 
+    //get character whose turn it is
+    //do something different for ai
     float time = actionQueue.topPriority();
     SelectedPiece = actionQueue.Dequeue();
     Character SelectedCharacter = SelectedPiece.GetComponent<Character>();
@@ -105,16 +131,12 @@ public class GameManager : MonoBehaviour {
     Vector3 position = SelectedPiece.transform.position;
     djikstra(position);
 
-    resetTileColors();
+    originalTile = getTile(position);
 
-    //set skill buttons to the selected piece's skills, enable those that actually have skills
-    new Range(0, skillButtons.Count).ForEach(i => {
-      skillButtons[i].onClick.AddListener(() => selectSkill(i));
-      skillButtons[i].enabled = false;
-    });
+    changeState(GameState.moving);
 
-    for (int i = 0; i < SelectedPiece.GetComponent<Character>().equippedSkills.Count; i++) {
-      skillButtons[i].enabled = true;
+    for (int i = 0; i < skillButtons.Count; i++) {
+      skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
     }
   }
 
@@ -122,30 +144,42 @@ public class GameManager : MonoBehaviour {
   public void selectSkill(int i) {
     //unselect
     if (gameState == GameState.attacking && SelectedSkill == i) {
-      gameState = GameState.moving;
-      //change colours for tiles
-      resetTileColors();
+      SelectedSkill = -1;
+      setTileColours();
       return;
     }
 
-    gameState = GameState.attacking;
-    Debug.Log(i);
+    SelectedSkill = i;
     Skill skill = SelectedPiece.GetComponent<Character>().equippedSkills[i];
 
     skillTargets = skill.getTargets();
     //change colours of the tiles for attacking
     //check for range skill if not put 1 else put the range
-    setAttackingTileColours(skill.range);
+    changeState(GameState.attacking);
 
   }
 
   public void selectTarget(GameObject target) {
+
+    changeState(GameState.previewAttacking);
+
     if (skillTargets.Contains(target)) {
-      //todo aoe stuff
-      List<Character> targets = new List<Character>();
-      targets.Add(target.GetComponent<Character>());
-      SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
+      previewTarget = target;
+    } else {
+      return;
     }
+    //todo: display preview information
+
+    //just call attack for now
+    attack();
+  }
+
+  public void attack() {
+    //todo aoe stuff
+    List<Character> targets = new List<Character>();
+    targets.Add(previewTarget.GetComponent<Character>());
+    SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
+
     endTurn();
   }
 
@@ -153,7 +187,6 @@ public class GameManager : MonoBehaviour {
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     clearColour();
     startTurn();
-    gameState = GameState.moving;
   }
 
   IEnumerator IterateMove(LinkedList<Tile> path) {
@@ -173,16 +206,19 @@ public class GameManager : MonoBehaviour {
       }
     }
     moving = false;
-    gameState = GameState.attacking;
+    for (int i = 0; i < skillButtons.Count; i++) {
+      skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
+    }
+    changeState(GameState.attacking);
   }
 
   public bool moving {get; private set;}
   // Move the SelectedPiece to the inputted coords
-  public void MovePiece(Vector3 _coordToMove) {
+  public void MovePiece(Vector3 coordToMove) {
     // don't start moving twice
     if (moving) return;
 
-    Tile destination = getTile(_coordToMove);
+    Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
     Tile origin = c.curTile;
 
@@ -194,9 +230,12 @@ public class GameManager : MonoBehaviour {
       c.curTile = destination;
       c.curTile.occupant = c.gameObject;
 
-      _coordToMove.y = destination.transform.position.y + getHeight(destination);
+      coordToMove.y = destination.transform.position.y + getHeight(destination);
       path.RemoveFirst(); // discard current position
       moving = true;
+      for (int i = 0; i < skillButtons.Count; i++) {
+        skillButtons[i].enabled = false;
+      }
       line.GetComponent<Renderer>().material.color = Color.clear;
       StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
@@ -204,6 +243,15 @@ public class GameManager : MonoBehaviour {
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just
     // go at the end of the coroutine.
+  }
+
+  public void cancelAction() {
+    if (gameState == GameState.attacking) {
+      SelectedPiece.transform.position = originalTile.gameObject.transform.position;
+      changeState(GameState.moving);
+    } else if (gameState == GameState.previewAttacking) {
+
+    }
   }
 
   // Draw line to piece
@@ -235,7 +283,7 @@ public class GameManager : MonoBehaviour {
   // Get the object being clicked on
   public GameObject getClicked(Camera PlayerCam) {
     if (Input.GetMouseButtonDown(0)) {
-      return  getHovered(PlayerCam);
+      return getHovered(PlayerCam);
     }
 
     return null;
@@ -243,13 +291,13 @@ public class GameManager : MonoBehaviour {
 
   // Get the object being hovered over
   public GameObject getHovered(Camera PlayerCam) {
-    Ray _ray;
-    RaycastHit _hitInfo;
+    Ray ray;
+    RaycastHit hitInfo;
 
-    _ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
+    ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
     // Raycast and verify that it collided
-    if (Physics.Raycast(_ray, out _hitInfo)) {
-      return _hitInfo.collider.gameObject;
+    if (Physics.Raycast(ray, out hitInfo)) {
+      return hitInfo.collider.gameObject;
     }
 
     return null;
@@ -257,25 +305,28 @@ public class GameManager : MonoBehaviour {
 
 
   // GameMap functions
-  public void resetTileColors() {
-    foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
-      } else {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
+  public void setTileColours() {
+    clearColour();
+    if (gameState == GameState.moving) {
+      foreach (Tile tile in tiles) {
+        if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
+          tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
+        } else {
+          tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
+        }
+      }
+    } else if ((gameState == GameState.attacking || gameState == GameState.previewAttacking) && SelectedSkill != -1) {
+      int range = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].range;
+      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
+      foreach (Tile tile in inRangeTiles) {
+        tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+      }
+      foreach (GameObject o in skillTargets) {
+        getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
       }
     }
   }
 
-  public void setAttackingTileColours(int range) {
-    List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
-    foreach (Tile tile in inRangeTiles) {
-      tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-    }
-    foreach (GameObject o in skillTargets) {
-      getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
-    }
-  }
   public void djikstra(Vector3 unitLocation) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;

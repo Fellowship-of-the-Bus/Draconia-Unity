@@ -39,7 +39,7 @@ public class PlayerControl : MonoBehaviour {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube" && gameManager.gameState == GameState.moving) {
         gameManager.path.Clear();
-        gameManager.resetTileColors();
+        gameManager.setTileColours();
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = gameManager.getTile(coord);
         if (t.distance <= gameManager.SelectedPiece.GetComponent<Character>().moveRange) {
