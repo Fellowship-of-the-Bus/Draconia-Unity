@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Attributes {
+public class Attributes : MonoBehaviour {
   public int strength;
   public int intelligence;
   public int speed = 5;
