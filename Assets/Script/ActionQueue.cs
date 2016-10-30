@@ -52,11 +52,11 @@ public class ActionQueue {
   void enqueue(GameObject piece) {
     Character newCharacter = piece.GetComponent<Character>();
 
-    // TODO iterate on nodes
-    foreach(GameObject o in queue) {
+    foreach (LinkedListNode<GameObject> n in new NodeIterator<GameObject>(queue)) {
+      GameObject o = n.Value;
       Character c = o.GetComponent<Character>();
       if (c.nextMoveTime > newCharacter.nextMoveTime) {
-        queue.AddBefore(queue.Find(o), piece);
+        queue.AddBefore(n, piece);
         return;
       }
     }
