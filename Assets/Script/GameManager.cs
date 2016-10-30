@@ -247,7 +247,12 @@ public class GameManager : MonoBehaviour {
 
   public void cancelAction() {
     if (gameState == GameState.attacking) {
-      SelectedPiece.transform.position = originalTile.gameObject.transform.position;
+      getTile(SelectedPiece.transform.position).occupant = null;
+      Vector3 coordToMove = originalTile.gameObject.transform.position;
+      coordToMove.y = coordToMove.y + getHeight(getTile(coordToMove));
+      SelectedPiece.transform.position = coordToMove;
+      SelectedPiece.GetComponent<Character>().curTile = getTile(SelectedPiece.transform.position);
+      getTile(SelectedPiece.transform.position).occupant = SelectedPiece;
       changeState(GameState.moving);
     } else if (gameState == GameState.previewAttacking) {
 
