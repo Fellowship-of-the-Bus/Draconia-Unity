@@ -7,14 +7,11 @@ using Priority_Queue;
 
 public enum GameState {
   moving,
-  attacking
+  attacking,
+  previewAttacking
 }
 
 public class GameManager : MonoBehaviour {
-  public GameObject SelectedPiece { get; private set; }
-  public int SelectedSkill {get; private set;}
-  List<GameObject> skillTargets;
-  public GameState gameState = GameState.moving;
 
 
   // Selected Piece
@@ -25,6 +22,14 @@ public class GameManager : MonoBehaviour {
   SimplePriorityQueue<GameObject> actionQueue;
 
   public LinkedList<Tile> path = null;
+
+  //variables to handles turns
+  public Tile originalTile;
+  public GameObject SelectedPiece { get; private set;}
+  public int SelectedSkill {get; private set;}
+  List<GameObject> skillTargets;
+
+  public GameState gameState = GameState.moving;
 
   //EventManager
   public EventManager eventManager = new EventManager();
@@ -38,7 +43,7 @@ public class GameManager : MonoBehaviour {
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
       skillButtons.Add(o.GetComponent<Button>());
     }
-    Debug.Log(skillButtons.Count);
+    //Debug.Log(skillButtons.Count);
     foreach (GameObject cube in cubes) {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
@@ -70,32 +75,16 @@ public class GameManager : MonoBehaviour {
       t.occupant = o;
       c.curTile = t;
     }
-    SelectPiece();
+    startTurn();
     //set occupants
   }
 
-  public void resetTileColors() {
-    foreach (Tile tile in tiles) {
-      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
-      } else {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
-      }
-    }
-  }
+  // Game State functions //
 
-  public void setAttackingTileColours(int range) {
-    List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
-    foreach (Tile tile in inRangeTiles) {
-      tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-    }
-    foreach (GameObject o in skillTargets) {
-      getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
-    }
-  }
-
-  //Update SelectedPiece
-  public void SelectPiece() {
+  //start the next turn,
+  //select the piece whose turn it is from the queue
+  //set up variables for the new piece
+  public void startTurn() {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
     clearColour();
@@ -163,7 +152,7 @@ public class GameManager : MonoBehaviour {
   public void endTurn() {
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     clearColour();
-    SelectPiece();
+    startTurn();
     gameState = GameState.moving;
   }
 
@@ -266,6 +255,27 @@ public class GameManager : MonoBehaviour {
     return null;
   }
 
+
+  // GameMap functions
+  public void resetTileColors() {
+    foreach (Tile tile in tiles) {
+      if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
+        tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
+      } else {
+        tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
+      }
+    }
+  }
+
+  public void setAttackingTileColours(int range) {
+    List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
+    foreach (Tile tile in inRangeTiles) {
+      tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+    }
+    foreach (GameObject o in skillTargets) {
+      getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+    }
+  }
   public void djikstra(Vector3 unitLocation) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;
