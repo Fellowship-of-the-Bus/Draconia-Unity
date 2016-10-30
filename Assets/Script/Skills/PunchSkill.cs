@@ -25,7 +25,7 @@ public class PunchSkill: ActiveSkill {
   }
 
 
-  int calculateDamage(Character source, Character target) {
+  public override int calculateDamage(Character source, Character target) {
     return (int)(source.attr.strength*(1+level*0.1) - target.attr.physicalDefense);
   }
 

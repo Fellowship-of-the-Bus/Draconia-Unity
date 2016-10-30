@@ -8,7 +8,7 @@ public class Character : MonoBehaviour {
   //skill tree
   public SkillTree skills = null;
   //stats
-  public Attributes attr = new Attributes();
+  public Attributes attr;
 
   public List<Skill> equippedSkills = new List<Skill>();
 
