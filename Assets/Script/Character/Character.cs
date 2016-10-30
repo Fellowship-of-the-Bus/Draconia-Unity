@@ -75,7 +75,7 @@ public class Character : MonoBehaviour {
       }
     }
 
-    //if newly applyed effect is the highest level
+    //if newly applied effect is the highest level
     //activate it and deactivate the highest leveled one.
     if (effect.level > maxLevel) {
       effect.onActivate();
@@ -90,8 +90,14 @@ public class Character : MonoBehaviour {
 
   public void takeDamage(int damage) {
     curHealth -= damage;
-    if (curHealth < 0) {
-      /// do something later
+    if (curHealth <= 0) {
+      GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().actionQueue.remove(gameObject);
+      gameObject.SetActive(false);
+      curTile.occupant = null;
     }
+  }
+
+  public bool isAlive() {
+    return curHealth > 0;
   }
 }

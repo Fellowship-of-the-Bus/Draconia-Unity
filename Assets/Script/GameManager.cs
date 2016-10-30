@@ -12,13 +12,12 @@ public enum GameState {
 
 public class GameManager : MonoBehaviour {
 
-
   // Selected Piece
   List<GameObject> cubes = null;
   List<Tile> tiles = null;
   List<Button> skillButtons = null;
   LineRenderer line;
-  ActionQueue actionQueue;
+  public ActionQueue actionQueue;
 
   public LinkedList<Tile> path = null;
 
@@ -33,6 +32,10 @@ public class GameManager : MonoBehaviour {
 
   //EventManager
   public EventManager eventManager = new EventManager();
+
+  //Objectives for this game
+  List<Objective> winningConditions = new List<Objective>();
+  List<Objective> losingConditions = new List<Objective>();
 
   void Start() {
     moving = false;
@@ -79,6 +82,10 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].enabled = false;
     });
 
+
+    winningConditions.Add(new Rout());
+    losingConditions.Add(new BrodricDies());
+
     startTurn();
     //set occupants
   }
@@ -106,6 +113,18 @@ public class GameManager : MonoBehaviour {
   //select the piece whose turn it is from the queue
   //set up variables for the new piece
   public void startTurn() {
+    //check winning/losing conditions
+    foreach(Objective o in losingConditions) {
+      if (o.isMet(this)) {
+        endGame(false);
+      }
+    }
+    foreach(Objective o in winningConditions) {
+      if (o.isMet(this)) {
+        endGame(true);
+      }
+    }
+
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
     clearColour();
@@ -242,11 +261,20 @@ public class GameManager : MonoBehaviour {
 
   public void cancelAction() {
     if (gameState == GameState.attacking) {
-      SelectedPiece.transform.position = originalTile.gameObject.transform.position;
+      getTile(SelectedPiece.transform.position).occupant = null;
+      Vector3 coordToMove = originalTile.gameObject.transform.position;
+      coordToMove.y = coordToMove.y + getHeight(getTile(coordToMove));
+      SelectedPiece.transform.position = coordToMove;
+      SelectedPiece.GetComponent<Character>().curTile = getTile(SelectedPiece.transform.position);
+      getTile(SelectedPiece.transform.position).occupant = SelectedPiece;
       changeState(GameState.moving);
     } else if (gameState == GameState.previewAttacking) {
 
     }
+  }
+
+  public void endGame(bool win) {
+    Debug.Log(win);
   }
 
   // Draw line to piece
