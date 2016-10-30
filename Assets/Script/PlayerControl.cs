@@ -22,6 +22,7 @@ public class PlayerControl : MonoBehaviour {
   // Detect Mouse Inputs
   void GetMouseInputs() {
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
+    GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
     // Select a piece
     if (clickedObject) {
@@ -31,10 +32,12 @@ public class PlayerControl : MonoBehaviour {
         selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
         gameManager.MovePiece(selectedCoord);
       } else if ((clickedObject.tag == "PiecePlayer1" || clickedObject.tag == "PiecePlayer2") && gameManager.gameState == GameState.attacking) {
-        gameManager.selectTarget(clickedObject);
+        gameManager.attackTarget(clickedObject);
       }
     } else if (!gameManager.moving) {
-      GameObject hoveredObject = gameManager.getHovered(PlayerCam);
+      if (gameManager.gameState == GameState.attacking && hoveredObject) {
+        gameManager.selectTarget(hoveredObject);
+      }
       if (hoveredObject && (hoveredObject.tag == "PiecePlayer1" || hoveredObject.tag == "PiecePlayer2")) {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube" && gameManager.gameState == GameState.moving) {

@@ -10,7 +10,7 @@ public class Character : MonoBehaviour {
   //stats
   public Attributes attr;
 
-  public List<Skill> equippedSkills = new List<Skill>();
+  public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
 
   public Tile curTile = null;
 
@@ -21,11 +21,17 @@ public class Character : MonoBehaviour {
   public int moveRange = 4;
   public int speed = 5;
 
+  public int previewDamage;
+  public int PreviewDamage{
+    get { return Math.Min(previewDamage, curHealth); }
+    set { previewDamage = value; }
+  }
+
   void Start() {
     skills = new SkillTree(this);
     applyPassives();
 
-    Skill punch = new PunchSkill();
+    ActiveSkill punch = new PunchSkill();
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);
@@ -99,5 +105,9 @@ public class Character : MonoBehaviour {
 
   public bool isAlive() {
     return curHealth > 0;
+  }
+
+  public void setDamageIndicator(int damage) {
+
   }
 }
