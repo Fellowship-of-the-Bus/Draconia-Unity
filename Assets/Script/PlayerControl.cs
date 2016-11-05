@@ -6,8 +6,6 @@ public class PlayerControl : MonoBehaviour {
   private GameManager gameManager;
   // GameObject responsible for the management of the game
 
-  public int moveRange = 4;
-
   // Use this for initialization
   void Start() {
     PlayerCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();

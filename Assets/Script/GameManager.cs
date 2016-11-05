@@ -336,21 +336,16 @@ public class GameManager : MonoBehaviour {
     while(moving) {
       yield return new WaitForSeconds(time);
     }
-    int range = selectedCharacter.attackAI.getAttackRange();
-    List<Tile> tiles = getTilesWithinRange(selectedCharacter.curTile, range);
-    //todo aoe
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile tile in tiles) {
-      if (tile.occupied() && tile.tag != SelectedPiece.tag) {
-        targets.Add(tile.occupant);
-      }
-    }
-    selectedCharacter.attackAI.target(targets);
-
+    selectedCharacter.attackAI.target();
     endTurn();
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
+  }
+
+  public bool checkLine(Vector3 source, Vector3 target) {
+    RaycastHit info;
+    return checkLine(source, target, out info);
   }
 
   public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info) {
