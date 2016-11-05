@@ -34,6 +34,11 @@ public class Character : MonoBehaviour {
     skills = new SkillTree(this);
     applyPassives();
 
+    ActiveSkill aoe = new TestAoeSkill();
+    aoe.level = 1;
+    aoe.self = this;
+    equippedSkills.Add(aoe);
+
     ActiveSkill ranged = new RangedSkill();
     ranged.level = 1;
     ranged.self = this;
