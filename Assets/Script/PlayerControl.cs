@@ -53,10 +53,10 @@ public class PlayerControl : MonoBehaviour {
               ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             }
           }
-        } else if (gameManager.gameState == GameState.attacking) {
+        } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
           Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
           Tile t = gameManager.getTile(coord);
-          if (gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].getTargets().Contains(t.gameObject)) gameManager.setTileColours(t);
+          if (gameManager.SelectedSkill > -1 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].getTargets().Contains(t.gameObject)) gameManager.setTileColours(t);
         }
         gameManager.lineTo(gameManager.SelectedPiece);
       } else {
