@@ -230,10 +230,13 @@ public class GameManager : MonoBehaviour {
   public void attackTarget(GameObject target) {
     //todo aoe stuff
     List<Character> targets = new List<Character>();
-    targets.Add(target.GetComponent<Character>());
-    SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
+    List<GameObject> validTargets = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets();
+    if (validTargets.Contains(target)){
+      targets.Add(target.GetComponent<Character>());
+      SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
 
-    endTurn();
+      endTurn();
+    }
   }
 
   public void endTurn() {

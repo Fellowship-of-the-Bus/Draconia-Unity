@@ -30,10 +30,16 @@ public class Character : MonoBehaviour {
     skills = new SkillTree(this);
     applyPassives();
 
+    ActiveSkill ranged = new RangedSkill();
+    ranged.level = 1;
+    ranged.self = this;
+    equippedSkills.Add(ranged);
+
     ActiveSkill punch = new PunchSkill();
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);
+
 
     curHealth = attr.maxHealth;
   }
