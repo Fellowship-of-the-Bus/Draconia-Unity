@@ -30,8 +30,8 @@ public class Range : IEnumerable<int>, IEnumerator<int> {
     return true;
   }
 
-  int IEnumerator<int>.Current { get { return cur; } }
-  object IEnumerator.Current { get { return cur; } }
+  public int Current { get { return cur; } }
+  object IEnumerator.Current { get { return Current; } }
   public void Reset() { cur = start-step; }
 
   void IDisposable.Dispose() { }

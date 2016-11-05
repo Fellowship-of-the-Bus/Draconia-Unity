@@ -6,8 +6,7 @@ using System.Collections;
 
 public enum GameState {
   moving,
-  attacking,
-  previewAttacking
+  attacking
 }
 
 public class GameManager : MonoBehaviour {
@@ -37,6 +36,13 @@ public class GameManager : MonoBehaviour {
   //Objectives for this game
   List<Objective> winningConditions = new List<Objective>();
   List<Objective> losingConditions = new List<Objective>();
+
+  //health/mana bars
+  public GameObject selectedHealth;
+  public GameObject SelectedMana;
+  public GameObject targetHealth;
+  public GameObject targetMana;
+  public GameObject targetPanel;
 
   void Start() {
     moving = false;
@@ -91,6 +97,8 @@ public class GameManager : MonoBehaviour {
     //set occupants
   }
 
+  int blinkFrameNumber = 0;
+  bool displayLowerHealth = false;
   void Update() {
     //enable the line only when attacking
     if (gameState == GameState.attacking) {
@@ -98,12 +106,40 @@ public class GameManager : MonoBehaviour {
     } else {
       line.enabled = false;
     }
+
+    if (SelectedPiece) {
+      Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+      selectedCharacter.updateLifeBar(selectedHealth);
+    }
+
+    if (previewTarget == null) {
+      targetPanel.SetActive(false);
+    } else {
+      targetPanel.SetActive(true);
+      Character targetCharacter = previewTarget.GetComponent<Character>();
+      if (displayLowerHealth) {
+        Vector3 scale = targetHealth.transform.localScale;
+        scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.attr.maxHealth;
+        targetHealth.transform.localScale = scale;
+      } else {
+        Vector3 scale = targetHealth.transform.localScale;
+        scale.x = (float)targetCharacter.curHealth/targetCharacter.attr.maxHealth;
+        targetHealth.transform.localScale = scale;
+      }
+      blinkFrameNumber = (blinkFrameNumber + 1 )% 30;
+      if (blinkFrameNumber == 0) {
+        displayLowerHealth = !displayLowerHealth;
+      }
+
+      //other characters bars appear and blink
+    }
   }
 
   // Game State functions //
 
   void changeState(GameState newState) {
     if (newState == GameState.moving) {
+      previewTarget = null;
       SelectedSkill = -1;
     }
     gameState = newState;
@@ -154,7 +190,7 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  //make sure only those with valid skills are enabled
+
   public void selectSkill(int i) {
     //unselect
     if (gameState == GameState.attacking && SelectedSkill == i) {
@@ -175,26 +211,31 @@ public class GameManager : MonoBehaviour {
 
   public void selectTarget(GameObject target) {
 
-    changeState(GameState.previewAttacking);
-
-    if (skillTargets.Contains(target)) {
+    if (SelectedSkill != -1 && skillTargets.Contains(target)) {
       previewTarget = target;
     } else {
+      previewTarget = null;
       return;
     }
-    //todo: display preview information
 
-    //just call attack for now
-    attack();
+    Character cTarget = target.GetComponent<Character>();
+    if (cTarget != null) {
+      Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+      cTarget.PreviewDamage = selectedCharacter.equippedSkills[SelectedSkill].calculateDamage(selectedCharacter, cTarget);
+    }
+    //todo: aoe stuff
   }
 
-  public void attack() {
+  public void attackTarget(GameObject target) {
     //todo aoe stuff
     List<Character> targets = new List<Character>();
-    targets.Add(previewTarget.GetComponent<Character>());
-    SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
+    List<GameObject> validTargets = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets();
+    if (validTargets.Contains(target)){
+      targets.Add(target.GetComponent<Character>());
+      SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
 
-    endTurn();
+      endTurn();
+    }
   }
 
   public void endTurn() {
@@ -269,13 +310,22 @@ public class GameManager : MonoBehaviour {
       SelectedPiece.GetComponent<Character>().curTile = getTile(SelectedPiece.transform.position);
       getTile(SelectedPiece.transform.position).occupant = SelectedPiece;
       changeState(GameState.moving);
-    } else if (gameState == GameState.previewAttacking) {
-
     }
   }
 
   public void endGame(bool win) {
     Debug.Log(win);
+  }
+
+  public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info) {
+    Vector3 toTarget = target - source;
+
+    Ray ray = new Ray(source, toTarget.normalized);
+    RaycastHit hitInfo;
+    Physics.Raycast(ray, out hitInfo);
+    info = hitInfo;
+    Vector3 hit = new Vector3(hitInfo.collider.gameObject.transform.position.x, hitInfo.collider.gameObject.transform.position.y + 0.25f, hitInfo.collider.gameObject.transform.position.z);
+    return (hit == target);
   }
 
   // Draw line to piece
@@ -286,13 +336,8 @@ public class GameManager : MonoBehaviour {
       } else {
         Vector3 source = new Vector3(SelectedPiece.transform.position.x, SelectedPiece.transform.position.y + 0.25f, SelectedPiece.transform.position.z);
         Vector3 target = new Vector3(piece.transform.position.x, piece.transform.position.y + 0.25f, piece.transform.position.z);
-        Vector3 toTarget = target - source;
-
-        Ray ray = new Ray(source, toTarget.normalized);
         RaycastHit hitInfo;
-        Physics.Raycast(ray, out hitInfo);
-
-        if (hitInfo.collider.gameObject == piece) {
+        if (checkLine(source, target, out hitInfo)) {
            line.GetComponent<Renderer>().material.color = Color.red;
         } else {
           line.GetComponent<Renderer>().material.color = Color.black;
@@ -339,7 +384,7 @@ public class GameManager : MonoBehaviour {
           tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
         }
       }
-    } else if ((gameState == GameState.attacking || gameState == GameState.previewAttacking) && SelectedSkill != -1) {
+    } else if (gameState == GameState.attacking && SelectedSkill != -1) {
       int range = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       foreach (Tile tile in inRangeTiles) {
@@ -470,6 +515,34 @@ public class GameManager : MonoBehaviour {
     foreach (Tile tile in tiles) {
       tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
+  }
+
+  public void setPath(Vector3 coord) {
+    clearPath();
+    Tile t = getTile(coord);
+    path.AddFirst(t);
+    while (t.dir != Direction.None) {
+      switch (t.dir) {
+        case Direction.Forward:
+          coord = coord - Vector3.forward;
+          break;
+        case Direction.Back:
+          coord = coord - Vector3.back;
+          break;
+        case Direction.Left:
+          coord = coord - Vector3.left;
+          break;
+        case Direction.Right:
+          coord = coord - Vector3.right;
+          break;
+      }
+      t = getTile(coord);
+      path.AddFirst(t);
+    }
+  }
+
+  public void clearPath() {
+    path.Clear();
   }
 
   public GameObject piece;

@@ -23,8 +23,8 @@ public class NodeIterator<T> : IEnumerable<LinkedListNode<T>>, IEnumerator<Linke
     return cur != null;
   }
 
-  LinkedListNode<T> IEnumerator<LinkedListNode<T>>.Current { get { return cur; } }
-  object IEnumerator.Current { get { return cur; } }
+  public LinkedListNode<T> Current { get { return cur; } }
+  object IEnumerator.Current { get { return Current; } }
   public void Reset() { start = true; }
 
   void IDisposable.Dispose() { }

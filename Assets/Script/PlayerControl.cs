@@ -22,6 +22,7 @@ public class PlayerControl : MonoBehaviour {
   // Detect Mouse Inputs
   void GetMouseInputs() {
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
+    GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
     // Select a piece
     if (clickedObject) {
@@ -31,37 +32,20 @@ public class PlayerControl : MonoBehaviour {
         selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
         gameManager.MovePiece(selectedCoord);
       } else if ((clickedObject.tag == "PiecePlayer1" || clickedObject.tag == "PiecePlayer2") && gameManager.gameState == GameState.attacking) {
-        gameManager.selectTarget(clickedObject);
+        gameManager.attackTarget(clickedObject);
       }
     } else if (!gameManager.moving) {
-      GameObject hoveredObject = gameManager.getHovered(PlayerCam);
+      if (gameManager.gameState == GameState.attacking && hoveredObject) {
+        gameManager.selectTarget(hoveredObject);
+      }
       if (hoveredObject && (hoveredObject.tag == "PiecePlayer1" || hoveredObject.tag == "PiecePlayer2")) {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube" && gameManager.gameState == GameState.moving) {
-        gameManager.path.Clear();
-        gameManager.setTileColours();
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = gameManager.getTile(coord);
         if (t.distance <= gameManager.SelectedPiece.GetComponent<Character>().moveRange) {
-          gameManager.path.AddFirst(t);
-          while (t.dir != Direction.None) {
-            switch (t.dir) {
-              case Direction.Forward:
-                coord = coord - Vector3.forward;
-                break;
-              case Direction.Back:
-                coord = coord - Vector3.back;
-                break;
-              case Direction.Left:
-                coord = coord - Vector3.left;
-                break;
-              case Direction.Right:
-                coord = coord - Vector3.right;
-                break;
-            }
-            t = gameManager.getTile(coord);
-            gameManager.path.AddFirst(t);
-          }
+          gameManager.setPath(coord);
+          gameManager.setTileColours();
           foreach (Tile ti in gameManager.path) {
             ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
           }

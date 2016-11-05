@@ -10,7 +10,7 @@ public class Character : MonoBehaviour {
   //stats
   public Attributes attr;
 
-  public List<Skill> equippedSkills = new List<Skill>();
+  public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
 
   public Tile curTile = null;
 
@@ -19,23 +19,40 @@ public class Character : MonoBehaviour {
   public float curAction = 0;
   public float nextMoveTime = 0f;
   public int moveRange = 4;
-  public int speed = 5;
   public string characterName = "";
+
+  public int previewDamage;
+  public int PreviewDamage{
+    get { return Math.Min(previewDamage, curHealth); }
+    set { previewDamage = value; }
+  }
 
   void Start() {
     skills = new SkillTree(this);
     applyPassives();
 
-    Skill punch = new PunchSkill();
+    ActiveSkill ranged = new RangedSkill();
+    ranged.level = 1;
+    ranged.self = this;
+    equippedSkills.Add(ranged);
+
+    ActiveSkill punch = new PunchSkill();
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);
+
 
     curHealth = attr.maxHealth;
   }
 
   void Update() {
-    //Debug.Log(attr.strength.ToString());
+    // rotate overhead UI (health bar) to look at camera
+    Transform ui = gameObject.transform.Find("UI");
+    ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
+
+    // scale health on health bar to match current HP values
+    GameObject lifebar = ui.Find("Health Bar/Health").gameObject;
+    updateLifeBar(lifebar);
   }
 
   public void applyPassives() {
@@ -49,8 +66,8 @@ public class Character : MonoBehaviour {
   }
 
   public float calcMoveTime(float time) {
-    // TODO: Replace 1000 with max action constant and use attr.speed
-    return nextMoveTime = time + ((1000f - curAction) / speed);
+    // TODO: Replace 1000 with max action constant
+    return nextMoveTime = time + ((1000f - curAction) / attr.speed);
   }
 
   public void applyEffect(Effect effect) {
@@ -100,5 +117,15 @@ public class Character : MonoBehaviour {
 
   public bool isAlive() {
     return curHealth > 0;
+  }
+
+  public void setDamageIndicator(int damage) {
+
+  }
+
+  public void updateLifeBar(GameObject lifebar) {
+    Vector3 scale = lifebar.transform.localScale;
+    scale.x = (float)curHealth/attr.maxHealth;
+    lifebar.transform.localScale = scale;
   }
 }
