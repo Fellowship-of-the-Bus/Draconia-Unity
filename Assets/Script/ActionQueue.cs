@@ -135,6 +135,8 @@ public class ActionQueue {
     const float FPS = 60f;
     const float time = 0.25f;
 
+    gameManager.lockUI();
+
     Vector3 d = new Vector3(x, y, 0) / (FPS * time);
     for (int i = 0; i < FPS * time; i++) {
       button.transform.Translate(d);
@@ -144,5 +146,6 @@ public class ActionQueue {
     if (deleteAfter) {
       GameObject.Destroy(button);
     }
+    gameManager.unlockUI();
   }
 }
