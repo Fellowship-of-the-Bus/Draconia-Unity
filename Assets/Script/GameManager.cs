@@ -123,8 +123,9 @@ public class GameManager : MonoBehaviour {
     if (previewTarget == null) {
       targetPanel.SetActive(false);
     } else {
-      targetPanel.SetActive(true);
       Character targetCharacter = previewTarget.GetComponent<Character>();
+      if (targetCharacter == null) return;
+      targetPanel.SetActive(true);
       if (displayLowerHealth) {
         Vector3 scale = targetHealth.transform.localScale;
         scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.attr.maxHealth;
@@ -240,15 +241,25 @@ public class GameManager : MonoBehaviour {
   }
 
   public void attackTarget(GameObject target) {
-    //todo aoe stuff
+    bool aoe = (SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] is AoeSkill);
     List<Character> targets = new List<Character>();
     List<GameObject> validTargets = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets();
+
     if (validTargets.Contains(target)){
-      targets.Add(target.GetComponent<Character>());
+      if (aoe) {
+        AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
+        foreach (GameObject o in skill.getTargetsInAoe(target.transform.position)) {
+          Character c = o.GetComponent<Character>();
+          if (c) targets.Add(c);
+        }
+      } else {
+        targets.Add(target.GetComponent<Character>());
+      }
       SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].activate(targets);
 
       endTurn();
     }
+
   }
 
   public void endTurn() {
@@ -382,15 +393,15 @@ public class GameManager : MonoBehaviour {
       }
     }
   }
-
-  public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info) {
+ 
+  public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info, float offset = 0.25f) {
     Vector3 toTarget = target - source;
 
     Ray ray = new Ray(source, toTarget.normalized);
     RaycastHit hitInfo;
     Physics.Raycast(ray, out hitInfo);
     info = hitInfo;
-    Vector3 hit = new Vector3(hitInfo.collider.gameObject.transform.position.x, hitInfo.collider.gameObject.transform.position.y + 0.25f, hitInfo.collider.gameObject.transform.position.z);
+    Vector3 hit = new Vector3(hitInfo.collider.gameObject.transform.position.x, hitInfo.collider.gameObject.transform.position.y + offset, hitInfo.collider.gameObject.transform.position.z);
     return (hit == target);
   }
 
@@ -440,7 +451,8 @@ public class GameManager : MonoBehaviour {
 
 
   // GameMap functions
-  public void setTileColours() {
+  public void setTileColours(Tile src = null) {
+    if (src == null) src = getTile(SelectedPiece.transform.position);
     clearColour();
     if (gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
@@ -451,13 +463,25 @@ public class GameManager : MonoBehaviour {
         }
       }
     } else if (gameState == GameState.attacking && SelectedSkill != -1) {
+      bool aoe = (SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] is AoeSkill);
       int range = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
-      foreach (Tile tile in inRangeTiles) {
-        tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-      }
-      foreach (GameObject o in skillTargets) {
-        getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+      if (!aoe) {
+        foreach (Tile tile in inRangeTiles) {
+          tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+        }
+        foreach (GameObject o in skillTargets) {
+          getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
+      } else {
+        foreach (GameObject o in SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets()) {
+          o.GetComponent<Renderer>().material.color = Color.blue;
+        }
+        AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
+        foreach (GameObject o in skill.getTargetsInAoe(src.gameObject.transform.position)) {
+          if (o.tag == "Cube") getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+          else getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+        }
       }
     }
   }
