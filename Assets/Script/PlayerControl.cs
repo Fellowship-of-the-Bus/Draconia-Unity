@@ -41,30 +41,11 @@ public class PlayerControl : MonoBehaviour {
       if (hoveredObject && (hoveredObject.tag == "PiecePlayer1" || hoveredObject.tag == "PiecePlayer2")) {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube" && gameManager.gameState == GameState.moving) {
-        gameManager.path.Clear();
-        gameManager.setTileColours();
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = gameManager.getTile(coord);
         if (t.distance <= gameManager.SelectedPiece.GetComponent<Character>().moveRange) {
-          gameManager.path.AddFirst(t);
-          while (t.dir != Direction.None) {
-            switch (t.dir) {
-              case Direction.Forward:
-                coord = coord - Vector3.forward;
-                break;
-              case Direction.Back:
-                coord = coord - Vector3.back;
-                break;
-              case Direction.Left:
-                coord = coord - Vector3.left;
-                break;
-              case Direction.Right:
-                coord = coord - Vector3.right;
-                break;
-            }
-            t = gameManager.getTile(coord);
-            gameManager.path.AddFirst(t);
-          }
+          gameManager.setPath(coord);
+          gameManager.setTileColours();
           foreach (Tile ti in gameManager.path) {
             ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
           }

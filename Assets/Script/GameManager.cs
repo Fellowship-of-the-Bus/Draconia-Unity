@@ -509,6 +509,34 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  public void setPath(Vector3 coord) {
+    clearPath();
+    Tile t = getTile(coord);
+    path.AddFirst(t);
+    while (t.dir != Direction.None) {
+      switch (t.dir) {
+        case Direction.Forward:
+          coord = coord - Vector3.forward;
+          break;
+        case Direction.Back:
+          coord = coord - Vector3.back;
+          break;
+        case Direction.Left:
+          coord = coord - Vector3.left;
+          break;
+        case Direction.Right:
+          coord = coord - Vector3.right;
+          break;
+      }
+      t = getTile(coord);
+      path.AddFirst(t);
+    }
+  }
+
+  public void clearPath() {
+    path.Clear();
+  }
+
   public GameObject piece;
 
   // Test function that instantiates a character
