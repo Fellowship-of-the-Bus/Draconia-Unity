@@ -22,12 +22,8 @@ public class RangedSkill: ActiveSkill {
       if (t.occupied()) {
         GameObject o = t.occupant;
         Vector3 target = new Vector3(o.transform.position.x, o.transform.position.y + 0.25f, o.transform.position.z);
-        Vector3 toTarget = target - source;
-
-        Ray ray = new Ray(source, toTarget.normalized);
         RaycastHit hitInfo;
-        Physics.Raycast(ray, out hitInfo);
-        if (hitInfo.collider.gameObject == o) {
+        if (gm.checkLine(source, target, out hitInfo)) {
            targets.Add(o);
         }
       }
