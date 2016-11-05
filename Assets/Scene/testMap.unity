@@ -2437,9 +2437,10 @@ GameObject:
   - 223: {fileID: 533879370}
   - 114: {fileID: 533879369}
   - 114: {fileID: 533879368}
+  - 225: {fileID: 533879372}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: MainUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2529,6 +2530,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &533879372
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 533879367}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &540239940
 Prefab:
   m_ObjectHideFlags: 0
@@ -3774,6 +3786,7 @@ MonoBehaviour:
   targetHealth: {fileID: 1561664990}
   targetMana: {fileID: 48050633}
   targetPanel: {fileID: 914126053}
+  mainUI: {fileID: 533879367}
   piece: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
 --- !u!114 &870542038
 MonoBehaviour:

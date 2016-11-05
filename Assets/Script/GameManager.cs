@@ -43,11 +43,19 @@ public class GameManager : MonoBehaviour {
   public GameObject targetHealth;
   public GameObject targetMana;
   public GameObject targetPanel;
+  public GameObject mainUI;
+
+  class lockUICount {
+    public int count;
+  }
+  private lockUICount UILock;
 
   void Start() {
     moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     tiles = new List<Tile>();
+    UILock = new lockUICount();
+    UILock.count = 0;
 
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
@@ -336,6 +344,7 @@ public class GameManager : MonoBehaviour {
     Debug.Log(win);
   }
   IEnumerator doHandleAI(int time) {
+    lockUI();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     Vector3 destination = selectedCharacter.moveAI.move();
     Tile t = getTile(destination);
@@ -348,17 +357,39 @@ public class GameManager : MonoBehaviour {
       yield return new WaitForSeconds(time);
     }
     selectedCharacter.attackAI.target();
+    unlockUI();
     endTurn();
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
   }
 
+  public void lockUI() {
+    lock (UILock) {
+      UILock.count++;
+      if (UILock.count == 1) {
+        mainUI.GetComponent<CanvasGroup>().interactable = false;
+        gameObject.GetComponent<PlayerControl>().enabled = false;
+      }
+    }
+  }
+
+  public void unlockUI() {
+    lock (UILock) {
+      UILock.count--;
+      if (UILock.count == 0) {
+        mainUI.GetComponent<CanvasGroup>().interactable = true;
+        gameObject.GetComponent<PlayerControl>().enabled = true;
+      }
+    }
+  }
+
+
   public bool checkLine(Vector3 source, Vector3 target, float offset = 0.25f) {
     RaycastHit info;
     return checkLine(source, target, out info, offset);
   }
-
+ 
   public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info, float offset = 0.25f) {
     Vector3 toTarget = target - source;
 
