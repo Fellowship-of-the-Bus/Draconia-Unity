@@ -27,6 +27,9 @@ public class Character : MonoBehaviour {
     set { previewDamage = value; }
   }
 
+  public BaseMoveAI moveAI = new BasicMoveAI();
+  public BaseAttackAI attackAI = new BasicAttackAI();
+
   void Start() {
     skills = new SkillTree(this);
     applyPassives();
@@ -43,6 +46,8 @@ public class Character : MonoBehaviour {
 
 
     curHealth = attr.maxHealth;
+    moveAI.owner = this;
+    attackAI.owner = this;
   }
 
   void Update() {

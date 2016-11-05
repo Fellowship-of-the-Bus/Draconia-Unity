@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 
 public abstract class BaseAttackAI {
-  Character owner;
-  public abstract Vector3 target(List<GameObject> targets);
+  public Character owner;
+  public abstract int getAttackRange();
+  public abstract void target(List<GameObject> targets);
 }

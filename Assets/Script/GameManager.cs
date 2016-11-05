@@ -181,6 +181,11 @@ public class GameManager : MonoBehaviour {
     Vector3 position = SelectedPiece.transform.position;
     djikstra(position);
 
+    if (SelectedPiece.tag == "PiecePlayer2") {
+      handleAI();
+      return;
+    }
+
     originalTile = getTile(position);
 
     changeState(GameState.moving);
@@ -270,7 +275,7 @@ public class GameManager : MonoBehaviour {
 
   public bool moving {get; private set;}
   // Move the SelectedPiece to the inputted coords
-  public void MovePiece(Vector3 coordToMove) {
+  public void MovePiece(Vector3 coordToMove, bool immediate = true, bool doChangeState = false) {
     // don't start moving twice
     if (moving) return;
 
@@ -287,13 +292,20 @@ public class GameManager : MonoBehaviour {
       c.curTile.occupant = c.gameObject;
 
       coordToMove.y = destination.transform.position.y + getHeight(destination);
-      path.RemoveFirst(); // discard current position
-      moving = true;
-      for (int i = 0; i < skillButtons.Count; i++) {
-        skillButtons[i].enabled = false;
+      if (immediate) {
+        path.RemoveFirst(); // discard current position
+        moving = true;
+        for (int i = 0; i < skillButtons.Count; i++) {
+          skillButtons[i].enabled = false;
+        }
+        line.GetComponent<Renderer>().material.color = Color.clear;
+        StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
+      } else {
+        SelectedPiece.transform.position = coordToMove;
+        if (doChangeState) {
+          changeState(GameState.attacking);
+        }
       }
-      line.GetComponent<Renderer>().material.color = Color.clear;
-      StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
     }
 
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
@@ -303,18 +315,42 @@ public class GameManager : MonoBehaviour {
 
   public void cancelAction() {
     if (gameState == GameState.attacking) {
-      getTile(SelectedPiece.transform.position).occupant = null;
       Vector3 coordToMove = originalTile.gameObject.transform.position;
-      coordToMove.y = coordToMove.y + getHeight(getTile(coordToMove));
-      SelectedPiece.transform.position = coordToMove;
-      SelectedPiece.GetComponent<Character>().curTile = getTile(SelectedPiece.transform.position);
-      getTile(SelectedPiece.transform.position).occupant = SelectedPiece;
+      MovePiece(coordToMove, false);
       changeState(GameState.moving);
     }
   }
 
   public void endGame(bool win) {
     Debug.Log(win);
+  }
+  IEnumerator doHandleAI(int time) {
+    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    Vector3 destination = selectedCharacter.moveAI.move();
+    Tile t = getTile(destination);
+    while(t != path.Last.Value) {
+      path.RemoveLast();
+    }
+    t.gameObject.GetComponent<Renderer>().material.color = Color.black;
+    MovePiece(destination, true);
+    while(moving) {
+      yield return new WaitForSeconds(time);
+    }
+    int range = selectedCharacter.attackAI.getAttackRange();
+    List<Tile> tiles = getTilesWithinRange(selectedCharacter.curTile, range);
+    //todo aoe
+    List<GameObject> targets = new List<GameObject>();
+    foreach (Tile tile in tiles) {
+      if (tile.occupied() && tile.tag != SelectedPiece.tag) {
+        targets.Add(tile.occupant);
+      }
+    }
+    selectedCharacter.attackAI.target(targets);
+
+    endTurn();
+  }
+  public void handleAI() {
+    StartCoroutine(doHandleAI(1));
   }
 
   public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info) {
@@ -471,7 +507,7 @@ public class GameManager : MonoBehaviour {
       return Int32.MaxValue/2;
     }
     if (from.occupied() && !(from.occupant.tag.Equals(SelectedPiece.tag))) {
-      return Int32.MaxValue/2;
+      return Int32.MaxValue/4;
     }
     return to.movePointSpent;
   }

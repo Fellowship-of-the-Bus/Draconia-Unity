@@ -5,6 +5,6 @@ using System;
 using System.Collections;
 
 public abstract class BaseMoveAI {
-  Character owner;
+  public Character owner;
   public abstract Vector3 move();
 }
