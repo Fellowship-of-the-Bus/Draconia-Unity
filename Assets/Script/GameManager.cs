@@ -108,9 +108,7 @@ public class GameManager : MonoBehaviour {
 
     if (SelectedPiece) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      Vector3 scale = selectedHealth.transform.localScale;
-      scale.x = (float)selectedCharacter.curHealth/selectedCharacter.attr.maxHealth;
-      selectedHealth.transform.localScale = scale;
+      selectedCharacter.updateLifeBar(selectedHealth);
     }
 
     if (previewTarget == null) {

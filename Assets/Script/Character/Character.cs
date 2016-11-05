@@ -45,7 +45,13 @@ public class Character : MonoBehaviour {
   }
 
   void Update() {
-    //Debug.Log(attr.strength.ToString());
+    // rotate overhead UI (health bar) to look at camera
+    Transform ui = gameObject.transform.Find("UI");
+    ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
+
+    // scale health on health bar to match current HP values
+    GameObject lifebar = ui.Find("Health Bar/Health").gameObject;
+    updateLifeBar(lifebar);
   }
 
   public void applyPassives() {
@@ -114,5 +120,11 @@ public class Character : MonoBehaviour {
 
   public void setDamageIndicator(int damage) {
 
+  }
+
+  public void updateLifeBar(GameObject lifebar) {
+    Vector3 scale = lifebar.transform.localScale;
+    scale.x = (float)curHealth/attr.maxHealth;
+    lifebar.transform.localScale = scale;
   }
 }
