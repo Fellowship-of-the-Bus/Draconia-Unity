@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
+  public GameObject turnButton;
 
   public LinkedList<Tile> path = null;
 
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
 
-    actionQueue = new ActionQueue();
+    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
     GameObject[] characterObjects = GameObject.FindGameObjectsWithTag("PiecePlayer1");
     GameObject[] enemies = GameObject.FindGameObjectsWithTag("PiecePlayer2");
 

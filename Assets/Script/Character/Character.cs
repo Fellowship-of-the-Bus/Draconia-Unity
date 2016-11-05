@@ -20,6 +20,7 @@ public class Character : MonoBehaviour {
   public float nextMoveTime = 0f;
   public int moveRange = 4;
   public int speed = 5;
+  public string characterName = "";
 
   void Start() {
     skills = new SkillTree(this);
