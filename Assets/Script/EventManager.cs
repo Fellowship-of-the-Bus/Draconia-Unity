@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System;
 
 public enum EventHook {
-  onAttack,
+  preAttack,
+  postAttack,
   preMove,
   postMove
 }

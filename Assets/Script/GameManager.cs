@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
+    manager = this;
     moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     tiles = new List<Tile>();
@@ -637,5 +638,10 @@ public class GameManager : MonoBehaviour {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
 
     actionQueue.add(newCharObj);
+  }
+
+  public static GameManager manager { get; private set; }
+  public static GameManager get() {
+    return manager;
   }
 }

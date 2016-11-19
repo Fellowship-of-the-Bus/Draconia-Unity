@@ -5,6 +5,7 @@ public abstract class Effect : EventListener {
   public Character owner = null;
   public int level = 0;
   public void onApply(Character c) {
+    Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this); 
     owner = c;
   }
   //when this is removed from owner
