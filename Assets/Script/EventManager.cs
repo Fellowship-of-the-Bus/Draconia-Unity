@@ -16,7 +16,7 @@ public class EventManager {
     }
   }
 
-  public void addListener(EventListener listener, EventHook hook) {  
+  public void addListener(EventListener listener, EventHook hook) {
     listeners[hook].Add(listener);
   }
 
@@ -26,9 +26,9 @@ public class EventManager {
     }
   }
 
-  public void onEvent(EventHook hook) {
+  public void onEvent(MonoBehaviour sender, EventHook hook) {
     foreach (EventListener listener in listeners[hook]) {
-      listener.onEvent(hook);
+      listener.onEvent(sender, hook);
     }
   }
 }

@@ -14,7 +14,7 @@ public class StrengthBonusEffect : Effect {
 
   }
 
-  public override void onEvent(EventHook hook) {
+  public override void onEvent(MonoBehaviour sender, EventHook hook) {
 
   }
 }
