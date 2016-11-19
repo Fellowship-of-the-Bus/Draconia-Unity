@@ -6,12 +6,14 @@ public enum EventHook {
   preAttack,
   postAttack,
   preMove,
-  postMove
+  postMove,
+  dodge,
 }
 
 public class EventManager {
   Dictionary<EventHook, HashSet<EventListener>> listeners = new Dictionary<EventHook, HashSet<EventListener>>();
   public EventManager() {
+    get = this;
     foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
       listeners.Add(i, new HashSet<EventListener>());
     }
@@ -32,4 +34,6 @@ public class EventManager {
       listener.onEvent(e);
     }
   }
+
+  public static EventManager get { get; private set; }
 }

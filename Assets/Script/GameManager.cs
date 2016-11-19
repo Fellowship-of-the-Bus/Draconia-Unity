@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
-    manager = this;
+    get = this;
     moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     tiles = new List<Tile>();
@@ -640,8 +640,5 @@ public class GameManager : MonoBehaviour {
     actionQueue.add(newCharObj);
   }
 
-  public static GameManager manager { get; private set; }
-  public static GameManager get() {
-    return manager;
-  }
+  public static GameManager get { get; private set; }
 }
