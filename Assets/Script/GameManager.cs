@@ -289,9 +289,7 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
     }
-    Debug.Log("After skillButton loop");
     changeState(GameState.attacking);
-    Debug.Log("State changed to attacking, moving = " + moving);
   }
 
   volatile public bool moving = false;// {get; private set;}
