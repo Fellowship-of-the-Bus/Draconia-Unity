@@ -289,14 +289,16 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
     }
+    Debug.Log("After skillButton loop");
     changeState(GameState.attacking);
+    Debug.Log("State changed to attacking, moving = " + moving);
   }
 
-  public bool moving {get; private set;}
+  volatile public bool moving = false;// {get; private set;}
   // Move the SelectedPiece to the inputted coords
-  public void MovePiece(Vector3 coordToMove, bool immediate = true, bool doChangeState = false) {
+  public Coroutine MovePiece(Vector3 coordToMove, bool immediate = true, bool doChangeState = false) {
     // don't start moving twice
-    if (moving) return;
+    if (moving) return null;
 
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
@@ -318,7 +320,7 @@ public class GameManager : MonoBehaviour {
           skillButtons[i].enabled = false;
         }
         line.GetComponent<Renderer>().material.color = Color.clear;
-        StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
+        return StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
       } else {
         SelectedPiece.transform.position = coordToMove;
         if (doChangeState) {
@@ -327,6 +329,7 @@ public class GameManager : MonoBehaviour {
       }
     }
 
+    return null;
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just
     // go at the end of the coroutine.
@@ -352,16 +355,14 @@ public class GameManager : MonoBehaviour {
       path.RemoveLast();
     }
     t.gameObject.GetComponent<Renderer>().material.color = Color.black;
-    MovePiece(destination, true);
-    while(moving) {
-      yield return new WaitForSeconds(time);
-    }
+    yield return MovePiece(destination, true);
     selectedCharacter.attackAI.target();
     unlockUI();
     endTurn();
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
+
   }
 
   public void lockUI() {
@@ -389,7 +390,7 @@ public class GameManager : MonoBehaviour {
     RaycastHit info;
     return checkLine(source, target, out info, offset);
   }
- 
+
   public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info, float offset = 0.25f) {
     Vector3 toTarget = target - source;
 
