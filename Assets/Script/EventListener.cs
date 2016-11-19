@@ -10,5 +10,5 @@ public abstract class EventListener {
     GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().eventManager.removeListener(this);
   }
 
-  public abstract void onEvent(MonoBehaviour sender, EventHook hook);
+  public abstract void onEvent(Event e);
 }

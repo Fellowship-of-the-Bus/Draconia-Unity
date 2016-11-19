@@ -10,11 +10,7 @@ public class StrengthBonusEffect : Effect {
   public override void onDeactivate() {
     owner.attr.strength -= level*5;
   }
-  public override void activate() {
-
-  }
-
-  public override void onEvent(MonoBehaviour sender, EventHook hook) {
+  public override void onEvent(Event e) {
 
   }
 }

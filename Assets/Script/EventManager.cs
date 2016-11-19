@@ -26,9 +26,9 @@ public class EventManager {
     }
   }
 
-  public void onEvent(MonoBehaviour sender, EventHook hook) {
-    foreach (EventListener listener in listeners[hook]) {
-      listener.onEvent(sender, hook);
+  public void onEvent(Event e) {
+    foreach (EventListener listener in listeners[e.hook]) {
+      listener.onEvent(e);
     }
   }
 }
