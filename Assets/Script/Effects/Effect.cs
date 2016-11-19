@@ -10,7 +10,7 @@ public abstract class Effect : EventListener {
   public abstract void onRemove();
   public abstract void onActivate();
   public abstract void onDeactivate();
-  public override void onEvent(EventHook hook) {
+  public override void onEvent(MonoBehaviour sender, EventHook hook) {
 
   }
   public abstract void activate();
