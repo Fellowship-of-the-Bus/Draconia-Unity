@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class PunchSkill: ActiveSkill {
-  public new int id = 1001;
-
   public PunchSkill() {
     range = 1;
     useLos = false;

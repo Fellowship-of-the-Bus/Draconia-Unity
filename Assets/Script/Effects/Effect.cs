@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public abstract class Effect : EventListener {
-  public int id = 0;
   public Character owner = null;
   public int level = 0;
   public void onApply(Character c) {

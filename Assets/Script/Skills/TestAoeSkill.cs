@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class TestAoeSkill: ActiveSkill, AoeSkill {
-  public new int id = 1003;
-
   public int aoe {get; set;}
 
   public TestAoeSkill() {

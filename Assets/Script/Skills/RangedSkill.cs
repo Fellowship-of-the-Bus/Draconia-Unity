@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class RangedSkill: ActiveSkill {
-  public new int id = 1002;
-
   public RangedSkill() {
     range = 3;
     useLos = false;

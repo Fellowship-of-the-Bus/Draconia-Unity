@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 public class Character : MonoBehaviour {
-  Dictionary<int, List<Effect>> effects = new Dictionary<int, List<Effect>>();
+  TypeMap<List<Effect>> effects = new TypeMap<List<Effect>>();
   //inventory
   //skill tree
   public SkillTree skills = null;
@@ -82,11 +82,11 @@ public class Character : MonoBehaviour {
   }
 
   public void applyEffect(Effect effect) {
-    if (!effects.ContainsKey(effect.id)) {
-      effects.Add(effect.id, new List<Effect>());
+    if (!effects.ContainsKey(effect)) {
+      effects.Add(effect, new List<Effect>());
     }
     effect.onApply(this);
-    List<Effect> l = effects[effect.id];
+    List<Effect> l = effects.Get(effect);
 
     //if list is empty
     if (l.Count == 0) {
