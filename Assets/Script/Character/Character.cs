@@ -15,7 +15,7 @@ public class Character : MonoBehaviour {
   public Tile curTile = null;
 
   public int curHealth;
-  // TODO: Maintain current action bar amount
+  public float maxAction = 1000f;
   public float curAction = 0;
   public float nextMoveTime = 0f;
   public int moveRange = 4;
@@ -77,8 +77,7 @@ public class Character : MonoBehaviour {
   }
 
   public float calcMoveTime(float time) {
-    // TODO: Replace 1000 with max action constant
-    return nextMoveTime = time + ((1000f - curAction) / attr.speed);
+    return nextMoveTime = time + ((maxAction - curAction) / attr.speed);
   }
 
   public void applyEffect(Effect effect) {
@@ -88,6 +87,8 @@ public class Character : MonoBehaviour {
     effect.onApply(this);
     List<Effect> l = effects.Get(effect);
 
+    Debug.Log(effect);
+    Debug.Log(l.Count);
     //if list is empty
     if (l.Count == 0) {
       effect.onActivate();
@@ -138,5 +139,9 @@ public class Character : MonoBehaviour {
     Vector3 scale = lifebar.transform.localScale;
     scale.x = (float)curHealth/attr.maxHealth;
     lifebar.transform.localScale = scale;
+  }
+
+  public void updateActionBar(float timePassed) {
+    curAction = Math.Min(curAction + attr.speed*timePassed, maxAction);
   }
 }

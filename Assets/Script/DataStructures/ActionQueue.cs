@@ -25,6 +25,7 @@ public class ActionQueue {
   }
 
   public ActionQueue(GameObject bar, GameObject buttonPrefab, GameManager game) {
+    get = this;
     queue = new LinkedList<actionTime>();
     turnButton = buttonPrefab;
     actionBar = bar;
@@ -35,8 +36,16 @@ public class ActionQueue {
 
   public GameObject getNext() {
     GameObject next = queue.First.Value.piece;
-    
-    curTime = next.GetComponent<Character>().nextMoveTime;
+    float newTime = next.GetComponent<Character>().nextMoveTime;
+    float timePassed = newTime - curTime;
+
+    //update action bars for all characters
+    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+      n.Value.piece.GetComponent<Character>().updateActionBar(timePassed);
+    }
+
+    next.GetComponent<Character>().curAction = 0f;
+    curTime = newTime;
     return next;
   }
 
@@ -148,4 +157,5 @@ public class ActionQueue {
     }
     gameManager.unlockUI();
   }
+  public static ActionQueue get { get; private set; }
 }

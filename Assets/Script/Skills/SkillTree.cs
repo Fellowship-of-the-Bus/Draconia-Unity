@@ -14,6 +14,11 @@ public class SkillTree {
     test.level = 1;
     test.self = self;
     passives.Add(test);
+
+    test = new BerserkSkill();
+    test.level = 1;
+    test.self = self;
+    passives.Add(test);
     return passives;
   }
 }
