@@ -5,6 +5,7 @@ public class RangedSkill: ActiveSkill {
   public RangedSkill() {
     range = 3;
     useLos = false;
+    name = "Ranged";
   }
   public override void activate(List<Character> targets) {
     foreach (Character c in targets) {

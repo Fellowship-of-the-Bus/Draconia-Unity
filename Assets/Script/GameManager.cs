@@ -119,6 +119,11 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       selectedCharacter.updateLifeBar(selectedHealth);
+      for (int i = 0; i < skillButtons.Count; i++) {
+        Skill s = selectedCharacter.equippedSkills[i];
+        Debug.AssertFormat(s.name != "", "Skill Name is empty");
+        skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+      }
     }
 
     if (previewTarget == null) {

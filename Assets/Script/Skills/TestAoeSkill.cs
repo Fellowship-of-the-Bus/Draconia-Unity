@@ -8,6 +8,7 @@ public class TestAoeSkill: ActiveSkill, AoeSkill {
     range = 3;
     aoe = 2;
     useLos = false;
+    name = "AOE";
   }
   public override void activate(List<Character> targets) {
     foreach (Character c in targets) {

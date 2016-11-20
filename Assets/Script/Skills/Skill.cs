@@ -9,4 +9,5 @@ public abstract class Skill {
 
   public int range {get; set;}
   public bool useLos {get; set;}
+  public string name {get; set;}
 }

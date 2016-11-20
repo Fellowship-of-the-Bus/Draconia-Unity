@@ -5,6 +5,7 @@ public class PunchSkill: ActiveSkill {
   public PunchSkill() {
     range = 1;
     useLos = false;
+    name = "Punch";
   }
   public override void activate(List<Character> targets) {
     foreach (Character c in targets) {
