@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class EventListener {
 
   public void attachListener(EventHook hook) {
-    EventManager.get.eventManager.addListener(this, hook);
+    EventManager.get.addListener(this, hook);
   }
 
   public void detachListener() {
