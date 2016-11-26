@@ -22,8 +22,7 @@ public class BerserkEffect : Effect {
       double percentage = Math.Abs(preAttackHP - postAttackHP)/(double)owner.attr.maxHealth;
       percentage = percentage * (1 + (level -1));
       owner.curAction = (float)Math.Min(owner.curAction + owner.maxAction*percentage, owner.maxAction);
-      ActionQueue.get.remove(owner.gameObject);
-      ActionQueue.get.add(owner.gameObject);
+      ActionQueue.get.updateTime(owner.gameObject);
     }
   }
 }

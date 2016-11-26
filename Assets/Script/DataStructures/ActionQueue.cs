@@ -57,7 +57,19 @@ public class ActionQueue {
     enqueue(SelectedPiece);
   }
 
+  public bool hasObject (GameObject piece) {
+    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+      if (n.Value.piece == piece) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void updateTime(GameObject piece) {
+    if (!hasObject(piece)) {
+      return;
+    }
     Character character = piece.GetComponent<Character>();
     character.calcMoveTime(curTime);
     remove(piece);

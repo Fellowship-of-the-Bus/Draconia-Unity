@@ -121,7 +121,7 @@ public class Character : MonoBehaviour {
   public void takeDamage(int damage) {
     curHealth -= damage;
     if (curHealth <= 0) {
-      GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().actionQueue.remove(gameObject);
+      ActionQueue.get.remove(gameObject);
       gameObject.SetActive(false);
       curTile.occupant = null;
     }
