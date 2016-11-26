@@ -87,8 +87,6 @@ public class Character : MonoBehaviour {
     effect.onApply(this);
     List<Effect> l = effects.Get(effect);
 
-    Debug.Log(effect);
-    Debug.Log(l.Count);
     //if list is empty
     if (l.Count == 0) {
       effect.onActivate();

@@ -2,13 +2,11 @@ using UnityEngine;
 using System;
 
 public class BerserkEffect : Effect {
-  public new int id = 4;
   int preAttackHP;
   public override void onRemove() {
 
   }
   public override void onActivate() {
-    Debug.Log("berserk active");
     attachListener(EventHook.preAttack);
     attachListener(EventHook.postAttack);
   }
