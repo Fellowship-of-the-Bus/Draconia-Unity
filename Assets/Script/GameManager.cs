@@ -194,7 +194,7 @@ public class GameManager : MonoBehaviour {
 
 
     Vector3 position = SelectedPiece.transform.position;
-    djikstra(position);
+    djikstra(position, SelectedPiece.GetComponent<Character>());
 
     if (SelectedPiece.tag == "PiecePlayer2") {
       handleAI();
@@ -494,7 +494,7 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public void djikstra(Vector3 unitLocation) {
+  public void djikstra(Vector3 unitLocation, Character charToMove) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;
       tile.dir = Direction.None;
@@ -519,7 +519,7 @@ public class GameManager : MonoBehaviour {
       Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
       Tile neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Forward;
@@ -530,7 +530,7 @@ public class GameManager : MonoBehaviour {
       neighbour = minTile.gameObject.transform.position + Vector3.back;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Back;
@@ -541,7 +541,7 @@ public class GameManager : MonoBehaviour {
       neighbour = minTile.gameObject.transform.position + Vector3.right;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Right;
@@ -552,7 +552,7 @@ public class GameManager : MonoBehaviour {
       neighbour = minTile.gameObject.transform.position + Vector3.left;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Left;
@@ -563,9 +563,9 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public int distance(Tile from, Tile to) {
+  public int distance(Tile from, Tile to, float heightTolerance) {
     //check heights
-    if (Math.Abs(getHeight(from) - getHeight(to)) > 1.0f) {
+    if (Math.Abs(getHeight(from) - getHeight(to)) > heightTolerance) {
       return Int32.MaxValue/2;
     }
     if (from.occupied() && !(from.occupant.tag.Equals(SelectedPiece.tag))) {

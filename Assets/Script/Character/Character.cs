@@ -30,6 +30,8 @@ public class Character : MonoBehaviour {
   public BaseMoveAI moveAI = new BasicMoveAI();
   public BaseAttackAI attackAI = new BasicAttackAI();
 
+  public float heightTolerance = 1.0f;
+
   void Start() {
     skills = new SkillTree(this);
     applyPassives();
