@@ -8,18 +8,15 @@ public class TypeMap<Val> {
   }
 
   public void Add<Key>(Key k, Val v) {
-    Add<Key>(v);
-  }
-
-  public Val Get<T>() {
-    if (! ContainsKey(typeof(T))) {
-      return default(Val);
-    }
-    return dic[typeof(T)];
+    dic[k.GetType()] = v;
   }
 
   public Val Get<Key>(Key k) {
-    return Get<Key>();
+    if (! ContainsKey(k.GetType())) {
+      return default(Val);
+    }
+    return dic[k.GetType()];
+    //return Get<k.GetType()>();
   }
 
   public bool ContainsKey(Type t) {
@@ -27,7 +24,7 @@ public class TypeMap<Val> {
   }
 
   public bool ContainsKey<T>(T t) {
-    return ContainsKey(typeof(T));
+    return ContainsKey(t.GetType());
   }
 }
 
