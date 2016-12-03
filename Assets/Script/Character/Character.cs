@@ -62,7 +62,7 @@ public class Character : EventManager {
     //kill.level = 1;
     //kill.self = this;
     //equippedSkills.Add(kill);
-    ActiveSkill punch = new Knockback();
+    ActiveSkill punch = new WarCrySkill();
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);
