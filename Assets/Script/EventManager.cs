@@ -5,6 +5,10 @@ using System;
 public enum EventHook {
   preAttack,
   postAttack,
+  preDamage,
+  postDamage,
+  preDeath,
+  postDeath,
   preMove,
   postMove,
   dodge,

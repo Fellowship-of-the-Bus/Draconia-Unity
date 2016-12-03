@@ -5,7 +5,7 @@ public class DodgeEffect : Effect {
 
   }
   public override void onActivate() {
-    attachListener(owner, EventHook.preAttack);
+    attachListener(owner, EventHook.preDamage);
   }
   public override void onDeactivate() {
     detachListener(owner);
@@ -13,8 +13,11 @@ public class DodgeEffect : Effect {
 
   public override void onEvent(Event e) {
     float chance = Random.value;
-    if (chance < .3) {
-      GameManager.get.eventManager.onEvent(new Event(owner, EventHook.dodge));
+    if (chance < 0.1*level) {
+      e.finishAttack = false;
+//      Debug.Log("dodged: " + e.finishAttack);
+    } else {
+//      Debug.Log("did not dodge: " + e.finishAttack);
     }
   }
 }

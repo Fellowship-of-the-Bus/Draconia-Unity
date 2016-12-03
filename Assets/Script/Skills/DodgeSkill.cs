@@ -1,11 +1,12 @@
+﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class StrengthBonus : PassiveSkill {
+public class DodgeSkill : PassiveSkill {
   public override void activate(Character target) {
-    StrengthBonusEffect bonus = new StrengthBonusEffect();
-    bonus.level = level;
-    target.applyEffect(bonus);
+    DodgeEffect effect = new DodgeEffect();
+    effect.level = level;
+    target.applyEffect(effect);
   }
 
   public override List<GameObject> getTargets() {
@@ -13,5 +14,4 @@ public class StrengthBonus : PassiveSkill {
     targets.Add(self.gameObject);
     return targets;
   }
-
 }

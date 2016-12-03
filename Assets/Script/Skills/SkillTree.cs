@@ -24,6 +24,12 @@ public class SkillTree {
     test.level = 1;
     test.self = self;
     passives.Add(test);
+
+//    test = new DodgeSkill();
+//    test.level = 7;
+//    test.self = self;
+//    passives.Add(test);
+
     return passives;
   }
 }

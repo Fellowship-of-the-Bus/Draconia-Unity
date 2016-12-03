@@ -62,6 +62,8 @@ public class Character : EventManager {
         skill = new CrippleSkill();
       } else if (skillName == "KillingBlow") {
         skill = new KillingBlowSkill();
+      } else if (skillName == "WarCry") {
+        skill = new WarCrySkill();
       } else {
         Debug.Log("Skill not recognized");
         skill = new PunchSkill();
@@ -90,11 +92,9 @@ public class Character : EventManager {
 
   public void applyPassives() {
     foreach (PassiveSkill passive in skills.getPassives()) {
-      List<Character> targets = new List<Character>();
       foreach (GameObject o in passive.getTargets()) {
-        targets.Add(o.GetComponent<Character>());
+        passive.activate(o.GetComponent<Character>());
       }
-      passive.activate(targets);
     }
   }
 
@@ -134,8 +134,16 @@ public class Character : EventManager {
     l.Add(effect);
   }
 
-  public void attackWithSkill(int index, List<Character> c) {
+  public void attackWithSkill(int index, List<Character> targets) {
     onEvent(new Event(this, EventHook.preAttack));
+    foreach (Character c in targets) {
+      Event e = new Event(this, EventHook.preDamage);
+      c.onEvent(e);
+      if (e.finishAttack) {
+        equippedSkills[index].activate(c);
+        onEvent(new Event(this, EventHook.postAttack));
+      }
+    }
   }
 
   public void takeDamage(int damage) {
@@ -145,6 +153,7 @@ public class Character : EventManager {
       gameObject.SetActive(false);
       curTile.occupant = null;
     }
+    onEvent(new Event(this, EventHook.postDamage));
   }
 
   public bool isAlive() {

@@ -111,7 +111,6 @@ public class GameManager : MonoBehaviour {
     losingConditions.Add(new BrodricDies());
 
     startTurn();
-    //set occupants
   }
 
   int blinkFrameNumber = 0;
@@ -149,12 +148,10 @@ public class GameManager : MonoBehaviour {
         scale.x = (float)targetCharacter.curHealth/targetCharacter.attr.maxHealth;
         targetHealth.transform.localScale = scale;
       }
-      blinkFrameNumber = (blinkFrameNumber + 1 )% 30;
+      blinkFrameNumber = (blinkFrameNumber+1)%30;
       if (blinkFrameNumber == 0) {
         displayLowerHealth = !displayLowerHealth;
       }
-
-      //other characters bars appear and blink
     }
   }
 
@@ -234,11 +231,9 @@ public class GameManager : MonoBehaviour {
     //change colours of the tiles for attacking
     //check for range skill if not put 1 else put the range
     changeState(GameState.attacking);
-
   }
 
   public void selectTarget(GameObject target) {
-
     if (SelectedSkill != -1 && skillTargets.Contains(target)) {
       previewTarget = target;
     } else {
@@ -251,7 +246,7 @@ public class GameManager : MonoBehaviour {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       cTarget.PreviewDamage = selectedCharacter.equippedSkills[SelectedSkill].calculateDamage(selectedCharacter, cTarget);
     }
-    //todo: aoe stuff
+    //todo: aoe health bar hover?
   }
 
   public void attackTarget(GameObject target) {
@@ -271,13 +266,10 @@ public class GameManager : MonoBehaviour {
       }
 
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      eventManager.onEvent(new Event(selectedCharacter, EventHook.preAttack));
-      selectedCharacter.equippedSkills[SelectedSkill].activate(targets);
-      eventManager.onEvent(new Event(selectedCharacter, EventHook.postAttack));
+      selectedCharacter.attackWithSkill(SelectedSkill, targets);
 
       StartCoroutine(endTurn());
     }
-
   }
 
   public void endTurnWrapper() {
@@ -295,7 +287,7 @@ public class GameManager : MonoBehaviour {
     startTurn();
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, bool doChangeState = true, Semaphore s = null) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, bool doChangeState = true) {
     const float FPS = 60f;
     const float speed = 4f;
 
@@ -316,10 +308,10 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
     }
     if (doChangeState) changeState(GameState.attacking);
-    if (s != null) s.Release();
   }
 
-  volatile public bool moving = false;// {get; private set;}
+  // temporarily public
+  public bool moving {get; /*private*/ set;}
   // Move the SelectedPiece to the inputted coords
 
 
@@ -375,6 +367,7 @@ public class GameManager : MonoBehaviour {
   public void endGame(bool win) {
     Debug.Log(win);
   }
+
   IEnumerator doHandleAI(int time) {
     lockUI();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
@@ -386,15 +379,12 @@ public class GameManager : MonoBehaviour {
     t.gameObject.GetComponent<Renderer>().material.color = Color.black;
     yield return MovePiece(destination, true);
 
-    eventManager.onEvent(new Event(selectedCharacter, EventHook.preAttack));
     selectedCharacter.attackAI.target();
-    eventManager.onEvent(new Event(selectedCharacter, EventHook.postAttack));
     unlockUI();
     StartCoroutine(endTurn());
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
-
   }
 
   public void lockUI() {
@@ -461,21 +451,18 @@ public class GameManager : MonoBehaviour {
     if (Input.GetMouseButtonDown(0)) {
       return getHovered(PlayerCam);
     }
-
     return null;
   }
 
   // Get the object being hovered over
   public GameObject getHovered(Camera PlayerCam) {
-    Ray ray;
-    RaycastHit hitInfo;
-
-    ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
+    Ray ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
     // Raycast and verify that it collided
+
+    RaycastHit hitInfo;
     if (Physics.Raycast(ray, out hitInfo)) {
       return hitInfo.collider.gameObject;
     }
-
     return null;
   }
 
@@ -667,11 +654,9 @@ public class GameManager : MonoBehaviour {
   }
 
   public GameObject piece;
-
   // Test function that instantiates a character
   public void createPiece() {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
-
     actionQueue.add(newCharObj);
   }
 
