@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour {
   private Camera PlayerCam;
@@ -23,7 +24,7 @@ public class PlayerControl : MonoBehaviour {
     GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
     // Select a piece
-    if (clickedObject) {
+    if (!EventSystem.current.IsPointerOverGameObject() && clickedObject) {
       Vector3 selectedCoord;
 
       if (clickedObject.tag == "Cube") {
