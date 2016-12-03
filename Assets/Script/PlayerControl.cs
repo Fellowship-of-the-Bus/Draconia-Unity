@@ -30,7 +30,7 @@ public class PlayerControl : MonoBehaviour {
         if (gameManager.gameState == GameState.moving) {
           selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
           gameManager.MovePiece(selectedCoord);
-          } else if (gameManager.gameState == GameState.attacking) {
+          } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
             gameManager.attackTarget(clickedObject);
           }
       } else if ((clickedObject.tag == "PiecePlayer1" || clickedObject.tag == "PiecePlayer2") && gameManager.gameState == GameState.attacking) {

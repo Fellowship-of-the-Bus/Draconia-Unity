@@ -47,7 +47,16 @@ public class Character : MonoBehaviour {
     aoe.self = this;
     equippedSkills.Add(aoe);
 
-    ActiveSkill punch = new PunchSkill();
+    //ActiveSkill punch = new PunchSkill();
+    //punch.level = 1;
+    //punch.self = this;
+    //equippedSkills.Add(punch);
+
+    //ActiveSkill kill = new KillingBlowSkill();
+    //kill.level = 1;
+    //kill.self = this;
+    //equippedSkills.Add(kill);
+    ActiveSkill punch = new Knockback();
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 using System.Collections;
+using System.Threading;
 
 public enum GameState {
   moving,
@@ -45,12 +46,19 @@ public class GameManager : MonoBehaviour {
   public GameObject targetPanel;
   public GameObject mainUI;
 
+  private LinkedList<Coroutine> waitEndTurn;
+
+  public void waitToEndTurn(Coroutine c) {
+    waitEndTurn.AddFirst(c);
+  }
+
   class lockUICount {
     public int count;
   }
   private lockUICount UILock;
 
   void Start() {
+    waitEndTurn = new LinkedList<Coroutine>();
     get = this;
     moving = false;
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
@@ -267,19 +275,27 @@ public class GameManager : MonoBehaviour {
       selectedCharacter.equippedSkills[SelectedSkill].activate(targets);
       eventManager.onEvent(new Event(selectedCharacter, EventHook.postAttack));
 
-      endTurn();
+      StartCoroutine(endTurn());
     }
 
   }
 
-  public void endTurn() {
+  public void endTurnWrapper() {
+    StartCoroutine(endTurn());
+  }
+
+  public IEnumerator endTurn() {
+    foreach(Coroutine c in waitEndTurn) {
+      yield return c;
+    }
+    waitEndTurn.Clear();
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     actionQueue.endTurn();
     clearColour();
     startTurn();
   }
 
-  IEnumerator IterateMove(LinkedList<Tile> path) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, bool doChangeState = true, Semaphore s = null) {
     const float FPS = 60f;
     const float speed = 4f;
 
@@ -289,17 +305,18 @@ public class GameManager : MonoBehaviour {
       pos.y = destination.transform.position.y + getHeight(destination);
 
       // move piece
-      Vector3 d = speed*(pos-SelectedPiece.transform.position)/FPS;
+      Vector3 d = speed*(pos-piece.transform.position)/FPS;
       for (int i = 0; i < FPS/speed; i++) {
-        SelectedPiece.transform.Translate(d);
+        piece.transform.Translate(d);
         yield return new WaitForSeconds(1/FPS);
       }
     }
     moving = false;
     for (int i = 0; i < skillButtons.Count; i++) {
-      skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
+      skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
     }
-    changeState(GameState.attacking);
+    if (doChangeState) changeState(GameState.attacking);
+    if (s != null) s.Release();
   }
 
   volatile public bool moving = false;// {get; private set;}
@@ -328,7 +345,7 @@ public class GameManager : MonoBehaviour {
           skillButtons[i].enabled = false;
         }
         line.GetComponent<Renderer>().material.color = Color.clear;
-        return StartCoroutine(IterateMove(new LinkedList<Tile>(path)));
+        return StartCoroutine(IterateMove(new LinkedList<Tile>(path), SelectedPiece));
       } else {
         SelectedPiece.transform.position = coordToMove;
         if (doChangeState) {
@@ -369,7 +386,7 @@ public class GameManager : MonoBehaviour {
     selectedCharacter.attackAI.target();
     eventManager.onEvent(new Event(selectedCharacter, EventHook.postAttack));
     unlockUI();
-    endTurn();
+    StartCoroutine(endTurn());
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
@@ -409,6 +426,7 @@ public class GameManager : MonoBehaviour {
     RaycastHit hitInfo;
     Physics.Raycast(ray, out hitInfo);
     info = hitInfo;
+    if (hitInfo.collider == null) return false;
     Vector3 hit = new Vector3(hitInfo.collider.gameObject.transform.position.x, hitInfo.collider.gameObject.transform.position.y + offset, hitInfo.collider.gameObject.transform.position.z);
     return (hit == target);
   }
