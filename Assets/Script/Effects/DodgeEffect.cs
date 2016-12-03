@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
 public class DodgeEffect : Effect {
-  public override void onRemove() {
-
-  }
+  public override void onRemove() {}
   public override void onActivate() {
     attachListener(owner, EventHook.preDamage);
   }

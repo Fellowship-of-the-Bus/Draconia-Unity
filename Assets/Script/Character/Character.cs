@@ -137,13 +137,18 @@ public class Character : EventManager {
     l.Add(effect);
   }
 
-  public void attackWithSkill(int index, List<Character> targets) {
+  public bool inRange(Character target, int range) {
+    return GameManager.get.getTilesWithinRange(curTile, range).Contains(target.curTile);
+  }
+
+  public void attackWithSkill(Skill skill, List<Character> targets) {
     onEvent(new Event(this, EventHook.preAttack));
     foreach (Character c in targets) {
       Event e = new Event(this, EventHook.preDamage);
       c.onEvent(e);
       if (e.finishAttack) {
-        equippedSkills[index].activate(c);
+        skill.activate(c);
+        c.onEvent(new Event(this, EventHook.postDamage));
         onEvent(new Event(this, EventHook.postAttack));
       }
     }
@@ -156,7 +161,6 @@ public class Character : EventManager {
       gameObject.SetActive(false);
       curTile.occupant = null;
     }
-    onEvent(new Event(this, EventHook.postDamage));
   }
 
   public bool isAlive() {

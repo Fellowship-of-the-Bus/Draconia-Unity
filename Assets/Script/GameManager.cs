@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour {
       }
 
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      selectedCharacter.attackWithSkill(SelectedSkill, targets);
+      selectedCharacter.attackWithSkill(selectedCharacter.equippedSkills[SelectedSkill], targets);
 
       StartCoroutine(endTurn());
     }

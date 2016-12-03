@@ -30,6 +30,11 @@ public class SkillTree {
 //    test.self = self;
 //    passives.Add(test);
 
+//    test = new CounterSkill();
+//    test.level = 7;
+//    test.self = self;
+//    passives.Add(test);
+
     return passives;
   }
 }
