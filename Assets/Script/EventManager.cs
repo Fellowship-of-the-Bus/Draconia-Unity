@@ -11,12 +11,14 @@ public enum EventHook {
 }
 
 public class EventManager {
+  Queue<Event> eventQueue;
   Dictionary<EventHook, HashSet<EventListener>> listeners = new Dictionary<EventHook, HashSet<EventListener>>();
   public EventManager() {
     get = this;
     foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
       listeners.Add(i, new HashSet<EventListener>());
     }
+    eventQueue = new Queue<Event>();
   }
 
   public void addListener(EventListener listener, EventHook hook) {
@@ -30,8 +32,17 @@ public class EventManager {
   }
 
   public void onEvent(Event e) {
-    foreach (EventListener listener in listeners[e.hook]) {
-      listener.onEvent(e);
+    //if there are events already, its already being dequeued
+    if (eventQueue.Count != 0) {
+      eventQueue.Enqueue(e);
+      return;
+    }
+    eventQueue.Enqueue(e);
+    while (eventQueue.Count != 0) {
+      e = eventQueue.Dequeue();
+      foreach (EventListener listener in listeners[e.hook]) {
+        listener.onEvent(e);
+      }
     }
   }
 
