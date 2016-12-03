@@ -32,47 +32,53 @@ public class Character : EventManager {
 
   public float moveTolerance = 1.0f;
 
+  public string[] skillSet;
+
   new void Start() {
     base.Start();
     skills = new SkillTree(this);
     applyPassives();
 
-
-    ActiveSkill cripple = new CrippleSkill();
-    cripple.level = 1;
-    cripple.self = this;
-    equippedSkills.Add(cripple);
-
-    ActiveSkill ranged = new RangedSkill();
-    ranged.level = 1;
-    ranged.self = this;
-    equippedSkills.Add(ranged);
-
-    //ActiveSkill aoe = new TestAoeSkill();
-    //aoe.level = 1;
-    //aoe.self = this;
-    //equippedSkills.Add(aoe);
-
-    //ActiveSkill punch = new PunchSkill();
-    //punch.level = 1;
-    //punch.self = this;
-    //equippedSkills.Add(punch);
-
-    //ActiveSkill kill = new KillingBlowSkill();
-    //kill.level = 1;
-    //kill.self = this;
-    //equippedSkills.Add(kill);
-    ActiveSkill punch = new Knockback();
-    punch.level = 1;
-    punch.self = this;
-    equippedSkills.Add(punch);
+    setSkills();
 
     curHealth = attr.maxHealth;
     moveAI.owner = this;
     attackAI.owner = this;
   }
 
+  void setSkills() {
+    foreach (string skillName in skillSet) {
+      ActiveSkill skill;
+
+      if (skillName == "Punch") {
+        skill = new PunchSkill();
+      } else if (skillName == "Ranged") {
+        skill = new RangedSkill();
+      } else if (skillName == "Aoe") {
+        skill = new TestAoeSkill();
+      } else if (skillName == "Knockback") {
+        skill = new Knockback();
+      } else if (skillName == "Cripple") {
+        skill = new CrippleSkill();
+      } else if (skillName == "KillingBlow") {
+        skill = new KillingBlowSkill();
+      } else {
+        Debug.Log("Skill not recognized");
+        skill = new PunchSkill();
+      }
+
+      skill.level = 1;
+      skill.self = this;
+      equippedSkills.Add(skill);
+    }
+  }
+
   void Update() {
+    bool debugMode = true;
+    if (debugMode) {
+      equippedSkills = new List<ActiveSkill>();
+      setSkills();
+    }
     // rotate overhead UI (health bar) to look at camera
     Transform ui = gameObject.transform.Find("UI");
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation

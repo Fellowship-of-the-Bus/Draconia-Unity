@@ -481,7 +481,7 @@ GameObject:
   - 114: {fileID: 104818276}
   - 114: {fileID: 104818275}
   m_Layer: 5
-  m_Name: SkillButton3
+  m_Name: SkillButton1
   m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -500,7 +500,7 @@ RectTransform:
   m_Children:
   - {fileID: 1673490429}
   m_Father: {fileID: 533879371}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -460, y: 42.5}
@@ -2517,12 +2517,12 @@ RectTransform:
   - {fileID: 1702959073}
   - {fileID: 2067118945}
   - {fileID: 4841670}
-  - {fileID: 1124862975}
   - {fileID: 1795053676}
   - {fileID: 886455897}
   - {fileID: 914126054}
-  - {fileID: 1582906728}
   - {fileID: 104818274}
+  - {fileID: 1582906728}
+  - {fileID: 1124862975}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
@@ -2594,6 +2594,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -2678,6 +2683,21 @@ Prefab:
         type: 2}
       propertyPath: characterName
       value: Brodric
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0]
+      value: Cripple
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1]
+      value: Knockback
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[2]
+      value: KillingBlow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
@@ -3090,6 +3110,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -3144,6 +3169,21 @@ Prefab:
         type: 2}
       propertyPath: speed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0]
+      value: Knockback
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1]
+      value: Ranged
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[2]
+      value: Aoe
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
@@ -3896,7 +3936,7 @@ RectTransform:
   m_Children:
   - {fileID: 571727145}
   m_Father: {fileID: 533879371}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -100, y: 100}
@@ -4170,7 +4210,7 @@ RectTransform:
   - {fileID: 2127200819}
   - {fileID: 155131670}
   m_Father: {fileID: 533879371}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -219, y: -44}
@@ -4868,7 +4908,7 @@ GameObject:
   - 114: {fileID: 1124862977}
   - 114: {fileID: 1124862976}
   m_Layer: 5
-  m_Name: SkillButton1
+  m_Name: SkillButton3
   m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4887,7 +4927,7 @@ RectTransform:
   m_Children:
   - {fileID: 116141578}
   m_Father: {fileID: 533879371}
-  m_RootOrder: 5
+  m_RootOrder: 10
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -100, y: 42.5}
@@ -6740,6 +6780,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -6823,6 +6868,21 @@ Prefab:
         type: 2}
       propertyPath: speed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0]
+      value: Cripple
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1]
+      value: Cripple
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[2]
+      value: Cripple
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
@@ -7257,7 +7317,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 533879371}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_AnchorMin: {x: 1, y: 0.22748728}
   m_AnchorMax: {x: 1, y: 0.88500005}
   m_AnchoredPosition: {x: -40, y: -22.5}
@@ -7524,6 +7584,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: -2
@@ -7585,6 +7650,21 @@ Prefab:
         type: 2}
       propertyPath: speed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0]
+      value: Knockback
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1]
+      value: Knockback
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[2]
+      value: Knockback
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
