@@ -321,7 +321,7 @@ public class GameManager : MonoBehaviour {
 
   volatile public bool moving = false;// {get; private set;}
   // Move the SelectedPiece to the inputted coords
-  public Coroutine MovePiece(Vector3 coordToMove, bool immediate = true, bool doChangeState = false) {
+  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool doChangeState = false) {
     // don't start moving twice
     if (moving) return null;
 
@@ -338,7 +338,7 @@ public class GameManager : MonoBehaviour {
       c.curTile.occupant = c.gameObject;
 
       coordToMove.y = destination.transform.position.y + getHeight(destination);
-      if (immediate) {
+      if (smooth) {
         path.RemoveFirst(); // discard current position
         moving = true;
         for (int i = 0; i < skillButtons.Count; i++) {

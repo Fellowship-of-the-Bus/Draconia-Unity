@@ -5,7 +5,7 @@ public class Attributes : MonoBehaviour {
   public int strength;
   public int intelligence;
   public int speed = 5;
-  public int maxHealth = 10;
+  public int maxHealth = 20;
   public int physicalDefense;
   public int magicDefense;
 

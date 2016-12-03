@@ -5,10 +5,10 @@ public class StrengthBonusEffect : Effect {
 
   }
   public override void onActivate() {
-    owner.attr.strength += level*8;
+    owner.attr.strength += level*2;
   }
   public override void onDeactivate() {
-    owner.attr.strength -= level*8;
+    owner.attr.strength -= level*2;
   }
   public override void onEvent(Event e) {
 
