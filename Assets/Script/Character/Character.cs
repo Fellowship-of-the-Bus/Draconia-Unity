@@ -52,10 +52,14 @@ public class Character : MonoBehaviour {
     //punch.self = this;
     //equippedSkills.Add(punch);
 
-    ActiveSkill kill = new KillingBlowSkill();
-    kill.level = 1;
-    kill.self = this;
-    equippedSkills.Add(kill);
+    //ActiveSkill kill = new KillingBlowSkill();
+    //kill.level = 1;
+    //kill.self = this;
+    //equippedSkills.Add(kill);
+    ActiveSkill punch = new Knockback();
+    punch.level = 1;
+    punch.self = this;
+    equippedSkills.Add(punch);
 
 
     curHealth = attr.maxHealth;
