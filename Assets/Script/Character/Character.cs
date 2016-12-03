@@ -20,6 +20,7 @@ public class Character : EventManager {
   public float nextMoveTime = 0f;
   public int moveRange = 4;
   public string characterName = "";
+  public int team = 0;
 
   public int previewDamage;
   public int PreviewDamage{

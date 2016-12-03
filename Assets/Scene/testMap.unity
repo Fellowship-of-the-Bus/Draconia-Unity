@@ -3834,7 +3834,6 @@ MonoBehaviour:
   targetMana: {fileID: 48050633}
   targetPanel: {fileID: 914126053}
   mainUI: {fileID: 533879367}
-  moving: 0
   piece: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
 --- !u!114 &870542038
 MonoBehaviour:
@@ -6879,6 +6878,11 @@ Prefab:
       propertyPath: skillSet.Array.data[2]
       value: Cripple
       objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
@@ -7660,6 +7664,11 @@ Prefab:
         type: 2}
       propertyPath: skillSet.Array.data[2]
       value: Knockback
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: team
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}

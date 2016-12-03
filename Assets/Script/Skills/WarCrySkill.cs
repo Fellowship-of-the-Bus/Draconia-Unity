@@ -28,7 +28,7 @@ public class WarCrySkill: ActiveSkill, AoeSkill {
     List<GameObject> targets = new List<GameObject>();
     targets.Add(self.gameObject);
     foreach (Tile t in tiles) {
-      if (t.occupied()) {
+      if (t.occupied() && (t.occupant.gameObject.GetComponent<Character>().team == self.team)) {
         targets.Add(t.occupant.gameObject);
       }
     }
