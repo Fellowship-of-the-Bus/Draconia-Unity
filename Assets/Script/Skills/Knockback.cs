@@ -15,10 +15,13 @@ public class Knockback: ActiveSkill {
       c.takeDamage(calculateDamage(self, c));
       Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
       Vector3 direction = heading / heading.magnitude;
+      Debug.Log(c.gameObject.transform.position + direction);
       Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
+      Debug.Log(t);
       Tile origin = c.curTile;
       origin.occupant = null;
       t.occupant = c.gameObject;
+      c.curTile = t;
       LinkedList<Tile> tile = new LinkedList<Tile>();
       tile.AddFirst(t);
       GameManager.get.moving = true;
