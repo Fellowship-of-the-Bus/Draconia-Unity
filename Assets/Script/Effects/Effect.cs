@@ -14,9 +14,18 @@ public abstract class Effect : EventListener {
   public abstract void onActivate();
   //when this loses effect (due to shadowed by higher level skill)
   public abstract void onDeactivate();
-  public override void onEvent(Event e) {
+  public sealed override void onEvent(Event e) {
+    Debug.Assert(duration != 0);
+    if (duration != -1) {
+      duration--;
+    }
+    additionalEffect(e);
+  }
+
+  public virtual void additionalEffect(Event e) {
 
   }
+
   public virtual bool isGreaterThan(Effect other) {
     return this.level > other.level;
   }

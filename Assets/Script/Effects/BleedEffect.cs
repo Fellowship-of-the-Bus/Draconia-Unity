@@ -11,13 +11,8 @@ public class BleedEffect : Effect {
   public override void onDeactivate() {
     detachListener(owner);
   }
-  public override void onEvent(Event e) {
-    if (duration == 0) {
-      //owner.removeEffect(this);
-    } else {
-      owner.takeDamage(damage);
-      duration--;
-    }
+  public override void additionalEffect(Event e) {
+    owner.takeDamage(damage);
   }
   public override bool isGreaterThan(Effect e) {
     if (e is BleedEffect) {

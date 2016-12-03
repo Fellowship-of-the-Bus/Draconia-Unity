@@ -10,7 +10,4 @@ public class ClimbEffect : Effect {
   public override void onDeactivate() {
     owner.moveTolerance -= level;
   }
-  public override void onEvent(Event e) {
-
-  }
 }

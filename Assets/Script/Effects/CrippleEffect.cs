@@ -10,7 +10,4 @@ public class CrippleEffect : Effect {
   public override void onDeactivate() {
     owner.moveRange += level;
   }
-  public override void onEvent(Event e) {
-
-  }
 }

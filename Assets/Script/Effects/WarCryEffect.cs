@@ -15,7 +15,4 @@ public class WarCryEffect : Effect {
   public override void onDeactivate() {
     owner.attr.speed -= 1;
   }
-  public override void onEvent(Event e) {
-
-  }
 }

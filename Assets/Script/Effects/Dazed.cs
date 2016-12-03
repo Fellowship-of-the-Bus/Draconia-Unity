@@ -10,7 +10,4 @@ public class Dazed : Effect {
   public override void onDeactivate() {
     owner.attr.speed += level;
   }
-  public override void onEvent(Event e) {
-
-  }
 }

@@ -9,7 +9,7 @@ public class DodgeEffect : Effect {
     detachListener(owner);
   }
 
-  public override void onEvent(Event e) {
+  public override void additionalEffect(Event e) {
     float chance = Random.value;
     if (chance < 0.1*level) {
       e.finishAttack = false;
@@ -17,5 +17,6 @@ public class DodgeEffect : Effect {
     } else {
 //      Debug.Log("did not dodge: " + e.finishAttack);
     }
+
   }
 }

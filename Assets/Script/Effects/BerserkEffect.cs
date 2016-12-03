@@ -13,7 +13,7 @@ public class BerserkEffect : Effect {
   public override void onDeactivate() {
     detachListener(owner);
   }
-  public override void onEvent(Event e) {
+  public override void additionalEffect(Event e) {
     if (e.hook == EventHook.preDamage) {
       preAttackHP = owner.curHealth;
       return;

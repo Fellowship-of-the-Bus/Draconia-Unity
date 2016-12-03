@@ -10,7 +10,7 @@ public class CounterEffect : Effect {
     detachListener(owner);
   }
 
-  public override void onEvent(Event e) {
+  public override void additionalEffect(Event e) {
     float chance = Random.value;
     if (chance < 0.1*level && owner.inRange(e.sender, 1)) {
       Punch atk = new Punch();
