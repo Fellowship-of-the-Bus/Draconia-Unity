@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class Effect : EventListener {
   public Character owner = null;
   public int level = 0;
-  public int duration;
+  public int duration = -1;
   public void onApply(Character c) {
     Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     owner = c;
@@ -17,7 +17,7 @@ public abstract class Effect : EventListener {
   public override void onEvent(Event e) {
 
   }
-  public bool isLessThan(Effect other) {
-    return this.level < other.level;
+  public virtual bool isGreaterThan(Effect other) {
+    return this.level > other.level;
   }
 }

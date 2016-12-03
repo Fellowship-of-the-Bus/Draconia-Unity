@@ -281,6 +281,11 @@ public class GameManager : MonoBehaviour {
       yield return c;
     }
     waitEndTurn.Clear();
+
+    //send endTurn event to the current piece
+    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
+
     SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     actionQueue.endTurn();
     clearColour();

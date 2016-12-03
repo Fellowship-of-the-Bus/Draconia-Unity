@@ -12,6 +12,7 @@ public enum EventHook {
   preMove,
   postMove,
   dodge,
+  endTurn,
 }
 
 public class EventManager : MonoBehaviour {
@@ -47,6 +48,15 @@ public class EventManager : MonoBehaviour {
       foreach (EventListener listener in listeners[e.hook]) {
         listener.onEvent(e);
       }
+
+      listeners[e.hook].Filter( (EventListener listener) => {
+        Effect effect = listener as Effect;
+        if (effect != null && effect.duration == 0) {
+          effect.onDeactivate();
+          return false;
+        }
+        return true;
+      });
     }
   }
 

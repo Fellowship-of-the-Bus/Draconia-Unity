@@ -67,6 +67,8 @@ public class Character : EventManager {
         skill = new WarCry();
       }  else if (skillName == "SkullBash") {
         skill = new SkullBash();
+      } else if (skillName == "Puncture") {
+        skill = new Puncture();
       } else {
         Debug.Log("Skill not recognized");
         skill = new Punch();
@@ -119,22 +121,53 @@ public class Character : EventManager {
       return;
     }
     //find max level of effects in list
-    int maxLevel = 0;
     Effect maxEffect = null;
     foreach (Effect e in l) {
-      if (e.level > maxLevel) {
-        maxLevel = e.level;
+      if (maxEffect == null) {
+        maxEffect = e;
+      } else if (e.isGreaterThan(maxEffect)) {
         maxEffect = e;
       }
     }
 
     //if newly applied effect is the highest level
     //activate it and deactivate the highest leveled one.
-    if (effect.level > maxLevel) {
+    if (effect.isGreaterThan(maxEffect)) {
       effect.onActivate();
       maxEffect.onDeactivate();
     }
     l.Add(effect);
+  }
+
+
+  public void removeEffect(Effect effect) {
+    List<Effect> l = effects.Get(effect);
+    if (l.Count == 0) {
+      return;
+    }
+
+    l.Remove(effect);
+
+    if (l.Count == 0) {
+      effect.onDeactivate();
+      return;
+    }
+
+    //find max level of effects in list
+    Effect maxEffect = null;
+    foreach (Effect e in l) {
+      if (maxEffect == null) {
+        maxEffect = e;
+      } else if (e.isGreaterThan(maxEffect)) {
+        maxEffect = e;
+      }
+    }
+
+    //if we are strongest, deactivate and activate next maximum effect
+    if (effect.isGreaterThan(maxEffect)) {
+      effect.onDeactivate();
+      maxEffect.onActivate();
+    }
   }
 
   public bool inRange(Character target, int range) {
@@ -148,7 +181,9 @@ public class Character : EventManager {
       c.onEvent(e);
       if (e.finishAttack) {
         skill.activate(c);
-        c.onEvent(new Event(this, EventHook.postDamage));
+        if (c.isAlive()){
+          c.onEvent(new Event(this, EventHook.postDamage));
+        }
         onEvent(new Event(this, EventHook.postAttack));
       }
     }

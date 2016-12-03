@@ -23,5 +23,18 @@ public static class Extensions {
   public static IEnumerable<TResult> Map<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> f) {
     return source.Select(f);
   }
+
+  public static IEnumerable<TResult> Where<TResult> (this IEnumerable<TResult> source, Func<TResult, bool> f) {
+    IEnumerator<TResult> it =source.GetEnumerator();
+    while(it.MoveNext()) {
+      if (f(it.Current)) {
+        yield return it.Current;
+      }
+    }
+  }
+  public static IEnumerable<TResult> Filter<TResult> (this IEnumerable<TResult> source, Func<TResult, bool> f) {
+    return source.Where(f);
+  }
+
 }
 
