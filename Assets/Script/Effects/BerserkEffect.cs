@@ -7,11 +7,11 @@ public class BerserkEffect : Effect {
 
   }
   public override void onActivate() {
-    attachListener(EventHook.preAttack);
-    attachListener(EventHook.postAttack);
+    attachListener(owner, EventHook.preAttack);
+    attachListener(owner, EventHook.postAttack);
   }
   public override void onDeactivate() {
-    detachListener();
+    detachListener(owner);
   }
   public override void onEvent(Event e) {
     if (e.hook == EventHook.preAttack) {

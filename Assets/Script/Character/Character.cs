@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class Character : MonoBehaviour {
+public class Character : EventManager {
   TypeMap<List<Effect>> effects = new TypeMap<List<Effect>>();
   //inventory
   //skill tree
@@ -32,7 +32,8 @@ public class Character : MonoBehaviour {
 
   public float moveTolerance = 1.0f;
 
-  void Start() {
+  new void Start() {
+    base.Start();
     skills = new SkillTree(this);
     applyPassives();
 
@@ -123,8 +124,8 @@ public class Character : MonoBehaviour {
     l.Add(effect);
   }
 
-  public void selectSkill(int i) {
-
+  public void attackWithSkill(int index, List<Character> c) {
+    onEvent(new Event(this, EventHook.preAttack));
   }
 
   public void takeDamage(int damage) {
@@ -138,10 +139,6 @@ public class Character : MonoBehaviour {
 
   public bool isAlive() {
     return curHealth > 0;
-  }
-
-  public void setDamageIndicator(int damage) {
-
   }
 
   public void updateLifeBar(GameObject lifebar) {

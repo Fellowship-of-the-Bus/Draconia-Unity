@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
   public GameState gameState = GameState.moving;
 
   //EventManager
-  public EventManager eventManager = new EventManager();
+  public EventManager eventManager;
 
   //Objectives for this game
   List<Objective> winningConditions = new List<Objective>();
