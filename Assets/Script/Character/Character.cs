@@ -37,15 +37,20 @@ public class Character : MonoBehaviour {
     applyPassives();
 
 
+    ActiveSkill cripple = new CrippleSkill();
+    cripple.level = 1;
+    cripple.self = this;
+    equippedSkills.Add(cripple);
+
     ActiveSkill ranged = new RangedSkill();
     ranged.level = 1;
     ranged.self = this;
     equippedSkills.Add(ranged);
 
-    ActiveSkill aoe = new TestAoeSkill();
-    aoe.level = 1;
-    aoe.self = this;
-    equippedSkills.Add(aoe);
+    //ActiveSkill aoe = new TestAoeSkill();
+    //aoe.level = 1;
+    //aoe.self = this;
+    //equippedSkills.Add(aoe);
 
     //ActiveSkill punch = new PunchSkill();
     //punch.level = 1;
@@ -60,7 +65,6 @@ public class Character : MonoBehaviour {
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);
-
 
     curHealth = attr.maxHealth;
     moveAI.owner = this;
