@@ -5,10 +5,10 @@ public class ClimbEffect : Effect {
 
   }
   public override void onActivate() {
-    owner.heightTolerance += level;
+    owner.moveTolerance += level;
   }
   public override void onDeactivate() {
-    owner.heightTolerance -= level;
+    owner.moveTolerance -= level;
   }
   public override void onEvent(Event e) {
 

@@ -519,7 +519,7 @@ public class GameManager : MonoBehaviour {
       Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
       Tile neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Forward;
@@ -530,7 +530,7 @@ public class GameManager : MonoBehaviour {
       neighbour = minTile.gameObject.transform.position + Vector3.back;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Back;
@@ -541,7 +541,7 @@ public class GameManager : MonoBehaviour {
       neighbour = minTile.gameObject.transform.position + Vector3.right;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Right;
@@ -552,7 +552,7 @@ public class GameManager : MonoBehaviour {
       neighbour = minTile.gameObject.transform.position + Vector3.left;
       neighbourTile = getTile(neighbour, tilesToGo);
       if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.heightTolerance);
+        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
         if (d < neighbourTile.distance) {
           neighbourTile.distance = d;
           neighbourTile.dir = Direction.Left;
@@ -563,15 +563,16 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public int distance(Tile from, Tile to, float heightTolerance) {
+  public int distance(Tile from, Tile to, float moveTolerance) {
     //check heights
-    if (Math.Abs(getHeight(from) - getHeight(to)) > heightTolerance) {
+    if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
     }
     if (from.occupied() && !(from.occupant.tag.Equals(SelectedPiece.tag))) {
       return Int32.MaxValue/4;
     }
-    return to.movePointSpent;
+
+    return Math.Max((int)(to.movePointSpent - moveTolerance + 1), 1);
   }
 
   public float getHeight(Tile t) {
