@@ -13,7 +13,7 @@ public class CounterEffect : Effect {
   public override void onEvent(Event e) {
     float chance = Random.value;
     if (chance < 0.1*level && owner.inRange(e.sender, 1)) {
-      PunchSkill atk = new PunchSkill();
+      Punch atk = new Punch();
       atk.level = level;
       atk.self = owner;
 
