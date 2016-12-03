@@ -129,12 +129,13 @@ public class Character : EventManager {
   public void attackWithSkill(int index, List<Character> targets) {
     onEvent(new Event(this, EventHook.preAttack));
     foreach (Character c in targets) {
-      c.onEvent(new Event(c, EventHook.preDamage));
-      //do the dodge checking here.
-
-      equippedSkills[index].activate(c);
+      Event e = new Event(this, EventHook.preDamage);
+      c.onEvent(e);
+      if (e.finishAttack) {
+        equippedSkills[index].activate(c);
+        onEvent(new Event(this, EventHook.postAttack));
+      }
     }
-    onEvent(new Event(this, EventHook.postAttack));
   }
 
   public void takeDamage(int damage) {

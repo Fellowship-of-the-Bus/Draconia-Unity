@@ -16,7 +16,6 @@ public class TypeMap<Val> {
       return default(Val);
     }
     return dic[k.GetType()];
-    //return Get<k.GetType()>();
   }
 
   public bool ContainsKey(Type t) {
