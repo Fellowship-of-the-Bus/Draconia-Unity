@@ -321,21 +321,25 @@ public class GameManager : MonoBehaviour {
 
   volatile public bool moving = false;// {get; private set;}
   // Move the SelectedPiece to the inputted coords
+
+
+  public void updateTile(Character c, Tile t) {
+    c.curTile.occupant = null;
+    c.curTile = t;
+    t.occupant = c.gameObject;
+  }
+
   public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool doChangeState = false) {
     // don't start moving twice
     if (moving) return null;
 
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
-    Tile origin = c.curTile;
-
 
     if (destination.distance <= c.moveRange && !destination.occupied()) {
       //after moving, remove from origin tile,
       //add to new tile
-      origin.occupant = null;
-      c.curTile = destination;
-      c.curTile.occupant = c.gameObject;
+      updateTile(c,destination);
 
       coordToMove.y = destination.transform.position.y + getHeight(destination);
       if (smooth) {
