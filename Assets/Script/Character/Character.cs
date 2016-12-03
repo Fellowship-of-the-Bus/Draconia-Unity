@@ -65,6 +65,8 @@ public class Character : EventManager {
         skill = new KillingBlow();
       } else if (skillName == "WarCry") {
         skill = new WarCry();
+      }  else if (skillName == "SkullBash") {
+        skill = new SkullBash();
       } else {
         Debug.Log("Skill not recognized");
         skill = new Punch();
