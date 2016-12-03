@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class Character : MonoBehaviour {
+public class Character : EventManager {
   TypeMap<List<Effect>> effects = new TypeMap<List<Effect>>();
   //inventory
   //skill tree
@@ -32,20 +32,26 @@ public class Character : MonoBehaviour {
 
   public float moveTolerance = 1.0f;
 
-  void Start() {
+  new void Start() {
+    base.Start();
     skills = new SkillTree(this);
     applyPassives();
 
+
+    ActiveSkill cripple = new CrippleSkill();
+    cripple.level = 1;
+    cripple.self = this;
+    equippedSkills.Add(cripple);
 
     ActiveSkill ranged = new RangedSkill();
     ranged.level = 1;
     ranged.self = this;
     equippedSkills.Add(ranged);
 
-    ActiveSkill aoe = new TestAoeSkill();
-    aoe.level = 1;
-    aoe.self = this;
-    equippedSkills.Add(aoe);
+    //ActiveSkill aoe = new TestAoeSkill();
+    //aoe.level = 1;
+    //aoe.self = this;
+    //equippedSkills.Add(aoe);
 
     //ActiveSkill punch = new PunchSkill();
     //punch.level = 1;
@@ -60,7 +66,6 @@ public class Character : MonoBehaviour {
     punch.level = 1;
     punch.self = this;
     equippedSkills.Add(punch);
-
 
     curHealth = attr.maxHealth;
     moveAI.owner = this;
@@ -79,11 +84,9 @@ public class Character : MonoBehaviour {
 
   public void applyPassives() {
     foreach (PassiveSkill passive in skills.getPassives()) {
-      List<Character> targets = new List<Character>();
       foreach (GameObject o in passive.getTargets()) {
-        targets.Add(o.GetComponent<Character>());
+        passive.activate(o.GetComponent<Character>());
       }
-      passive.activate(targets);
     }
   }
 
@@ -123,8 +126,15 @@ public class Character : MonoBehaviour {
     l.Add(effect);
   }
 
-  public void selectSkill(int i) {
+  public void attackWithSkill(int index, List<Character> targets) {
+    onEvent(new Event(this, EventHook.preAttack));
+    foreach (Character c in targets) {
+      c.onEvent(new Event(c, EventHook.preDamage));
+      //do the dodge checking here.
 
+      equippedSkills[index].activate(c);
+    }
+    onEvent(new Event(this, EventHook.postAttack));
   }
 
   public void takeDamage(int damage) {
@@ -134,14 +144,11 @@ public class Character : MonoBehaviour {
       gameObject.SetActive(false);
       curTile.occupant = null;
     }
+    onEvent(new Event(this, EventHook.postDamage));
   }
 
   public bool isAlive() {
     return curHealth > 0;
-  }
-
-  public void setDamageIndicator(int damage) {
-
   }
 
   public void updateLifeBar(GameObject lifebar) {

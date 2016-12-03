@@ -7,11 +7,7 @@ public class PunchSkill: ActiveSkill {
     useLos = false;
     name = "Punch";
   }
-  public override void activate(List<Character> targets) {
-    foreach (Character c in targets) {
-      c.takeDamage(calculateDamage(self, c));
-    }
-  }
+
   public override List<GameObject> getTargets() {
     List<Tile> tiles = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().getTilesWithinRange(self.curTile, 1);
     List<GameObject> targets = new List<GameObject>();

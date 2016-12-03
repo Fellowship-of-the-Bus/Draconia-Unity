@@ -2,12 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class StrengthBonus : PassiveSkill {
-  public override void activate(List<Character> targets) {
+  public override void activate(Character target) {
     StrengthBonusEffect bonus = new StrengthBonusEffect();
     bonus.level = level;
-    foreach (Character target in targets) {
-      target.applyEffect(bonus);
-    }
+    target.applyEffect(bonus);
   }
 
   public override List<GameObject> getTargets() {
