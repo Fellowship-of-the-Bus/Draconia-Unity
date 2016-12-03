@@ -5,10 +5,10 @@ public class DodgeEffect : Effect {
 
   }
   public override void onActivate() {
-    attachListener(EventHook.preAttack);
+    attachListener(owner, EventHook.preAttack);
   }
   public override void onDeactivate() {
-    detachListener();
+    detachListener(owner);
   }
 
   public override void onEvent(Event e) {

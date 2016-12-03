@@ -3757,6 +3757,7 @@ GameObject:
   - 114: {fileID: 870542037}
   - 114: {fileID: 870542038}
   - 120: {fileID: 870542039}
+  - 114: {fileID: 870542040}
   m_Layer: 0
   m_Name: __GameManager
   m_TagString: GameManager
@@ -3791,6 +3792,7 @@ MonoBehaviour:
   turnButton: {fileID: 1000012830243378, guid: cbdadfcc28701ff48a00dc5cf1f8e635, type: 2}
   originalTile: {fileID: 0}
   gameState: 0
+  eventManager: {fileID: 870542040}
   selectedHealth: {fileID: 1922000272}
   SelectedMana: {fileID: 509592171}
   targetHealth: {fileID: 1561664990}
@@ -3852,6 +3854,17 @@ LineRenderer:
       serializedVersion: 2
       rgba: 4280303858
   m_UseWorldSpace: 1
+--- !u!114 &870542040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 870542035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648cb1e02ecdf7a4fbc825c46c18d978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &886455896
 GameObject:
   m_ObjectHideFlags: 0

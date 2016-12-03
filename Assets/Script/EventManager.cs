@@ -10,10 +10,10 @@ public enum EventHook {
   dodge,
 }
 
-public class EventManager {
+public class EventManager : MonoBehaviour {
   Queue<Event> eventQueue;
   Dictionary<EventHook, HashSet<EventListener>> listeners = new Dictionary<EventHook, HashSet<EventListener>>();
-  public EventManager() {
+  protected void Start() {
     get = this;
     foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
       listeners.Add(i, new HashSet<EventListener>());

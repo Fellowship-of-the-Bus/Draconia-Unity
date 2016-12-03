@@ -10,18 +10,22 @@ public class Knockback: ActiveSkill {
     name = "Knockback";
   }
 
+  float upThreshold = 0.5f;
+
+  Tile knockTo(Character c) {
+      Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
+      Vector3 direction = heading / heading.magnitude;
+      Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
+      return t;
+  }
+
   public override void activate(List<Character> targets) {
     foreach (Character c in targets) {
       c.takeDamage(calculateDamage(self, c));
       Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
       Vector3 direction = heading / heading.magnitude;
-      Debug.Log(c.gameObject.transform.position + direction);
       Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
-      Debug.Log(t);
-      Tile origin = c.curTile;
-      origin.occupant = null;
-      t.occupant = c.gameObject;
-      c.curTile = t;
+      GameManager.get.updateTile(c,t);
       LinkedList<Tile> tile = new LinkedList<Tile>();
       tile.AddFirst(t);
       GameManager.get.moving = true;
@@ -33,7 +37,8 @@ public class Knockback: ActiveSkill {
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       if (t.occupied()) {
-        targets.Add(t.occupant);
+        Tile t2 = knockTo(t.occupant.GetComponent<Character>());
+        if (t2 != null && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t2))) targets.Add(t.occupant);
       }
     }
     return targets;
