@@ -7,13 +7,7 @@ public class CrippleSkill: ActiveSkill {
     useLos = false;
     name = "Cripple";
   }
-  public override void activate(Character target) {
-    base.activate(target);
-    CrippleEffect debuff = new CrippleEffect();
-    debuff.level = level;
 
-    target.applyEffect(debuff);
-  }
   public override List<GameObject> getTargets() {
     List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, 1);
     List<GameObject> targets = new List<GameObject>();
@@ -30,5 +24,10 @@ public class CrippleSkill: ActiveSkill {
     return (int)(source.attr.strength*(0.5+level*0.05) - target.attr.physicalDefense);
   }
 
+  public override void additionalEffects (Character target) {
+    CrippleEffect debuff = new CrippleEffect();
+    debuff.level = level;
+    target.applyEffect(debuff);
+  }
 
 }

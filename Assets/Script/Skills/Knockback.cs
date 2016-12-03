@@ -19,7 +19,7 @@ public class Knockback: ActiveSkill {
       return t;
   }
 
-  public override void activate(Character c) {
+  public override void additionalEffects(Character c) {
     Tile t = knockTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
       GameManager.get.updateTile(c,t);
@@ -28,7 +28,6 @@ public class Knockback: ActiveSkill {
       GameManager.get.moving = true;
       GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject, false)));
     }
-    base.activate(c);
   }
   public override List<GameObject> getTargets() {
     List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, 1);
