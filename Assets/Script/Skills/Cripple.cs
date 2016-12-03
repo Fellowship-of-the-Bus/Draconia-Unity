@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class CrippleSkill: ActiveSkill {
-  public CrippleSkill() {
+public class Cripple: ActiveSkill {
+  public Cripple() {
     range = 1;
     useLos = false;
     name = "Cripple";

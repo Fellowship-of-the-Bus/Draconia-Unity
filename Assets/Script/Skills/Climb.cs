@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class ClimbSkill : PassiveSkill {
+public class Climb : PassiveSkill {
   public override void activate(Character target) {
     ClimbEffect bonus = new ClimbEffect();
     bonus.level = level;

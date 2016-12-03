@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class DodgeSkill : PassiveSkill {
+public class Dodge : PassiveSkill {
   public override void activate(Character target) {
     DodgeEffect effect = new DodgeEffect();
     effect.level = level;

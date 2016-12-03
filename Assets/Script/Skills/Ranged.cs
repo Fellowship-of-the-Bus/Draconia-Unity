@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class RangedSkill: ActiveSkill {
-  public RangedSkill() {
+public class Ranged: ActiveSkill {
+  public Ranged() {
     range = 3;
     useLos = false;
     name = "Ranged";

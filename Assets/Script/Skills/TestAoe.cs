@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TestAoeSkill: ActiveSkill, AoeSkill {
+public class TestAoe: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
 
-  public TestAoeSkill() {
+  public TestAoe() {
     range = 3;
     aoe = 2;
     useLos = false;

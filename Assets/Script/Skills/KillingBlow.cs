@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class KillingBlowSkill: ActiveSkill {
-  public KillingBlowSkill() {
+public class KillingBlow: ActiveSkill {
+  public KillingBlow() {
     range = 1;
     useLos = false;
     name = "Killing Blow";

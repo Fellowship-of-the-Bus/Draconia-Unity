@@ -15,17 +15,17 @@ public class SkillTree {
     test.self = self;
     passives.Add(test);
 
-//    test = new BerserkSkill();
+//    test = new Berserk();
 //    test.level = 1;
 //    test.self = self;
 //    passives.Add(test);
 
-    test = new ClimbSkill();
+    test = new Climb();
     test.level = 1;
     test.self = self;
     passives.Add(test);
 
-//    test = new DodgeSkill();
+//    test = new Dodge();
 //    test.level = 7;
 //    test.self = self;
 //    passives.Add(test);

@@ -52,22 +52,22 @@ public class Character : EventManager {
       ActiveSkill skill;
 
       if (skillName == "Punch") {
-        skill = new PunchSkill();
+        skill = new Punch();
       } else if (skillName == "Ranged") {
-        skill = new RangedSkill();
+        skill = new Ranged();
       } else if (skillName == "Aoe") {
-        skill = new TestAoeSkill();
+        skill = new TestAoe();
       } else if (skillName == "Knockback") {
         skill = new Knockback();
       } else if (skillName == "Cripple") {
-        skill = new CrippleSkill();
+        skill = new Cripple();
       } else if (skillName == "KillingBlow") {
-        skill = new KillingBlowSkill();
+        skill = new KillingBlow();
       } else if (skillName == "WarCry") {
-        skill = new WarCrySkill();
+        skill = new WarCry();
       } else {
         Debug.Log("Skill not recognized");
-        skill = new PunchSkill();
+        skill = new Punch();
       }
 
       skill.level = 1;

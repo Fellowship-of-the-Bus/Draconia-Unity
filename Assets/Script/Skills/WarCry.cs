@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class WarCrySkill: ActiveSkill, AoeSkill {
+public class WarCry: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
 
-  public WarCrySkill() {
+  public WarCry() {
     range = 1;
     aoe = 1;
     useLos = false;

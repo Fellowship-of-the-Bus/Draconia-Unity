@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BerserkSkill : PassiveSkill {
+public class Berserk : PassiveSkill {
   public override void activate(Character target) {
     BerserkEffect bonus = new BerserkEffect();
     bonus.level = level;

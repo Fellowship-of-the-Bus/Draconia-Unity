@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PunchSkill: ActiveSkill {
-  public PunchSkill() {
+public class Punch: ActiveSkill {
+  public Punch() {
     range = 1;
     useLos = false;
     name = "Punch";
