@@ -7,17 +7,17 @@ public class BerserkEffect : Effect {
 
   }
   public override void onActivate() {
-    attachListener(owner, EventHook.preAttack);
-    attachListener(owner, EventHook.postAttack);
+    attachListener(owner, EventHook.preDamage);
+    attachListener(owner, EventHook.postDamage);
   }
   public override void onDeactivate() {
     detachListener(owner);
   }
   public override void onEvent(Event e) {
-    if (e.hook == EventHook.preAttack) {
+    if (e.hook == EventHook.preDamage) {
       preAttackHP = owner.curHealth;
       return;
-    } else if (e.hook == EventHook.postAttack) {
+    } else if (e.hook == EventHook.postDamage) {
       int postAttackHP = owner.curHealth;
       double percentage = Math.Abs(preAttackHP - postAttackHP)/(double)owner.attr.maxHealth;
 

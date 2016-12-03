@@ -10,11 +10,6 @@ public class TestAoeSkill: ActiveSkill, AoeSkill {
     useLos = false;
     name = "AOE";
   }
-  public override void activate(List<Character> targets) {
-    foreach (Character c in targets) {
-      c.takeDamage(calculateDamage(self, c));
-    }
-  }
 
   public override List<GameObject> getTargets() {
     GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();

@@ -7,11 +7,7 @@ public class KillingBlowSkill: ActiveSkill {
     useLos = false;
     name = "Killing Blow";
   }
-  public override void activate(List<Character> targets) {
-    foreach (Character c in targets) {
-      c.takeDamage(calculateDamage(self, c));
-    }
-  }
+
   public override List<GameObject> getTargets() {
     List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, 1);
     List<GameObject> targets = new List<GameObject>();

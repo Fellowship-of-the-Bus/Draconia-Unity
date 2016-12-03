@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 
 public class ClimbSkill : PassiveSkill {
-  public override void activate(List<Character> targets) {
+  public override void activate(Character target) {
     ClimbEffect bonus = new ClimbEffect();
     bonus.level = level;
-    foreach (Character target in targets) {
-      target.applyEffect(bonus);
-    }
+    target.applyEffect(bonus);
   }
 
   public override List<GameObject> getTargets() {

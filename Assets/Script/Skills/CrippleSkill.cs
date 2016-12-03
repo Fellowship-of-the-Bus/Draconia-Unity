@@ -7,17 +7,15 @@ public class CrippleSkill: ActiveSkill {
     useLos = false;
     name = "Cripple";
   }
-  public override void activate(List<Character> targets) {
+  public override void activate(Character target) {
+    base.activate(target);
     CrippleEffect debuff = new CrippleEffect();
     debuff.level = level;
 
-    foreach (Character c in targets) {
-      c.takeDamage(calculateDamage(self, c));
-      c.applyEffect(debuff);
-    }
+    target.applyEffect(debuff);
   }
   public override List<GameObject> getTargets() {
-    List<Tile> tiles = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().getTilesWithinRange(self.curTile, 1);
+    List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, 1);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       if (t.occupied()) {

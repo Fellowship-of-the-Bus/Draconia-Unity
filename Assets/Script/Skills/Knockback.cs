@@ -19,18 +19,16 @@ public class Knockback: ActiveSkill {
       return t;
   }
 
-  public override void activate(List<Character> targets) {
-    foreach (Character c in targets) {
-      c.takeDamage(calculateDamage(self, c));
-      Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
-      Vector3 direction = heading / heading.magnitude;
-      Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
-      GameManager.get.updateTile(c,t);
-      LinkedList<Tile> tile = new LinkedList<Tile>();
-      tile.AddFirst(t);
-      GameManager.get.moving = true;
-      GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject, false)));
-    }
+  public override void activate(Character c) {
+    base.activate(c);
+    Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
+    Vector3 direction = heading / heading.magnitude;
+    Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
+    GameManager.get.updateTile(c,t);
+    LinkedList<Tile> tile = new LinkedList<Tile>();
+    tile.AddFirst(t);
+    GameManager.get.moving = true;
+    GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject, false)));
   }
   public override List<GameObject> getTargets() {
     List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, 1);

@@ -271,9 +271,7 @@ public class GameManager : MonoBehaviour {
       }
 
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      eventManager.onEvent(new Event(selectedCharacter, EventHook.preAttack));
-      selectedCharacter.equippedSkills[SelectedSkill].activate(targets);
-      eventManager.onEvent(new Event(selectedCharacter, EventHook.postAttack));
+      selectedCharacter.attackWithSkill(SelectedSkill, targets);
 
       StartCoroutine(endTurn());
     }
@@ -386,9 +384,7 @@ public class GameManager : MonoBehaviour {
     t.gameObject.GetComponent<Renderer>().material.color = Color.black;
     yield return MovePiece(destination, true);
 
-    eventManager.onEvent(new Event(selectedCharacter, EventHook.preAttack));
     selectedCharacter.attackAI.target();
-    eventManager.onEvent(new Event(selectedCharacter, EventHook.postAttack));
     unlockUI();
     StartCoroutine(endTurn());
   }

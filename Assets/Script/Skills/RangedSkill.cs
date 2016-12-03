@@ -7,13 +7,8 @@ public class RangedSkill: ActiveSkill {
     useLos = false;
     name = "Ranged";
   }
-  public override void activate(List<Character> targets) {
-    foreach (Character c in targets) {
-      c.takeDamage(calculateDamage(self, c));
-    }
-  }
   public override List<GameObject> getTargets() {
-    GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    GameManager gm = GameManager.get;
     List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     Vector3 source = new Vector3(gm.SelectedPiece.transform.position.x, gm.SelectedPiece.transform.position.y + 0.25f, gm.SelectedPiece.transform.position.z);
