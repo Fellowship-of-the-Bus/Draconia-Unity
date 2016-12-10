@@ -334,9 +334,11 @@ public class GameManager : MonoBehaviour {
     Character c = SelectedPiece.GetComponent<Character>();
 
     if (destination.distance <= c.moveRange && !destination.occupied()) {
+      eventManager.onEvent(c, new Event(this, EventHook.preMove));
       //after moving, remove from origin tile,
       //add to new tile
       updateTile(c,destination);
+      eventManager.onEvent(c, new Event(this, EventHook.postMove));
 
       coordToMove.y = destination.transform.position.y + getHeight(destination);
       if (smooth) {
