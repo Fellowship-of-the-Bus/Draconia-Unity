@@ -8,6 +8,7 @@ public class Attributes : MonoBehaviour {
   public int maxHealth = 20;
   public int physicalDefense;
   public int magicDefense;
+  public float healingMultiplier = 1;
 
   //Equipment only Values
   public int fireResistance;

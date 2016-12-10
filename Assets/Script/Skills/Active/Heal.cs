@@ -20,7 +20,7 @@ public class Heal: HealingSkill {
   }
 
   public override int calculateHealing(Character source, Character target) {
-    return (int)(source.attr.intelligence*(1+level*0.1));
+    return (int)(source.attr.intelligence*(1+level*0.1) * target.attr.healingMultiplier);
   }
 
 

@@ -25,6 +25,11 @@ public class SkillTree {
     test.self = self;
     passives.Add(test);
 
+//    test = new HealingBonus();
+//    test.level = 1;
+//    test.self = self;
+//    passives.Add(test);
+
 //    test = new IronSkin();
 //    test.level = 5;
 //    test.self = self;
