@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -38,13 +39,14 @@ public class Character : EventManager {
   new void Start() {
     base.Start();
     skills = new SkillTree(this);
-    applyPassives();
 
     setSkills();
 
     curHealth = attr.maxHealth;
     moveAI.owner = this;
     attackAI.owner = this;
+
+    applyPassives();
   }
 
   void setSkills() {
@@ -174,15 +176,22 @@ public class Character : EventManager {
     return GameManager.get.getTilesWithinRange(curTile, range).Contains(target.curTile);
   }
 
-  public void attackWithSkill(Skill skill, List<Character> targets) {
+  public void attackWithSkill(ActiveSkill skill, List<Character> targets) {
     onEvent(new Event(this, EventHook.preAttack));
     foreach (Character c in targets) {
-      Event e = new Event(this, EventHook.preDamage);
-      c.onEvent(e);
+      int damage = skill.calculateDamage(this,c);
+        Event e = new Event(this, EventHook.preDamage);
+      if (damage > 0) {
+        c.onEvent(e);
+      }
       if (e.finishAttack) {
         skill.activate(c);
         if (c.isAlive()){
-          c.onEvent(new Event(this, EventHook.postDamage));
+          if (damage > 0) {
+            Event e2 = new Event(this, EventHook.postDamage);
+            e2.damageTaken = damage;
+            c.onEvent(e2);
+          }
         }
         onEvent(new Event(this, EventHook.postAttack));
       }
@@ -192,10 +201,22 @@ public class Character : EventManager {
   public void takeDamage(int damage) {
     curHealth -= damage;
     if (curHealth <= 0) {
-      ActionQueue.get.remove(gameObject);
-      gameObject.SetActive(false);
-      curTile.occupant = null;
+      Event e = new Event(this, EventHook.preDeath);
+      onEvent(e);
+      if (e.preventDeath) {
+        curHealth = 1;
+      } else {
+        onDeath();
+      }
     }
+  }
+
+  public void onDeath() {
+    ActionQueue.get.remove(gameObject);
+    gameObject.SetActive(false);
+    curTile.occupant = null;
+    onEvent(new Event(this, EventHook.postDeath));
+
   }
 
   public bool isAlive() {

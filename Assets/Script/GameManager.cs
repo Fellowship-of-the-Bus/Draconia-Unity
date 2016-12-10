@@ -193,6 +193,8 @@ public class GameManager : MonoBehaviour {
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
+    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);

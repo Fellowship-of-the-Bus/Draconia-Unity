@@ -13,6 +13,7 @@ public enum EventHook {
   postMove,
   dodge,
   endTurn,
+  startTurn,
 }
 
 public class EventManager : MonoBehaviour {
