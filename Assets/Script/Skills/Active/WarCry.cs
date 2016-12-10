@@ -28,8 +28,8 @@ public class WarCry: ActiveSkill, AoeSkill {
     List<GameObject> targets = new List<GameObject>();
     targets.Add(self.gameObject);
     foreach (Tile t in tiles) {
-      if (t.occupied() && (t.occupant.gameObject.GetComponent<Character>().team == self.team)) {
-        targets.Add(t.occupant.gameObject);
+      if (t.occupied() && (t.occupant.GetComponent<Character>().team == self.team)) {
+        targets.Add(t.occupant);
       }
     }
     return targets;

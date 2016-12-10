@@ -1,7 +1,14 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System;
 
-public class BerserkEffect : Effect {
+public class Berserk : PassiveSkill {
+  public override List<GameObject> getTargets() {
+    List<GameObject> targets = new List<GameObject>();
+    targets.Add(self.gameObject);
+    return targets;
+  }
+
   int preAttackHP;
   public override void onActivate() {
     attachListener(owner, EventHook.preDamage);

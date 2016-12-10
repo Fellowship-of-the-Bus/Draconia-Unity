@@ -26,7 +26,7 @@ public class SkullBash: ActiveSkill {
   }
 
   public override void additionalEffects (Character target) {
-    Dazed debuff = new Dazed();
+    DazedEffect debuff = new DazedEffect();
     target.curAction = Math.Max(0, target.curAction - 300);
     debuff.level = level;
     debuff.duration = 3;
