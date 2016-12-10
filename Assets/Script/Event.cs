@@ -8,6 +8,8 @@ public class Event {
   public bool finishAttack = true;
   public bool preventDeath = false;
 
+  public int damageTaken;
+
   public Event(Character sender, EventHook hook) {
     this.sender = sender;
     this.hook = hook;
