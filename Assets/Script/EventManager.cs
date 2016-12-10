@@ -14,6 +14,10 @@ public enum EventHook {
   dodge,
   endTurn,
   startTurn,
+  preHealing,
+  postHealing,
+  preHealed,
+  postHealed,
 }
 
 public class EventManager : MonoBehaviour {
