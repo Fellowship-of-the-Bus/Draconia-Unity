@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -175,10 +176,10 @@ public class Character : EventManager {
     return GameManager.get.getTilesWithinRange(curTile, range).Contains(target.curTile);
   }
 
-  public void attackWithSkill(Skill skill, List<Character> targets) {
+  public void attackWithSkill(ActiveSkill skill, List<Character> targets) {
     onEvent(new Event(this, EventHook.preAttack));
     foreach (Character c in targets) {
-      int damage = ((ActiveSkill)skill).calculateDamage(this,c);
+      int damage = skill.calculateDamage(this,c);
         Event e = new Event(this, EventHook.preDamage);
       if (damage > 0) {
         c.onEvent(e);
