@@ -9,7 +9,8 @@ public abstract class Effect : EventListener {
     owner = c;
   }
   //when this is removed from owner
-  public abstract void onRemove();
+  public virtual void onRemove() {
+  }
   //when this takes effect
   public abstract void onActivate();
   //when this loses effect (due to shadowed by higher level skill)
@@ -30,8 +31,9 @@ public abstract class Effect : EventListener {
     return this.level > other.level;
   }
 
-  public sealed override void detachListener(EventManager e) {
-    Debug.Assert(duration == -1);
-    base.detachListener(e);
-  }
+  //public sealed override void detachListener(EventManager e) {
+  //  Debug.Log("detach")
+  //  Debug.Assert(duration == -1);
+  //  base.detachListener(e);
+  //}
 }

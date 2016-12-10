@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 
 public class Dazed : Effect {
-  public override void onRemove() {
-
-  }
   public override void onActivate() {
     owner.attr.speed -= level;
   }
