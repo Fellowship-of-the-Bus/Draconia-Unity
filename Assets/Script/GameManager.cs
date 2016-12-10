@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
+    eventManager.setGlobal();
     waitEndTurn = new LinkedList<Coroutine>();
     get = this;
     moving = false;
