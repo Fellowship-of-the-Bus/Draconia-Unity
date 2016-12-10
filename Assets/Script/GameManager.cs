@@ -582,7 +582,7 @@ public class GameManager : MonoBehaviour {
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
     }
-    if (from.occupied() && !(from.occupant.tag.Equals(SelectedPiece.tag))) {
+    if (from.occupied() && !(SelectedPiece.GetComponent<Character>().team == from.occupant.GetComponent<Character>().team)) {
       return Int32.MaxValue/4;
     }
 
