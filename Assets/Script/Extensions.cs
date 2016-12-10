@@ -25,7 +25,7 @@ public static class Extensions {
   }
 
   public static IEnumerable<TResult> Where<TResult> (this IEnumerable<TResult> source, Func<TResult, bool> f) {
-    IEnumerator<TResult> it =source.GetEnumerator();
+    IEnumerator<TResult> it = source.GetEnumerator();
     while(it.MoveNext()) {
       if (f(it.Current)) {
         yield return it.Current;

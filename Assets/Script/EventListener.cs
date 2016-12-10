@@ -6,7 +6,7 @@ public abstract class EventListener {
     manager.addListener(this, hook);
   }
 
-  public void detachListener(EventManager manager) {
+  public virtual void detachListener(EventManager manager) {
     manager.removeListener(this);
   }
 

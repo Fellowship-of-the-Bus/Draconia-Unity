@@ -29,4 +29,9 @@ public abstract class Effect : EventListener {
   public virtual bool isGreaterThan(Effect other) {
     return this.level > other.level;
   }
+
+  public sealed override void detachListener(EventManager e) {
+    Debug.Assert(duration == -1);
+    base.detachListener(e);
+  }
 }

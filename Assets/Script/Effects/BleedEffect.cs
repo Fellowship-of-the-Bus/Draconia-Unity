@@ -9,7 +9,6 @@ public class BleedEffect : Effect {
     attachListener(owner, EventHook.endTurn);
   }
   public override void onDeactivate() {
-    detachListener(owner);
   }
   public override void additionalEffect(Event e) {
     owner.takeDamage(damage);
