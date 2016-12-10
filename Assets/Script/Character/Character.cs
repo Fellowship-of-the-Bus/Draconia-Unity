@@ -192,10 +192,22 @@ public class Character : EventManager {
   public void takeDamage(int damage) {
     curHealth -= damage;
     if (curHealth <= 0) {
-      ActionQueue.get.remove(gameObject);
-      gameObject.SetActive(false);
-      curTile.occupant = null;
+      Event e = new Event(this, EventHook.preDeath);
+      onEvent(e);
+      if (e.preventDeath) {
+        curHealth = 1;
+      } else {
+        onDeath();
+      }
     }
+  }
+
+  public void onDeath() {
+    ActionQueue.get.remove(gameObject);
+    gameObject.SetActive(false);
+    curTile.occupant = null;
+    onEvent(new Event(this, EventHook.postDeath));
+
   }
 
   public bool isAlive() {
