@@ -17,6 +17,8 @@ public class CounterSkill : PassiveSkill {
   }
 
   public override void additionalEffect(Event e) {
+    // don't counter yourself or your teammates.
+    if (owner == e.sender || owner.team == e.sender.team) return; 
     float chance = UnityEngine.Random.value;
     if (chance < 0.1*level && owner.inRange(e.sender, 1)) {
       Punch atk = new Punch();
