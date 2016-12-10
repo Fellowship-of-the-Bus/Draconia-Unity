@@ -3,9 +3,6 @@ using System;
 
 public class BerserkEffect : Effect {
   int preAttackHP;
-  public override void onRemove() {
-
-  }
   public override void onActivate() {
     attachListener(owner, EventHook.preDamage);
     attachListener(owner, EventHook.postDamage);

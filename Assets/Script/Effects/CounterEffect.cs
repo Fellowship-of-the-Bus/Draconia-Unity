@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 public class CounterEffect : Effect {
-  public override void onRemove() {}
   public override void onActivate() {
     attachListener(owner, EventHook.postDamage);
   }

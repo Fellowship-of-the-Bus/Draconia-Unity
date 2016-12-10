@@ -52,7 +52,7 @@ public class EventManager : MonoBehaviour {
       listeners[e.hook] = new HashSet<EventListener>(listeners[e.hook].Filter( (EventListener listener) => {
         Effect effect = listener as Effect;
         if (effect != null && effect.duration == 0) {
-          effect.onDeactivate();
+          effect.onRemove();
           return false;
         }
         return true;

@@ -36,5 +36,10 @@ public static class Extensions {
     return source.Where(f);
   }
 
+  public static void ForEach<T>(this IEnumerable<T> xs, Action<T> f) {
+    foreach (var x in xs) {
+      f(x);
+    }
+  }
 }
 

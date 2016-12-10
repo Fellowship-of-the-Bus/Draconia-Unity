@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 
 public class CrippleEffect : Effect {
-  public override void onRemove() {
-
-  }
   public override void onActivate() {
     owner.moveRange -= level;
   }
