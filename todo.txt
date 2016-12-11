@@ -6,3 +6,8 @@ screens between battles
 multi texture cubes
 disable buttons: during movement, end turn, coroutines...
 advanced AI
+
+
+Effect endTurn issue:
+  Add DurationedEffect which overrides attachListener to always listen on endTurn and update duration
+  Only call onEvent with endTurn if subclass has explicitly listened on endTurn hook.
