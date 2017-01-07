@@ -5,7 +5,7 @@ public class WarCry: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
 
   public WarCry() {
-    range = 1;
+    range = 0;
     aoe = 1;
     useLos = false;
     name = "WarCry";

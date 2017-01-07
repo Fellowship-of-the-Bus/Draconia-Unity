@@ -14,6 +14,7 @@ public enum EventHook {
   dodge,
   endTurn,
   startTurn,
+  none,
 }
 
 public class EventManager : MonoBehaviour {
@@ -53,14 +54,24 @@ public class EventManager : MonoBehaviour {
         listener.onEvent(e);
       }
 
-      listeners[e.hook] = new HashSet<EventListener>(listeners[e.hook].Filter( (EventListener listener) => {
-        Effect effect = listener as Effect;
-        if (effect != null && effect.duration == 0) {
-          effect.onRemove();
-          return false;
-        }
-        return true;
-      }));
+      if (e.hook == EventHook.endTurn) {
+        listeners[e.hook] = new HashSet<EventListener>(listeners[e.hook].Filter((EventListener listener) => {
+          Effect effect = listener as Effect;
+
+          if (effect != null) {
+            Debug.AssertFormat(effect.duration != 0, "Duration is 0");
+            if (effect.duration != -1) {
+              effect.duration--;
+            }
+
+            if (effect.duration == 0) {
+              effect.onRemove();
+              return false;
+            }
+          }
+          return true;
+        }));
+      }
     }
   }
 

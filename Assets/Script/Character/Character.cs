@@ -71,6 +71,8 @@ public class Character : EventManager {
         skill = new SkullBash();
       } else if (skillName == "Puncture") {
         skill = new Puncture();
+      } else if (skillName == "Intercept") {
+        skill = new Intercept();
       } else {
         Debug.Log("Skill not recognized");
         skill = new Punch();
@@ -143,6 +145,7 @@ public class Character : EventManager {
 
 
   public void removeEffect(Effect effect) {
+    Debug.Log("remove effect");
     List<Effect> l = effects.Get(effect);
     if (l.Count == 0) {
       return;
@@ -177,11 +180,18 @@ public class Character : EventManager {
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Character> targets) {
+    // Debug.Log(skill.name);
     onEvent(new Event(this, EventHook.preAttack));
-    foreach (Character c in targets) {
+    foreach (Character target in targets) {
+      var c = target;
       int damage = skill.calculateDamage(this,c);
-        Event e = new Event(this, EventHook.preDamage);
+      Event e = new Event(this, EventHook.preDamage);
       if (damage > 0) {
+        c.onEvent(e);
+      }
+
+      if (e.newTarget != null) {
+        c = e.newTarget;
         c.onEvent(e);
       }
       if (e.finishAttack) {

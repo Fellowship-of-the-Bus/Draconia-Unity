@@ -324,9 +324,11 @@ public class GameManager : MonoBehaviour {
 
 
   public void updateTile(Character c, Tile t) {
+    eventManager.onEvent(new Event(c, EventHook.preMove));
     c.curTile.occupant = null;
     c.curTile = t;
     t.occupant = c.gameObject;
+    eventManager.onEvent(new Event(c, EventHook.postMove));
   }
 
   public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool doChangeState = false) {
@@ -337,11 +339,9 @@ public class GameManager : MonoBehaviour {
     Character c = SelectedPiece.GetComponent<Character>();
 
     if (destination.distance <= c.moveRange && !destination.occupied()) {
-      eventManager.onEvent(new Event(c, EventHook.preMove));
       //after moving, remove from origin tile,
       //add to new tile
       updateTile(c,destination);
-      eventManager.onEvent(new Event(c, EventHook.postMove));
 
       coordToMove.y = destination.transform.position.y + getHeight(destination);
       if (smooth) {

@@ -7,6 +7,7 @@ public class Event {
   public EventHook hook;
   public bool finishAttack = true;
   public bool preventDeath = false;
+  public Character newTarget;
 
   public int damageTaken;
 
