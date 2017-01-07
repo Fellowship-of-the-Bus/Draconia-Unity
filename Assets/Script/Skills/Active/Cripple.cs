@@ -27,6 +27,7 @@ public class Cripple: ActiveSkill {
   public override void additionalEffects (Character target) {
     CrippleEffect debuff = new CrippleEffect();
     debuff.level = level;
+    debuff.duration = 2;
     target.applyEffect(debuff);
   }
 

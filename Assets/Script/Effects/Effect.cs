@@ -3,8 +3,7 @@ using UnityEngine;
 public abstract class Effect : EventListener {
   public Character owner = null;
   public int level = 0;
-  public int duration = -1;
-  public void onApply(Character c) {
+  public virtual void onApply(Character c) {
     Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     owner = c;
     whenApplied(c);
@@ -16,7 +15,8 @@ public abstract class Effect : EventListener {
   public abstract void onActivate();
   //when this loses effect (due to shadowed by higher level skill)
   public abstract void onDeactivate();
-  public sealed override void onEvent(Event e) {
+
+  public override void onEvent(Event e) {
     additionalEffect(e);
   }
 

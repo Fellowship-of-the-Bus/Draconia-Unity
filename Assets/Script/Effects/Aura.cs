@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Aura<T> : Effect where T: Effect, new() {
+public class Aura<T> : DurationEffect where T: Effect, new() {
   public int radius;
   public bool applyToSelf = true;
   private Func<T> effectFactory;
@@ -11,11 +11,6 @@ public class Aura<T> : Effect where T: Effect, new() {
   public Aura(int r, Func<T> f) {
     radius = r;
     effectFactory = f;
-  }
-
-  public override void whenApplied(Character c) {
-    attachListener(GameManager.get.eventManager, EventHook.preMove);
-    attachListener(GameManager.get.eventManager, EventHook.postMove);
   }
 
   public override void additionalEffect(Event e) {
@@ -27,14 +22,16 @@ public class Aura<T> : Effect where T: Effect, new() {
   }
 
   public override void onActivate() {
+    attachListener(GameManager.get.eventManager, EventHook.preMove);
+    attachListener(GameManager.get.eventManager, EventHook.postMove);
     addAura();
   }
 
-  public override void onDeactivate() {
+  public override void onDeactivateEffects() {
     removeAura();
   }
 
-  public override void onRemove() {
+  public override void onDeactivateListeners() {
     detachListener(GameManager.get.eventManager);
   }
 

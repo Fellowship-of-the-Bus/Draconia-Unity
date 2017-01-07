@@ -16,6 +16,7 @@ public class Intercept: ActiveSkill {
     Func<InterceptEffect> f = () => {
       InterceptEffect eff = new InterceptEffect();
       eff.origin = self;
+      eff.duration = -1;
       return eff;
     };
 

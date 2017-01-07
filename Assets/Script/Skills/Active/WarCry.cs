@@ -14,6 +14,7 @@ public class WarCry: ActiveSkill, AoeSkill {
   public override void additionalEffects (Character target) {
     WarCryEffect e = new WarCryEffect();
     e.level = level;
+    e.duration = 1;
     target.applyEffect(e);
   }
 

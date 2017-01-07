@@ -161,7 +161,7 @@ public class Character : EventManager {
     l.Remove(effect);
 
     if (l.Count == 0) {
-      effect.onDeactivate();
+      effect.onRemove();
       return;
     }
 
@@ -177,7 +177,7 @@ public class Character : EventManager {
 
     //if we are strongest, deactivate and activate next maximum effect
     if (effect.isGreaterThan(maxEffect)) {
-      effect.onDeactivate();
+      effect.onRemove();
       maxEffect.onActivate();
     }
   }
@@ -200,7 +200,7 @@ public class Character : EventManager {
     } else {
       onEvent(new Event(this, EventHook.preAttack));
       foreach (Character target in targets) {
-        var c = target;        
+        var c = target;
         int damage = skill.calculateDamage(this,c);
         Event e = new Event(this, EventHook.preDamage);
         if (damage > 0) {

@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class BleedEffect : Effect {
+public class BleedEffect : DurationEffect {
   public int damage;
 
   public override void onActivate() {
     attachListener(owner, EventHook.endTurn);
   }
-  public override void onDeactivate() {
+  public override void onDeactivateListeners() {
     detachListener(owner);
   }
   public override void additionalEffect(Event e) {

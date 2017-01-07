@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System;
 
-public class InterceptEffect : Effect {
+public class InterceptEffect : DurationEffect {
   public Character origin;
 
   public override void onActivate() {
     attachListener(owner, EventHook.preDamage);
   }
-  public override void onDeactivate() {
+  public override void onDeactivateListeners() {
     detachListener(owner);
   }
   public override void additionalEffect(Event e) {

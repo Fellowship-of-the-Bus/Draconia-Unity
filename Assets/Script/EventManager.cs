@@ -58,22 +58,13 @@ public class EventManager : MonoBehaviour {
       }
 
       if (e.hook == EventHook.endTurn) {
-        listeners[e.hook] = new HashSet<EventListener>(listeners[e.hook].Filter((EventListener listener) => {
-          Effect effect = listener as Effect;
-
-          if (effect != null) {
-            Debug.AssertFormat(effect.duration != 0, "Duration is 0");
-            if (effect.duration != -1) {
-              effect.duration--;
-            }
-
-            if (effect.duration == 0) {
-              effect.onRemove();
-              return false;
-            }
+        List<EventListener> list = new List<EventListener>(listeners[e.hook]);
+        foreach (EventListener listener in list) {
+          DurationEffect effect = listener as DurationEffect;
+          if (effect != null && effect.duration == 0) {
+            effect.owner.removeEffect(effect);
           }
-          return true;
-        }));
+        }
       }
     }
   }
