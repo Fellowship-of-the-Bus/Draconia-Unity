@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour {
   }
 
   int blinkFrameNumber = 0;
-  bool displayLowerHealth = false;
+  bool displayChangedHealth = false;
   void Update() {
     //enable the line only when attacking
     if (gameState == GameState.attacking) {
@@ -140,9 +140,12 @@ public class GameManager : MonoBehaviour {
       Character targetCharacter = previewTarget.GetComponent<Character>();
       if (targetCharacter == null) return;
       targetPanel.SetActive(true);
-      if (displayLowerHealth) {
+      if (displayChangedHealth) {
+        Character selectedCharacter = SelectedPiece.GetComponent<Character>();
         Vector3 scale = targetHealth.transform.localScale;
-        scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.attr.maxHealth;
+        Skill s = selectedCharacter.equippedSkills[SelectedSkill];
+        if (s is HealingSkill) scale.x = (float)(targetCharacter.curHealth + targetCharacter.PreviewHealing)/targetCharacter.attr.maxHealth;
+        else scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.attr.maxHealth;
         targetHealth.transform.localScale = scale;
       } else {
         Vector3 scale = targetHealth.transform.localScale;
@@ -151,7 +154,7 @@ public class GameManager : MonoBehaviour {
       }
       blinkFrameNumber = (blinkFrameNumber+1)%30;
       if (blinkFrameNumber == 0) {
-        displayLowerHealth = !displayLowerHealth;
+        displayChangedHealth = !displayChangedHealth;
       }
     }
   }
@@ -247,7 +250,8 @@ public class GameManager : MonoBehaviour {
     Character cTarget = target.GetComponent<Character>();
     if (cTarget != null) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      cTarget.PreviewDamage = selectedCharacter.equippedSkills[SelectedSkill].calculateDamage(selectedCharacter, cTarget);
+      if (selectedCharacter.equippedSkills[SelectedSkill] is HealingSkill) cTarget.PreviewHealing = (selectedCharacter.equippedSkills[SelectedSkill] as HealingSkill).calculateHealing(selectedCharacter, cTarget);
+      else cTarget.PreviewDamage = selectedCharacter.equippedSkills[SelectedSkill].calculateDamage(selectedCharacter, cTarget);
     }
     //todo: aoe health bar hover?
   }

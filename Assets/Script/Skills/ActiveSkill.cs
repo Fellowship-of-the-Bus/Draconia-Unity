@@ -9,7 +9,7 @@ public abstract class ActiveSkill : Skill {
   public string name {get; set;}
   public int cooldown {get; set;}
 
-  public void activate(Character target) {
+  public virtual void activate(Character target) {
     target.takeDamage(calculateDamage(self, target));
     additionalEffects(target);
   }

@@ -29,6 +29,12 @@ public class Character : EventManager {
     set { previewDamage = value; }
   }
 
+  public int previewHealing;
+  public int PreviewHealing{
+    get { return Math.Min(previewHealing, attr.maxHealth - curHealth); }
+    set { previewHealing = value; }
+  }
+
   public BaseMoveAI moveAI = new BasicMoveAI();
   public BaseAttackAI attackAI = new BasicAttackAI();
 
@@ -73,6 +79,8 @@ public class Character : EventManager {
         skill = new Puncture();
       } else if (skillName == "Intercept") {
         skill = new Intercept();
+      } else if (skillName == "Heal") {
+        skill = new Heal();
       } else {
         Debug.Log("Skill not recognized");
         skill = new Punch();
@@ -180,6 +188,7 @@ public class Character : EventManager {
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Character> targets) {
+<<<<<<< HEAD
     // Debug.Log(skill.name);
     onEvent(new Event(this, EventHook.preAttack));
     foreach (Character target in targets) {
@@ -201,9 +210,37 @@ public class Character : EventManager {
             Event e2 = new Event(this, EventHook.postDamage);
             e2.damageTaken = damage;
             c.onEvent(e2);
-          }
+=======
+    if (skill is HealingSkill) {
+      HealingSkill hSkill = skill as HealingSkill;
+      onEvent(new Event(this, EventHook.preHealing));
+      foreach (Character c in targets) {
+        int amount = hSkill.calculateHealing(this,c);
+        if (amount > 0) c.onEvent(new Event(this, EventHook.preHealed));
+        hSkill.activate(c);
+        if (amount > 0) c.onEvent(new Event(this, EventHook.postHealed));
+      }
+      onEvent(new Event(this, EventHook.postHealing));
+    } else {
+      onEvent(new Event(this, EventHook.preAttack));
+      foreach (Character c in targets) {
+        int damage = skill.calculateDamage(this,c);
+        Event e = new Event(this, EventHook.preDamage);
+        if (damage > 0) {
+          c.onEvent(e);
         }
-        onEvent(new Event(this, EventHook.postAttack));
+        if (e.finishAttack) {
+          skill.activate(c);
+          if (c.isAlive()){
+            if (damage > 0) {
+              Event e2 = new Event(this, EventHook.postDamage);
+              e2.damageTaken = damage;
+              c.onEvent(e2);
+            }
+>>>>>>> a83d411ec14c57665abc0dc4f1a5054a2fb760b0
+          }
+          onEvent(new Event(this, EventHook.postAttack));
+        }
       }
     }
   }
@@ -219,6 +256,10 @@ public class Character : EventManager {
         onDeath();
       }
     }
+  }
+
+  public void takeHealing(int amount) {
+    curHealth = Math.Min(attr.maxHealth, curHealth + amount);
   }
 
   public void onDeath() {
