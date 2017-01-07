@@ -153,7 +153,6 @@ public class Character : EventManager {
 
 
   public void removeEffect(Effect effect) {
-    Debug.Log("remove effect");
     List<Effect> l = effects.Get(effect);
     if (l.Count == 0) {
       return;
@@ -188,29 +187,6 @@ public class Character : EventManager {
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Character> targets) {
-<<<<<<< HEAD
-    // Debug.Log(skill.name);
-    onEvent(new Event(this, EventHook.preAttack));
-    foreach (Character target in targets) {
-      var c = target;
-      int damage = skill.calculateDamage(this,c);
-      Event e = new Event(this, EventHook.preDamage);
-      if (damage > 0) {
-        c.onEvent(e);
-      }
-
-      if (e.newTarget != null) {
-        c = e.newTarget;
-        c.onEvent(e);
-      }
-      if (e.finishAttack) {
-        skill.activate(c);
-        if (c.isAlive()){
-          if (damage > 0) {
-            Event e2 = new Event(this, EventHook.postDamage);
-            e2.damageTaken = damage;
-            c.onEvent(e2);
-=======
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
       onEvent(new Event(this, EventHook.preHealing));
@@ -223,10 +199,15 @@ public class Character : EventManager {
       onEvent(new Event(this, EventHook.postHealing));
     } else {
       onEvent(new Event(this, EventHook.preAttack));
-      foreach (Character c in targets) {
+      foreach (Character target in targets) {
+        var c = target;        
         int damage = skill.calculateDamage(this,c);
         Event e = new Event(this, EventHook.preDamage);
         if (damage > 0) {
+          c.onEvent(e);
+        }
+        if (e.newTarget != null) {
+          c = e.newTarget;
           c.onEvent(e);
         }
         if (e.finishAttack) {
@@ -237,7 +218,6 @@ public class Character : EventManager {
               e2.damageTaken = damage;
               c.onEvent(e2);
             }
->>>>>>> a83d411ec14c57665abc0dc4f1a5054a2fb760b0
           }
           onEvent(new Event(this, EventHook.postAttack));
         }

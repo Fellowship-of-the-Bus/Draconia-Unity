@@ -35,7 +35,6 @@ public class Aura<T> : Effect where T: Effect, new() {
   }
 
   public override void onRemove() {
-    Debug.Log("Remove Aura");
     detachListener(GameManager.get.eventManager);
   }
 
