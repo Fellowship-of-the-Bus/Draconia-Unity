@@ -25,4 +25,13 @@ public abstract class Effect : EventListener {
   public virtual bool isGreaterThan(Effect other) {
     return this.level > other.level;
   }
+
+  public static bool operator >(Effect e1, Effect e2) {
+    return e1.isGreaterThan(e2);
+  }
+
+  public static bool operator <(Effect e1, Effect e2) {
+    return e2.isGreaterThan(e1);
+  }
+
 }

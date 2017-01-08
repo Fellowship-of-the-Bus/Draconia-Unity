@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 public class Character : EventManager {
-  TypeMap<List<Effect>> effects = new TypeMap<List<Effect>>();
+  TypeMap<Heap<Effect>> effects = new TypeMap<Heap<Effect>>();
   //inventory
   //skill tree
   public SkillTree skills = null;
@@ -121,64 +121,38 @@ public class Character : EventManager {
 
   public void applyEffect(Effect effect) {
     if (!effects.ContainsKey(effect)) {
-      effects.Add(effect, new List<Effect>());
+      effects.Add(effect, new Heap<Effect>());
     }
     effect.onApply(this);
-    List<Effect> l = effects.Get(effect);
+    Heap<Effect> l = effects.Get(effect);
 
-    //if list is empty
-    if (l.Count == 0) {
-      effect.onActivate();
-      l.Add(effect);
-      return;
-    }
     //find max level of effects in list
-    Effect maxEffect = null;
-    foreach (Effect e in l) {
-      if (maxEffect == null) {
-        maxEffect = e;
-      } else if (e.isGreaterThan(maxEffect)) {
-        maxEffect = e;
-      }
-    }
+    Effect maxEffect = l.getMax();
 
     //if newly applied effect is the highest level
     //activate it and deactivate the highest leveled one.
-    if (effect.isGreaterThan(maxEffect)) {
-      effect.onActivate();
+    if (maxEffect != null && effect > maxEffect) {
       maxEffect.onDeactivate();
+      effect.onActivate();
+    } else if (maxEffect == null) {
+      effect.onActivate();
     }
-    l.Add(effect);
+    l.add(effect);
   }
 
 
   public void removeEffect(Effect effect) {
-    List<Effect> l = effects.Get(effect);
-    if (l.Count == 0) {
-      return;
-    }
+    Heap<Effect> l = effects.Get(effect);
+    Debug.Assert(l.Count != 0);
 
-    l.Remove(effect);
+    Effect maxEffect = l.getMax();
+    l.remove(effect);
 
-    if (l.Count == 0) {
+    if (effect == maxEffect) {
       effect.onRemove();
-      return;
-    }
-
-    //find max level of effects in list
-    Effect maxEffect = null;
-    foreach (Effect e in l) {
-      if (maxEffect == null) {
-        maxEffect = e;
-      } else if (e.isGreaterThan(maxEffect)) {
-        maxEffect = e;
+      if (l.getMax() != null) {
+        l.getMax().onActivate();
       }
-    }
-
-    //if we are strongest, deactivate and activate next maximum effect
-    if (effect.isGreaterThan(maxEffect)) {
-      effect.onRemove();
-      maxEffect.onActivate();
     }
   }
 
