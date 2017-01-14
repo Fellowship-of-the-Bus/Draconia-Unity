@@ -176,13 +176,19 @@ public class Character : EventManager {
               c.onEvent(e2);
             }
           }
-          onEvent(new Event(this, EventHook.postAttack));
+          Event e3 = new Event(this, EventHook.postAttack);
+          e3.damageTaken = damage;
+          e3.attackTarget = c;
+          onEvent(e3);
         }
       }
     }
   }
 
   public void takeDamage(int damage) {
+    if (curHealth <= 0) {
+      return;
+    }
     curHealth -= damage;
     if (curHealth <= 0) {
       Event e = new Event(this, EventHook.preDeath);

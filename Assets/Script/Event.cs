@@ -10,6 +10,7 @@ public class Event {
   public Character newTarget;
 
   public int damageTaken;
+  public Character attackTarget;
 
   public Event(Character sender, EventHook hook) {
     this.sender = sender;
