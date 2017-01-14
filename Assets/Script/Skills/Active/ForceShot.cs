@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class HookShot: RangedTargeting {
+public class ForceShot: RangedTargeting {
 
-  public HookShot() {
+  public ForceShot() {
     useLos = false;
-    name = "Hook Shot";
+    name = "Force Shot";
   }
 
   float upThreshold = 0.5f;
 
   Tile pullTo(Character c) {
-    Vector3 heading =  self.gameObject.transform.position - c.gameObject.transform.position;
+    Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
     Vector3 direction = heading / heading.magnitude;
     direction.x = Mathf.Round(direction.x);
     direction.z = Mathf.Round(direction.z);
