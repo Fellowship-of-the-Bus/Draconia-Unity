@@ -22,7 +22,6 @@ public class Heap<T> where T: Effect {
 
   public int Count {
     get { return heap.Count; }
-    private set {}
   }
 
   public bool hasObject (T o) {
