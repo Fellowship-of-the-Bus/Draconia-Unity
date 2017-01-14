@@ -11,7 +11,7 @@ public class ForceShot: RangedTargeting {
 
   float upThreshold = 0.5f;
 
-  Tile pullTo(Character c) {
+  Tile knockTo(Character c) {
     Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
     Vector3 direction = heading / heading.magnitude;
     direction.x = Mathf.Round(direction.x);
@@ -24,7 +24,7 @@ public class ForceShot: RangedTargeting {
   public override void additionalEffects(Character c) {
     range = self.attr.weaponRange;
 
-    Tile t = pullTo(c);
+    Tile t = knockTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
       GameManager.get.updateTile(c,t);
       LinkedList<Tile> tile = new LinkedList<Tile>();
