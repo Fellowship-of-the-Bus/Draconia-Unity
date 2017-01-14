@@ -58,6 +58,10 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
+
+  }
+
+  void Awake() {
     eventManager.setGlobal();
     waitEndTurn = new LinkedList<Coroutine>();
     get = this;
