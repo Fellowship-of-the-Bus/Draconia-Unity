@@ -512,7 +512,7 @@ public class GameManager : MonoBehaviour {
         AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
         var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
         if (targetsInAoe != null) {
-          foreach (GameObject o in skill.getTargetsInAoe(src.gameObject.transform.position)) {
+          foreach (GameObject o in targetsInAoe) {
             if (o.tag == "Cube") getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.yellow;
             else getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
           }
