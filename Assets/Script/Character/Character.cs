@@ -83,6 +83,8 @@ public class Character : EventManager {
         skill = new Heal();
       } else if (skillName == "Fireball") {
         skill = new Fireball();
+      } else if (skillName == "incinerate") {
+        skill = new Incinerate();
       } else {
         Debug.Log("Skill not recognized");
         skill = new Punch();
