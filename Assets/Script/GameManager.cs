@@ -510,9 +510,12 @@ public class GameManager : MonoBehaviour {
           o.GetComponent<Renderer>().material.color = Color.blue;
         }
         AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
-        foreach (GameObject o in skill.getTargetsInAoe(src.gameObject.transform.position)) {
-          if (o.tag == "Cube") getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-          else getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+        var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
+        if (targetsInAoe != null) {
+          foreach (GameObject o in skill.getTargetsInAoe(src.gameObject.transform.position)) {
+            if (o.tag == "Cube") getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.yellow;
+            else getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+          }
         }
       }
     }
@@ -626,6 +629,14 @@ public class GameManager : MonoBehaviour {
         inRangeTiles.Add(other);
       }
     }
+    return inRangeTiles;
+  }
+
+  public List<Tile> getCardinalTilesWithinRange(Tile t, int range) {
+    List<Tile> inRangeTiles = getTilesWithinRange(t, range);
+    inRangeTiles = new List<Tile>(inRangeTiles.Filter((tile) =>
+      Math.Abs(tile.gameObject.transform.position.x - t.gameObject.transform.position.x) < 0.05f  ||
+      Math.Abs(tile.gameObject.transform.position.z - t.gameObject.transform.position.z) < 0.05f));
     return inRangeTiles;
   }
 
