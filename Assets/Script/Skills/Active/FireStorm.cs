@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TestAoe: ActiveSkill, AoeSkill {
+public class FireStorm: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
 
-  public TestAoe() {
+  public FireStorm() {
     range = 3;
     aoe = 2;
     useLos = false;
-    name = "TestAoe";
+    name = "FireStorm";
   }
 
   public override List<GameObject> getTargets() {
@@ -35,7 +35,7 @@ public class TestAoe: ActiveSkill, AoeSkill {
 
 
   public override int calculateDamage(Character source, Character target) {
-    return (int)(source.attr.strength*(1+level*0.1) - target.attr.physicalDefense);
+    return (int)((source.attr.intelligence*(1+level*0.1) - target.attr.magicDefense)*(100 - target.attr.fireResistance)/100f);
   }
 
 
