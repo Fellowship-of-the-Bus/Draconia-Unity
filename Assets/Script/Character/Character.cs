@@ -43,8 +43,7 @@ public class Character : EventManager {
 
   public string[] skillSet;
 
-  new void Start() {
-    base.Start();
+  void Start() {
     skills = new SkillTree(this);
 
     setSkills();
