@@ -81,6 +81,8 @@ public class Character : EventManager {
         skill = new Intercept();
       } else if (skillName == "Heal") {
         skill = new Heal();
+      } else if (skillName == "Entrench") {
+        skill = new Entrench();
       } else {
         Debug.Log("Skill not recognized");
         skill = new Punch();

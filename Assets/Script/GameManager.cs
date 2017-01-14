@@ -376,6 +376,7 @@ public class GameManager : MonoBehaviour {
       MovePiece(coordToMove, false);
       changeState(GameState.moving);
     }
+    eventManager.onEvent(new Event(SelectedPiece.GetComponent<Character>(), EventHook.cancel));
   }
 
   public void endGame(bool win) {

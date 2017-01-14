@@ -18,6 +18,7 @@ public enum EventHook {
   postHealing,
   preHealed,
   postHealed,
+  cancel,
 }
 
 public class EventManager : MonoBehaviour {

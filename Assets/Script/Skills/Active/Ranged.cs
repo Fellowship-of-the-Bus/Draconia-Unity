@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 public class Ranged: ActiveSkill {
   public Ranged() {
-    range = 3;
     useLos = false;
     name = "Ranged";
   }
   public override List<GameObject> getTargets() {
+    range = self.attr.weaponRange;
+
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
