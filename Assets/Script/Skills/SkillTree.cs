@@ -55,6 +55,13 @@ public class SkillTree {
 //    test.self = self;
 //    passives.Add(test);
 
+//    if (self.characterName == "Brodric") {
+//      test = new HasteAura();
+//      test.level = 1;
+//      test.self = self;
+//      passives.Add(test);
+//    }
+
     return passives;
   }
 }

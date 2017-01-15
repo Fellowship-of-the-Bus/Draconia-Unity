@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TestAoe: ActiveSkill, AoeSkill {
+public class FireCross: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
 
-  public TestAoe() {
-    range = 3;
+  public FireCross() {
+    range = 4;
     aoe = 2;
     useLos = false;
-    name = "TestAoe";
+    name = "FireCross";
   }
 
   public override List<GameObject> getTargets() {
@@ -16,6 +16,9 @@ public class TestAoe: ActiveSkill, AoeSkill {
     List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
+      if (t == self.curTile) {
+        continue;
+      }
       targets.Add(t.gameObject);
     }
     targets.Add(self.curTile.gameObject);
@@ -24,7 +27,12 @@ public class TestAoe: ActiveSkill, AoeSkill {
 
   public List<GameObject> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(gm.getTile(position), aoe);
+    List<Tile> tiles = gm.getCardinalTilesWithinRange(gm.getTile(position), aoe);
+    tiles.Add(gm.getTile(position));
+    return getObjectsFromTile(tiles);
+  }
+
+  List<GameObject> getObjectsFromTile(List<Tile> tiles) {
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
         if (t.occupant) targets.Add(t.occupant);
@@ -35,7 +43,7 @@ public class TestAoe: ActiveSkill, AoeSkill {
 
 
   public override int calculateDamage(Character source, Character target) {
-    return (int)(source.attr.strength*(1+level*0.1) - target.attr.physicalDefense);
+    return (int)((source.attr.intelligence*(1+level*0.1) - target.attr.magicDefense)*(100 - target.attr.fireResistance)/100f);
   }
 
 

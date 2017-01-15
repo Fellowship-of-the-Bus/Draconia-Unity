@@ -18,16 +18,22 @@ public enum EventHook {
   postHealing,
   preHealed,
   postHealed,
+  cancel,
 }
 
 public class EventManager : MonoBehaviour {
   Queue<Event> eventQueue;
   Dictionary<EventHook, HashSet<EventListener>> listeners = new Dictionary<EventHook, HashSet<EventListener>>();
-  protected void Start() {
+
+  void Awake() {
     foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
       listeners.Add(i, new HashSet<EventListener>());
     }
     eventQueue = new Queue<Event>();
+  }
+
+  void Start(){
+
   }
 
   public void setGlobal() {

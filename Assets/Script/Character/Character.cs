@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
 
 public class Character : EventManager {
   TypeMap<Heap<Effect>> effects = new TypeMap<Heap<Effect>>();
@@ -43,8 +44,7 @@ public class Character : EventManager {
 
   public string[] skillSet;
 
-  new void Start() {
-    base.Start();
+  void Start() {
     skills = new SkillTree(this);
     setSkills();
 
@@ -59,35 +59,17 @@ public class Character : EventManager {
 
   void setSkills() {
     foreach (string skillName in skillSet) {
-      ActiveSkill skill;
+      ActiveSkill skill = null;
 
-      if (skillName == "Punch") {
-        skill = new Punch();
-      } else if (skillName == "Ranged") {
-        skill = new Ranged();
-      } else if (skillName == "Aoe") {
-        skill = new TestAoe();
-      } else if (skillName == "Knockback") {
-        skill = new Knockback();
-      } else if (skillName == "Cripple") {
-        skill = new Cripple();
-      } else if (skillName == "KillingBlow") {
-        skill = new KillingBlow();
-      } else if (skillName == "WarCry") {
-        skill = new WarCry();
-      }  else if (skillName == "SkullBash") {
-        skill = new SkullBash();
-      } else if (skillName == "Puncture") {
-        skill = new Puncture();
-      } else if (skillName == "Intercept") {
-        skill = new Intercept();
-      } else if (skillName == "Heal") {
-        skill = new Heal();
-      } else {
+      foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
+        if (t.IsSubclassOf(Type.GetType("ActiveSkill")) && t.FullName == skillName) {
+          skill = (ActiveSkill)Activator.CreateInstance(t);
+        }
+      }
+      if (skill == null) {
         Debug.Log("Skill not recognized");
         skill = new Punch();
       }
-
       skill.level = 1;
       skill.self = this;
       equippedSkills.Add(skill);
@@ -196,7 +178,10 @@ public class Character : EventManager {
               c.onEvent(e2);
             }
           }
-          onEvent(new Event(this, EventHook.postAttack));
+          Event e3 = new Event(this, EventHook.postAttack);
+          e3.damageTaken = damage;
+          e3.attackTarget = c;
+          onEvent(e3);
         }
       }
     }
@@ -214,6 +199,7 @@ public class Character : EventManager {
   }
 
   public void takeDamage(int damage) {
+    if (curHealth <= 0) return;
     makeText();
     curHealth -= damage;
     if (curHealth <= 0) {
