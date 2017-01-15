@@ -27,7 +27,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 1, z: 3}
+  m_LocalPosition: {x: 1, y: 1, z: 1}
   m_LocalScale: {x: 0.75000083, y: 0.65000004, z: 0.7500011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -139,6 +139,7 @@ GameObject:
   - 223: {fileID: 223000013906772696}
   - 114: {fileID: 114000014176322290}
   - 114: {fileID: 114000011452196818}
+  - 222: {fileID: 222000011808323768}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -187,11 +188,17 @@ MonoBehaviour:
   attr: {fileID: 114000014266627256}
   curTile: {fileID: 0}
   curHealth: 0
+  maxAction: 1000
   curAction: 0
   nextMoveTime: 0
   moveRange: 4
   characterName: 
-  previewDamage: 0
+  team: 0
+  moveTolerance: 1
+  skillSet:
+  - Knockback
+  - Ranged
+  - Intercept
 --- !u!114 &114000011369420528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -269,10 +276,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strength: 0
   intelligence: 0
-  speed: 10
+  speed: 3
   maxHealth: 10
   physicalDefense: 0
   magicDefense: 0
+  healingMultiplier: 1
   fireResistance: 0
   iceResistance: 0
   lightningResistance: 0
@@ -288,6 +296,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012121336372}
+--- !u!222 &222000011808323768
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012475659506}
 --- !u!223 &223000013906772696
 Canvas:
   m_ObjectHideFlags: 1

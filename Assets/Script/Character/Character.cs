@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 
@@ -23,13 +24,13 @@ public class Character : EventManager {
   public string characterName = "";
   public int team = 0;
 
-  public int previewDamage;
+  private int previewDamage;
   public int PreviewDamage{
     get { return Math.Min(previewDamage, curHealth); }
     set { previewDamage = value; }
   }
 
-  public int previewHealing;
+  private int previewHealing;
   public int PreviewHealing{
     get { return Math.Min(previewHealing, attr.maxHealth - curHealth); }
     set { previewHealing = value; }
@@ -45,7 +46,6 @@ public class Character : EventManager {
   new void Start() {
     base.Start();
     skills = new SkillTree(this);
-
     setSkills();
 
     curHealth = attr.maxHealth;
@@ -53,6 +53,8 @@ public class Character : EventManager {
     attackAI.owner = this;
 
     applyPassives();
+
+    ui = gameObject.transform.Find("UI");
   }
 
   void setSkills() {
@@ -92,6 +94,8 @@ public class Character : EventManager {
     }
   }
 
+  private Transform ui;
+
   void Update() {
     bool debugMode = true;
     if (debugMode) {
@@ -99,7 +103,6 @@ public class Character : EventManager {
       setSkills();
     }
     // rotate overhead UI (health bar) to look at camera
-    Transform ui = gameObject.transform.Find("UI");
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
     // scale health on health bar to match current HP values
@@ -199,7 +202,19 @@ public class Character : EventManager {
     }
   }
 
+  Text makeText() {
+    GameObject ngo = Instantiate(GameManager.get.text) as GameObject;
+    ngo.transform.SetParent(ui, false);
+
+    Text myText = ngo.GetComponent<Text>();
+    var phys = ngo.AddComponent<Rigidbody>();
+    phys.useGravity = false;
+    phys.velocity = new Vector3(0, 1f);
+    return myText;
+  }
+
   public void takeDamage(int damage) {
+    makeText();
     curHealth -= damage;
     if (curHealth <= 0) {
       Event e = new Event(this, EventHook.preDeath);

@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour {
   public GameObject targetPanel;
   public GameObject mainUI;
 
+  public GameObject text;
+
   private LinkedList<Coroutine> waitEndTurn;
 
   public void waitToEndTurn(Coroutine c) {
