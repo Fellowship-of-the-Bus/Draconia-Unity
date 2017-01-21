@@ -180,7 +180,6 @@ public class Character : Effected {
     GameObject ngo = Instantiate(GameManager.get.text) as GameObject;
     ngo.transform.SetParent(ui, false);
     Text txt = (Text)ngo.GetComponent<Text>();
-    Debug.Log(txt);
     txt.text = val.ToString();
     var phys = ngo.AddComponent<Rigidbody>();
     phys.useGravity = false;
