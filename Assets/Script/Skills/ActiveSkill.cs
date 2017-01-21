@@ -11,10 +11,18 @@ public abstract class ActiveSkill : Skill {
   public int cooldown {get; set;}
 
   public virtual void activate(Character target) {
-    target.takeDamage(calculateDamage(self, target));
+    if (this is HealingSkill) {
+      HealingSkill heal = this as HealingSkill;
+      target.takeHealing(heal.calculateHealing(self,target));
+    } else {
+      target.takeDamage(calculateDamage(self, target));
+    }
     additionalEffects(target);
   }
-  public abstract int calculateDamage(Character source, Character target);
+  public virtual int calculateDamage(Character source, Character target) {
+    Debug.Assert(false);
+    return 0;
+  }
   public virtual void additionalEffects(Character target) {
 
   }
