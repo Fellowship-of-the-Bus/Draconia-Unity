@@ -7,6 +7,7 @@ public class Puncture: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Puncture";
+    cooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

@@ -8,6 +8,7 @@ public class PointBlankShot: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Point Blank Shot";
+    cooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

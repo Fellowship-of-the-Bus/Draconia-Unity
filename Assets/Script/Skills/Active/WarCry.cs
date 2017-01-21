@@ -9,6 +9,7 @@ public class WarCry: ActiveSkill, AoeSkill {
     aoe = 1;
     useLos = false;
     name = "WarCry";
+    cooldown = 2;
   }
 
   public override void additionalEffects (Character target) {

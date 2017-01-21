@@ -7,6 +7,7 @@ public class Cripple: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Cripple";
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

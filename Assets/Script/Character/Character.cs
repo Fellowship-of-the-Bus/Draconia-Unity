@@ -58,21 +58,33 @@ public class Character : EventManager {
   }
 
   void setSkills() {
+    int i = 0;
     foreach (string skillName in skillSet) {
       ActiveSkill skill = null;
-
+      bool invalidSkill = true;;
       foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
         if (t.IsSubclassOf(Type.GetType("ActiveSkill")) && t.FullName == skillName) {
           skill = (ActiveSkill)Activator.CreateInstance(t);
         }
+        if (equippedSkills.Count > i && t.FullName == skillName && t == equippedSkills[i].GetType()) {
+          skill = null;
+          invalidSkill = false;
+        }
       }
-      if (skill == null) {
+      if (skill == null && invalidSkill) {
         Debug.Log("Skill not recognized");
         skill = new Punch();
       }
-      skill.level = 1;
-      skill.self = this;
-      equippedSkills.Add(skill);
+      if (skill != null) {
+        skill.level = 1;
+        skill.self = this;
+        if (equippedSkills.Count > i) {
+          equippedSkills[i] = skill;
+        } else {
+          equippedSkills.Add(skill);
+        }
+      }
+      i++;
     }
   }
 
@@ -81,7 +93,7 @@ public class Character : EventManager {
   void Update() {
     bool debugMode = true;
     if (debugMode) {
-      equippedSkills = new List<ActiveSkill>();
+      //equippedSkills = new List<ActiveSkill>();
       setSkills();
     }
     // rotate overhead UI (health bar) to look at camera
@@ -146,6 +158,7 @@ public class Character : EventManager {
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Character> targets) {
+    skill.setCooldown();
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
       onEvent(new Event(this, EventHook.preHealing));

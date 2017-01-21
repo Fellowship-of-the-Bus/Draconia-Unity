@@ -10,6 +10,7 @@ public class FireCross: ActiveSkill, AoeSkill {
     aoe = 2;
     useLos = false;
     name = "FireCross";
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

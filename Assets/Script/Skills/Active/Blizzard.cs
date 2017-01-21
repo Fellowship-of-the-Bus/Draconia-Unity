@@ -10,6 +10,7 @@ public class Blizzard: ActiveSkill, AoeSkill {
     aoe = 5;
     useLos = false;
     name = "Blizzard";
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

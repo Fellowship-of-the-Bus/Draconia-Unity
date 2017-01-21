@@ -10,6 +10,7 @@ public class FireStorm: ActiveSkill, AoeSkill {
     aoe = 2;
     useLos = false;
     name = "FireStorm";
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

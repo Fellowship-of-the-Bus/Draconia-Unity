@@ -9,6 +9,7 @@ public class TestAoe: ActiveSkill, AoeSkill {
     aoe = 2;
     useLos = false;
     name = "TestAoe";
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

@@ -7,6 +7,7 @@ public class Heal: HealingSkill {
     useWepRange = false;
     useLos = false;
     name = "Heal";
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

@@ -8,6 +8,7 @@ public class ForceShot: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Force Shot";
+    cooldown = 2;
   }
 
   float upThreshold = 0.5f;
