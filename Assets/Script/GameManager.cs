@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour {
   //variables to handles turns
   public Tile originalTile;
   public GameObject SelectedPiece { get; private set;}
-  public int SelectedSkill {get; private set;}
+  public int SelectedSkill {get; set;}
   List<GameObject> skillTargets;
   GameObject previewTarget;
 
@@ -220,6 +220,7 @@ public class GameManager : MonoBehaviour {
     Vector3 position = SelectedPiece.transform.position;
     djikstra(position, SelectedPiece.GetComponent<Character>());
 
+    changeState(GameState.moving);
     if (SelectedPiece.tag == "PiecePlayer2") {
       handleAI();
       return;
@@ -227,7 +228,6 @@ public class GameManager : MonoBehaviour {
 
     originalTile = getTile(position);
 
-    changeState(GameState.moving);
 
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
