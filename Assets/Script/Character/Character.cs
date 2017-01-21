@@ -176,20 +176,19 @@ public class Character : Effected {
     }
   }
 
-  Text makeText() {
+  void floatingText(int val) {
     GameObject ngo = Instantiate(GameManager.get.text) as GameObject;
     ngo.transform.SetParent(ui, false);
-
-    Text myText = ngo.GetComponent<Text>();
+    Text txt = (Text)ngo.GetComponent<Text>();
+    txt.text = val.ToString();
     var phys = ngo.AddComponent<Rigidbody>();
     phys.useGravity = false;
     phys.velocity = new Vector3(0, 1f);
-    return myText;
   }
 
   public void takeDamage(int damage) {
     if (curHealth <= 0) return;
-    makeText();
+    floatingText(damage);
     curHealth -= damage;
     if (curHealth <= 0) {
       Event e = new Event(this, EventHook.preDeath);
@@ -203,6 +202,7 @@ public class Character : Effected {
   }
 
   public void takeHealing(int amount) {
+    floatingText(amount);
     curHealth = Math.Min(attr.maxHealth, curHealth + amount);
   }
 

@@ -2678,7 +2678,7 @@ Prefab:
     - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
       propertyPath: speed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
@@ -2699,6 +2699,19 @@ Prefab:
         type: 2}
       propertyPath: skillSet.Array.data[2]
       value: KillingBlow
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: team
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_TagString
+      value: Unit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
@@ -3142,6 +3155,24 @@ Prefab:
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: team
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_TagString
+      value: Unit
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: speed
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
@@ -4042,12 +4073,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 886455896}
---- !u!114 &889245211 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-    type: 2}
-  m_PrefabInternal: {fileID: 1886514314}
-  m_Script: {fileID: 11500000, guid: 4b9848ed3a1628d4c8ada98d29254607, type: 3}
 --- !u!1001 &897026262
 Prefab:
   m_ObjectHideFlags: 0
@@ -6942,7 +6967,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 64052932fe56d334eba6445d5d182e34, type: 2}
     - target: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_TagString
-      value: PiecePlayer2
+      value: Unit
       objectReference: {fileID: 0}
     - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
@@ -7699,11 +7724,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
-      propertyPath: skillSet.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: -2
@@ -7736,56 +7756,24 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-      propertyPath: m_Name
-      value: Pawn
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-      propertyPath: m_TagString
-      value: PiecePlayer2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 64052932fe56d334eba6445d5d182e34, type: 2}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
-      propertyPath: attr
-      value: 
-      objectReference: {fileID: 889245211}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
-      propertyPath: speed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
-      propertyPath: skillSet.Array.data[0]
-      value: Knockback
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
-      propertyPath: skillSet.Array.data[1]
-      value: Knockback
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
-      propertyPath: skillSet.Array.data[2]
-      value: Knockback
-      objectReference: {fileID: 0}
     - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
       propertyPath: team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_TagString
+      value: Unit
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 64052932fe56d334eba6445d5d182e34, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0

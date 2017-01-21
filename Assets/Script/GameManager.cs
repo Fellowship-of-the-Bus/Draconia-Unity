@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using System.Threading;
+using System.Linq;
 
 public enum GameState {
   moving,
@@ -49,6 +50,10 @@ public class GameManager : MonoBehaviour {
 
   public GameObject text;
 
+  public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
+  public List<GameObject> players { get{ return characters[0]; } }
+  public List<GameObject> enemies { get{ return characters[1]; } }
+
   private LinkedList<Coroutine> waitEndTurn;
 
   public void waitToEndTurn(Coroutine c) {
@@ -89,15 +94,19 @@ public class GameManager : MonoBehaviour {
     line = gameObject.GetComponent<LineRenderer>();
 
     actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
-    GameObject[] characterObjects = GameObject.FindGameObjectsWithTag("PiecePlayer1");
-    GameObject[] enemies = GameObject.FindGameObjectsWithTag("PiecePlayer2");
+    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<Character>().team);
+    foreach (var x in objs) {
+      characters[x.Key] = new List<GameObject>(x);
+    }
 
-    foreach (GameObject o in characterObjects) {
-      actionQueue.add(o);
-      Character c = o.GetComponent<Character>();
-      Tile t = getTile(o.transform.position);
-      t.occupant = o;
-      c.curTile = t;
+    foreach (var l in characters.Values) {
+      foreach (var o in l) {
+        actionQueue.add(o);
+        Character c = o.GetComponent<Character>();
+        Tile t = getTile(o.transform.position);
+        t.occupant = o;
+        c.curTile = t;
+      }
     }
 
     foreach (GameObject o in enemies) {
@@ -221,7 +230,8 @@ public class GameManager : MonoBehaviour {
     djikstra(position, SelectedPiece.GetComponent<Character>());
 
     changeState(GameState.moving);
-    if (SelectedPiece.tag == "PiecePlayer2") {
+    // enemy
+    if (SelectedPiece.GetComponent<Character>().team == 1) {
       handleAI();
       return;
     }
