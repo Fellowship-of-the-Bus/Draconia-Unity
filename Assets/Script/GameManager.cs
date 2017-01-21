@@ -109,14 +109,6 @@ public class GameManager : MonoBehaviour {
       }
     }
 
-    foreach (GameObject o in enemies) {
-      actionQueue.add(o);
-      Character c = o.GetComponent<Character>();
-      Tile t = getTile(o.transform.position);
-      t.occupant = o;
-      c.curTile = t;
-    }
-
     //set skill buttons to the selected piece's skills, enable those that actually have skills
     new Range(0, skillButtons.Count).ForEach(i => {
       skillButtons[i].onClick.AddListener(() => selectSkill(i));
