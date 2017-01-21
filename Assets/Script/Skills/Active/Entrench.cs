@@ -7,6 +7,7 @@ public class Entrench: ActiveSkill {
 
   public Entrench() {
     range = 0;
+    useWepRange = false;
     aoe = 1;
     useLos = false;
     name = "Entrench";

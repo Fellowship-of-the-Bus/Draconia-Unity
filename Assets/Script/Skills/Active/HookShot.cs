@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class HookShot: RangedTargeting {
+public class HookShot: SingleTarget {
 
   public HookShot() {
-    useLos = false;
+    useWepRange = true;
+    useLos = true;
     name = "Hook Shot";
   }
 

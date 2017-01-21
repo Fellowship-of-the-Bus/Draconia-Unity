@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class IceSpear: ActiveSkill {
+public class IceSpear: SingleTarget {
   public IceSpear() {
     range = 3;
+    useWepRange = false;
     useLos = false;
     name = "Ice Spear";
   }

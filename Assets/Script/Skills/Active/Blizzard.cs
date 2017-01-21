@@ -6,6 +6,7 @@ public class Blizzard: ActiveSkill, AoeSkill {
 
   public Blizzard() {
     range = 3;
+    useWepRange = false;
     aoe = 5;
     useLos = false;
     name = "Blizzard";

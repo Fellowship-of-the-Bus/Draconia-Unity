@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Ranged: RangedTargeting {
+public class Ranged: SingleTarget {
   public Ranged() {
-    useLos = false;
+    useWepRange = true;
+    useLos = true;
     name = "Ranged";
   }
 

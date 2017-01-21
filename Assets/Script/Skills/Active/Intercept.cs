@@ -7,6 +7,7 @@ public class Intercept: ActiveSkill {
 
   public Intercept() {
     range = 0;
+    useWepRange = false;
     aoe = 1;
     useLos = false;
     name = "Intercept";

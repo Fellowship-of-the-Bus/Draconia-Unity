@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class PointBlankShot: RangedTargeting {
+public class PointBlankShot: SingleTarget {
 
   public PointBlankShot() {
-    useLos = false;
+    useWepRange = true;
+    useLos = true;
     name = "Point Blank Shot";
   }
 

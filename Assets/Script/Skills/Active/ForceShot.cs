@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class ForceShot: RangedTargeting {
+public class ForceShot: SingleTarget {
 
   public ForceShot() {
-    useLos = false;
+    useWepRange = true;
+    useLos = true;
     name = "Force Shot";
   }
 

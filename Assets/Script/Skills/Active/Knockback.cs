@@ -2,10 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-public class Knockback: ActiveSkill {
+public class Knockback: SingleTarget {
 
   public Knockback() {
     range = 1;
+    useWepRange = false;
     useLos = false;
     name = "Knockback";
   }
@@ -29,17 +30,6 @@ public class Knockback: ActiveSkill {
       GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject, false)));
     }
   }
-  public override List<GameObject> getTargets() {
-    List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, 1);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      if (t.occupied()) {
-        targets.Add(t.occupant);
-      }
-    }
-    return targets;
-  }
-
 
   public override int calculateDamage(Character source, Character target) {
     return (int)(source.attr.strength*(1+level*0.1) - target.attr.physicalDefense);

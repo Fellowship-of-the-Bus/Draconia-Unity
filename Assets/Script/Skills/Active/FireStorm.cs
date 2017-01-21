@@ -6,6 +6,7 @@ public class FireStorm: ActiveSkill, AoeSkill {
 
   public FireStorm() {
     range = 3;
+    useWepRange = false;
     aoe = 2;
     useLos = false;
     name = "FireStorm";

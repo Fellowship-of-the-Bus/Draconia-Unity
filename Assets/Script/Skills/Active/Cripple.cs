@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Cripple: ActiveSkill {
+public class Cripple: SingleTarget {
   public Cripple() {
     range = 1;
+    useWepRange = false;
     useLos = false;
     name = "Cripple";
   }
@@ -30,5 +31,4 @@ public class Cripple: ActiveSkill {
     debuff.duration = 2;
     target.applyEffect(debuff);
   }
-
 }

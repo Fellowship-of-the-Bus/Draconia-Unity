@@ -6,6 +6,7 @@ public class FireCross: ActiveSkill, AoeSkill {
 
   public FireCross() {
     range = 4;
+    useWepRange = false;
     aoe = 2;
     useLos = false;
     name = "FireCross";

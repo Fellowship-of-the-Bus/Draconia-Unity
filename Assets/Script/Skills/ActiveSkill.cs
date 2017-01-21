@@ -5,6 +5,7 @@ public abstract class ActiveSkill : Skill {
   public int level {get; set;}
   public Character self {get; set;}
   public int range {get; set;}
+  public bool useWepRange {get; set;}
   public bool useLos {get; set;}
   public string name {get; set;}
   public int cooldown {get; set;}
