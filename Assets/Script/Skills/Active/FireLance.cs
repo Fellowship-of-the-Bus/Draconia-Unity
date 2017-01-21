@@ -7,10 +7,12 @@ public class FireLance: ActiveSkill, AoeSkill {
 
   public FireLance() {
     range = 4;
+    useWepRange = false;
     aoe = 4;
     useLos = false;
     name = "FireLance";
     effectsTiles = false;
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

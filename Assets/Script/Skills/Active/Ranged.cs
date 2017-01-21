@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Ranged: RangedTargeting {
+public class Ranged: SingleTarget {
   public Ranged() {
-    useLos = false;
+    useWepRange = true;
+    useLos = true;
     name = "Ranged";
+    cooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

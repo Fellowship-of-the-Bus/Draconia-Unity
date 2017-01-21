@@ -4,9 +4,12 @@ using System.Collections.Generic;
 public class Heal: HealingSkill {
   public Heal() {
     range = 3;
+    useWepRange = false;
     useLos = false;
     name = "Heal";
+    cooldown = 2;
   }
+
   public override List<GameObject> getTargets() {
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);

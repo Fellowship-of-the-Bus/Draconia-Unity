@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class ForceShot: RangedTargeting {
+public class ForceShot: SingleTarget {
 
   public ForceShot() {
-    useLos = false;
+    useWepRange = true;
+    useLos = true;
     name = "Force Shot";
+    cooldown = 2;
   }
 
   float upThreshold = 0.5f;

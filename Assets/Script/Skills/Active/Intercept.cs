@@ -7,9 +7,11 @@ public class Intercept: ActiveSkill {
 
   public Intercept() {
     range = 0;
+    useWepRange = false;
     aoe = 1;
     useLos = false;
     name = "Intercept";
+    cooldown = 2;
   }
 
   public override void additionalEffects (Character target) {
