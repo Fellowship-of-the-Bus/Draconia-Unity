@@ -10,7 +10,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public string name {get; set;}
   public int cooldown {get; set;}
   //number of turns before usable
-  int curCooldown = 0;
+  public int curCooldown = 0;
 
   public virtual void activate(Character target) {
     if (this is HealingSkill) {
