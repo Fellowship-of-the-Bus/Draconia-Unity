@@ -13,8 +13,16 @@ public abstract class ActiveSkill : Skill {
     target.takeDamage(calculateDamage(self, target));
     additionalEffects(target);
   }
+
+  public virtual void activate(Tile target) {
+    tileEffects(target);
+  }
   public abstract int calculateDamage(Character source, Character target);
   public virtual void additionalEffects(Character target) {
+
+  }
+
+  public virtual void tileEffects(Tile target) {
 
   }
 

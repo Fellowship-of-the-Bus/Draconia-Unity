@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 public class FireStorm: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
+  public bool effectsTiles {get; set;}
 
   public FireStorm() {
     range = 3;
     aoe = 2;
     useLos = false;
     name = "FireStorm";
+    effectsTiles = false;
   }
 
   public override List<GameObject> getTargets() {

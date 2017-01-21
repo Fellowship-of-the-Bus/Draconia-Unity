@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 public class Blizzard: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
+  public bool effectsTiles {get; set;}
 
   public Blizzard() {
     range = 3;
     aoe = 5;
     useLos = false;
     name = "Blizzard";
+    effectsTiles = false;
   }
 
   public override List<GameObject> getTargets() {

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 public class PiercingShot: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
+  public bool effectsTiles {get; set;}
 
   public PiercingShot() {
     useLos = false;
     name = "Piercing Shot";
+    effectsTiles = false;
   }
 
   public override List<GameObject> getTargets() {

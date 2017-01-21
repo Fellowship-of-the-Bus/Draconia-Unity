@@ -9,6 +9,8 @@ public class BasicAttackAI : BaseAttackAI {
     ActiveSkill skill = owner.equippedSkills[0];
     List<GameObject> targets = skill.getTargets();
     if (targets.Count == 0) return;
-    owner.attackWithSkill(skill, new List<Character>(targets.Take(1).Select(x => x.GetComponent<Character>())));
+    List<Character> c = new List<Character>(targets.Take(1).Select(x => x.GetComponent<Character>()));
+    List<Effected> e = new List<Effected>(c.Map(x => x as Effected));
+    owner.attackWithSkill(skill, e);
   }
 }

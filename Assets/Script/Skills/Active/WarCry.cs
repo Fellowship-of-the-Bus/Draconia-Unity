@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 public class WarCry: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
+  public bool effectsTiles {get; set;}
 
   public WarCry() {
     range = 0;
     aoe = 1;
     useLos = false;
     name = "WarCry";
+    effectsTiles = false;
   }
 
   public override void additionalEffects (Character target) {

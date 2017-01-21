@@ -7,10 +7,11 @@ public abstract class DurationEffect : Effect {
   //when this is removed from owner
   public override void onRemove() {
     onDeactivate();
-    base.detachListener(owner);
+    if (owner) base.detachListener(owner);
+    if (ownerTile) base.detachListener(ownerTile);
   }
 
-  public override void onApply(Character c) {
+  public override void onApply(Effected c) {
     base.onApply(c);
     base.attachListener(c, EventHook.endTurn);
   }

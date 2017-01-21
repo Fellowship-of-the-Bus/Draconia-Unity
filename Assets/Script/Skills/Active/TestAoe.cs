@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 public class TestAoe: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
+  public bool effectsTiles {get; set;}
 
   public TestAoe() {
     range = 3;
     aoe = 2;
     useLos = false;
-    name = "TestAoe";
+    name = "AOE";
+    effectsTiles = false;
   }
 
   public override List<GameObject> getTargets() {
