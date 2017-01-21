@@ -7,6 +7,7 @@ public class Punch: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Punch";
+    cooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
   LineRenderer line;
   public ActionQueue actionQueue;
   public GameObject turnButton;
+  public GameObject iceBlock;
 
   public LinkedList<Tile> path = null;
 
@@ -132,9 +133,16 @@ public class GameManager : MonoBehaviour {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       selectedCharacter.updateLifeBar(selectedHealth);
       for (int i = 0; i < skillButtons.Count; i++) {
-        Skill s = selectedCharacter.equippedSkills[i];
+        ActiveSkill s = selectedCharacter.equippedSkills[i];
         Debug.AssertFormat(s.name != "", "Skill Name is empty");
         skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+
+        if (s.canUse()) {
+            skillButtons[i].interactable = true;
+        } else {
+            skillButtons[i].interactable = false;
+        }
+
       }
     }
 
@@ -194,7 +202,8 @@ public class GameManager : MonoBehaviour {
     // change color of the board squares that it can move to.
     clearColour();
     if (SelectedPiece) {
-      SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+      if (SelectedPiece.GetComponent<Character>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
     //get character whose turn it is
@@ -262,7 +271,7 @@ public class GameManager : MonoBehaviour {
 
   public void attackTarget(GameObject target) {
     bool aoe = (SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] is AoeSkill);
-    List<Character> targets = new List<Character>();
+    List<Effected> targets = new List<Effected>();
     List<GameObject> validTargets = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets();
 
     if (validTargets.Contains(target)){
@@ -271,6 +280,7 @@ public class GameManager : MonoBehaviour {
         foreach (GameObject o in skill.getTargetsInAoe(target.transform.position)) {
           Character c = o.GetComponent<Character>();
           if (c) targets.Add(c);
+          if (skill.effectsTiles) targets.Add(o.GetComponent<Tile>());
         }
       } else {
         targets.Add(target.GetComponent<Character>());
@@ -297,7 +307,8 @@ public class GameManager : MonoBehaviour {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
-    SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     actionQueue.endTurn();
     clearColour();
     startTurn();
@@ -607,8 +618,8 @@ public class GameManager : MonoBehaviour {
   }
 
   public float getHeight(Tile t) {
-    float scale = t.gameObject.transform.localScale.y;
-    return scale/2 + 0.5f;
+    float scale = t.getHeight();//t.gameObject.transform.localScale.y;
+    return scale + 0.5f;
   }
 
 

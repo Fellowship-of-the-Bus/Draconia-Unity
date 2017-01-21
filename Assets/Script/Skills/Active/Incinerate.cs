@@ -7,6 +7,7 @@ public class Incinerate: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Incinerate";
+    cooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

@@ -68,7 +68,8 @@ public class EventManager : MonoBehaviour {
         foreach (EventListener listener in list) {
           DurationEffect effect = listener as DurationEffect;
           if (effect != null && effect.duration == 0) {
-            effect.owner.removeEffect(effect);
+            if (effect.owner != null) effect.owner.removeEffect(effect);
+            if (effect.ownerTile != null) effect.ownerTile.removeEffect(effect);
           }
         }
       }

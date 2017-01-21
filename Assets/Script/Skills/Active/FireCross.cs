@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class FireCross: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
+  public bool effectsTiles {get; set;}
 
   public FireCross() {
     range = 4;
@@ -10,6 +11,8 @@ public class FireCross: ActiveSkill, AoeSkill {
     aoe = 2;
     useLos = false;
     name = "FireCross";
+    effectsTiles = false;
+    cooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

@@ -7,6 +7,7 @@ public class Heal: SingleTarget, HealingSkill {
     useWepRange = false;
     useLos = false;
     name = "Heal";
+    cooldown = 2;
   }
 
   public int calculateHealing(Character source, Character target) {
