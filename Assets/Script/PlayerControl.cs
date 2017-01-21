@@ -34,14 +34,14 @@ public class PlayerControl : MonoBehaviour {
           } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
             gameManager.attackTarget(clickedObject);
           }
-      } else if ((clickedObject.tag == "PiecePlayer1" || clickedObject.tag == "PiecePlayer2") && gameManager.gameState == GameState.attacking) {
+      } else if (clickedObject.tag == "Unit" && gameManager.gameState == GameState.attacking) {
         gameManager.attackTarget(clickedObject);
       }
     } else if (!gameManager.moving) {
       if (gameManager.gameState == GameState.attacking && hoveredObject) {
         gameManager.selectTarget(hoveredObject);
       }
-      if (hoveredObject && (hoveredObject.tag == "PiecePlayer1" || hoveredObject.tag == "PiecePlayer2")) {
+      if (hoveredObject && hoveredObject.tag == "Unit") {
         gameManager.lineTo(hoveredObject);
       } else if (hoveredObject && hoveredObject.tag == "Cube") {
         if (gameManager.gameState == GameState.moving) {

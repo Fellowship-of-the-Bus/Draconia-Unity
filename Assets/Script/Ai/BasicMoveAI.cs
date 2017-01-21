@@ -6,8 +6,8 @@ using System.Collections;
 
 public class BasicMoveAI : BaseMoveAI {
   public override Vector3 move() {
-    GameManager game = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-    GameObject[] characterObjects = GameObject.FindGameObjectsWithTag("PiecePlayer1");
+    GameManager game = GameManager.get;
+    List<GameObject> characterObjects = game.players;
 
     int minDistance = Int32.MaxValue/2;
     foreach (GameObject o in characterObjects) {

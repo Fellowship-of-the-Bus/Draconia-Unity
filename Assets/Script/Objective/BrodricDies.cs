@@ -6,9 +6,8 @@ using System.Collections;
 
 public class BrodricDies : Objective {
   override public bool isMet(GameManager game) {
-    GameObject[] allies = GameObject.FindGameObjectsWithTag("PiecePlayer1");
-    //TODO: change brodric detection from speed == 10
-    if (allies.Length == 0) return true;
+    List<GameObject> allies = game.players;
+    if (allies.Count == 0) return true;
     foreach(GameObject o in allies) {
       if (o.GetComponent<Character>().characterName == "Brodric") {
         return false;
