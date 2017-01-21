@@ -1,12 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Puncture: SingleTarget {
-  public Puncture() {
-    range = 1;
-    useWepRange = false;
-    useLos = false;
-    name = "Puncture";
+public class SerratedShot: SingleTarget {
+  public SerratedShot() {
+    useWepRange = true;
+    useLos = true;
+    name = "Serrated Shot";
     cooldown = 2;
   }
 
