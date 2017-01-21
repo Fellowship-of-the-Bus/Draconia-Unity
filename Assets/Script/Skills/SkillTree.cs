@@ -15,52 +15,10 @@ public class SkillTree {
     test.self = self;
     passives.Add(test);
 
-//    test = new Berserk();
-//    test.level = 1;
-//    test.self = self;
-//    passives.Add(test);
-
     test = new Climb();
     test.level = 1;
     test.self = self;
     passives.Add(test);
-
-//    test = new HealingBonus();
-//    test.level = 1;
-//    test.self = self;
-//    passives.Add(test);
-
-//    test = new IronSkin();
-//    test.level = 5;
-//    test.self = self;
-//    passives.Add(test);
-
-//    test = new Vengeance();
-//    test.level = 1;
-//    test.self = self;
-//    passives.Add(test);
-
-//    test = new Dodge();
-//    test.level = 7;
-//    test.self = self;
-//    passives.Add(test);
-
-//    test = new CounterSkill();
-//    test.level = 7;
-//    test.self = self;
-//    passives.Add(test);
-
-//    test = new Adrenaline();
-//    test.level = 1;
-//    test.self = self;
-//    passives.Add(test);
-
-//    if (self.characterName == "Brodric") {
-//      test = new HasteAura();
-//      test.level = 1;
-//      test.self = self;
-//      passives.Add(test);
-//    }
 
     return passives;
   }

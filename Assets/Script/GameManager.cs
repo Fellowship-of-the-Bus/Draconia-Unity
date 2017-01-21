@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
-
+    startTurn();
   }
 
   void Awake() {
@@ -116,8 +116,6 @@ public class GameManager : MonoBehaviour {
 
     winningConditions.Add(new Rout());
     losingConditions.Add(new BrodricDies());
-
-    startTurn();
   }
 
   int blinkFrameNumber = 0;
