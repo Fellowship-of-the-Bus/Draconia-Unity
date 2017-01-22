@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class SerratedShot: SingleTarget {
   public SerratedShot() {
+    requireWeapon(Weapon.kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Serrated Shot";

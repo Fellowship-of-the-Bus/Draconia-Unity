@@ -5,6 +5,7 @@ using System.Collections;
 public class ForceShot: SingleTarget {
 
   public ForceShot() {
+    requireWeapon(Weapon.kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Force Shot";
@@ -24,8 +25,6 @@ public class ForceShot: SingleTarget {
   }
 
   public override void additionalEffects(Character c) {
-    range = self.attr.weaponRange;
-
     Tile t = knockTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
       GameManager.get.updateTile(c,t);

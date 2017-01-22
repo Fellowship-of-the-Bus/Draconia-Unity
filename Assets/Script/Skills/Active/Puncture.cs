@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class Puncture: SingleTarget {
   public Puncture() {
-    range = 1;
-    useWepRange = false;
+    requireMelee();
+    useWepRange = true;
     useLos = false;
     name = "Puncture";
     cooldown = 2;

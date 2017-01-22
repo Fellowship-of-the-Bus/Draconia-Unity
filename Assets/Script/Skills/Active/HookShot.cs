@@ -5,6 +5,7 @@ using System.Collections;
 public class HookShot: SingleTarget {
 
   public HookShot() {
+    requireWeapon(Weapon.kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Hook Shot";
@@ -24,8 +25,6 @@ public class HookShot: SingleTarget {
   }
 
   public override void additionalEffects(Character c) {
-    range = self.attr.weaponRange;
-
     Tile t = pullTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
       GameManager.get.updateTile(c,t);

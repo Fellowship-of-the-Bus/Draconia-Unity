@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class Punch: SingleTarget {
   public Punch() {
-    range = 1;
-    useWepRange = false;
+    requireMelee();
+    useWepRange = true;
     useLos = false;
     name = "Punch";
     cooldown = 2;

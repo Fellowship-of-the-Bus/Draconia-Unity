@@ -25,6 +25,7 @@ public class Character : Effected {
   public int moveRange = 4;
   public string characterName = "";
   public int team = 0;
+  public Weapon weapon;
 
   private int previewDamage;
   public int PreviewDamage{
@@ -50,6 +51,7 @@ public class Character : Effected {
     setSkills();
 
     curHealth = attr.maxHealth;
+    //weapon = new Weapon(Weapon.kinds.Sharp);
     moveAI.owner = this;
     attackAI.owner = this;
 
