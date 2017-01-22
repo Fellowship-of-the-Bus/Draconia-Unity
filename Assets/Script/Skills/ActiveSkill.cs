@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public abstract class ActiveSkill : EventListener, Skill {
+  public const int InfiniteCooldown = -2;
+
   public int level {get; set;}
   public Character self {get; set;}
   public int range {get; set;}
@@ -26,7 +28,6 @@ public abstract class ActiveSkill : EventListener, Skill {
     tileEffects(target);
   }
   public virtual int calculateDamage(Character source, Character target) {
-    Debug.Assert(false);
     return 0;
   }
   public virtual void additionalEffects(Character target) {
