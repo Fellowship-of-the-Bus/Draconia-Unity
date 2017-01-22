@@ -24,7 +24,8 @@ public abstract class DurationEffect : Effect {
 
   public sealed override void onEvent(Event e) {
     Debug.Assert(duration != 0);
-    if (e.hook == EventHook.endTurn) {
+    //sender == null means sent by global game manager
+    if (e.hook == EventHook.endTurn && e.sender != null) {
       if (duration != -1) {
         duration--;
       }
@@ -54,6 +55,12 @@ public abstract class DurationEffect : Effect {
 
   public sealed override void detachListener(EventManager e) {
     base.detachListener(e);
-    base.attachListener(e, EventHook.endTurn);
+    //ensure we have enturn hook on our "parent"(the tile or character this is attached to)
+    EventManager c = null;
+    if (owner) c = owner;
+    if (ownerTile) c = ownerTile;
+    if (c != null) {
+      base.attachListener(c, EventHook.endTurn);
+    }
   }
 }

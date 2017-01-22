@@ -49,7 +49,7 @@ public abstract class ActiveSkill : EventListener, Skill {
       attachListener(self, EventHook.endTurn);
       attachedListener = true;
     }
-    curCooldown = cooldown;
+    curCooldown = cooldown + 1;
   }
 
   public override void onEvent(Event e) {
