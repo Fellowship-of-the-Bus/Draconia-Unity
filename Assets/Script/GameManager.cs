@@ -307,6 +307,9 @@ public class GameManager : MonoBehaviour {
 
     //send endTurn event to the current piece
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    Event e = new Event(null, EventHook.endTurn);
+    e.endTurnChar = selectedCharacter;
+    eventManager.onEvent(e);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
     if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
