@@ -23,6 +23,25 @@ public class PlayerControl : MonoBehaviour {
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
     GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
+    if (hoveredObject && hoveredObject.tag == "Cube") {
+      if (gameManager.gameState == GameState.moving) {
+        Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
+        Tile t = gameManager.getTile(coord);
+        if (t.distance <= gameManager.SelectedPiece.GetComponent<Character>().moveRange) {
+          gameManager.setPath(coord);
+          gameManager.setTileColours();
+          foreach (Tile ti in gameManager.path) {
+            ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+          }
+        }
+      } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
+        Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
+        Tile t = gameManager.getTile(coord);
+        if (gameManager.SelectedSkill > -1 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].getTargets().Contains(t.gameObject)) gameManager.setTileColours(t);
+      }
+      gameManager.lineTo(gameManager.SelectedPiece);
+    }
+
     // Select a piece
     if (!EventSystem.current.IsPointerOverGameObject() && clickedObject) {
       Vector3 selectedCoord;
@@ -43,23 +62,6 @@ public class PlayerControl : MonoBehaviour {
       }
       if (hoveredObject && hoveredObject.tag == "Unit") {
         gameManager.lineTo(hoveredObject);
-      } else if (hoveredObject && hoveredObject.tag == "Cube") {
-        if (gameManager.gameState == GameState.moving) {
-          Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
-          Tile t = gameManager.getTile(coord);
-          if (t.distance <= gameManager.SelectedPiece.GetComponent<Character>().moveRange) {
-            gameManager.setPath(coord);
-            gameManager.setTileColours();
-            foreach (Tile ti in gameManager.path) {
-              ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-            }
-          }
-        } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
-          Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
-          Tile t = gameManager.getTile(coord);
-          if (gameManager.SelectedSkill > -1 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].getTargets().Contains(t.gameObject)) gameManager.setTileColours(t);
-        }
-        gameManager.lineTo(gameManager.SelectedPiece);
       } else {
         gameManager.lineTo(gameManager.SelectedPiece);
       }

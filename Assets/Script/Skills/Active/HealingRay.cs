@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Heal: SingleTarget, HealingSkill {
-  public Heal() {
+public class HealingRay: SingleTarget, HealingSkill {
+  public HealingRay() {
     range = 3;
     useWepRange = false;
     useLos = false;
-    name = "Heal";
+    name = "HealingRay";
     cooldown = 2;
   }
 
