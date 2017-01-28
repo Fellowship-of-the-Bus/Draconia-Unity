@@ -23,4 +23,8 @@ public class ScorchEarthEffect : DurationEffect {
       }
     }
   }
+
+  public override bool shouldDecrement(Event e) {
+    return e.sender == caster;
+  }
 }

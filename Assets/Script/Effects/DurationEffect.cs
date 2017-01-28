@@ -25,7 +25,7 @@ public abstract class DurationEffect : Effect {
   public sealed override void onEvent(Event e) {
     Debug.Assert(duration != 0);
     //sender == null means sent by global game manager
-    if (e.hook == EventHook.endTurn && e.sender != null) {
+    if (e.hook == EventHook.endTurn && shouldDecrement(e)) {
       if (duration != -1) {
         duration--;
       }
@@ -35,6 +35,10 @@ public abstract class DurationEffect : Effect {
     } else {
       additionalEffect(e);
     }
+  }
+
+  public virtual bool shouldDecrement(Event e) {
+    return e.sender != null;
   }
 
   //All stat changes when deactivated

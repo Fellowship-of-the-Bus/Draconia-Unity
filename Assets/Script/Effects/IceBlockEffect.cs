@@ -15,4 +15,8 @@ public class IceBlockEffect : DurationEffect {
     Object.Destroy(block);
     detachListener(caster);
   }
+
+  public override bool shouldDecrement(Event e) {
+    return e.sender == caster;
+  }
 }
