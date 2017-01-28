@@ -15,7 +15,7 @@ public class SkillTree {
     test.self = self;
     passives.Add(test);
 
-    test = new Climb();
+    test = new FreezingHit();
     test.level = 1;
     test.self = self;
     passives.Add(test);
