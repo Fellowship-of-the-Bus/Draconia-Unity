@@ -6,7 +6,6 @@ public abstract class DurationEffect : Effect {
 
   //when this is removed from owner
   public override void onRemove() {
-    onDeactivate();
     if (owner) base.detachListener(owner);
     if (ownerTile) base.detachListener(ownerTile);
   }
@@ -17,10 +16,11 @@ public abstract class DurationEffect : Effect {
   }
 
   //when this loses effect (due to shadowed by higher level skill)
-  public override void onDeactivate() {
+  public sealed override void onDeactivate() {
     onDeactivateEffects();
     onDeactivateListeners();
   }
+
 
   public sealed override void onEvent(Event e) {
     Debug.Assert(duration != 0);
