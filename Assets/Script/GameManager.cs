@@ -322,6 +322,7 @@ public class GameManager : MonoBehaviour {
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, bool doChangeState = true) {
     const float FPS = 60f;
     const float speed = 4f;
+    lockUI();
 
     foreach (Tile destination in path) {
       // fix height
@@ -340,6 +341,7 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
     }
     if (doChangeState) changeState(GameState.attacking);
+    unlockUI();
   }
 
   // temporarily public
@@ -359,6 +361,7 @@ public class GameManager : MonoBehaviour {
     // don't start moving twice
     if (moving) return null;
 
+
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
 
@@ -371,9 +374,6 @@ public class GameManager : MonoBehaviour {
       if (smooth) {
         path.RemoveFirst(); // discard current position
         moving = true;
-        for (int i = 0; i < skillButtons.Count; i++) {
-          skillButtons[i].enabled = false;
-        }
         line.GetComponent<Renderer>().material.color = Color.clear;
         return StartCoroutine(IterateMove(new LinkedList<Tile>(path), SelectedPiece));
       } else {
@@ -383,7 +383,6 @@ public class GameManager : MonoBehaviour {
         }
       }
     }
-
     return null;
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just

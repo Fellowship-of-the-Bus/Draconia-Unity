@@ -34,12 +34,12 @@ public class Effected : EventManager {
 
     Effect maxEffect = l.getMax();
     l.remove(effect);
-
     if (effect == maxEffect) {
-      effect.onRemove();
+      effect.onDeactivate();
       if (l.getMax() != null) {
         l.getMax().onActivate();
       }
     }
+    effect.onRemove();
   }
 }
