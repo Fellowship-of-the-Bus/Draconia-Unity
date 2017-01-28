@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public abstract class ActiveSkill : EventListener, Skill {
+  public const int InfiniteCooldown = -2;
+
   public int level {get; set;}
   public Character self {get; set;}
   public int range {get; set;}
@@ -11,7 +13,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int cooldown {get; set;}
   private bool[] usableWeapon = new bool[3] { true, true, true };
   //number of turns before usable
-  int curCooldown = 0;
+  public int curCooldown = 0;
 
   public virtual void activate(Character target) {
     if (this is HealingSkill) {
@@ -27,7 +29,6 @@ public abstract class ActiveSkill : EventListener, Skill {
     tileEffects(target);
   }
   public virtual int calculateDamage(Character source, Character target) {
-    Debug.Assert(false);
     return 0;
   }
   public virtual void additionalEffects(Character target) {
@@ -60,7 +61,7 @@ public abstract class ActiveSkill : EventListener, Skill {
       attachListener(self, EventHook.endTurn);
       attachedListener = true;
     }
-    curCooldown = cooldown;
+    curCooldown = cooldown + 1;
   }
 
   public override void onEvent(Event e) {

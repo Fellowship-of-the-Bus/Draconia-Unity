@@ -12,6 +12,8 @@ public class Event {
   public int damageTaken;
   public Character attackTarget;
 
+  public Character endTurnChar;
+
   public Event(Character sender, EventHook hook) {
     this.sender = sender;
     this.hook = hook;
