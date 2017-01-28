@@ -16,6 +16,6 @@ public class PointBlankShot: SingleTarget {
     float distance = (target.gameObject.transform.position - source.gameObject.transform.position).magnitude;
     float multiplier = 2.5f / distance;
 
-    return (int)((source.attr.strength*(1+level*0.1) - target.attr.physicalDefense) * multiplier);
+    return (int)((source.strength*(1+level*0.1) - target.physicalDefense) * multiplier);
   }
 }

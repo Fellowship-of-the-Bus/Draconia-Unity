@@ -23,6 +23,6 @@ public class IceSpear: SingleTarget {
 
 
   public override int calculateDamage(Character source, Character target) {
-    return (int)((source.attr.intelligence*(1+level*0.1) - target.attr.magicDefense) * (100 - target.attr.iceResistance)/100f);
+    return (int)((source.intelligence*(1+level*0.1) - target.magicDefense) * target.iceResMultiplier);
   }
 }

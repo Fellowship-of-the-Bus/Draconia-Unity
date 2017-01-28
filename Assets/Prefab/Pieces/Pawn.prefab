@@ -5,14 +5,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 400000}
-  - 33: {fileID: 3300000}
-  - 136: {fileID: 13600000}
-  - 23: {fileID: 2300000}
-  - 114: {fileID: 114000010751632834}
-  - 114: {fileID: 114000014266627256}
+  - component: {fileID: 400000}
+  - component: {fileID: 3300000}
+  - component: {fileID: 13600000}
+  - component: {fileID: 2300000}
+  - component: {fileID: 114622824004391372}
   m_Layer: 0
   m_Name: Pawn
   m_TagString: PiecePlayer1
@@ -29,11 +28,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1, y: 1, z: 1}
   m_LocalScale: {x: 0.75000083, y: 0.65000004, z: 0.7500011}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224000013299858602}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2300000
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -48,7 +47,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -56,7 +57,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -99,11 +100,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 224000010560589024}
-  - 222: {fileID: 222000011600158032}
-  - 114: {fileID: 114000011369420528}
+  - component: {fileID: 224000010560589024}
+  - component: {fileID: 222000011600158032}
+  - component: {fileID: 114000011369420528}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -116,11 +117,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 224000012263167746}
-  - 222: {fileID: 222000011643662578}
-  - 114: {fileID: 114000010406147558}
+  - component: {fileID: 224000012263167746}
+  - component: {fileID: 222000011643662578}
+  - component: {fileID: 114000010406147558}
   m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
@@ -133,13 +134,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 224000013299858602}
-  - 223: {fileID: 223000013906772696}
-  - 114: {fileID: 114000014176322290}
-  - 114: {fileID: 114000011452196818}
-  - 222: {fileID: 222000011808323768}
+  - component: {fileID: 224000013299858602}
+  - component: {fileID: 223000013906772696}
+  - component: {fileID: 114000014176322290}
+  - component: {fileID: 114000011452196818}
+  - component: {fileID: 222000011808323768}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -174,31 +175,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000010751632834
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb399188fca783c4983e2908a35d06a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attr: {fileID: 114000014266627256}
-  curTile: {fileID: 0}
-  curHealth: 0
-  maxAction: 1000
-  curAction: 0
-  nextMoveTime: 0
-  moveRange: 4
-  characterName: 
-  team: 0
-  moveTolerance: 1
-  skillSet:
-  - Knockback
-  - Ranged
-  - Intercept
 --- !u!114 &114000011369420528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,7 +239,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114000014266627256
+--- !u!114 &114622824004391372
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -271,19 +247,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b9848ed3a1628d4c8ada98d29254607, type: 3}
+  m_Script: {fileID: 11500000, guid: cb399188fca783c4983e2908a35d06a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 0
-  intelligence: 0
-  speed: 3
-  maxHealth: 10
-  physicalDefense: 0
-  magicDefense: 0
-  healingMultiplier: 1
-  fireResistance: 0
-  iceResistance: 0
-  lightningResistance: 0
+  attr:
+    strength: 0
+    intelligence: 0
+    speed: 2
+    maxHealth: 10
+    physicalDefense: 0
+    magicDefense: 0
+    healingMultiplier: 1
+    moveRange: 4
+    moveTolerance: 1
+    fireResistance: 0
+    iceResistance: 0
+    lightningResistance: 0
+  attrChange:
+    strength: 0
+    intelligence: 0
+    speed: 0
+    maxHealth: 0
+    physicalDefense: 0
+    magicDefense: 0
+    healingMultiplier: 1
+    moveRange: 0
+    moveTolerance: 0
+    fireResistance: 0
+    iceResistance: 0
+    lightningResistance: 0
+  curTile: {fileID: 0}
+  curHealth: 0
+  maxAction: 1000
+  curAction: 0
+  nextMoveTime: 0
+  characterName: 
+  team: 0
+  weapon:
+    attr:
+      strength: 0
+      intelligence: 0
+      speed: 0
+      maxHealth: 0
+      physicalDefense: 0
+      magicDefense: 0
+      healingMultiplier: 1
+      moveRange: 0
+      moveTolerance: 0
+      fireResistance: 0
+      iceResistance: 0
+      lightningResistance: 0
+    range: 1
+    kind: 0
+  skillSet:
+  - Cripple
+  - Cripple
+  - Cripple
 --- !u!222 &222000011600158032
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -330,10 +349,10 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 224000012263167746}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 5, y: 0}
@@ -348,11 +367,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224000010560589024}
   m_Father: {fileID: 224000013299858602}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 1.5}
@@ -367,11 +386,11 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224000012263167746}
   m_Father: {fileID: 400000}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0.00000011920929, y: 0}

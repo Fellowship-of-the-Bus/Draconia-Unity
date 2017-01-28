@@ -8,24 +8,28 @@ using System.Reflection;
 public class Character : Effected {
   //inventory
   //skill tree
-  public SkillTree skills = null;
-  //stats
-  public Attributes attr;
+  public SkillTree skills;
+
+  //base stats + permanent stat passives
+  public Attributes attr = new Attributes();
+  //change in stats due to buffs/debuffs
+  public Attributes attrChange = new Attributes();
+  //Sum of stats from equipments
+  public Attributes attrEquip {
+    get {return weapon.attr;}
+  }
 
   public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
 
   public Tile curTile = null;
 
-  public List<Tile> effectedTiles = null;
-
   public int curHealth;
   public float maxAction = 1000f;
   public float curAction = 0;
   public float nextMoveTime = 0f;
-  public int moveRange = 4;
   public string characterName = "";
   public int team = 0;
-  public Weapon weapon;
+  public Weapon weapon = new Weapon();
 
   private int previewDamage;
   public int PreviewDamage{
@@ -35,14 +39,12 @@ public class Character : Effected {
 
   private int previewHealing;
   public int PreviewHealing{
-    get { return Math.Min(previewHealing, attr.maxHealth - curHealth); }
+    get { return Math.Min(previewHealing, maxHealth - curHealth); }
     set { previewHealing = value; }
   }
 
   public BaseMoveAI moveAI = new BasicMoveAI();
   public BaseAttackAI attackAI = new BasicAttackAI();
-
-  public float moveTolerance = 1.0f;
 
   public string[] skillSet;
 
@@ -50,12 +52,9 @@ public class Character : Effected {
     skills = new SkillTree(this);
     setSkills();
 
-    curHealth = attr.maxHealth;
-    //weapon = new Weapon(Weapon.kinds.Sharp);
+    curHealth = maxHealth;
     moveAI.owner = this;
     attackAI.owner = this;
-
-    effectedTiles = new List<Tile>();
 
     applyPassives();
 
@@ -118,7 +117,7 @@ public class Character : Effected {
   }
 
   public float calcMoveTime(float time) {
-    return nextMoveTime = time + ((maxAction - curAction) / attr.speed);
+    return nextMoveTime = time + ((maxAction - curAction) / speed);
   }
 
   public bool inRange(Character target, int range) {
@@ -205,7 +204,7 @@ public class Character : Effected {
 
   public void takeHealing(int amount) {
     floatingText(amount);
-    curHealth = Math.Min(attr.maxHealth, curHealth + amount);
+    curHealth = Math.Min(maxHealth, curHealth + amount);
   }
 
   public void onDeath() {
@@ -224,11 +223,57 @@ public class Character : Effected {
 
   public void updateLifeBar(GameObject lifebar) {
     Vector3 scale = lifebar.transform.localScale;
-    scale.x = (float)curHealth/attr.maxHealth;
+    scale.x = (float)curHealth/maxHealth;
     lifebar.transform.localScale = scale;
   }
 
   public void updateActionBar(float timePassed) {
-    curAction = Math.Min(curAction + attr.speed*timePassed, maxAction);
+    curAction = Math.Min(curAction + speed*timePassed, maxAction);
+  }
+
+  public int strength {
+    get {return (attr + attrChange + attrEquip).strength;}
+  }
+  public int intelligence {
+    get {return (attr + attrChange + attrEquip).intelligence;}
+  }
+  public int speed {
+    get {return (attr + attrChange + attrEquip).speed;}
+  }
+  public int maxHealth {
+    get {return (attr + attrChange + attrEquip).maxHealth;}
+  }
+  public int moveRange {
+    get {return (attr + attrChange + attrEquip).moveRange;}
+  }
+  public float moveTolerance {
+    get {return (attr + attrChange + attrEquip).moveTolerance;}
+  }
+  public int physicalDefense {
+    get {return (attr + attrChange + attrEquip).physicalDefense;}
+  }
+  public int magicDefense {
+    get {return (attr + attrChange + attrEquip).magicDefense;}
+  }
+  public float healingMultiplier {
+    get {return (attr + attrChange + attrEquip).healingMultiplier;}
+  }
+  public int fireResistance {
+    get {return (int)Math.Min((attr + attrChange + attrEquip).fireResistance,100);}
+  }
+  public int iceResistance {
+    get {return (int)Math.Min((attr + attrChange + attrEquip).iceResistance,100);}
+  }
+  public int lightningResistance {
+    get {return (int)Math.Min((attr + attrChange + attrEquip).lightningResistance,100);}
+  }
+  public float fireResMultiplier {
+    get {return (100f-(float)Math.Min((attr + attrChange + attrEquip).fireResistance,100))/100f;}
+  }
+  public float iceResMultiplier {
+    get {return (100f-(float)Math.Min((attr + attrChange + attrEquip).iceResistance,100))/100f;}
+  }
+  public float lightningResMultiplier {
+    get {return (100f-(float)Math.Min((attr + attrChange + attrEquip).lightningResistance,100))/100f;}
   }
 }

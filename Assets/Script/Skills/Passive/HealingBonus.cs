@@ -9,9 +9,9 @@ public class HealingBonus : PassiveSkill {
   }
 
   public override void onActivate() {
-    owner.attr.healingMultiplier += level;
+    owner.attrChange.healingMultiplier += level;
   }
   public override void onDeactivate() {
-    owner.attr.healingMultiplier -= level;
+    owner.attrChange.healingMultiplier -= level;
   }
 }

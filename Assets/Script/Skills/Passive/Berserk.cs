@@ -16,7 +16,7 @@ public class Berserk : PassiveSkill {
     detachListener(owner);
   }
   public override void additionalEffect(Event e) {
-    double percentage = Math.Abs(e.damageTaken)/(double)owner.attr.maxHealth;
+    double percentage = Math.Abs(e.damageTaken)/(double)owner.maxHealth;
 
     if (percentage == 0) {
       return;

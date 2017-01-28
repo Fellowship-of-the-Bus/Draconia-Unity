@@ -19,7 +19,7 @@ public class ScorchEarthEffect : DurationEffect {
         occupant = ownerTile.occupant.GetComponent<Character>();
       }
       if (occupant != null && occupant == e.endTurnChar){
-        occupant.takeDamage((int)(2*(100 - occupant.attr.fireResistance)/100f));
+        occupant.takeDamage((int)(2*occupant.fireResMultiplier));
       }
     }
   }

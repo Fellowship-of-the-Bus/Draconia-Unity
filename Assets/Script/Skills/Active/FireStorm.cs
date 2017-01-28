@@ -39,7 +39,7 @@ public class FireStorm: ActiveSkill, AoeSkill {
 
 
   public override int calculateDamage(Character source, Character target) {
-    return (int)((source.attr.intelligence*(1+level*0.1) - target.attr.magicDefense)*(100 - target.attr.fireResistance)/100f);
+    return (int)((source.intelligence*(1+level*0.1) - target.magicDefense)*target.fireResMultiplier);
   }
 
 

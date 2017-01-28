@@ -29,7 +29,7 @@ public class IronSkin : PassiveSkill {
   public override void additionalEffect(Event e) {
     switch (e.hook) {
       case EventHook.startTurn:
-        self.attr.physicalDefense -= addedDefense;
+        self.attrChange.physicalDefense -= addedDefense;
         addedDefense = 0;
         numHits = 0;
         inTurn = true;
@@ -41,7 +41,7 @@ public class IronSkin : PassiveSkill {
         if (!inTurn) {
           numHits++;
           addedDefense += defBonus();
-          owner.attr.physicalDefense += defBonus();
+          owner.attrChange.physicalDefense += defBonus();
         }
         break;
     }

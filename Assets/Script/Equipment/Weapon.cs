@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Weapon : MonoBehaviour {
+[System.Serializable]
+public class Weapon : Equipment {
   public int range = 1;
   public enum kinds { Sharp, Blunt, Ranged };
   public kinds kind = kinds.Sharp;

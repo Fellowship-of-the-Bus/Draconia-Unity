@@ -11,9 +11,9 @@ public class KillingBlow: SingleTarget {
   }
 
   public override int calculateDamage(Character source, Character target) {
-    float missingPct = 1 - (float)target.curHealth/target.attr.maxHealth;
+    float missingPct = 1 - (float)target.curHealth/target.maxHealth;
 
-    return (int)((source.attr.strength*(1+level*0.1) - target.attr.physicalDefense) * (1 + missingPct * (0.5f + 0.1f * level)));
+    return (int)((source.strength*(1+level*0.1) - target.physicalDefense) * (1 + missingPct * (0.5f + 0.1f * level)));
   }
 
 

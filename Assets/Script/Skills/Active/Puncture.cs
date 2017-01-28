@@ -11,7 +11,7 @@ public class Puncture: SingleTarget {
   }
 
   public override int calculateDamage(Character source, Character target) {
-    return (int)(source.attr.strength*(0.5+level*0.05) - target.attr.physicalDefense);
+    return (int)(source.strength*(0.5+level*0.05) - target.physicalDefense);
   }
 
   public override void additionalEffects (Character target) {

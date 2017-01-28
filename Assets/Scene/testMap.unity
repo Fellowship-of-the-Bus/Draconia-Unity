@@ -2595,10 +2595,9 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
@@ -2660,48 +2659,39 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: speed
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: attr
       value: 
-      objectReference: {fileID: 556623376}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: strength
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: speed
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: characterName
-      value: Brodric
+      value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.data[0]
       value: Cripple
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.data[1]
       value: Knockback
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.data[2]
       value: KillingBlow
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: team
       value: 0
       objectReference: {fileID: 0}
@@ -2713,20 +2703,41 @@ Prefab:
       propertyPath: m_TagString
       value: Unit
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 1971157967}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attrChange
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attr.maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attr.strength
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attr.speed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: characterName
+      value: Brodric
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: attr.speed
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &556623376 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-    type: 2}
-  m_PrefabInternal: {fileID: 541234167}
-  m_Script: {fileID: 11500000, guid: 4b9848ed3a1628d4c8ada98d29254607, type: 3}
 --- !u!1 &566396912
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,6 +3140,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: skillSet.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -3165,8 +3180,7 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: team
       value: 0
       objectReference: {fileID: 0}
@@ -3174,17 +3188,35 @@ Prefab:
       propertyPath: m_TagString
       value: Unit
       objectReference: {fileID: 0}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: speed
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 1873268002}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attr.maxHealth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: characterName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: characterName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: attr.speed
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &662693967
@@ -3512,23 +3544,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: f7865566db89f0d4ba39668a756e554f, type: 2}
   m_PrefabInternal: {fileID: 770349609}
---- !u!1 &783435591 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-  m_PrefabInternal: {fileID: 1687295294}
---- !u!114 &783435592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 783435591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f89b5e86c72ea374384f90f31649b2b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 1
-  kind: 0
 --- !u!1001 &795549273
 Prefab:
   m_ObjectHideFlags: 0
@@ -5630,12 +5645,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1310729388 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-    type: 2}
-  m_PrefabInternal: {fileID: 1687295294}
-  m_Script: {fileID: 11500000, guid: 4b9848ed3a1628d4c8ada98d29254607, type: 3}
 --- !u!1001 &1335673330
 Prefab:
   m_ObjectHideFlags: 0
@@ -6927,8 +6936,7 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1308082809}
     m_Modifications:
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -6996,43 +7004,35 @@ Prefab:
       propertyPath: m_TagString
       value: Unit
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: speed
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: strength
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: attr
       value: 
-      objectReference: {fileID: 1310729388}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: speed
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.data[0]
       value: Cripple
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.data[1]
       value: Cripple
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: skillSet.Array.data[2]
       value: Cripple
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: team
       value: 1
       objectReference: {fileID: 0}
@@ -7051,12 +7051,26 @@ Prefab:
       propertyPath: m_SortingLayerID
       value: -1205292289
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 783435592}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attr.maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: attr.strength
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1702959072
@@ -7699,23 +7713,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1861232787}
---- !u!1 &1873267996 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-  m_PrefabInternal: {fileID: 653723786}
---- !u!114 &1873268002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1873267996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f89b5e86c72ea374384f90f31649b2b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 3
-  kind: 2
 --- !u!1001 &1874986226
 Prefab:
   m_ObjectHideFlags: 0
@@ -7805,8 +7802,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: team
       value: 1
       objectReference: {fileID: 0}
@@ -7814,8 +7810,7 @@ Prefab:
       propertyPath: m_TagString
       value: Unit
       objectReference: {fileID: 0}
-    - target: {fileID: 114000014266627256, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: speed
       value: 1
       objectReference: {fileID: 0}
@@ -7823,12 +7818,21 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 64052932fe56d334eba6445d5d182e34, type: 2}
-    - target: {fileID: 114000010751632834, guid: 5956345972927424eba3db6f03f82542,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: weapon
       value: 
-      objectReference: {fileID: 2127252965}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attr.maxHealth
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1888951712
@@ -8295,23 +8299,6 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: f7865566db89f0d4ba39668a756e554f, type: 2}
   m_PrefabInternal: {fileID: 1968833783}
---- !u!1 &1971157966 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-  m_PrefabInternal: {fileID: 541234167}
---- !u!114 &1971157967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1971157966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f89b5e86c72ea374384f90f31649b2b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 1
-  kind: 0
 --- !u!1001 &2003868192
 Prefab:
   m_ObjectHideFlags: 0
@@ -8977,23 +8964,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2127200818}
---- !u!1 &2127252964 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
-  m_PrefabInternal: {fileID: 1886514314}
---- !u!114 &2127252965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2127252964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f89b5e86c72ea374384f90f31649b2b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 1
-  kind: 0
 --- !u!1001 &2146900108
 Prefab:
   m_ObjectHideFlags: 0

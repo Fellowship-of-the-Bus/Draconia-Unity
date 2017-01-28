@@ -66,6 +66,16 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
+
+    foreach (var l in characters.Values) {
+      foreach (var o in l) {
+        actionQueue.add(o);
+        Character c = o.GetComponent<Character>();
+        Tile t = getTile(o.transform.position);
+        t.occupant = o;
+        c.curTile = t;
+      }
+    }
     startTurn();
   }
 
@@ -97,16 +107,6 @@ public class GameManager : MonoBehaviour {
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<Character>().team);
     foreach (var x in objs) {
       characters[x.Key] = new List<GameObject>(x);
-    }
-
-    foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        actionQueue.add(o);
-        Character c = o.GetComponent<Character>();
-        Tile t = getTile(o.transform.position);
-        t.occupant = o;
-        c.curTile = t;
-      }
     }
 
     //set skill buttons to the selected piece's skills, enable those that actually have skills
@@ -157,12 +157,12 @@ public class GameManager : MonoBehaviour {
         Character selectedCharacter = SelectedPiece.GetComponent<Character>();
         Vector3 scale = targetHealth.transform.localScale;
         Skill s = selectedCharacter.equippedSkills[SelectedSkill];
-        if (s is HealingSkill) scale.x = (float)(targetCharacter.curHealth + targetCharacter.PreviewHealing)/targetCharacter.attr.maxHealth;
-        else scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.attr.maxHealth;
+        if (s is HealingSkill) scale.x = (float)(targetCharacter.curHealth + targetCharacter.PreviewHealing)/targetCharacter.maxHealth;
+        else scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.maxHealth;
         targetHealth.transform.localScale = scale;
       } else {
         Vector3 scale = targetHealth.transform.localScale;
-        scale.x = (float)targetCharacter.curHealth/targetCharacter.attr.maxHealth;
+        scale.x = (float)targetCharacter.curHealth/targetCharacter.maxHealth;
         targetHealth.transform.localScale = scale;
       }
       blinkFrameNumber = (blinkFrameNumber+1)%30;

@@ -12,11 +12,11 @@ public class SkullBash: SingleTarget {
   }
 
   public override int calculateDamage(Character source, Character target) {
-    return (int)(source.attr.strength*(0.5+level*0.05) - target.attr.physicalDefense);
+    return (int)(source.strength*(0.5+level*0.05) - target.physicalDefense);
   }
 
   public override void additionalEffects (Character target) {
-    DazedEffect debuff = new DazedEffect();
+    SlowEffect debuff = new SlowEffect();
     target.curAction = Math.Max(0, target.curAction - 300);
     debuff.level = level;
     debuff.duration = 3;

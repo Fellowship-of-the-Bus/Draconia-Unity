@@ -10,7 +10,7 @@ public class IgniteWeaponEffect : DurationEffect {
   }
   public override void additionalEffect(Event e) {
     if (e.attackTarget.team != owner.team && e.damageTaken > 0) {
-      e.attackTarget.takeDamage((int)(2*(100-e.attackTarget.attr.fireResistance)/100f));
+      e.attackTarget.takeDamage((int)(2*e.attackTarget.fireResMultiplier));
     }
   }
 }

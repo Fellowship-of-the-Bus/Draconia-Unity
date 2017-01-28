@@ -10,7 +10,7 @@ public class Vengeance : PassiveSkill {
   }
 
   public override void onActivate() {
-    self.attr.strength += strBonus((float)self.curHealth / self.attr.maxHealth);
+    self.attrChange.strength += strBonus((float)self.curHealth / self.maxHealth);
     attachListener(owner, EventHook.postDamage);
   }
   public override void onDeactivate() {
@@ -23,7 +23,7 @@ public class Vengeance : PassiveSkill {
 
   public override void additionalEffect(Event e) {
     int originalHealth = self.curHealth + e.damageTaken;
-    int baseStr = self.attr.strength -  strBonus((float)originalHealth / self.attr.maxHealth);
-    self.attr.strength = baseStr + strBonus((float)self.curHealth / self.attr.maxHealth);
+    self.attrChange.strength += strBonus((float)self.curHealth / self.maxHealth)
+                              - strBonus((float)originalHealth / self.maxHealth);
   }
 }

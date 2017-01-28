@@ -11,6 +11,6 @@ public class Heal: SingleTarget, HealingSkill {
   }
 
   public int calculateHealing(Character source, Character target) {
-    return (int)(source.attr.intelligence*(1+level*0.1) * target.attr.healingMultiplier);
+    return (int)(source.intelligence*(1+level*0.1) * target.healingMultiplier);
   }
 }
