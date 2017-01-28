@@ -35,10 +35,12 @@ public abstract class Effect : EventListener {
 
   public virtual void activate() {    
     onActivate();
+    owner.onEvent(new Event(owner, EventHook.activateEffect));
   }
 
   public virtual void deactivate() {
     onDeactivate();
+    owner.onEvent(new Event(owner, EventHook.deactivateEffect));
   }
 
   public override void onEvent(Event e) {
