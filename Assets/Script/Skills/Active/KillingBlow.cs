@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class KillingBlow: SingleTarget {
   public KillingBlow() {
-    range = 1;
-    useWepRange = false;
+    requireMelee();
+    useWepRange = true;
     useLos = false;
     name = "Killing Blow";
     cooldown = 2;

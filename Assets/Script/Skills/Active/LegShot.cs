@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class LegShot: SingleTarget {
   public LegShot() {
+    requireWeapon(Weapon.kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Leg Shot";

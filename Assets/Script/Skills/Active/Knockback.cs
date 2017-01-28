@@ -5,8 +5,8 @@ using System.Collections;
 public class Knockback: SingleTarget {
 
   public Knockback() {
-    range = 1;
-    useWepRange = false;
+    requireMelee();
+    useWepRange = true;
     useLos = false;
     name = "Knockback";
     cooldown = 2;

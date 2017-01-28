@@ -13,8 +13,8 @@ public class PiercingShot: ActiveSkill, AoeSkill {
   }
 
   public override List<GameObject> getTargets() {
-    range = self.attr.weaponRange;
-    aoe = self.attr.weaponRange;
+    range = self.weapon.range;
+    aoe = self.weapon.range;
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.getCardinalTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();

@@ -11,6 +11,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool useLos {get; set;}
   public string name {get; set;}
   public int cooldown {get; set;}
+  private bool[] usableWeapon = new bool[3] { true, true, true };
   //number of turns before usable
   public int curCooldown = 0;
 
@@ -41,7 +42,17 @@ public abstract class ActiveSkill : EventListener, Skill {
   public abstract List<GameObject> getTargets();
 
   public virtual bool canUse() {
-    return curCooldown == 0;
+    return curCooldown == 0 && usableWeapon[(int)self.weapon.kind];
+  }
+
+  protected void requireMelee() {
+    usableWeapon[(int)Weapon.kinds.Ranged] = false;
+  }
+
+  protected void requireWeapon(Weapon.kinds k) {
+    for (int i = 0; i < usableWeapon.Length; i++) {
+      usableWeapon[i] = i == (int)k;
+    }
   }
 
   bool attachedListener = false;
