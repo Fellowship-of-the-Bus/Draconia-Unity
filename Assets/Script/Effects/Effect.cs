@@ -5,37 +5,49 @@ public abstract class Effect : EventListener {
   public Tile ownerTile = null;
   public int level = 0;
 
-  public virtual void onApply(Effected e) {
-    if (e is Character) onApply(e as Character);
-    else onApply(e as Tile);
+  public virtual void apply(Effected e) {
+    if (e is Character) apply(e as Character);
+    else apply(e as Tile);
   }
-  public virtual void onApply(Character c) {
+  public void apply(Character c) {
     Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     owner = c;
-    whenApplied(c);
+    onApply(c);
   }
 
-  public virtual void onApply(Tile t) {
+  public void apply(Tile t) {
     Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     ownerTile = t;
-    whenApplied(t);
+    onApply(t);
   }
-  public virtual void whenApplied(Character c) {}
-  public virtual void whenApplied(Tile t) {}
+  protected virtual void onApply(Character c) {}
+  protected virtual void onApply(Tile t) {}
   //when this is removed from owner
-  public virtual void onRemove() {}
+
+  protected virtual void onRemove() {}
+  public virtual void remove() {
+    onRemove();
+  }
   //when this takes effect
-  public abstract void onActivate();
+  protected virtual void onActivate() {}
   //when this loses effect (due to shadowed by higher level skill)
-  public abstract void onDeactivate();
+  protected virtual void onDeactivate() {}
+
+  public virtual void activate() {    
+    onActivate();
+  }
+
+  public virtual void deactivate() {
+    onDeactivate();
+  }
 
   public override void onEvent(Event e) {
     additionalEffect(e);
   }
 
-  public virtual void additionalEffect(Event e) {}
+  protected virtual void additionalEffect(Event e) {}
 
-  public virtual bool isGreaterThan(Effect other) {
+  protected virtual bool isGreaterThan(Effect other) {
     return this.level > other.level;
   }
 

@@ -10,7 +10,7 @@ public class Effected : EventManager {
     if (!effects.ContainsKey(effect)) {
       effects.Add(effect, new Heap<Effect>());
     }
-    effect.onApply(this);
+    effect.apply(this);
     Heap<Effect> l = effects.Get(effect);
 
     //find max level of effects in list
@@ -19,10 +19,10 @@ public class Effected : EventManager {
     //if newly applied effect is the highest level
     //activate it and deactivate the highest leveled one.
     if (maxEffect != null && effect > maxEffect) {
-      maxEffect.onDeactivate();
-      effect.onActivate();
+      maxEffect.deactivate();
+      effect.activate();
     } else if (maxEffect == null) {
-      effect.onActivate();
+      effect.activate();
     }
     l.add(effect);
   }
@@ -35,11 +35,11 @@ public class Effected : EventManager {
     Effect maxEffect = l.getMax();
     l.remove(effect);
     if (effect == maxEffect) {
-      effect.onDeactivate();
+      effect.deactivate();
       if (l.getMax() != null) {
-        l.getMax().onActivate();
+        l.getMax().activate();
       }
     }
-    effect.onRemove();
+    effect.remove();
   }
 }

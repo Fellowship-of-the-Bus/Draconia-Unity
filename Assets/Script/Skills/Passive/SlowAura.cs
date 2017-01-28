@@ -12,7 +12,7 @@ public class SlowAura: PassiveSkill {
     return targets;
   }
 
-  public override void whenApplied(Character c) {
+  protected override void onApply(Character c) {
     range = 0;
     aoe = 2;
     useLos = false;
@@ -33,9 +33,9 @@ public class SlowAura: PassiveSkill {
 
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
   }
 
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
   }
 }

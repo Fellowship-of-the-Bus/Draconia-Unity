@@ -13,7 +13,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     effectFactory = f;
   }
 
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     if (e.hook == EventHook.preMove) {
       removeAura();
     } else if (e.hook == EventHook.postMove) {
@@ -21,17 +21,17 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     }
   }
 
-  public override void onActivate() {
+  public override void activate() {
     attachListener(GameManager.get.eventManager, EventHook.preMove);
     attachListener(GameManager.get.eventManager, EventHook.postMove);
     addAura();
   }
 
-  public override void onDeactivateEffects() {
+  protected override void onDeactivateEffects() {
     removeAura();
   }
 
-  public override void onDeactivateListeners() {
+  protected override void onDeactivateListeners() {
     detachListener(GameManager.get.eventManager);
   }
 

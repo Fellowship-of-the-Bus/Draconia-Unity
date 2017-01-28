@@ -10,11 +10,11 @@ public class CooldownReduction : PassiveSkill {
     return targets;
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
     foreach (ActiveSkill skill in self.equippedSkills) {
       skill.cooldown = (int)Math.Max(skill.cooldown - 1, 0);
     }
   }
 
-  public override void onDeactivate() {}
+  protected override void onDeactivate() {}
 }
