@@ -6,7 +6,7 @@ public class HealingRay: SingleTarget, HealingSkill {
     range = 3;
     useWepRange = false;
     useLos = false;
-    name = "HealingRay";
+    name = "Healing Ray";
     cooldown = 2;
   }
 

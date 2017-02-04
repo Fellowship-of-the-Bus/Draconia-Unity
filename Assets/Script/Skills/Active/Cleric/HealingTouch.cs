@@ -6,7 +6,7 @@ public class HealingTouch: SingleTarget, HealingSkill {
     range = 1;
     useWepRange = false;
     useLos = false;
-    name = "HealingTouch";
+    name = "Healing Touch";
     cooldown = 2;
   }
 
