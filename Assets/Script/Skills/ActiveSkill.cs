@@ -18,9 +18,13 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual void activate(Character target) {
     if (this is HealingSkill) {
       HealingSkill heal = this as HealingSkill;
-      target.takeHealing(heal.calculateHealing(self,target));
+      if (heal.calculateHealing(self,target) != 0) {
+        target.takeHealing(heal.calculateHealing(self,target));
+      }
     } else {
-      target.takeDamage(calculateDamage(self, target));
+      if (calculateDamage(self, target) != 0) {
+        target.takeDamage(calculateDamage(self, target));
+      }
     }
     additionalEffects(target);
   }
