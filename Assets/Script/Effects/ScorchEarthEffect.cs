@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class ScorchEarthEffect : DurationEffect {
   public Character caster;
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(GameManager.get.eventManager, EventHook.endTurn);
     attachListener(caster, EventHook.endTurn);
   }
 
-  public override void onDeactivateListeners() {
+  protected override void onDeactivateListeners() {
     detachListener(GameManager.get.eventManager);
     detachListener(caster);
   }
 
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     if (e.sender == null && e.hook == EventHook.endTurn) {
       Character occupant = null;
       if (ownerTile.occupant != null) {
@@ -22,5 +22,9 @@ public class ScorchEarthEffect : DurationEffect {
         occupant.takeDamage((int)(2*occupant.fireResMultiplier));
       }
     }
+  }
+
+  public override bool shouldDecrement(Event e) {
+    return e.sender == caster;
   }
 }

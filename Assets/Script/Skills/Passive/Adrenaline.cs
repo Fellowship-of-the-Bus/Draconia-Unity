@@ -12,14 +12,14 @@ public class Adrenaline : PassiveSkill {
     return targets;
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(owner, EventHook.preDeath);
     attachListener(owner, EventHook.endTurn);
   }
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
     detachListener(owner);
   }
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     if (e.hook == EventHook.preDeath && timeToActivate == 0) {
       e.preventDeath = true;
       timeToActivate = cooldown;

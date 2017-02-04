@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using System;
 
 public enum EventHook {
-  preAttack,
-  postAttack,
-  preDamage,
-  postDamage,
-  preDeath,
-  postDeath,
-  preMove,
-  postMove,
+  preAttack, postAttack,
+  preDamage, postDamage,
+  preDeath, postDeath,
+  preMove, postMove,
   dodge,
-  endTurn,
-  startTurn,
-  preHealing,
-  postHealing,
-  preHealed,
-  postHealed,
+  endTurn, startTurn,
+  preHealing, postHealing,
+  preHealed, postHealed,
   cancel,
+  activateEffect, deactivateEffect,
 }
 
 public class EventManager : MonoBehaviour {

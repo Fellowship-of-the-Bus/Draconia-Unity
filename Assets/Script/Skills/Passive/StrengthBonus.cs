@@ -8,10 +8,10 @@ public class StrengthBonus : PassiveSkill {
     return targets;
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
     owner.attr.strength += level*2;
   }
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
     owner.attr.strength -= level*2;
   }
 }

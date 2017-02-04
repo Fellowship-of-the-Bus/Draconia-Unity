@@ -5,18 +5,19 @@ public abstract class DurationEffect : Effect {
   bool listenOnEndturn = false;
 
   //when this is removed from owner
-  public override void onRemove() {
+  public sealed override void remove() {
+    base.remove();
     if (owner) base.detachListener(owner);
     if (ownerTile) base.detachListener(ownerTile);
   }
 
-  public override void onApply(Effected c) {
-    base.onApply(c);
+  public override void apply(Effected c) {
+    base.apply(c);
     base.attachListener(c, EventHook.endTurn);
   }
 
   //when this loses effect (due to shadowed by higher level skill)
-  public sealed override void onDeactivate() {
+  public sealed override void deactivate() {
     onDeactivateEffects();
     onDeactivateListeners();
   }
@@ -25,7 +26,7 @@ public abstract class DurationEffect : Effect {
   public sealed override void onEvent(Event e) {
     Debug.Assert(duration != 0);
     //sender == null means sent by global game manager
-    if (e.hook == EventHook.endTurn && e.sender != null) {
+    if (e.hook == EventHook.endTurn && shouldDecrement(e)) {
       if (duration != -1) {
         duration--;
       }
@@ -37,12 +38,16 @@ public abstract class DurationEffect : Effect {
     }
   }
 
+  public virtual bool shouldDecrement(Event e) {
+    return e.sender != null;
+  }
+
   //All stat changes when deactivated
-  public virtual void onDeactivateEffects() {
+  protected virtual void onDeactivateEffects() {
 
   }
   //remove any listeners when deactivated
-  public virtual void onDeactivateListeners() {
+  protected virtual void onDeactivateListeners() {
 
   }
 

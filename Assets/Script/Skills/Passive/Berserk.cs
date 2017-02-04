@@ -9,13 +9,13 @@ public class Berserk : PassiveSkill {
     return targets;
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(owner, EventHook.postDamage);
   }
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
     detachListener(owner);
   }
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     double percentage = Math.Abs(e.damageTaken)/(double)owner.maxHealth;
 
     if (percentage == 0) {

@@ -5,13 +5,13 @@ using System;
 public class InterceptEffect : DurationEffect {
   public Character origin;
 
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(owner, EventHook.preDamage);
   }
-  public override void onDeactivateListeners() {
+  protected override void onDeactivateListeners() {
     detachListener(owner);
   }
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     e.newTarget = origin;
   }
 }

@@ -13,12 +13,12 @@ public class IronSkin : PassiveSkill {
   int addedDefense = 0;
   bool inTurn = false;
 
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
     attachListener(owner, EventHook.postDamage);
     attachListener(owner, EventHook.startTurn);
   }
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
     detachListener(owner);
   }
 
@@ -26,7 +26,7 @@ public class IronSkin : PassiveSkill {
     return (int)(level * numHits * .2f);
   }
 
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     switch (e.hook) {
       case EventHook.startTurn:
         self.attrChange.physicalDefense -= addedDefense;

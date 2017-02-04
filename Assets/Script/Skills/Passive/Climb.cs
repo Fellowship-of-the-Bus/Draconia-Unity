@@ -8,10 +8,10 @@ public class Climb : PassiveSkill {
     return targets;
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
     owner.attrChange.moveTolerance += level;
   }
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
     owner.attrChange.moveTolerance -= level;
   }
 }

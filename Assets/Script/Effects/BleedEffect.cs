@@ -3,16 +3,16 @@ using UnityEngine;
 public class BleedEffect : DurationEffect {
   public int damage;
 
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
   }
-  public override void onDeactivateListeners() {
+  protected override void onDeactivateListeners() {
     detachListener(owner);
   }
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     owner.takeDamage(damage);
   }
-  public override bool isGreaterThan(Effect e) {
+  protected override bool isGreaterThan(Effect e) {
     Debug.Assert(e is BleedEffect);
     if (e is BleedEffect) {
       return this.damage > (e as BleedEffect).damage;

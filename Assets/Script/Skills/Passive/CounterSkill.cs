@@ -9,14 +9,14 @@ public class CounterSkill : PassiveSkill {
     return targets;
   }
 
-  public override void onActivate() {
+  protected override void onActivate() {
     attachListener(owner, EventHook.postDamage);
   }
-  public override void onDeactivate() {
+  protected override void onDeactivate() {
     detachListener(owner);
   }
 
-  public override void additionalEffect(Event e) {
+  protected override void additionalEffect(Event e) {
     // don't counter yourself or your teammates.
     if (owner == e.sender || owner.team == e.sender.team) return;
     float chance = UnityEngine.Random.value;

@@ -231,49 +231,51 @@ public class Character : Effected {
     curAction = Math.Min(curAction + speed*timePassed, maxAction);
   }
 
+  private Attributes totalAttr { get { return attr + attrChange + attrEquip; } }
+
   public int strength {
-    get {return (attr + attrChange + attrEquip).strength;}
+    get {return (int)Math.Max(0, totalAttr.strength);}
   }
   public int intelligence {
-    get {return (attr + attrChange + attrEquip).intelligence;}
+    get {return (int)Math.Max(0, totalAttr.intelligence); }
   }
   public int speed {
-    get {return (attr + attrChange + attrEquip).speed;}
+    get {return (int)Math.Max(0, totalAttr.speed);}
   }
   public int maxHealth {
-    get {return (attr + attrChange + attrEquip).maxHealth;}
+    get {return (int)Math.Max(0, totalAttr.maxHealth);}
   }
   public int moveRange {
-    get {return (attr + attrChange + attrEquip).moveRange;}
+    get {return (int)Math.Max(0, totalAttr.moveRange);}
   }
   public float moveTolerance {
-    get {return (attr + attrChange + attrEquip).moveTolerance;}
+    get {return (int)Math.Max(1, totalAttr.moveTolerance);}
   }
   public int physicalDefense {
-    get {return (attr + attrChange + attrEquip).physicalDefense;}
+    get {return (int)Math.Max(0, totalAttr.physicalDefense);}
   }
   public int magicDefense {
-    get {return (attr + attrChange + attrEquip).magicDefense;}
+    get {return (int)Math.Max(0, totalAttr.magicDefense);}
   }
   public float healingMultiplier {
-    get {return (attr + attrChange + attrEquip).healingMultiplier;}
+    get {return (int)Math.Max(0, totalAttr.healingMultiplier);}
   }
   public int fireResistance {
-    get {return (int)Math.Min((attr + attrChange + attrEquip).fireResistance,100);}
+    get {return (int)Math.Min((int)Math.Max(0, totalAttr.fireResistance),100);}
   }
   public int iceResistance {
-    get {return (int)Math.Min((attr + attrChange + attrEquip).iceResistance,100);}
+    get {return (int)Math.Min((int)Math.Max(0, totalAttr.iceResistance),100);}
   }
   public int lightningResistance {
-    get {return (int)Math.Min((attr + attrChange + attrEquip).lightningResistance,100);}
+    get {return (int)Math.Min((int)Math.Max(0, totalAttr.lightningResistance),100);}
   }
   public float fireResMultiplier {
-    get {return (100f-(float)Math.Min((attr + attrChange + attrEquip).fireResistance,100))/100f;}
+    get {return (100f-fireResistance)/100f;}
   }
   public float iceResMultiplier {
-    get {return (100f-(float)Math.Min((attr + attrChange + attrEquip).iceResistance,100))/100f;}
+    get {return (100f-iceResistance)/100f;}
   }
   public float lightningResMultiplier {
-    get {return (100f-(float)Math.Min((attr + attrChange + attrEquip).lightningResistance,100))/100f;}
+    get {return (100f-lightningResistance)/100f;}
   }
 }
