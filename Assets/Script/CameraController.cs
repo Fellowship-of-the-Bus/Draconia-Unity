@@ -9,7 +9,18 @@ public class CameraController : MonoBehaviour {
 	private float rotationTime;
 	private Transform preTransform;
 	private Vector3 rotateAbout;
-	private bool wasRotating;
+	private bool rotating;
+
+  Ray ray;
+  float distance = 0;
+
+  private GameObject following = null;
+  private Vector3 savedPosn;
+  private Vector3 relativePosn;
+  private Vector3 panOrigin;
+  float panTime = 0f;
+  bool animatingPan = false;
+  const float maxPanTime = 0.25f;
 
 	// Use this for initialization
 	void Start () {
@@ -18,11 +29,16 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-		// create a plane at 0,0,0 whose normal points to +Y:
-		Plane hPlane = new Plane(Vector3.up, Vector3.zero);
+		ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+    Plane hPlane;
+    if (following == null) {
+      // create a plane at 0,0,0 whose normal points to +Y:
+      hPlane = new Plane(Vector3.up, Vector3.zero);
+    } else {
+      hPlane = new Plane(Vector3.up, following.transform.position);
+    }
 		// Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
-		float distance = 0; 
+		distance = 0; 
 		// if the ray hits the plane...
 		hPlane.Raycast(ray, out distance);
 		rotateAbout = ray.GetPoint(distance);
@@ -33,14 +49,26 @@ public class CameraController : MonoBehaviour {
       transform.Translate (Vector3.forward * scroll * scrollFactor);
     }
 
-		if (rotationTime > 0) {
-			float rotationAmount = rotationTime < Time.deltaTime ? rotationTime : Time.deltaTime;
-			transform.RotateAround (rotateAbout, rotationDirection, 90 * rotationAmount);
-			rotationTime -= Time.deltaTime;
-		} else if (wasRotating) {
-			wasRotating = false;
-			transform.rotation = preTransform.rotation;
-		} else {
+    if (rotating && rotationTime > 0) {
+      float rotationAmount = rotationTime < Time.deltaTime ? rotationTime : Time.deltaTime;
+      transform.RotateAround(rotateAbout, rotationDirection, 90 * rotationAmount);
+      rotationTime -= Time.deltaTime;
+    } else if (rotating) {
+      rotating = false;
+      transform.rotation = preTransform.rotation;
+    } else if (following != null) {
+      if (panTime > 0f) {
+        animatePan(panOrigin, following.transform.position);
+      } else {
+        animatingPan = false;
+        lookAt(following.transform.position);
+      }
+    } else if (panTime > 0f) {
+      animatePan(panOrigin, savedPosn);
+    } else if (animatingPan) {
+      transform.position = relativePosn + savedPosn;
+      animatingPan = false;
+    } else {
       float dx = 0;
       float dy = 0;
 
@@ -83,7 +111,7 @@ public class CameraController : MonoBehaviour {
 			preTransform.localRotation = transform.localRotation;
 			preTransform.localPosition = transform.localPosition;
 			preTransform.localScale = transform.localScale;
-			wasRotating = true;
+			rotating = true;
 			rotationDirection = direction;
 			rotationTime = 1.0f;
 			preTransform.RotateAround(rotateAbout, rotationDirection, 90);
@@ -97,5 +125,32 @@ public class CameraController : MonoBehaviour {
     Vector3 rotateVector = rotation * baseRotation * myVector;
 
     transform.Translate (rotateVector, Space.World);
+  }
+
+  private void lookAt(Vector3 p) {
+    transform.position = relativePosn + p;
+  }
+
+  private void animatePan(Vector3 start, Vector3 end) {
+    panTime -= Time.deltaTime;
+    transform.position += (end - start) * Time.deltaTime * (1.0f / maxPanTime);
+  }
+
+  public void follow(GameObject o) {
+    if (!animatingPan) {
+      savedPosn = rotateAbout;
+    }
+    panOrigin = rotateAbout;
+    relativePosn = transform.position - rotateAbout;
+    following = o;
+    panTime = maxPanTime;
+    animatingPan = true;
+  }
+
+  public void unfollow() {
+    panOrigin = following.transform.position;
+    following = null;
+    panTime = maxPanTime;
+    animatingPan = true;
   }
 }

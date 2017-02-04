@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour {
   //EventManager
   public EventManager eventManager;
 
+  // Camera Control
+  public CameraController cam;
+
   //Objectives for this game
   List<Objective> winningConditions = new List<Objective>();
   List<Objective> losingConditions = new List<Objective>();
@@ -81,6 +84,7 @@ public class GameManager : MonoBehaviour {
 
   void Awake() {
     eventManager.setGlobal();
+
     waitEndTurn = new LinkedList<Coroutine>();
     get = this;
     moving = false;
@@ -324,6 +328,8 @@ public class GameManager : MonoBehaviour {
     const float speed = 4f;
     lockUI();
 
+    cam.follow(SelectedPiece);
+    yield return new WaitForSeconds(0.5f);
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.gameObject.transform.position;
@@ -336,6 +342,8 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(1/FPS);
       }
     }
+    yield return new WaitForSeconds(0.25f);
+    cam.unfollow();
     moving = false;
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
