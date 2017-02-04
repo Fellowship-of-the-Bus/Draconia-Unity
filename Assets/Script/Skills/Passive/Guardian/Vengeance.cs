@@ -3,12 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Vengeance : PassiveSkill {
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
-  }
-
   protected override void onActivate() {
     self.attrChange.strength += strBonus((float)self.curHealth / self.maxHealth);
     attachListener(owner, EventHook.postDamage);

@@ -2,12 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class FreezingHit : PassiveSkill {
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
-  }
-
   protected override void onActivate() {
     attachListener(self,EventHook.postAttack);
   }

@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using System;
 
 public class Berserk : PassiveSkill {
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
-  }
-
   protected override void onActivate() {
     attachListener(owner, EventHook.postDamage);
   }

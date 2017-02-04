@@ -5,13 +5,6 @@ using System.Collections.Generic;
 public class HasteAura: PassiveSkill {
   public int aoe {get; set;}
 
-
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
-  }
-
   protected override void onApply(Character c) {
     range = 0;
     aoe = 2;

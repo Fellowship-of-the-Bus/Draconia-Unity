@@ -109,10 +109,9 @@ public class Character : Effected {
   }
 
   public void applyPassives() {
+    Character c = GetComponent<Character>();
     foreach (PassiveSkill passive in skills.getPassives()) {
-      foreach (GameObject o in passive.getTargets()) {
-        passive.activate(o.GetComponent<Character>());
-      }
+      passive.activate(c);
     }
   }
 

@@ -12,6 +12,4 @@ public abstract class PassiveSkill : Effect, Skill {
   public void activate(Character target) {
     target.applyEffect(this);
   }
-
-  public abstract List<GameObject> getTargets();
 }

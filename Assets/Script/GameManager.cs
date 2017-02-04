@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour {
     }
 
     SelectedSkill = i;
-    Skill skill = SelectedPiece.GetComponent<Character>().equippedSkills[i];
+    ActiveSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[i];
 
     skillTargets = skill.getTargets();
     //change colours of the tiles for attacking

@@ -5,13 +5,7 @@ using System;
 public class Adrenaline : PassiveSkill {
   public int cooldown = 4;
   int timeToActivate = 0;
-
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
-  }
-
+  
   protected override void onActivate() {
     attachListener(owner, EventHook.preDeath);
     attachListener(owner, EventHook.endTurn);
