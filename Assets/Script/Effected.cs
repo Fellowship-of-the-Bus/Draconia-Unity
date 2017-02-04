@@ -13,6 +13,13 @@ public class Effected : EventManager {
     effect.apply(this);
     Heap<Effect> l = effects.Get(effect);
 
+    //if stackable activate without doing any max checks
+    if (effect.stackable) {
+      l.add(effect);
+      effect.activate();
+      return;
+    }
+
     //find max level of effects in list
     Effect maxEffect = l.getMax();
 
@@ -31,6 +38,14 @@ public class Effected : EventManager {
   public void removeEffect(Effect effect) {
     Heap<Effect> l = effects.Get(effect);
     Debug.Assert(l.Count != 0);
+
+    //if stackable remove it without doing any max checks
+    if (effect.stackable) {
+      l.remove(effect);
+      effect.deactivate();
+      effect.remove();
+      return;
+    }
 
     Effect maxEffect = l.getMax();
     l.remove(effect);

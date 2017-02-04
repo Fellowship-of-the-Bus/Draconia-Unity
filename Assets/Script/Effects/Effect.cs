@@ -5,6 +5,8 @@ public abstract class Effect : EventListener {
   public Tile ownerTile = null;
   public int level = 0;
 
+  public bool stackable = false;
+
   public virtual void apply(Effected e) {
     if (e is Character) apply(e as Character);
     else apply(e as Tile);
@@ -33,7 +35,7 @@ public abstract class Effect : EventListener {
   //when this loses effect (due to shadowed by higher level skill)
   protected virtual void onDeactivate() {}
 
-  public virtual void activate() {    
+  public virtual void activate() {
     onActivate();
     owner.onEvent(new Event(owner, EventHook.activateEffect));
   }
