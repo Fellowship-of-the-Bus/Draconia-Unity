@@ -5,12 +5,14 @@ using System.Collections.Generic;
 public class Aura<T> : DurationEffect where T: Effect, new() {
   public int radius;
   public bool applyToSelf = true;
+  private bool applyToEnemies = false;
   private Func<T> effectFactory;
   private Dictionary<Character, T> affected = new Dictionary<Character, T>();
 
-  public Aura(int r, Func<T> f) {
+  public Aura(int r, Func<T> f, bool enemyAffecting = false) {
     radius = r;
     effectFactory = f;
+    applyToEnemies = enemyAffecting;
   }
 
   protected override void additionalEffect(Event e) {
@@ -44,7 +46,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     foreach (Tile t in tiles) {
       if (t.occupied()) {
         Character c = t.occupant.GetComponent<Character>();
-        if (c.team == owner.team) {
+        if (c.team == owner.team ^ applyToEnemies) {
           setup(c);
         }
       }
