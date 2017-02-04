@@ -9,7 +9,7 @@ public class HookShot: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Hook Shot";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   float upThreshold = 0.5f;

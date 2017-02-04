@@ -5,7 +5,7 @@ public class RealityDistortion : SingleTarget {
     useWepRange = true;
     useLos = false;
     name = "Reality Distortion";
-    cooldown = 0;
+    maxCooldown = 0;
   }
 
   public override void additionalEffects (Character target) {

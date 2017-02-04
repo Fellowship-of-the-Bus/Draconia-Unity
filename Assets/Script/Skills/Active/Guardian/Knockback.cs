@@ -9,7 +9,7 @@ public class Knockback: SingleTarget {
     useWepRange = true;
     useLos = false;
     name = "Knockback";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   float upThreshold = 0.5f;

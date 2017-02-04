@@ -7,7 +7,7 @@ public class IceSpear: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Ice Spear";
-    cooldown = 2;
+    maxCooldown = 2;
   }
   public override List<GameObject> getTargets() {
     GameManager gm = GameManager.get;

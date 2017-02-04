@@ -8,7 +8,7 @@ public class FrostArmor: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Frost Armor";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

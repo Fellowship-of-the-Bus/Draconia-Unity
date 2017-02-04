@@ -7,7 +7,7 @@ public class LifeDrain: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Life Drain";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

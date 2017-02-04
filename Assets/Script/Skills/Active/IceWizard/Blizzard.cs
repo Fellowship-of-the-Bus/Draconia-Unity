@@ -12,7 +12,7 @@ public class Blizzard: ActiveSkill, AoeSkill {
     useLos = false;
     name = "Blizzard";
     effectsTiles = false;
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

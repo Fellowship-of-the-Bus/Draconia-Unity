@@ -10,7 +10,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool useWepRange {get; set;}
   public bool useLos {get; set;}
   public string name {get; set;}
-  public int cooldown {get; set;}
+  public int maxCooldown {get; set;}
   private bool[] usableWeapon = new bool[3] { true, true, true };
   //number of turns before usable
   public int curCooldown = 0;
@@ -65,7 +65,7 @@ public abstract class ActiveSkill : EventListener, Skill {
       attachListener(self, EventHook.endTurn);
       attachedListener = true;
     }
-    curCooldown = cooldown + 1;
+    curCooldown = maxCooldown + 1;
   }
 
   public override void onEvent(Event e) {

@@ -11,6 +11,7 @@ public class Event {
 
   public int damageTaken;
   public Character attackTarget;
+  public ActiveSkill skillUsed;
 
   public Character endTurnChar;
 

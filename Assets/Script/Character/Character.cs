@@ -146,27 +146,28 @@ public class Character : Effected {
       foreach (Character target in cTargets) {
         var c = target;
         int damage = skill.calculateDamage(this,c);
-        Event e = new Event(this, EventHook.preDamage);
+        Event preDamageEvent = new Event(this, EventHook.preDamage);
         if (damage > 0) {
-          c.onEvent(e);
+          c.onEvent(preDamageEvent);
         }
-        if (e.newTarget != null) {
-          c = e.newTarget;
-          c.onEvent(e);
+        if (preDamageEvent.newTarget != null) {
+          c = preDamageEvent.newTarget;
+          c.onEvent(preDamageEvent);
         }
-        if (e.finishAttack) {
+        if (preDamageEvent.finishAttack) {
           skill.activate(c);
           if (c.isAlive()){
             if (damage > 0) {
-              Event e2 = new Event(this, EventHook.postDamage);
-              e2.damageTaken = damage;
-              c.onEvent(e2);
+              Event postDamageEvent = new Event(this, EventHook.postDamage);
+              postDamageEvent.damageTaken = damage;
+              c.onEvent(postDamageEvent);
             }
           }
-          Event e3 = new Event(this, EventHook.postAttack);
-          e3.damageTaken = damage;
-          e3.attackTarget = c;
-          onEvent(e3);
+          Event postAttackEvent = new Event(this, EventHook.postAttack);
+          postAttackEvent.damageTaken = damage;
+          postAttackEvent.attackTarget = c;
+          postAttackEvent.skillUsed = skill;
+          onEvent(postAttackEvent);
         }
       }
     }

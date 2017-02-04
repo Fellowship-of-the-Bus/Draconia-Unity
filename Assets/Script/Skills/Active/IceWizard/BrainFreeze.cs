@@ -6,7 +6,7 @@ public class BrainFreeze: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "BrainFreeze";
-    cooldown = 2;
+    maxCooldown = 2;
     range = 3;
   }
 

@@ -11,7 +11,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     useLos = false;
     name = "Scorch Earth";
     effectsTiles = true;
-    cooldown = 1;
+    maxCooldown = 1;
   }
 
   public override List<GameObject> getTargets() {

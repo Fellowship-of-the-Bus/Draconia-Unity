@@ -7,7 +7,7 @@ public class SerratedShot: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Serrated Shot";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

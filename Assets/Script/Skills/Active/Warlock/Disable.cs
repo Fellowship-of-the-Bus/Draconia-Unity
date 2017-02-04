@@ -7,7 +7,7 @@ public class Disable : SingleTarget {
     useWepRange = true;
     useLos = false;
     name = "Disable";
-    cooldown = 0;
+    maxCooldown = 0;
   }
   // TODO: UI to select skill
   public override void additionalEffects (Character target) {

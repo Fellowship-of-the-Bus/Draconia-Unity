@@ -6,7 +6,7 @@ public class IgniteWeapon: SingleTarget {
     range = 1;
     useLos = false;
     name = "IgniteWeapon";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

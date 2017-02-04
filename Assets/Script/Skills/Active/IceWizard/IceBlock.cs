@@ -11,7 +11,7 @@ public class IceBlock: ActiveSkill, AoeSkill {
     useLos = false;
     name = "Ice Block";
     effectsTiles = true;
-    cooldown = 1;
+    maxCooldown = 1;
   }
 
   public override List<GameObject> getTargets() {

@@ -5,7 +5,7 @@ using System;
 public class CooldownReduction : PassiveSkill {
   protected override void onActivate() {
     foreach (ActiveSkill skill in self.equippedSkills) {
-      skill.cooldown = (int)Math.Max(skill.cooldown - 1, 0);
+      skill.maxCooldown = (int)Math.Max(skill.maxCooldown - 1, 0);
     }
   }
 

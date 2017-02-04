@@ -9,7 +9,7 @@ public class BloodSacrifice : ActiveSkill {
     useWepRange = false;
     useLos = false;
     name = "Blood Sacrifice";
-    cooldown = 2;
+    maxCooldown = 2;
   }
   public override List<GameObject> getTargets() {
     List<GameObject> targets = new List<GameObject>();

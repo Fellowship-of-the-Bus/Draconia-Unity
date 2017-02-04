@@ -9,7 +9,7 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     useLos = false;
     name = "Piercing Shot";
     effectsTiles = false;
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System;
 
 public class Adrenaline : PassiveSkill {
-  public int cooldown = 4;
+  public int maxCooldown = 4;
   int timeToActivate = 0;
-  
+
   protected override void onActivate() {
     attachListener(owner, EventHook.preDeath);
     attachListener(owner, EventHook.endTurn);
@@ -16,7 +16,7 @@ public class Adrenaline : PassiveSkill {
   protected override void additionalEffect(Event e) {
     if (e.hook == EventHook.preDeath && timeToActivate == 0) {
       e.preventDeath = true;
-      timeToActivate = cooldown;
+      timeToActivate = maxCooldown;
     } else if (e.hook == EventHook.endTurn) {
       timeToActivate = (int)Math.Max(timeToActivate - 1, 0);
     }

@@ -7,7 +7,7 @@ public class Ranged: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Ranged";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

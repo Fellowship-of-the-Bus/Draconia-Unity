@@ -11,7 +11,7 @@ public class TestAoe: ActiveSkill, AoeSkill {
     useLos = false;
     name = "TestAoe";
     effectsTiles = false;
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override List<GameObject> getTargets() {

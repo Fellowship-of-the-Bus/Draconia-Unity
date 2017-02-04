@@ -7,7 +7,7 @@ public class Regenerate: SingleTarget, HealingSkill {
     useWepRange = false;
     useLos = false;
     name = "Regenerate";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public int calculateHealing(Character source, Character target) {

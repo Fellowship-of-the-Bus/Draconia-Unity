@@ -11,7 +11,7 @@ public class Intercept: ActiveSkill {
     aoe = 1;
     useLos = false;
     name = "Intercept";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override void additionalEffects (Character target) {

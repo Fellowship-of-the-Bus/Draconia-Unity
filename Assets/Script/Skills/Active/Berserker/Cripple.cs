@@ -7,7 +7,7 @@ public class Cripple: SingleTarget {
     useWepRange = true;
     useLos = false;
     name = "Cripple";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

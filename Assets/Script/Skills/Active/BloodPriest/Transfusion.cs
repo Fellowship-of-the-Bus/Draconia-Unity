@@ -7,7 +7,7 @@ public class Transfusion: SingleTarget, HealingSkill {
     useWepRange = false;
     useLos = false;
     name = "Transfusion";
-    cooldown = 0;
+    maxCooldown = 0;
   }
 
   public int calculateHealing(Character source, Character target) {

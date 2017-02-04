@@ -7,7 +7,7 @@ public class KillingBlow: SingleTarget {
     useWepRange = true;
     useLos = false;
     name = "Killing Blow";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

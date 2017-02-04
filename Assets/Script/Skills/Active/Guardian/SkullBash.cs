@@ -8,7 +8,7 @@ public class SkullBash: SingleTarget {
     useWepRange = false;
     useLos = false;
     name = "Skull Bash";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {

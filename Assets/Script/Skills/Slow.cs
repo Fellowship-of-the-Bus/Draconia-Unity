@@ -7,7 +7,7 @@ public class Slow: SingleTarget {
     range = 5;
     useLos = false;
     name = "Slow";
-    cooldown = 2;
+    maxCooldown = 2;
   }
 
   public override int calculateDamage(Character source, Character target) {
