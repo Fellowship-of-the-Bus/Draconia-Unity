@@ -69,14 +69,9 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Start() {
-
     foreach (var l in characters.Values) {
       foreach (var o in l) {
-        actionQueue.add(o);
-        Character c = o.GetComponent<Character>();
-        Tile t = getTile(o.transform.position);
-        t.occupant = o;
-        c.curTile = t;
+        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
     startTurn();
@@ -107,7 +102,6 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
 
-    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<Character>().team);
     foreach (var x in objs) {
       characters[x.Key] = new List<GameObject>(x);
@@ -122,6 +116,15 @@ public class GameManager : MonoBehaviour {
 
     winningConditions.Add(new Rout());
     losingConditions.Add(new BrodricDies());
+    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
+    foreach (var l in characters.Values) {
+      foreach (var o in l) {
+        Character c = o.GetComponent<Character>();
+        Tile t = getTile(o.transform.position);
+        t.occupant = o;
+        c.curTile = t;
+      }
+    }
   }
 
   int blinkFrameNumber = 0;
