@@ -11,7 +11,10 @@ public class Transfusion: SingleTarget, HealingSkill {
   }
 
   public int calculateHealing(Character source, Character target) {
-    source.takeDamage((int)(source.intelligence * (1 + level * 0.1)));
     return (int)(source.intelligence*(1+level*0.1) * target.healingMultiplier);
+  }
+
+  public override void additionalEffects(Character target) {
+    self.takeDamage((int)(source.intelligence * (1 + level * 0.1)));
   }
 }
