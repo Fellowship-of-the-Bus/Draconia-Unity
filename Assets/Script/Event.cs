@@ -17,8 +17,8 @@ public class Event {
 
   public Vector3 position;
 
-  public Event(Character sender, EventHook hook) {
-    this.sender = sender;
+  public Event(Effected sender, EventHook hook) {
+    this.sender = sender as Character;
     this.hook = hook;
   }
 }

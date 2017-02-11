@@ -117,10 +117,10 @@ public class ActionQueue {
 
     float posn = getPosn(i);
     moveDown(i);
-    if (newCharacter.characterName == "") {
-      newCharacter.characterName = queue.Count.ToString();
+    if (newCharacter.name == "") {
+      newCharacter.name = queue.Count.ToString();
     }
-    button.GetComponentsInChildren<Text>()[0].text = newCharacter.characterName;
+    button.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
     button.transform.Translate(new Vector3(0, posn, 0));
     gameManager.StartCoroutine(SlideButton(button, -buttonWidth, 0));
   }

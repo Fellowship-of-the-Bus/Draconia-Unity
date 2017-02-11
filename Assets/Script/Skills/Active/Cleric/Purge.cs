@@ -15,12 +15,8 @@ public class Purge: SingleTarget {
   }
 
   public override void additionalEffects (Character target) {
-    LinkedList<Effect> toRemove = new LinkedList<Effect>();
-    foreach(Effect e in target.allEffects) {
-      if (e is DurationEffect) toRemove.AddLast(e);
-    }
-    foreach(Effect e in toRemove) {
-      target.removeEffect(e);
+    foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(target.allEffects)) {
+      if (n.Value is DurationEffect) target.removeEffect(n.Value);
     }
   }
 }

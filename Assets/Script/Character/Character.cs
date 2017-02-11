@@ -27,7 +27,7 @@ public class Character : Effected {
   public float maxAction = 1000f;
   public float curAction = 0;
   public float nextMoveTime = 0f;
-  public string characterName = "";
+  public new string name = "";
   public int team = 0;
   public Weapon weapon = new Weapon();
 
