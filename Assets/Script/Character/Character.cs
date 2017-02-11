@@ -48,6 +48,18 @@ public class Character : Effected {
 
   public string[] skillSet;
 
+  public LinkedList<Effect> allEffects = new LinkedList<Effect>();
+
+  public override void applyEffect(Effect effect) {
+    base.applyEffect(effect);
+    allEffects.AddLast(effect);
+  }
+
+  public override void removeEffect(Effect effect) {
+    base.removeEffect(effect);
+    allEffects.Remove(effect);
+  }
+
   void Start() {
     skills = new SkillTree(this);
     setSkills();

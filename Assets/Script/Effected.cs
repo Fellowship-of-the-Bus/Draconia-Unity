@@ -4,9 +4,9 @@ using System;
 using System.Reflection;
 
 public class Effected : EventManager {
-    TypeMap<Heap<Effect>> effects = new TypeMap<Heap<Effect>>();
+  TypeMap<Heap<Effect>> effects = new TypeMap<Heap<Effect>>();
 
-    public void applyEffect(Effect effect) {
+  public virtual void applyEffect(Effect effect) {
     if (!effects.ContainsKey(effect)) {
       effects.Add(effect, new Heap<Effect>());
     }
@@ -35,7 +35,7 @@ public class Effected : EventManager {
   }
 
 
-  public void removeEffect(Effect effect) {
+  public virtual void removeEffect(Effect effect) {
     Heap<Effect> l = effects.Get(effect);
     Debug.Assert(l.Count != 0);
 
