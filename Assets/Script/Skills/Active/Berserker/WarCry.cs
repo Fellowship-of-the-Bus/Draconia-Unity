@@ -1,13 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class WarCry: ActiveSkill, AoeSkill {
-  public int aoe {get; set;}
-  public bool effectsTiles {get; set;}
-
+public class WarCry: CircleAoE {
   public WarCry() {
     range = 0;
-    aoe = 1;
+    aoe = 3;
     useLos = false;
     name = "WarCry";
     effectsTiles = false;
@@ -21,27 +18,7 @@ public class WarCry: ActiveSkill, AoeSkill {
     target.applyEffect(e);
   }
 
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.curTile.gameObject);
-    return targets;
-  }
-
-  public List<GameObject> getTargetsInAoe(Vector3 position) {
-    List<Tile> tiles = GameManager.get.getTilesWithinRange(self.curTile, aoe);
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    foreach (Tile t in tiles) {
-      if (t.occupied() && (t.occupant.GetComponent<Character>().team == self.team)) {
-        targets.Add(t.occupant);
-      }
-    }
-    return targets;
-  }
-
   public override int calculateDamage(Character source, Character target) {
     return 0;
   }
-
-
 }

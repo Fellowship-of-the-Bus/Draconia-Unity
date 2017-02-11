@@ -1,20 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TestAoe: ActiveSkill, AoeSkill {
+public abstract class CircleAoE: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
-  public TestAoe() {
-    range = 3;
-    aoe = 2;
-    useLos = false;
-    name = "TestAoe";
-    effectsTiles = false;
-    maxCooldown = 2;
-  }
-
   public override List<GameObject> getTargets() {
+    if (useWepRange) {
+      range = self.weapon.range;
+    }
+
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
@@ -33,13 +28,7 @@ public class TestAoe: ActiveSkill, AoeSkill {
         if (t.occupant) targets.Add(t.occupant);
         else targets.Add(t.gameObject);
     }
+    targets.Add(gm.getTile(position).gameObject);
     return targets;
   }
-
-
-  public override int calculateDamage(Character source, Character target) {
-    return (int)(source.strength*(1+level*0.1) - target.physicalDefense);
-  }
-
-
 }
