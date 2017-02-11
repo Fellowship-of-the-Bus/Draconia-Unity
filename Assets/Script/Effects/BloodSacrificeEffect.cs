@@ -8,6 +8,7 @@ public class BloodSacrificeEffect : DurationEffect {
   public void setLevel(int l) {
     level = l;
     attr.intelligence = level;
+    attr.strength = level;
   }
   protected override void onActivate() {
     owner.attrChange += attr;

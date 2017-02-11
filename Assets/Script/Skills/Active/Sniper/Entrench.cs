@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Entrench: ActiveSkill {
+public class Entrench: SelfTarget {
   public int aoe {get; set;}
 
   public Entrench() {
@@ -19,12 +19,6 @@ public class Entrench: ActiveSkill {
     buff.level = level;
     buff.duration = -1;
     target.applyEffect(buff);
-  }
-
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
   }
 
   public override int calculateDamage(Character source, Character target) {
