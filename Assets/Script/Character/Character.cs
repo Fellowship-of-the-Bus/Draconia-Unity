@@ -227,6 +227,10 @@ public class Character : Effected {
     curTile.occupant = null;
     onEvent(new Event(this, EventHook.postDeath));
 
+    // remove all effects on death
+    foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(allEffects)) {
+      removeEffect(n.Value);
+    }
   }
 
   public bool isAlive() {

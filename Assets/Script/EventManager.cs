@@ -6,7 +6,7 @@ public enum EventHook {
   preAttack, postAttack,
   preDamage, postDamage,
   preDeath, postDeath,
-  preMove, postMove,
+  preMove, postMove, enterTile,
   dodge,
   endTurn, startTurn,
   preHealing, postHealing,
@@ -24,10 +24,6 @@ public class EventManager : MonoBehaviour {
       listeners.Add(i, new HashSet<EventListener>());
     }
     eventQueue = new Queue<Event>();
-  }
-
-  void Start(){
-
   }
 
   public void setGlobal() {

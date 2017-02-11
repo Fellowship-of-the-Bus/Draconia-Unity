@@ -209,6 +209,7 @@ public class GameManager : MonoBehaviour {
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
     clearColour();
+    clearPath();
     if (SelectedPiece) {
       if (SelectedPiece.GetComponent<Character>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
@@ -330,6 +331,7 @@ public class GameManager : MonoBehaviour {
     const float FPS = 60f;
     const float speed = 4f;
     lockUI();
+    Character character = piece.GetComponent<Character>();
 
     cam.follow(SelectedPiece);
     yield return new WaitForSeconds(0.5f);
@@ -343,6 +345,14 @@ public class GameManager : MonoBehaviour {
       for (int i = 0; i < FPS/speed; i++) {
         piece.transform.Translate(d);
         yield return new WaitForSeconds(1/FPS);
+      }
+      // tell listeners that this character moved
+      Event enterEvent = new Event(character, EventHook.enterTile);
+      enterEvent.position = destination.transform.position;
+      EventManager.get.onEvent(enterEvent);
+      if (! character.isAlive()) {
+        endTurnWrapper();
+        break; // character can die mid-move now
       }
     }
     yield return new WaitForSeconds(0.25f);

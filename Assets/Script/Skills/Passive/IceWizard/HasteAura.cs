@@ -9,7 +9,7 @@ public class HasteAura: PassiveSkill {
     range = 0;
     aoe = 2;
     useLos = false;
-    name = "HasteAura";
+    name = "Haste Aura";
 
     Func<HasteEffect> f = () => {
       HasteEffect eff = new HasteEffect();

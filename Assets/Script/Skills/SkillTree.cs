@@ -7,13 +7,18 @@ public class SkillTree {
   public SkillTree(Character c) {
     self = c;
   }
+
+  PassiveSkill makePassive<T>(int level = 1) where T : PassiveSkill, new() {
+    T skill = new T();
+    skill.level = level;
+    skill.self = self;
+    return skill;
+  }
+
   //just return something for testing for now
   public List<PassiveSkill> getPassives() {
     List<PassiveSkill> passives = new List<PassiveSkill>();
-    PassiveSkill test = new StrengthBonus();
-    test.level = 1;
-    test.self = self;
-    passives.Add(test);
+    passives.Add(makePassive<StrengthBonus>());
     return passives;
   }
 }

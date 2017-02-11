@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public abstract class EventListener {
-
   public virtual void attachListener(EventManager manager, EventHook hook) {
     manager.addListener(this, hook);
   }

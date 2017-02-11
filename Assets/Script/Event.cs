@@ -15,6 +15,8 @@ public class Event {
 
   public Character endTurnChar;
 
+  public Vector3 position;
+
   public Event(Character sender, EventHook hook) {
     this.sender = sender;
     this.hook = hook;

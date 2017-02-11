@@ -49,7 +49,7 @@ public class PlayerControl : MonoBehaviour {
       if (clickedObject.tag == "Cube") {
         if (gameManager.gameState == GameState.moving) {
           selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
-          gameManager.MovePiece(selectedCoord);
+          gameManager.waitToEndTurn(gameManager.MovePiece(selectedCoord));
           } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
             gameManager.attackTarget(clickedObject);
           }
