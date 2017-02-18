@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour {
   public LinkedList<Tile> path = null;
 
   //variables to handles turns
-  public Tile originalTile;
+  /** stack of (position, remaining move range), where top of stack is previous location */
+  public Stack<Pair<Tile,int>> positionStack = new Stack<Pair<Tile, int>>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
   List<GameObject> skillTargets;
@@ -212,7 +213,7 @@ public class GameManager : MonoBehaviour {
     clearPath();
     if (SelectedPiece) {
       if (SelectedPiece.GetComponent<Character>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-    else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
     //get character whose turn it is
@@ -220,6 +221,7 @@ public class GameManager : MonoBehaviour {
     SelectedPiece = actionQueue.getNext();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
+    moveRange = selectedCharacter.moveRange;
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -236,8 +238,7 @@ public class GameManager : MonoBehaviour {
       return;
     }
 
-    originalTile = getTile(position);
-
+    positionStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
@@ -327,7 +328,7 @@ public class GameManager : MonoBehaviour {
     startTurn();
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, bool doChangeState = true) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
     const float FPS = 60f;
     const float speed = 4f;
     lockUI();
@@ -361,7 +362,6 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
     }
-    if (doChangeState) changeState(GameState.attacking);
     unlockUI();
   }
 
@@ -378,15 +378,24 @@ public class GameManager : MonoBehaviour {
     eventManager.onEvent(new Event(c, EventHook.postMove));
   }
 
-  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool doChangeState = false) {
+  /** remaining move amount */
+  int moveRange = 0;
+  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     // don't start moving twice
     if (moving) return null;
-
 
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
 
-    if (destination.distance <= c.moveRange && !destination.occupied()) {
+    if (destination.distance <= moveRange && !destination.occupied()) {
+      // if player chose to move, update position stack with current values, 
+      // update remaining move range, and recolor the tiles given the new current position
+      if (moveCommand) {
+        positionStack.Push(Pair.create(c.curTile, moveRange));
+        moveRange -= destination.distance;
+        djikstra(coordToMove, c);
+        setTileColours();
+      }
       //after moving, remove from origin tile,
       //add to new tile
       updateTile(c,destination);
@@ -399,9 +408,6 @@ public class GameManager : MonoBehaviour {
         return StartCoroutine(IterateMove(new LinkedList<Tile>(path), SelectedPiece));
       } else {
         SelectedPiece.transform.position = coordToMove;
-        if (doChangeState) {
-          changeState(GameState.attacking);
-        }
       }
     }
     return null;
@@ -411,10 +417,15 @@ public class GameManager : MonoBehaviour {
   }
 
   public void cancelAction() {
-    if (gameState == GameState.attacking) {
-      Vector3 coordToMove = originalTile.gameObject.transform.position;
-      MovePiece(coordToMove, false);
+    if (positionStack.Count() > 0) {
+      // reset character to previous position and remaining move range, then recolor movable tiles
+      Pair<Tile, int> val = positionStack.Pop();
+      Vector3 coordToMove = val.first.gameObject.transform.position;
+      moveRange = val.second;
+      MovePiece(coordToMove, false, false);
       changeState(GameState.moving);
+      djikstra(coordToMove, SelectedPiece.GetComponent<Character>());
+      setTileColours();
     }
     eventManager.onEvent(new Event(SelectedPiece.GetComponent<Character>(), EventHook.cancel));
   }
@@ -528,7 +539,7 @@ public class GameManager : MonoBehaviour {
     clearColour();
     if (gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
-        if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
+        if (tile.distance <= moveRange && !tile.occupied()) {
           tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
         } else {
           tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
