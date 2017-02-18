@@ -53,14 +53,20 @@ public class PlayerControl : MonoBehaviour {
           } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
             gameManager.attackTarget(clickedObject);
           }
-      } else if (clickedObject.tag == "Unit" && gameManager.gameState == GameState.attacking) {
-        gameManager.attackTarget(clickedObject);
+      } else if (clickedObject.tag == "Unit" && gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
+        if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
+          gameManager.attackTarget(clickedObject.GetComponent<Character>().curTile.gameObject);
+        }
+        else gameManager.attackTarget(clickedObject);
       }
     } else if (!gameManager.moving) {
       if (gameManager.gameState == GameState.attacking && hoveredObject) {
         gameManager.selectTarget(hoveredObject);
       }
       if (hoveredObject && hoveredObject.tag == "Unit") {
+        if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
+          gameManager.setTileColours(hoveredObject.GetComponent<Character>().curTile);
+        }
         gameManager.lineTo(hoveredObject);
       } else {
         gameManager.lineTo(gameManager.SelectedPiece);

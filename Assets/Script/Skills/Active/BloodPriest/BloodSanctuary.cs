@@ -5,6 +5,7 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+
   public BloodSanctuary() {
     range = 3;
     aoe = 0;
@@ -12,6 +13,7 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
     name = "Blood Sanctuary";
     effectsTiles = true;
     maxCooldown = 1;
+    targetsTiles = true;
   }
 
   public override List<GameObject> getTargets() {

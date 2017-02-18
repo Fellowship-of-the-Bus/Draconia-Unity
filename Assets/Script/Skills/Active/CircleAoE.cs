@@ -5,6 +5,10 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public CircleAoE() {
+    targetsTiles = true;
+  }
+
   public override List<GameObject> getTargets() {
     if (useWepRange) {
       range = self.weapon.range;
@@ -22,13 +26,15 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
 
   public List<GameObject> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(gm.getTile(position), aoe);
+    Tile cur = gm.getTile(position);
+    List<Tile> tiles = gm.getTilesWithinRange(cur, aoe);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
         if (t.occupant) targets.Add(t.occupant);
         else targets.Add(t.gameObject);
     }
-    targets.Add(gm.getTile(position).gameObject);
+    if (cur.occupant) targets.Add(cur.occupant);
+    else targets.Add(cur.gameObject);
     return targets;
   }
 }

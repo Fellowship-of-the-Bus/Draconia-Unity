@@ -14,6 +14,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   private bool[] usableWeapon = new bool[3] { true, true, true };
   //number of turns before usable
   public int curCooldown = 0;
+  public bool targetsTiles = false;
 
   public virtual void activate(Character target) {
     if (this is HealingSkill) {

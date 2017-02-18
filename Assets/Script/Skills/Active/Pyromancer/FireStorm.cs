@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class FireStorm: CircleAoE {
+  public new bool targetsTiles = true;
+
   public FireStorm() {
     range = 3;
     useWepRange = false;
