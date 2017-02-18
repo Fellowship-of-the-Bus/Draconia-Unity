@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
   GameObject previewTarget;
 
   public GameState gameState = GameState.moving;
+  public bool playerTurn = true;
 
   //EventManager
   public EventManager eventManager;
@@ -232,8 +233,11 @@ public class GameManager : MonoBehaviour {
     changeState(GameState.moving);
     // enemy
     if (SelectedPiece.GetComponent<Character>().team == 1) {
+      playerTurn = false;
       handleAI();
       return;
+    } else {
+      playerTurn = true;
     }
 
     originalTile = getTile(position);
@@ -298,7 +302,6 @@ public class GameManager : MonoBehaviour {
 
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       selectedCharacter.attackWithSkill(selectedCharacter.equippedSkills[SelectedSkill], targets);
-
       StartCoroutine(endTurn());
     }
   }
@@ -333,8 +336,11 @@ public class GameManager : MonoBehaviour {
     lockUI();
     Character character = piece.GetComponent<Character>();
 
-    cam.follow(SelectedPiece);
-    yield return new WaitForSeconds(0.5f);
+    if (gameState == GameState.moving) {
+      cam.follow(SelectedPiece);
+      yield return new WaitForSeconds(0.5f);
+    }
+
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.gameObject.transform.position;
@@ -355,8 +361,12 @@ public class GameManager : MonoBehaviour {
         break; // character can die mid-move now
       }
     }
-    yield return new WaitForSeconds(0.25f);
-    cam.unfollow();
+
+    if (gameState == GameState.moving) {
+      yield return new WaitForSeconds(0.25f);
+      cam.unfollow();
+    }
+
     moving = false;
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
@@ -434,12 +444,20 @@ public class GameManager : MonoBehaviour {
     t.gameObject.GetComponent<Renderer>().material.color = Color.black;
     yield return MovePiece(destination, true);
 
-    selectedCharacter.attackAI.target();
+    yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();
     StartCoroutine(endTurn());
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
+  }
+
+  public IEnumerator AIperformAttack(Character selectedCharacter) {
+    cam.follow(SelectedPiece);
+    yield return new WaitForSeconds(0.5f);
+    selectedCharacter.attackAI.target();
+    yield return new WaitForSeconds(0.25f);
+    cam.unfollow();
   }
 
   public void lockUI() {
