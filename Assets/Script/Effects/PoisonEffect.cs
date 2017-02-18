@@ -11,7 +11,7 @@ public class PoisonEffect : DurationEffect {
     detachListener(owner);
   }
   protected override void additionalEffect(Event e) {
-    owner.takeDamage(damage * multiplier);
+    owner.takeDamage((int)(damage * multiplier));
     multiplier += 0.15f;
   }
   protected override bool isGreaterThan(Effect e) {
