@@ -13,6 +13,9 @@ public class Event {
   public Character attackTarget;
   public ActiveSkill skillUsed;
 
+  public int healingDone;
+  public Character healTarget;
+
   public Character endTurnChar;
 
   public Vector3 position;

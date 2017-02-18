@@ -145,17 +145,21 @@ public class Character : Effected {
     skill.setCooldown();
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
-      onEvent(new Event(this, EventHook.preHealing));
       foreach (Character c in cTargets) {
+        onEvent(new Event(this, EventHook.preHealing));
         int amount = hSkill.calculateHealing(this,c);
         if (amount > 0) c.onEvent(new Event(this, EventHook.preHealed));
         hSkill.activate(c);
         if (amount > 0) c.onEvent(new Event(this, EventHook.postHealed));
+        Event postHealingEvent = new Event(this, EventHook.postHealing);
+        postHealingEvent.healingDone = amount;
+        postHealingEvent.healTarget = c;
+        onEvent(postHealingEvent);
+
       }
-      onEvent(new Event(this, EventHook.postHealing));
     } else {
-      onEvent(new Event(this, EventHook.preAttack));
       foreach (Character target in cTargets) {
+        onEvent(new Event(this, EventHook.preAttack));
         var c = target;
         int damage = skill.calculateDamage(this,c);
         Event preDamageEvent = new Event(this, EventHook.preDamage);
