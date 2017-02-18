@@ -575,7 +575,7 @@ public class GameManager : MonoBehaviour {
   public void djikstra(Vector3 unitLocation, Character charToMove) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;
-      tile.dir = Direction.None;
+      tile.dir = Vector3.zero;
     }
 
     HashSet<Tile> tilesToGo = new HashSet<Tile>(tiles);
@@ -593,49 +593,18 @@ public class GameManager : MonoBehaviour {
         }
       }
 
-      //above
-      Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
-      Tile neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Forward;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //below
-      neighbour = minTile.gameObject.transform.position + Vector3.back;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Back;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //right
-      neighbour = minTile.gameObject.transform.position + Vector3.right;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Right;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //left
-      neighbour = minTile.gameObject.transform.position + Vector3.left;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Left;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+      // TODO: update portal dest distance to portal src distance
+      Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
+      foreach (Vector3 dir in directions) {
+        Vector3 neighbour = minTile.gameObject.transform.position + dir;
+        Tile neighbourTile = getTile(neighbour, tilesToGo);
+        if (neighbourTile != null) {
+          int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
+          if (d < neighbourTile.distance) {
+            neighbourTile.distance = d;
+            neighbourTile.dir = dir;
+          }
+        }      
       }
       tilesToGo.Remove(minTile);
     }
@@ -706,21 +675,8 @@ public class GameManager : MonoBehaviour {
     clearPath();
     Tile t = getTile(coord);
     path.AddFirst(t);
-    while (t.dir != Direction.None) {
-      switch (t.dir) {
-        case Direction.Forward:
-          coord = coord - Vector3.forward;
-          break;
-        case Direction.Back:
-          coord = coord - Vector3.back;
-          break;
-        case Direction.Left:
-          coord = coord - Vector3.left;
-          break;
-        case Direction.Right:
-          coord = coord - Vector3.right;
-          break;
-      }
+    while (t.dir != Vector3.zero) {
+      coord -= t.dir;
       t = getTile(coord);
       path.AddFirst(t);
     }
