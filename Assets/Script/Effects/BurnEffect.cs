@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PoisonEffect : DurationEffect {
+public class BurnEffect : DurationEffect {
   public int damage;
   public float multiplier = 1.0f;
 
@@ -12,14 +12,14 @@ public class PoisonEffect : DurationEffect {
   }
   protected override void additionalEffect(Event e) {
     owner.takeDamage(damage * multiplier);
-    multiplier += 0.15f;
+    multiplier -= 0.15f;
   }
   protected override bool isGreaterThan(Effect e) {
-    Debug.Assert(e is PoisonEffect);
-    if (e is PoisonEffect) {
-      return this.damage > (e as PoisonEffect).damage;
+    Debug.Assert(e is BurnEffect);
+    if (e is BurnEffect) {
+      return this.damage > (e as BurnEffect).damage;
     } else {
-      //should only be comparing Poison effects, shouldn't ever get here.
+      //should only be comparing Burn effects, shouldn't ever get here.
       return true;
     }
   }
