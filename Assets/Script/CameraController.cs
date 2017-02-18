@@ -152,4 +152,12 @@ public class CameraController : MonoBehaviour {
     }
     following = null;
   }
+
+  public void panTo(Vector3 target) {
+    savedPosn = new Vector3(target.x, 0, target.z);
+    relativePosn = transform.position - rotateAbout;
+    panOrigin = transform.position - relativePosn;
+    panTime = maxPanTime;
+    animatingPan = true;
+  }
 }

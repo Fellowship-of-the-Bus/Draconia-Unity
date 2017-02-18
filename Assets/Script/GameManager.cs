@@ -239,6 +239,7 @@ public class GameManager : MonoBehaviour {
       handleAI();
       return;
     } else {
+      cam.panTo(SelectedPiece.transform.position);
       playerTurn = true;
     }
 
