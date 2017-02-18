@@ -59,7 +59,7 @@ public class PlayerControl : MonoBehaviour {
         }
         else gameManager.attackTarget(clickedObject);
       }
-    } else if (!gameManager.moving) {
+    } else if (!gameManager.moving && gameManager.playerTurn) {
       if (gameManager.gameState == GameState.attacking && hoveredObject) {
         gameManager.selectTarget(hoveredObject);
       }

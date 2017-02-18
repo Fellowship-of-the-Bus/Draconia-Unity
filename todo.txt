@@ -4,12 +4,8 @@ skill tree + skills
 Later:
 screens between battles
 multi texture cubes
-disable buttons: during movement, end turn, coroutines...
 advanced AI
 
-
-Follow turn character with camera
-Floating numbers for healing/damage
 Buff bar - show active effects on target
 Animations queueing
 
@@ -17,6 +13,9 @@ set event camera to UI camera in canvas???
 
 
 skills:
+
+pyro: skills "should?" get % chance to apply burn.
+
 warlock:
 teleport
 start enemy cooldown - UI
@@ -39,7 +38,6 @@ More Range
 
 cleric:
 aoe variants of both (long range + short range) heals: One implemented (HealingCircle), other will probably be copy with a couple values changed
-Auto heal ally when they are hit (either like taunt, or buff that stays with target)
 Lose basic attack for buff/skill slot
 
 enhancer:

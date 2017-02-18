@@ -31,12 +31,8 @@ public class CameraController : MonoBehaviour {
 	void Update () {
 		ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
     Plane hPlane;
-    if (following == null) {
-      // create a plane at 0,0,0 whose normal points to +Y:
-      hPlane = new Plane(Vector3.up, Vector3.zero);
-    } else {
-      hPlane = new Plane(Vector3.up, following.transform.position);
-    }
+    // create a plane at 0,0,0 whose normal points to +Y:
+    hPlane = new Plane(Vector3.up, Vector3.zero);
 		// Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
 		distance = 0; 
 		// if the ray hits the plane...
@@ -57,11 +53,11 @@ public class CameraController : MonoBehaviour {
       rotating = false;
       transform.rotation = preTransform.rotation;
     } else if (following != null) {
+      Vector3 targetPosn = new Vector3(following.transform.position.x, 0, following.transform.position.z);
       if (panTime > 0f) {
-        animatePan(panOrigin, following.transform.position);
+        animatePan(panOrigin, targetPosn);
       } else {
-        animatingPan = false;
-        lookAt(following.transform.position);
+        lookAt(targetPosn);
       }
     } else if (panTime > 0f) {
       animatePan(panOrigin, savedPosn);
@@ -139,17 +135,28 @@ public class CameraController : MonoBehaviour {
   public void follow(GameObject o) {
     if (!animatingPan) {
       savedPosn = rotateAbout;
+      relativePosn = transform.position - rotateAbout;
     }
-    panOrigin = rotateAbout;
-    relativePosn = transform.position - rotateAbout;
+    panOrigin = transform.position - relativePosn;
     following = o;
     panTime = maxPanTime;
     animatingPan = true;
   }
 
-  public void unfollow() {
-    panOrigin = following.transform.position;
+  public void unfollow(bool restore = false) {
+    if (restore) {
+      panOrigin = following.transform.position;
+      panTime = maxPanTime;
+    } else {
+      animatingPan = false;
+    }
     following = null;
+  }
+
+  public void panTo(Vector3 target) {
+    savedPosn = new Vector3(target.x, 0, target.z);
+    relativePosn = transform.position - rotateAbout;
+    panOrigin = transform.position - relativePosn;
     panTime = maxPanTime;
     animatingPan = true;
   }

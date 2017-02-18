@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
   GameObject previewTarget;
 
   public GameState gameState = GameState.moving;
+  public bool playerTurn = true;
 
   //EventManager
   public EventManager eventManager;
@@ -234,8 +235,12 @@ public class GameManager : MonoBehaviour {
     changeState(GameState.moving);
     // enemy
     if (SelectedPiece.GetComponent<Character>().team == 1) {
+      playerTurn = false;
       handleAI();
       return;
+    } else {
+      cam.panTo(SelectedPiece.transform.position);
+      playerTurn = true;
     }
 
     positionStack.Clear();
@@ -299,7 +304,6 @@ public class GameManager : MonoBehaviour {
 
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       selectedCharacter.attackWithSkill(selectedCharacter.equippedSkills[SelectedSkill], targets);
-
       StartCoroutine(endTurn());
     }
   }
@@ -334,8 +338,11 @@ public class GameManager : MonoBehaviour {
     lockUI();
     Character character = piece.GetComponent<Character>();
 
-    cam.follow(SelectedPiece);
-    yield return new WaitForSeconds(0.5f);
+    if (gameState == GameState.moving) {
+      cam.follow(SelectedPiece);
+      yield return new WaitForSeconds(0.5f);
+    }
+
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.gameObject.transform.position;
@@ -356,8 +363,12 @@ public class GameManager : MonoBehaviour {
         break; // character can die mid-move now
       }
     }
-    yield return new WaitForSeconds(0.25f);
-    cam.unfollow();
+
+    if (gameState == GameState.moving) {
+      yield return new WaitForSeconds(0.25f);
+      cam.unfollow();
+    }
+
     moving = false;
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
@@ -445,12 +456,20 @@ public class GameManager : MonoBehaviour {
     t.gameObject.GetComponent<Renderer>().material.color = Color.black;
     yield return MovePiece(destination, true);
 
-    selectedCharacter.attackAI.target();
+    yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();
     StartCoroutine(endTurn());
   }
   public void handleAI() {
     StartCoroutine(doHandleAI(1));
+  }
+
+  public IEnumerator AIperformAttack(Character selectedCharacter) {
+    cam.follow(SelectedPiece);
+    yield return new WaitForSeconds(0.5f);
+    selectedCharacter.attackAI.target();
+    yield return new WaitForSeconds(0.25f);
+    cam.unfollow();
   }
 
   public void lockUI() {
@@ -575,7 +594,7 @@ public class GameManager : MonoBehaviour {
   public void djikstra(Vector3 unitLocation, Character charToMove) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;
-      tile.dir = Direction.None;
+      tile.dir = Vector3.zero;
     }
 
     HashSet<Tile> tilesToGo = new HashSet<Tile>(tiles);
@@ -593,49 +612,18 @@ public class GameManager : MonoBehaviour {
         }
       }
 
-      //above
-      Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
-      Tile neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Forward;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //below
-      neighbour = minTile.gameObject.transform.position + Vector3.back;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Back;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //right
-      neighbour = minTile.gameObject.transform.position + Vector3.right;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Right;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //left
-      neighbour = minTile.gameObject.transform.position + Vector3.left;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Left;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+      // TODO: update portal dest distance to portal src distance
+      Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
+      foreach (Vector3 dir in directions) {
+        Vector3 neighbour = minTile.gameObject.transform.position + dir;
+        Tile neighbourTile = getTile(neighbour, tilesToGo);
+        if (neighbourTile != null) {
+          int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
+          if (d < neighbourTile.distance) {
+            neighbourTile.distance = d;
+            neighbourTile.dir = dir;
+          }
+        }      
       }
       tilesToGo.Remove(minTile);
     }
@@ -706,21 +694,8 @@ public class GameManager : MonoBehaviour {
     clearPath();
     Tile t = getTile(coord);
     path.AddFirst(t);
-    while (t.dir != Direction.None) {
-      switch (t.dir) {
-        case Direction.Forward:
-          coord = coord - Vector3.forward;
-          break;
-        case Direction.Back:
-          coord = coord - Vector3.back;
-          break;
-        case Direction.Left:
-          coord = coord - Vector3.left;
-          break;
-        case Direction.Right:
-          coord = coord - Vector3.right;
-          break;
-      }
+    while (t.dir != Vector3.zero) {
+      coord -= t.dir;
       t = getTile(coord);
       path.AddFirst(t);
     }

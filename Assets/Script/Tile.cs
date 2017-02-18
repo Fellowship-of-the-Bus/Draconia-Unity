@@ -1,18 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum Direction {
-  Forward,
-  Right,
-  Back,
-  Left,
-  None
-}
-
 public class Tile : Effected {
   public int distance = 0;
   public int movePointSpent = 1;
-  public Direction dir = Direction.None;
+  public Vector3 dir = Vector3.zero;
   public GameObject occupant = null;
   public float additionalHeight = 0f;
 
