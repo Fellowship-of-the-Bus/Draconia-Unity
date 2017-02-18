@@ -31,7 +31,7 @@ public class HookShot: SingleTarget {
       LinkedList<Tile> tile = new LinkedList<Tile>();
       tile.AddFirst(t);
       GameManager.get.moving = true;
-      GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject, false)));
+      GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject)));
     }
   }
 

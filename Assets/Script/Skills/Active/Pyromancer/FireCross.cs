@@ -13,6 +13,7 @@ public class FireCross: ActiveSkill, AoeSkill {
     name = "FireCross";
     effectsTiles = false;
     maxCooldown = 2;
+    targetsTiles = true;
   }
 
   public override List<GameObject> getTargets() {

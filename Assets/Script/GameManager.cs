@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour {
   public LinkedList<Tile> path = null;
 
   //variables to handles turns
-  public Tile originalTile;
+  /** stack of (position, remaining move range), where top of stack is previous location */
+  public Stack<Pair<Tile,int>> positionStack = new Stack<Pair<Tile, int>>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
   List<GameObject> skillTargets;
@@ -213,7 +214,7 @@ public class GameManager : MonoBehaviour {
     clearPath();
     if (SelectedPiece) {
       if (SelectedPiece.GetComponent<Character>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-    else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
     //get character whose turn it is
@@ -221,6 +222,7 @@ public class GameManager : MonoBehaviour {
     SelectedPiece = actionQueue.getNext();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
+    moveRange = selectedCharacter.moveRange;
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -240,8 +242,7 @@ public class GameManager : MonoBehaviour {
       playerTurn = true;
     }
 
-    originalTile = getTile(position);
-
+    positionStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
@@ -330,7 +331,7 @@ public class GameManager : MonoBehaviour {
     startTurn();
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, bool doChangeState = true) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
     const float FPS = 60f;
     const float speed = 4f;
     lockUI();
@@ -371,7 +372,6 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
     }
-    if (doChangeState) changeState(GameState.attacking);
     unlockUI();
   }
 
@@ -388,15 +388,24 @@ public class GameManager : MonoBehaviour {
     eventManager.onEvent(new Event(c, EventHook.postMove));
   }
 
-  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool doChangeState = false) {
+  /** remaining move amount */
+  int moveRange = 0;
+  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     // don't start moving twice
     if (moving) return null;
-
 
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
 
-    if (destination.distance <= c.moveRange && !destination.occupied()) {
+    if (destination.distance <= moveRange && !destination.occupied()) {
+      // if player chose to move, update position stack with current values, 
+      // update remaining move range, and recolor the tiles given the new current position
+      if (moveCommand) {
+        positionStack.Push(Pair.create(c.curTile, moveRange));
+        moveRange -= destination.distance;
+        djikstra(coordToMove, c);
+        setTileColours();
+      }
       //after moving, remove from origin tile,
       //add to new tile
       updateTile(c,destination);
@@ -409,9 +418,6 @@ public class GameManager : MonoBehaviour {
         return StartCoroutine(IterateMove(new LinkedList<Tile>(path), SelectedPiece));
       } else {
         SelectedPiece.transform.position = coordToMove;
-        if (doChangeState) {
-          changeState(GameState.attacking);
-        }
       }
     }
     return null;
@@ -421,10 +427,15 @@ public class GameManager : MonoBehaviour {
   }
 
   public void cancelAction() {
-    if (gameState == GameState.attacking) {
-      Vector3 coordToMove = originalTile.gameObject.transform.position;
-      MovePiece(coordToMove, false);
+    if (positionStack.Count() > 0) {
+      // reset character to previous position and remaining move range, then recolor movable tiles
+      Pair<Tile, int> val = positionStack.Pop();
+      Vector3 coordToMove = val.first.gameObject.transform.position;
+      moveRange = val.second;
+      MovePiece(coordToMove, false, false);
       changeState(GameState.moving);
+      djikstra(coordToMove, SelectedPiece.GetComponent<Character>());
+      setTileColours();
     }
     eventManager.onEvent(new Event(SelectedPiece.GetComponent<Character>(), EventHook.cancel));
   }
@@ -546,7 +557,7 @@ public class GameManager : MonoBehaviour {
     clearColour();
     if (gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
-        if (tile.distance <= SelectedPiece.GetComponent<Character>().moveRange && !tile.occupied()) {
+        if (tile.distance <= moveRange && !tile.occupied()) {
           tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
         } else {
           tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -582,7 +593,7 @@ public class GameManager : MonoBehaviour {
   public void djikstra(Vector3 unitLocation, Character charToMove) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;
-      tile.dir = Direction.None;
+      tile.dir = Vector3.zero;
     }
 
     HashSet<Tile> tilesToGo = new HashSet<Tile>(tiles);
@@ -600,49 +611,18 @@ public class GameManager : MonoBehaviour {
         }
       }
 
-      //above
-      Vector3 neighbour = minTile.gameObject.transform.position + Vector3.forward;
-      Tile neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Forward;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //below
-      neighbour = minTile.gameObject.transform.position + Vector3.back;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Back;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //right
-      neighbour = minTile.gameObject.transform.position + Vector3.right;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Right;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
-      }
-      //left
-      neighbour = minTile.gameObject.transform.position + Vector3.left;
-      neighbourTile = getTile(neighbour, tilesToGo);
-      if (neighbourTile != null) {
-        int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-        if (d < neighbourTile.distance) {
-          neighbourTile.distance = d;
-          neighbourTile.dir = Direction.Left;
-        }
-        //neighbourTile.distance = Math.Min(minTile.distance + distance(neighbourTile, minTile), neighbourTile.distance);
+      // TODO: update portal dest distance to portal src distance
+      Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
+      foreach (Vector3 dir in directions) {
+        Vector3 neighbour = minTile.gameObject.transform.position + dir;
+        Tile neighbourTile = getTile(neighbour, tilesToGo);
+        if (neighbourTile != null) {
+          int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
+          if (d < neighbourTile.distance) {
+            neighbourTile.distance = d;
+            neighbourTile.dir = dir;
+          }
+        }      
       }
       tilesToGo.Remove(minTile);
     }
@@ -713,21 +693,8 @@ public class GameManager : MonoBehaviour {
     clearPath();
     Tile t = getTile(coord);
     path.AddFirst(t);
-    while (t.dir != Direction.None) {
-      switch (t.dir) {
-        case Direction.Forward:
-          coord = coord - Vector3.forward;
-          break;
-        case Direction.Back:
-          coord = coord - Vector3.back;
-          break;
-        case Direction.Left:
-          coord = coord - Vector3.left;
-          break;
-        case Direction.Right:
-          coord = coord - Vector3.right;
-          break;
-      }
+    while (t.dir != Vector3.zero) {
+      coord -= t.dir;
       t = getTile(coord);
       path.AddFirst(t);
     }

@@ -13,6 +13,7 @@ public class FireLance: ActiveSkill, AoeSkill {
     name = "FireLance";
     effectsTiles = false;
     maxCooldown = 2;
+    targetsTiles = true;
   }
 
   public override List<GameObject> getTargets() {
