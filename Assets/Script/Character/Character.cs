@@ -50,6 +50,8 @@ public class Character : Effected {
 
   public LinkedList<Effect> allEffects = new LinkedList<Effect>();
 
+  public bool levitating = false;
+
   public override void applyEffect(Effect effect) {
     base.applyEffect(effect);
     allEffects.AddLast(effect);

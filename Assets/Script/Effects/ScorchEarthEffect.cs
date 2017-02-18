@@ -25,11 +25,11 @@ public class ScorchEarthEffect : DurationEffect {
       if (ownerTile.occupant != null) {
         occupant = ownerTile.occupant.GetComponent<Character>();
       }
-      if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant))) {
+      if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !(occupant.levitating)) {
         occupant.takeDamage((int)(damage(occupant)));
       }
       effected.Clear();
-    } else if (e.hook == EventHook.enterTile && e.position == ownerTile.transform.position) {
+    } else if (e.hook == EventHook.enterTile && e.position == ownerTile.transform.position  && !(e.sender.levitating)) {
       effected.Add(e.sender);
       e.sender.takeDamage((int)(damage(e.sender)));
     }
