@@ -70,7 +70,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public override void onEvent(Event e) {
-    if (curCooldown != 0) {
+    if (curCooldown != 0 && e.hook == EventHook.endTurn) {
       curCooldown -= 1;
     }
   }

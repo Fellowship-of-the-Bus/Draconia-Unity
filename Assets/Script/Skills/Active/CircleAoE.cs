@@ -24,7 +24,7 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
     return targets;
   }
 
-  public List<GameObject> getTargetsInAoe(Vector3 position) {
+  public virtual List<GameObject> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
     Tile cur = gm.getTile(position);
     List<Tile> tiles = gm.getTilesWithinRange(cur, aoe);

@@ -13,6 +13,7 @@ public enum EventHook {
   preHealed, postHealed,
   cancel,
   activateEffect, deactivateEffect,
+  preSkill, postSkill,
 }
 
 public class EventManager : MonoBehaviour {
