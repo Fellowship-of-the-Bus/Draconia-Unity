@@ -254,8 +254,7 @@ public class GameManager : MonoBehaviour {
   public void selectSkill(int i) {
     //unselect
     if (gameState == GameState.attacking && SelectedSkill == i) {
-      SelectedSkill = -1;
-      setTileColours();
+      changeState(GameState.moving);
       return;
     }
 
@@ -428,7 +427,9 @@ public class GameManager : MonoBehaviour {
   }
 
   public void cancelAction() {
-    if (positionStack.Count() > 0) {
+    if (gameState == GameState.attacking) {
+      changeState(GameState.moving);
+    } else if (positionStack.Count() > 0) {
       // reset character to previous position and remaining move range, then recolor movable tiles
       Pair<Tile, int> val = positionStack.Pop();
       Vector3 coordToMove = val.first.gameObject.transform.position;
