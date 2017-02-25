@@ -27,12 +27,9 @@ public class PlayerControl : MonoBehaviour {
       if (gameManager.gameState == GameState.moving) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = gameManager.getTile(coord);
-        if (t.distance <= gameManager.SelectedPiece.GetComponent<Character>().moveRange) {
+        if (t.distance <= gameManager.moveRange) {
           gameManager.setPath(coord);
           gameManager.setTileColours();
-          foreach (Tile ti in gameManager.path) {
-            ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-          }
         }
       } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
