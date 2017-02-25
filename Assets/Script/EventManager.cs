@@ -13,6 +13,7 @@ public enum EventHook {
   preHealed, postHealed,
   cancel,
   activateEffect, deactivateEffect,
+  useBuffSkill, //for enhancer apply same buff to self when buffing others
 }
 
 public class EventManager : MonoBehaviour {

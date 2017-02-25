@@ -20,6 +20,8 @@ public class Event {
 
   public Vector3 position;
 
+  public Effect appliedBuff;
+
   public Event(Effected sender, EventHook hook) {
     this.sender = sender as Character;
     this.hook = hook;
