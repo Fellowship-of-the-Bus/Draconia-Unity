@@ -23,8 +23,7 @@ public class ShareLife: CircleAoE, HealingSkill {
     }
   }
 
-  public override void onEvent(Event e) {
-    base.onEvent(e);
+  protected override void trigger(Event e) {
     if (e.hook == EventHook.postSkill) {
       if ((int)(self.intelligence*(1+level*0.1)) >= self.curHealth) {
         if (self.curHealth > 1) self.takeDamage(self.curHealth - 1);
