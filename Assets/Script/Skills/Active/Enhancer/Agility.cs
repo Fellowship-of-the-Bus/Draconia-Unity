@@ -1,23 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Empower: SingleTarget {
-  public Empower() {
+public class Agility: SingleTarget {
+  public Agility() {
     range = 5;
     useLos = false;
-    name = "Empower";
+    name = "Agility";
     maxCooldown = 2;
   }
 
   public override void additionalEffects (Character target) {
-    EmpowerEffect e = new EmpowerEffect();
+    ClimbEffect e = new ClimbEffect();
     e.level = level;
-    e.duration = 2;
+    e.duration = 1;
     target.applyEffect(e);
-
-    Event buffEvent = new Event(self, EventHook.useBuffSkill);
-    buffEvent.appliedBuff = e;
-    self.onEvent(buffEvent);
   }
 
   public override int calculateDamage(Character source, Character target) {

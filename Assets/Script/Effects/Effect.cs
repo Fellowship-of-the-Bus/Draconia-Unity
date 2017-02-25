@@ -65,4 +65,8 @@ public abstract class Effect : EventListener {
     return e2.isGreaterThan(e1);
   }
 
+  public Effect clone() {
+    return MemberwiseClone() as Effect;
+  }
+
 }

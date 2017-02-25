@@ -20,5 +20,10 @@ public class Regenerate: SingleTarget, HealingSkill {
     buff.duration = (level+5)/2;
     buff.healing = (int)System.Math.Max((int)calculateDamage(self, target)*(0.2f + 0.1f*level), 1);
     target.applyEffect(buff);
+
+
+    Event buffEvent = new Event(self, EventHook.useBuffSkill);
+    buffEvent.appliedBuff = buff;
+    self.onEvent(buffEvent);
   }
 }

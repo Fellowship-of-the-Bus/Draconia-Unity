@@ -145,6 +145,7 @@ public class Character : Effected {
       else tTargets.Add(e as Tile);
     }
     skill.setCooldown();
+    onEvent(new Event(this, EventHook.preSkill));
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
       foreach (Character c in cTargets) {
@@ -157,7 +158,6 @@ public class Character : Effected {
         postHealingEvent.healingDone = amount;
         postHealingEvent.healTarget = c;
         onEvent(postHealingEvent);
-
       }
     } else {
       foreach (Character target in cTargets) {
@@ -193,13 +193,16 @@ public class Character : Effected {
     foreach (Tile target in tTargets) {
       skill.activate(target);
     }
+
+    onEvent(new Event(this, EventHook.postSkill));
   }
 
-  void floatingText(int val) {
+  void floatingText(int val, Color colour) {
     GameObject ngo = Instantiate(GameManager.get.text) as GameObject;
     ngo.transform.SetParent(ui, false);
     Text txt = (Text)ngo.GetComponent<Text>();
     txt.text = val.ToString();
+    txt.color = colour;
     var phys = ngo.AddComponent<Rigidbody>();
     phys.useGravity = false;
     phys.velocity = new Vector3(0, 1f);
@@ -207,7 +210,7 @@ public class Character : Effected {
 
   public void takeDamage(int damage) {
     if (curHealth <= 0) return;
-    floatingText(damage);
+    floatingText(damage, Color.red);
     curHealth -= damage;
     if (curHealth <= 0) {
       Event e = new Event(this, EventHook.preDeath);
@@ -221,7 +224,7 @@ public class Character : Effected {
   }
 
   public void takeHealing(int amount) {
-    floatingText(amount);
+    floatingText(amount, Color.green);
     curHealth = Math.Min(maxHealth, curHealth + amount);
   }
 

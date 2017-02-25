@@ -1,23 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Empower: SingleTarget {
-  public Empower() {
+public class DivineShield: SingleTarget {
+  public DivineShield() {
     range = 5;
     useLos = false;
-    name = "Empower";
+    name = "DivineShield";
     maxCooldown = 2;
   }
 
   public override void additionalEffects (Character target) {
-    EmpowerEffect e = new EmpowerEffect();
+    DodgeEffect e = new DodgeEffect();
     e.level = level;
-    e.duration = 2;
+    e.duration = 3;
     target.applyEffect(e);
-
-    Event buffEvent = new Event(self, EventHook.useBuffSkill);
-    buffEvent.appliedBuff = e;
-    self.onEvent(buffEvent);
   }
 
   public override int calculateDamage(Character source, Character target) {

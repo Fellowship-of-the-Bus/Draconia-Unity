@@ -1,19 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Empower: SingleTarget {
-  public Empower() {
+public class Enlighten: SingleTarget {
+  public Enlighten() {
     range = 5;
     useLos = false;
-    name = "Empower";
+    name = "Enlighten";
     maxCooldown = 2;
   }
 
   public override void additionalEffects (Character target) {
-    EmpowerEffect e = new EmpowerEffect();
+    EnlightenEffect e = new EnlightenEffect();
     e.level = level;
     e.duration = 2;
     target.applyEffect(e);
+
 
     Event buffEvent = new Event(self, EventHook.useBuffSkill);
     buffEvent.appliedBuff = e;

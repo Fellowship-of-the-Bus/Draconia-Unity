@@ -13,6 +13,8 @@ public enum EventHook {
   preHealed, postHealed,
   cancel,
   activateEffect, deactivateEffect,
+  useBuffSkill, //for enhancer apply same buff to self when buffing others
+  preSkill, postSkill,
 }
 
 public class EventManager : MonoBehaviour {
@@ -49,7 +51,8 @@ public class EventManager : MonoBehaviour {
     eventQueue.Enqueue(e);
     while (eventQueue.Count != 0) {
       e = eventQueue.Dequeue();
-      foreach (EventListener listener in listeners[e.hook]) {
+      List<EventListener> l = new List<EventListener>(listeners[e.hook]);
+      foreach (EventListener listener in l) {
         listener.onEvent(e);
       }
 
