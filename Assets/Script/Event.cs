@@ -22,6 +22,8 @@ public class Event {
 
   public Effect appliedBuff;
 
+  public List<Effected> targets;
+
   public Event(Effected sender, EventHook hook) {
     this.sender = sender as Character;
     this.hook = hook;
