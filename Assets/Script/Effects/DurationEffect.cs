@@ -67,5 +67,6 @@ public abstract class DurationEffect : Effect {
     if (c != null) {
       base.attachListener(c, EventHook.endTurn);
     }
+    listenOnEndturn = false;
   }
 }

@@ -16,6 +16,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int curCooldown = 0;
   public bool targetsTiles = false;
 
+  bool listenOnEndturn = false;
+
   public virtual void activate(Character target) {
     if (this is HealingSkill) {
       HealingSkill heal = this as HealingSkill;
@@ -69,9 +71,26 @@ public abstract class ActiveSkill : EventListener, Skill {
     curCooldown = maxCooldown + 1;
   }
 
-  public override void onEvent(Event e) {
+  public override sealed void onEvent(Event e) {
     if (curCooldown != 0 && e.hook == EventHook.endTurn) {
       curCooldown -= 1;
+      if (listenOnEndturn) {
+        trigger(e);
+      }
     }
+    if (e.hook != EventHook.endTurn) {
+      trigger(e);
+    }
+  }
+
+  protected virtual void trigger(Event e) {
+
+  }
+
+  public sealed override void attachListener(EventManager e, EventHook hook) {
+    if (hook == EventHook.endTurn) {
+      listenOnEndturn = true;
+    }
+    base.attachListener(e, hook);
   }
 }
