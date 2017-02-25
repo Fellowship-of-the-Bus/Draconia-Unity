@@ -133,11 +133,7 @@ public class GameManager : MonoBehaviour {
   bool displayChangedHealth = false;
   void Update() {
     //enable the line only when attacking
-    if (gameState == GameState.attacking) {
-      line.enabled = true;
-    } else {
-      line.enabled = false;
-    }
+    line.enabled = gameState == GameState.attacking;
 
     if (SelectedPiece) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
@@ -146,13 +142,7 @@ public class GameManager : MonoBehaviour {
         ActiveSkill s = selectedCharacter.equippedSkills[i];
         Debug.AssertFormat(s.name != "", "Skill Name is empty");
         skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-
-        if (s.canUse()) {
-            skillButtons[i].interactable = true;
-        } else {
-            skillButtons[i].interactable = false;
-        }
-
+        skillButtons[i].interactable = s.canUse();
       }
     }
 
@@ -362,6 +352,9 @@ public class GameManager : MonoBehaviour {
         break; // character can die mid-move now
       }
     }
+    clearPath();
+    setTileColours();
+
 
     if (gameState == GameState.moving) {
       yield return new WaitForSeconds(0.25f);
@@ -389,22 +382,22 @@ public class GameManager : MonoBehaviour {
   }
 
   /** remaining move amount */
-  int moveRange = 0;
+  public int moveRange = 0;
   public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     // don't start moving twice
     if (moving) return null;
+    LinkedList<Tile> localPath = new LinkedList<Tile>(path);
 
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
 
     if (destination.distance <= moveRange && !destination.occupied()) {
-      // if player chose to move, update position stack with current values, 
+      // if player chose to move, update position stack with current values,
       // update remaining move range, and recolor the tiles given the new current position
       if (moveCommand) {
         positionStack.Push(Pair.create(c.curTile, moveRange));
         moveRange -= destination.distance;
         djikstra(coordToMove, c);
-        setTileColours();
       }
       //after moving, remove from origin tile,
       //add to new tile
@@ -415,7 +408,7 @@ public class GameManager : MonoBehaviour {
         path.RemoveFirst(); // discard current position
         moving = true;
         line.GetComponent<Renderer>().material.color = Color.clear;
-        return StartCoroutine(IterateMove(new LinkedList<Tile>(path), SelectedPiece));
+        return StartCoroutine(IterateMove(localPath, SelectedPiece));
       } else {
         SelectedPiece.transform.position = coordToMove;
       }
@@ -590,6 +583,9 @@ public class GameManager : MonoBehaviour {
         }
       }
     }
+    foreach (Tile ti in path) {
+      ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+    }
   }
 
   public void djikstra(Vector3 unitLocation, Character charToMove) {
@@ -624,7 +620,7 @@ public class GameManager : MonoBehaviour {
             neighbourTile.distance = d;
             neighbourTile.dir = dir;
           }
-        }      
+        }
       }
       tilesToGo.Remove(minTile);
     }
