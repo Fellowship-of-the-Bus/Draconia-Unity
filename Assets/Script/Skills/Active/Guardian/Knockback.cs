@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 
 public class Knockback: SingleTarget {
-
   public Knockback() {
     requireMelee();
     useWepRange = true;
@@ -12,6 +11,7 @@ public class Knockback: SingleTarget {
     maxCooldown = 2;
   }
 
+  public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}
   float upThreshold = 0.5f;
 
   Tile knockTo(Character c) {
@@ -32,9 +32,11 @@ public class Knockback: SingleTarget {
     }
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)(source.strength*(1+level*0.1) - target.physicalDefense);
+  public override int damageFormula() {
+    return (int)(self.strength*(1+level*0.1));
   }
 
-
+  public override int calculateDamage(Character source, Character target) {
+     return damageFormula() - target.physicalDefense;
+  }
 }
