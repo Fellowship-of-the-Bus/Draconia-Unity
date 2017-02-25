@@ -20,8 +20,6 @@ public class Grapple: CircleAoE {
   }
 
   public override void tileEffects(Tile t) {
-    Tile curTile = GameManager.get.getTile(self.gameObject.transform.position);
-
     if (t != null && !t.occupied()) {
       GameManager.get.updateTile(self,t);
       LinkedList<Tile> path = new LinkedList<Tile>();
