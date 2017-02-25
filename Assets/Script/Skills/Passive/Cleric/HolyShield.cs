@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class Fortify : PassiveSkill {
+public class HolyShield : PassiveSkill {
   protected override void onActivate() {
     attachListener(owner, EventHook.postHealing);
   }
