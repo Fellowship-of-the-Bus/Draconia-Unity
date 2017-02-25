@@ -133,11 +133,7 @@ public class GameManager : MonoBehaviour {
   bool displayChangedHealth = false;
   void Update() {
     //enable the line only when attacking
-    if (gameState == GameState.attacking) {
-      line.enabled = true;
-    } else {
-      line.enabled = false;
-    }
+    line.enabled = gameState == GameState.attacking;
 
     if (SelectedPiece) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
@@ -146,13 +142,7 @@ public class GameManager : MonoBehaviour {
         ActiveSkill s = selectedCharacter.equippedSkills[i];
         Debug.AssertFormat(s.name != "", "Skill Name is empty");
         skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-
-        if (s.canUse()) {
-            skillButtons[i].interactable = true;
-        } else {
-            skillButtons[i].interactable = false;
-        }
-
+        skillButtons[i].interactable = s.canUse();
       }
     }
 

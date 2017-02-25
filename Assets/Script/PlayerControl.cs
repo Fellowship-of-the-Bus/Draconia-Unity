@@ -47,28 +47,34 @@ public class PlayerControl : MonoBehaviour {
       Vector3 selectedCoord;
 
       if (clickedObject.tag == "Cube") {
+        // move unit to cube or attack ground
         if (gameManager.gameState == GameState.moving) {
           selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
           gameManager.waitToEndTurn(gameManager.MovePiece(selectedCoord));
-          } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
-            gameManager.attackTarget(clickedObject);
-          }
+        } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
+          gameManager.attackTarget(clickedObject);
+        }
       } else if (clickedObject.tag == "Unit" && gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
+        // attack ground or attack unit
         if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
           gameManager.attackTarget(clickedObject.GetComponent<Character>().curTile.gameObject);
         }
         else gameManager.attackTarget(clickedObject);
       }
     } else if (!gameManager.moving && gameManager.playerTurn) {
+      // show projected damage
       if (gameManager.gameState == GameState.attacking && hoveredObject) {
         gameManager.selectTarget(hoveredObject);
       }
       if (hoveredObject && hoveredObject.tag == "Unit") {
+        // set color of hovered tile 
         if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
           gameManager.setTileColours(hoveredObject.GetComponent<Character>().curTile);
         }
+        // draw line to object
         gameManager.lineTo(hoveredObject);
       } else {
+        // don't draw line
         gameManager.lineTo(gameManager.SelectedPiece);
       }
     }
