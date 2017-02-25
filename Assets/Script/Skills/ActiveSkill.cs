@@ -15,6 +15,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   //number of turns before usable
   public int curCooldown = 0;
   public bool targetsTiles = false;
+  public virtual string tooltip { get { return "Skill Missing Tooltip!"; }}
 
   bool listenOnEndturn = false;
 
@@ -35,16 +36,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual void activate(Tile target) {
     tileEffects(target);
   }
-  public virtual int calculateDamage(Character source, Character target) {
-    return 0;
-  }
-  public virtual void additionalEffects(Character target) {
-
-  }
-
-  public virtual void tileEffects(Tile target) {
-
-  }
+  public virtual int damageFormula() { return 0; }
+  public virtual int calculateDamage(Character source, Character target) { return 0; }
+  public virtual void additionalEffects(Character target) { }
+  public virtual void tileEffects(Tile target) { }
 
   public abstract List<GameObject> getTargets();
 

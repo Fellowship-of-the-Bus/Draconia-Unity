@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour {
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
       skillButtons.Add(o.GetComponent<Button>());
+      o.AddComponent<Tooltip>();
     }
     foreach (GameObject cube in cubes) {
       cube.AddComponent<Tile>();
@@ -142,6 +143,7 @@ public class GameManager : MonoBehaviour {
         ActiveSkill s = selectedCharacter.equippedSkills[i];
         Debug.AssertFormat(s.name != "", "Skill Name is empty");
         skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+        skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
         skillButtons[i].interactable = s.canUse();
       }
     }
