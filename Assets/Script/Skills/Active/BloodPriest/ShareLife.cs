@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class ShareLife: CircleAoE, HealingSkill {
-  bool listenerAttached = false;
-
   public ShareLife() {
     range = 3;
     useWepRange = false;
@@ -14,12 +12,10 @@ public class ShareLife: CircleAoE, HealingSkill {
     maxCooldown = 2;
   }
 
-  //This is not the right place to do this, but there doesn't seem to be a better function for it.
-  public override void setCooldown() {
-    base.setCooldown();
-    if (!listenerAttached) {
+  public override Character self { 
+    set {       
+      base.self = value;
       attachListener(self, EventHook.postSkill);
-      listenerAttached = true;
     }
   }
 

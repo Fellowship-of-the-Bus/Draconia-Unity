@@ -41,5 +41,37 @@ public static class Extensions {
       f(x);
     }
   }
+
+  // switch to this instead of NodeIterator?
+  public static IEnumerable<LinkedListNode<T>> nodeIterate<T>(this LinkedList<T> l) {
+    for (LinkedListNode<T> n = l.First; n != null; n = n.Next) {
+      yield return n;
+    }    
+  }
+
+  // switch to this instead of Range?
+  public static IEnumerable<int> range(int start, int finish, int step = 1, bool inclusive = false) {
+    while (! ((start > finish && step > 0) || (start < finish && step < 0) || (start == finish && !inclusive))) {
+      start += step;
+      yield return start;
+    }
+  }
+
+  public static ICollection<T> AddAll<T>(this ICollection<T> source, params T[] elems) {
+    foreach (T x in elems) source.Add(x);
+    return source;
+  }
+
+  public static List<T> toList<T>(this IEnumerable<T> source) { 
+    return new List<T>(source);
+  }
+
+  public static IEnumerable<T> flatten<T>(this List<List<T>> source) {
+    foreach (var x in source) {
+      foreach (var y in x) {
+        yield return y;
+      }
+    }
+  }
 }
 

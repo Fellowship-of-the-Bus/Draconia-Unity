@@ -270,32 +270,38 @@ public class GameManager : MonoBehaviour {
     Character cTarget = target.GetComponent<Character>();
     if (cTarget != null) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      if (selectedCharacter.equippedSkills[SelectedSkill] is HealingSkill) cTarget.PreviewHealing = (selectedCharacter.equippedSkills[SelectedSkill] as HealingSkill).calculateHealing(selectedCharacter, cTarget);
-      else cTarget.PreviewDamage = selectedCharacter.equippedSkills[SelectedSkill].calculateDamage(selectedCharacter, cTarget);
+      ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
+      HealingSkill hskill = skill as HealingSkill;
+      if (hskill != null) cTarget.PreviewHealing = hskill.calculateHealing(selectedCharacter, cTarget);
+      else cTarget.PreviewDamage = skill.calculateDamage(selectedCharacter, cTarget);
     }
     //todo: aoe health bar hover?
   }
 
+  List<List<Effected>> targets = new List<List<Effected>>();
   public void attackTarget(GameObject target) {
-    bool aoe = (SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] is AoeSkill);
-    List<Effected> targets = new List<Effected>();
-    List<GameObject> validTargets = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets();
+    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
+    List<GameObject> validTargets = skill.getTargets();
 
     if (validTargets.Contains(target)){
-      if (aoe) {
-        AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
-        foreach (GameObject o in skill.getTargetsInAoe(target.transform.position)) {
+      AoeSkill aoe = skill as AoeSkill;
+      List<Effected> curTargets = new List<Effected>();
+      if (aoe != null) {
+        foreach (GameObject o in aoe.getTargetsInAoe(target.transform.position)) {
           Character c = o.GetComponent<Character>();
-          if (c) targets.Add(c);
-          if (skill.effectsTiles) targets.Add(o.GetComponent<Tile>());
+          if (c) curTargets.Add(c);
+          if (aoe.effectsTiles) curTargets.Add(o.GetComponent<Tile>());
         }
       } else {
-        targets.Add(target.GetComponent<Character>());
+        curTargets.Add(target.GetComponent<Character>());
       }
-
-      Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-      selectedCharacter.attackWithSkill(selectedCharacter.equippedSkills[SelectedSkill], targets);
-      StartCoroutine(endTurn());
+      targets.Add(curTargets);
+ 
+      if (targets.Count() == skill.ntargets) {
+        selectedCharacter.attackWithSkill(skill, targets.flatten().toList());
+        StartCoroutine(endTurn());
+      }
     }
   }
 
@@ -308,6 +314,7 @@ public class GameManager : MonoBehaviour {
       yield return c;
     }
     waitEndTurn.Clear();
+    targets.Clear();
 
     //send endTurn event to the current piece
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
@@ -321,6 +328,14 @@ public class GameManager : MonoBehaviour {
     actionQueue.endTurn();
     clearColour();
     startTurn();
+  }
+
+  public void MovePiece(Character c, Tile t) {
+    updateTile(c,t);
+    LinkedList<Tile> tile = new LinkedList<Tile>();
+    tile.AddFirst(t);
+    GameManager.get.moving = true;
+    GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject)));
   }
 
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {

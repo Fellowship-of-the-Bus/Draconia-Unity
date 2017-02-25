@@ -24,11 +24,7 @@ public class Knockback: SingleTarget {
   public override void additionalEffects(Character c) {
     Tile t = knockTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
-      GameManager.get.updateTile(c,t);
-      LinkedList<Tile> tile = new LinkedList<Tile>();
-      tile.AddFirst(t);
-      GameManager.get.moving = true;
-      GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject)));
+      GameManager.get.MovePiece(c, t);
     }
   }
 

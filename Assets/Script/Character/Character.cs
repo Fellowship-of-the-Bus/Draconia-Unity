@@ -193,8 +193,9 @@ public class Character : Effected {
     foreach (Tile target in tTargets) {
       skill.activate(target);
     }
-
-    onEvent(new Event(this, EventHook.postSkill));
+    Event postSkill = new Event(this, EventHook.postSkill);
+    postSkill.targets = targets;
+    onEvent(postSkill);
   }
 
   void floatingText(int val, Color colour) {
