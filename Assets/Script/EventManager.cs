@@ -14,6 +14,7 @@ public enum EventHook {
   cancel,
   activateEffect, deactivateEffect,
   useBuffSkill, //for enhancer apply same buff to self when buffing others
+  preSkill, postSkill,
 }
 
 public class EventManager : MonoBehaviour {

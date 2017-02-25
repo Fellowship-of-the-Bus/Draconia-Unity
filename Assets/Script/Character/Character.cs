@@ -145,6 +145,7 @@ public class Character : Effected {
       else tTargets.Add(e as Tile);
     }
     skill.setCooldown();
+    onEvent(new Event(this, EventHook.preSkill));
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
       foreach (Character c in cTargets) {
@@ -157,7 +158,6 @@ public class Character : Effected {
         postHealingEvent.healingDone = amount;
         postHealingEvent.healTarget = c;
         onEvent(postHealingEvent);
-
       }
     } else {
       foreach (Character target in cTargets) {
@@ -193,6 +193,8 @@ public class Character : Effected {
     foreach (Tile target in tTargets) {
       skill.activate(target);
     }
+
+    onEvent(new Event(this, EventHook.postSkill));
   }
 
   void floatingText(int val, Color colour) {
