@@ -19,7 +19,6 @@ public class SkillTree {
   public List<PassiveSkill> getPassives() {
     List<PassiveSkill> passives = new List<PassiveSkill>();
     passives.Add(makePassive<StrengthBonus>());
-    passives.Add(makePassive<Reciprocate>());
     return passives;
   }
 }
