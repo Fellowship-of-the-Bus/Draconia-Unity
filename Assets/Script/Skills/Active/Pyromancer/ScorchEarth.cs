@@ -17,25 +17,11 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
   }
 
   public override List<GameObject> getTargets() {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      targets.Add(t.gameObject);
-    }
-    targets.Add(self.curTile.gameObject);
-    return targets;
+    return tileTargetting();
   }
 
   public List<GameObject> getTargetsInAoe(Vector3 position) {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(gm.getTile(position), aoe);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-        targets.Add(t.gameObject);
-    }
-    targets.Add(gm.getTile(position).gameObject);
-    return targets;
+    return getTargetsInAoe(position, aoe);
   }
 
   public override void tileEffects(Tile target) {

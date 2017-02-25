@@ -3926,8 +3926,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnButton: {fileID: 1000012830243378, guid: cbdadfcc28701ff48a00dc5cf1f8e635, type: 2}
   iceBlock: {fileID: 100000, guid: 751dfbbd692319140bf95f612c9a0083, type: 2}
-  originalTile: {fileID: 0}
   gameState: 0
+  playerTurn: 1
   eventManager: {fileID: 870542040}
   cam: {fileID: 1425505574}
   selectedHealth: {fileID: 1922000272}
@@ -3937,6 +3937,7 @@ MonoBehaviour:
   targetPanel: {fileID: 914126053}
   mainUI: {fileID: 533879367}
   text: {fileID: 1000010241923896, guid: d85eb5b144bde4debae99681e940ef69, type: 2}
+  moveRange: 0
   piece: {fileID: 100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
 --- !u!114 &870542038
 MonoBehaviour:

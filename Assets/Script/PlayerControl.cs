@@ -42,14 +42,12 @@ public class PlayerControl : MonoBehaviour {
       gameManager.lineTo(gameManager.SelectedPiece);
     }
 
-    // Select a piece
+    // clicked something
     if (!EventSystem.current.IsPointerOverGameObject() && clickedObject) {
-      Vector3 selectedCoord;
-
       if (clickedObject.tag == "Cube") {
         // move unit to cube or attack ground
         if (gameManager.gameState == GameState.moving) {
-          selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
+          Vector3 selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
           gameManager.waitToEndTurn(gameManager.MovePiece(selectedCoord));
         } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
           gameManager.attackTarget(clickedObject);
