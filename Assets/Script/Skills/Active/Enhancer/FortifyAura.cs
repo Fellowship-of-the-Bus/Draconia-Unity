@@ -1,0 +1,35 @@
+using UnityEngine;
+using System;
+using System.Collections.Generic;
+
+public class FortifyAura: SelfTarget {
+  public int aoe {get; set;}
+
+  public FortifyAura() {
+    range = 0;
+    useWepRange = false;
+    aoe = 2;
+    useLos = false;
+    name = "FortifyAura";
+    maxCooldown = 2;
+  }
+
+  public override void additionalEffects (Character target) {
+    Func<FortifyEffect> f = () => {
+      FortifyEffect eff = new FortifyEffect();
+      eff.duration = -1;
+      return eff;
+    };
+
+    Aura<FortifyEffect> e = new Aura<FortifyEffect>(aoe, f);
+    e.level = level;
+    e.duration = 2;
+    e.applyToSelf = true;
+
+    target.applyEffect(e);
+  }
+
+  public override int calculateDamage(Character source, Character target) {
+    return 0;
+  }
+}

@@ -30,6 +30,9 @@ public class PlayerControl : MonoBehaviour {
         if (t.distance <= gameManager.moveRange) {
           gameManager.setPath(coord);
           gameManager.setTileColours();
+          foreach (Tile ti in gameManager.path) {
+            ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+          }
         }
       } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
@@ -64,7 +67,7 @@ public class PlayerControl : MonoBehaviour {
         gameManager.selectTarget(hoveredObject);
       }
       if (hoveredObject && hoveredObject.tag == "Unit") {
-        // set color of hovered tile 
+        // set color of hovered tile
         if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
           gameManager.setTileColours(hoveredObject.GetComponent<Character>().curTile);
         }

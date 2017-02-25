@@ -582,9 +582,6 @@ public class GameManager : MonoBehaviour {
         }
       }
     }
-    foreach (Tile ti in path) {
-      ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
-    }
   }
 
   public void djikstra(Vector3 unitLocation, Character charToMove) {
