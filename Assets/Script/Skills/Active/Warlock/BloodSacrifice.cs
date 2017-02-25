@@ -13,7 +13,7 @@ public class BloodSacrifice : SelfTarget {
 
   public override void additionalEffects(Character target) {
     BloodSacrificeEffect e = new BloodSacrificeEffect();
-    e.setLevel(1);
+    e.setLevel(level);
     e.duration = 2;
     target.applyEffect(e);
     target.takeDamage(2);

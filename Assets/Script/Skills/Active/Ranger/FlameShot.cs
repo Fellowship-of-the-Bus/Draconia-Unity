@@ -14,7 +14,7 @@ public class FlameShot: SingleTarget {
     return (int)((source.strength*(0.5+level*0.5) - target.physicalDefense)*target.fireResMultiplier);
   }
 
-   public override void additionalEffects (Character target) {
+  public override void additionalEffects (Character target) {
     BurnEffect debuff = new BurnEffect();
     debuff.level = level;
     debuff.duration = (level+5)/2;
