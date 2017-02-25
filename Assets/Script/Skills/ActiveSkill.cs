@@ -85,9 +85,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
   }
 
-  protected virtual void trigger(Event e) {
-
-  }
+  protected virtual void trigger(Event e) {}
 
   public sealed override void attachListener(EventManager e, EventHook hook) {
     if (hook == EventHook.endTurn) {
