@@ -50,6 +50,28 @@ public abstract class ActiveSkill : EventListener, Skill {
         target.takeDamage(calculateDamage(target));
       }
     }
+    if (dEle == DamageElement.fire) {
+      float chance = UnityEngine.Random.value;
+      if (chance < 0.3f) {
+        BurnEffect debuff = new BurnEffect();
+        debuff.level = level;
+        debuff.duration = (int)(2*target.fireResMultiplier);
+        debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*0.2f, 1);
+        target.applyEffect(debuff);
+      }
+    }
+    if (dEle == DamageElement.ice) {
+      float chance = UnityEngine.Random.value;
+      if (chance < 0.3f) {
+        SlowEffect debuff = new SlowEffect();
+        //something that depends on the damage done
+        debuff.level = (int)(3*calculateDamage(target)/target.maxHealth);
+        debuff.duration = (int)(2*target.iceResMultiplier);
+      }
+    }
+    if (dEle == DamageElement.lightning) {
+      //apply .... at % rate
+    }
     additionalEffects(target);
   }
 
