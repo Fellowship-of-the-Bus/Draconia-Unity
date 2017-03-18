@@ -35,7 +35,7 @@ public class HookShot: SingleTarget {
     }
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)(source.strength*(1+level*0.1) - target.physicalDefense);
+  public override int damageFormula() {
+    return (int)(self.strength*(1+level*0.1));
   }
 }

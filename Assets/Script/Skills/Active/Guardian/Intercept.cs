@@ -35,8 +35,4 @@ public class Intercept: ActiveSkill {
     targets.Add(self.gameObject);
     return targets;
   }
-
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

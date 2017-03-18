@@ -8,10 +8,13 @@ public class Fireball: SingleTarget {
     useLos = false;
     name = "Fireball";
     maxCooldown = 2;
+
+    dType = DamageType.magical;
+    dEle = DamageElement.fire;
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)((source.intelligence*(1+level*0.1) - target.magicDefense)*target.fireResMultiplier);
+  public override int damageFormula(){
+    return (int)(self.intelligence*(1+level*0.1));
   }
 
 

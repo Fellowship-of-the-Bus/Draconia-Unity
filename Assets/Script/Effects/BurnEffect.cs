@@ -11,7 +11,7 @@ public class BurnEffect : DurationEffect {
     detachListener(owner);
   }
   protected override void additionalEffect(Event e) {
-    owner.takeDamage((int)(damage * multiplier));
+    owner.takeDamage(owner.calculateDamage((int)(damage * multiplier), DamageType.none, DamageElement.fire));
     multiplier -= 0.15f;
   }
   protected override bool isGreaterThan(Effect e) {

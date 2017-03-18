@@ -9,10 +9,9 @@ public class FrostArmor: SingleTarget {
     useLos = false;
     name = "Frost Armor";
     maxCooldown = 2;
-  }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
+    dType = DamageType.magical;
+    dEle = DamageElement.ice;
   }
 
   public override void additionalEffects (Character target) {

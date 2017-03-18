@@ -15,7 +15,7 @@ public class Knockback: SingleTarget {
   float upThreshold = 0.5f;
 
   Tile knockTo(Character c) {
-      Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
+      Vector3 heading = c.curTile.transform.position - self.curTile.transform.position;
       Vector3 direction = heading / heading.magnitude;
       Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
       return t;
@@ -23,16 +23,12 @@ public class Knockback: SingleTarget {
 
   public override void additionalEffects(Character c) {
     Tile t = knockTo(c);
-    if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
+    if (t != null && !t.occupied() && ((GameManager.get.getHeight(c.curTile) + upThreshold) > GameManager.get.getHeight(t))) {
       GameManager.get.MovePiece(c, t);
     }
   }
 
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
-  }
-
-  public override int calculateDamage(Character source, Character target) {
-     return damageFormula() - target.physicalDefense;
   }
 }

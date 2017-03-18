@@ -1,6 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum DamageType {
+  physical,
+  magical,
+  none
+}
+
+public enum DamageElement {
+  ice,
+  fire,
+  lightning,
+  none
+}
+
 public abstract class ActiveSkill : EventListener, Skill {
   public const int InfiniteCooldown = -2;
 
@@ -17,6 +30,9 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool targetsTiles = false;
   public virtual string tooltip { get { return "Skill Missing Tooltip!"; }}
 
+  public DamageType dType = DamageType.physical;
+  public DamageElement dEle = DamageElement.none;
+
   bool listenOnEndturn = false;
   public int ntargets { get; set; }
 
@@ -26,14 +42,35 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public virtual void activate(Character target) {
     if (this is HealingSkill) {
-      HealingSkill heal = this as HealingSkill;
-      if (heal.calculateHealing(self,target) != 0) {
-        target.takeHealing(heal.calculateHealing(self,target));
+      if (calculateHealing(target) != 0) {
+        target.takeHealing(calculateHealing(target));
       }
     } else {
-      if (calculateDamage(self, target) != 0) {
-        target.takeDamage(calculateDamage(self, target));
+      if (calculateDamage(target) != 0) {
+        target.takeDamage(calculateDamage(target));
       }
+    }
+    if (dEle == DamageElement.fire) {
+      float chance = UnityEngine.Random.value;
+      if (chance < 0.3f) {
+        BurnEffect debuff = new BurnEffect();
+        debuff.level = level;
+        debuff.duration = (int)(2*target.fireResMultiplier);
+        debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*0.2f, 1);
+        target.applyEffect(debuff);
+      }
+    }
+    if (dEle == DamageElement.ice) {
+      float chance = UnityEngine.Random.value;
+      if (chance < 0.3f) {
+        SlowEffect debuff = new SlowEffect();
+        //something that depends on the damage done
+        debuff.level = (int)(3*calculateDamage(target)/target.maxHealth);
+        debuff.duration = (int)(2*target.iceResMultiplier);
+      }
+    }
+    if (dEle == DamageElement.lightning) {
+      //apply .... at % rate
     }
     additionalEffects(target);
   }
@@ -43,7 +80,15 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
-  public virtual int calculateDamage(Character source, Character target) { return 0; }
+  public virtual int calculateDamage(Character target) {
+    return target.calculateDamage(damageFormula(), dType, dEle);
+  }
+
+  public virtual int calculateHealing(Character target){
+    Debug.AssertFormat(this is HealingSkill, "calculateHealing called in a non-Healingskill {0}", this);
+    HealingSkill heal = this as HealingSkill;
+    return target.calculateHealing(heal.healingFormula());
+  }
   public virtual void additionalEffects(Character target) { }
   public virtual void tileEffects(Tile target) { }
 
@@ -114,4 +159,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     targets.Add(gm.getTile(position).gameObject);
     return targets;
   }
+
+  // ensure that targets are valid
+  public virtual void validate(List<List<Effected>> targets) {}
 }

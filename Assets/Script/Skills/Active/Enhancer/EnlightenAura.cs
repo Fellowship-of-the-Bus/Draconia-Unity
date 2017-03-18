@@ -29,7 +29,4 @@ public class EnlightenAura: SelfTarget {
     target.applyEffect(e);
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

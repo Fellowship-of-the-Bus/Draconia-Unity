@@ -12,7 +12,7 @@ public class HealingCircle: CircleAoE, HealingSkill {
     maxCooldown = 2;
   }
 
-  public int calculateHealing(Character source, Character target) {
-    return (int)((source.intelligence*(1+level*0.1) - target.magicDefense) * target.healingMultiplier);
+  public int healingFormula() {
+    return (int)(self.intelligence*(1+level*0.1));
   }
 }

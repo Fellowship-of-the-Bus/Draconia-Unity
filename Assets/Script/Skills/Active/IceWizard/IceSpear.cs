@@ -8,6 +8,9 @@ public class IceSpear: SingleTarget {
     useLos = false;
     name = "Ice Spear";
     maxCooldown = 2;
+
+    dType = DamageType.magical;
+    dEle = DamageElement.ice;
   }
   public override List<GameObject> getTargets() {
     GameManager gm = GameManager.get;
@@ -22,7 +25,7 @@ public class IceSpear: SingleTarget {
   }
 
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)((source.intelligence*(1+level*0.1) - target.magicDefense) * target.iceResMultiplier);
+  public override int damageFormula() {
+    return (int)(self.intelligence*(1+level*0.1));
   }
 }

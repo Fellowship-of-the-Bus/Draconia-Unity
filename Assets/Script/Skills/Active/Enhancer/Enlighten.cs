@@ -21,7 +21,4 @@ public class Enlighten: SingleTarget {
     self.onEvent(buffEvent);
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

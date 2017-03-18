@@ -8,16 +8,16 @@ public class LifeDrain: SingleTarget {
     useLos = false;
     name = "Life Drain";
     maxCooldown = 2;
+
+
+    dType = DamageType.magical;
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)(source.intelligence*(1+level*0.1) - target.magicDefense);
+  public override int damageFormula() {
+    return (int)(self.intelligence*(1+level*0.1));
   }
 
   public override void additionalEffects(Character target) {
-    self.takeHealing(calculateDamage(self,target));
+    self.takeHealing(calculateDamage(target));
   }
-
-
-
 }
