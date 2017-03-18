@@ -572,9 +572,9 @@ public class GameManager : MonoBehaviour {
     if (gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
         if (tile.distance <= moveRange && !tile.occupied()) {
-          tile.gameObject.GetComponent<Renderer>().material.color = Color.green;
+          tile.setColor(Color.green);
         } else {
-          tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
+          tile.setColor(Color.clear);
         }
       }
     } else if (gameState == GameState.attacking && SelectedSkill != -1) {
@@ -583,21 +583,21 @@ public class GameManager : MonoBehaviour {
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
         foreach (Tile tile in inRangeTiles) {
-          tile.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+          tile.setColor(Color.blue);
         }
         foreach (GameObject o in skillTargets) {
-          getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+          getTile(o.transform.position).setColor(Color.red);
         }
       } else {
         foreach (GameObject o in SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets()) {
-          o.GetComponent<Renderer>().material.color = Color.blue;
+          getTile(o.transform.position).setColor(Color.blue);
         }
         AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
         var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
         if (targetsInAoe != null) {
           foreach (GameObject o in targetsInAoe) {
-            if (o.tag == "Cube") getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.yellow;
-            else getTile(o.transform.position).gameObject.GetComponent<Renderer>().material.color = Color.red;
+            if (o.tag == "Cube") getTile(o.transform.position).setColor(Color.yellow);
+            else getTile(o.transform.position).setColor(Color.red);
           }
         }
       }
@@ -707,7 +707,7 @@ public class GameManager : MonoBehaviour {
 
   public void clearColour() {
     foreach (Tile tile in tiles) {
-      tile.gameObject.GetComponent<Renderer>().material.color = Color.white;
+      tile.setColor(Color.clear);
     }
   }
 

@@ -23,7 +23,10 @@ public class PlayerControl : MonoBehaviour {
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
     GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
-    if (hoveredObject && hoveredObject.tag == "Cube") {
+    if (hoveredObject && (hoveredObject.tag == "Cube" || hoveredObject.transform.parent.tag == "Cube")) {
+      if (hoveredObject.transform.parent.tag == "Cube") {
+        hoveredObject = hoveredObject.transform.parent.gameObject;
+      }
       if (gameManager.gameState == GameState.moving) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = gameManager.getTile(coord);
@@ -31,7 +34,8 @@ public class PlayerControl : MonoBehaviour {
           gameManager.setPath(coord);
           gameManager.setTileColours();
           foreach (Tile ti in gameManager.path) {
-            ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+            ti.setColor(Color.blue);
+            //ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
           }
         }
       } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
@@ -44,7 +48,10 @@ public class PlayerControl : MonoBehaviour {
 
     // clicked something
     if (!EventSystem.current.IsPointerOverGameObject() && clickedObject) {
-      if (clickedObject.tag == "Cube") {
+      if (clickedObject.tag == "Cube" || clickedObject.transform.parent.tag == "Cube") {
+        if (clickedObject.transform.parent.tag == "Cube") {
+          clickedObject = clickedObject.transform.parent.gameObject;
+        }
         // move unit to cube or attack ground
         if (gameManager.gameState == GameState.moving) {
           Vector3 selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
