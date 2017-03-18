@@ -15,8 +15,4 @@ public class DivineShield: SingleTarget {
     e.duration = 3;
     target.applyEffect(e);
   }
-
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

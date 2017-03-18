@@ -11,8 +11,8 @@ public class BluntShot: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)(source.strength*(0.5+level*0.05) - target.physicalDefense);
+  public override int damageFormula() {
+    return (int)(self.strength*(0.5+level*0.05));
   }
 
   public override void additionalEffects (Character target) {

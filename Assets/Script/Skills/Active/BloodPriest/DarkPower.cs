@@ -28,7 +28,8 @@ public class DarkPower: CircleAoE {
         BleedEffect debuff = new BleedEffect();
         debuff.level = level;
         debuff.duration = (level+5)/2;
-        debuff.damage = (int)System.Math.Max((int)calculateDamage(self, target)*(0.2f + 0.1f*level), 1);
+        //some damage or debuff etc..
+        debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
         target.applyEffect(debuff);
       }
     }

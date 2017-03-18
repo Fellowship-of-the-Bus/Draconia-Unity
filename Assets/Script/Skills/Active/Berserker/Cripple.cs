@@ -15,10 +15,6 @@ public class Cripple: SingleTarget {
     return (int)(self.strength*(0.5+level*0.05));
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return damageFormula() - target.physicalDefense;
-  }
-
   public override void additionalEffects (Character target) {
     CrippleEffect debuff = new CrippleEffect();
     debuff.level = level;

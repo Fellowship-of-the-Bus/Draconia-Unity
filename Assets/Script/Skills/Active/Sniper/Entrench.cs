@@ -20,8 +20,4 @@ public class Entrench: SelfTarget {
     buff.duration = -1;
     target.applyEffect(buff);
   }
-
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

@@ -8,10 +8,9 @@ public class BrainFreeze: SingleTarget {
     name = "BrainFreeze";
     maxCooldown = 2;
     range = 3;
-  }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
+    dType = DamageType.magical;
+    dEle = DamageElement.ice;
   }
 
   public override void additionalEffects (Character target) {

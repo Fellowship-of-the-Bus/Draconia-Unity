@@ -10,7 +10,8 @@ public class Punch: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)(source.strength*(1+level*0.1) - target.physicalDefense);
+
+  public override int damageFormula() {
+    return (int)(self.strength*(1+level*0.1));
   }
 }

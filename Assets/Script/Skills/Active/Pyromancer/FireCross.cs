@@ -14,6 +14,9 @@ public class FireCross: ActiveSkill, AoeSkill {
     effectsTiles = false;
     maxCooldown = 2;
     targetsTiles = true;
+
+    dType = DamageType.magical;
+    dEle = DamageElement.fire;
   }
 
   public override List<GameObject> getTargets() {
@@ -47,8 +50,8 @@ public class FireCross: ActiveSkill, AoeSkill {
   }
 
 
-  public override int calculateDamage(Character source, Character target) {
-    return (int)((source.intelligence*(1+level*0.1) - target.magicDefense)*target.fireResMultiplier);
+  public override int damageFormula() {
+    return (int)(self.intelligence*(1+level*0.1));
   }
 
 

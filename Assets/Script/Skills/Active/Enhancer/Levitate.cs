@@ -11,10 +11,6 @@ public class Levitate: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
-
   public override void additionalEffects (Character target) {
     LevitateEffect debuff = new LevitateEffect();
     debuff.level = level;

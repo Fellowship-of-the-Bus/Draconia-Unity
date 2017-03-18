@@ -145,12 +145,14 @@ public class Character : Effected {
       else tTargets.Add(e as Tile);
     }
     skill.setCooldown();
-    onEvent(new Event(this, EventHook.preSkill));
+    Event preSkillEvent = new Event(this, EventHook.preSkill);
+    preSkillEvent.skillUsed = skill;
+    onEvent(preSkillEvent);
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
       foreach (Character c in cTargets) {
         onEvent(new Event(this, EventHook.preHealing));
-        int amount = hSkill.calculateHealing(this,c);
+        int amount = skill.calculateHealing(c);
         if (amount > 0) c.onEvent(new Event(this, EventHook.preHealed));
         hSkill.activate(c);
         if (amount > 0) c.onEvent(new Event(this, EventHook.postHealed));
@@ -163,7 +165,7 @@ public class Character : Effected {
       foreach (Character target in cTargets) {
         onEvent(new Event(this, EventHook.preAttack));
         var c = target;
-        int damage = skill.calculateDamage(this,c);
+        int damage = skill.calculateDamage(c);
         Event preDamageEvent = new Event(this, EventHook.preDamage);
         if (damage > 0) {
           c.onEvent(preDamageEvent);
@@ -195,6 +197,7 @@ public class Character : Effected {
     }
     Event postSkill = new Event(this, EventHook.postSkill);
     postSkill.targets = targets;
+    postSkill.skillUsed = skill;
     onEvent(postSkill);
   }
 
@@ -207,6 +210,29 @@ public class Character : Effected {
     var phys = ngo.AddComponent<Rigidbody>();
     phys.useGravity = false;
     phys.velocity = new Vector3(0, 1f);
+  }
+
+  public int calculateDamage(int rawDamage, DamageType type, DamageElement element) {
+    int defense = 0;
+    if (type == DamageType.physical) {
+      defense = physicalDefense;
+    } else if (type == DamageType.magical) {
+      defense = magicDefense;
+    }
+    rawDamage = (int)(Math.Max(0, rawDamage - defense));
+    float multiplier = 1;
+    if (element == DamageElement.ice) {
+      multiplier = iceResMultiplier;
+    } else if (element == DamageElement.fire) {
+      multiplier = fireResMultiplier;
+    } else if (element == DamageElement.lightning) {
+      multiplier = lightningResMultiplier;
+    }
+    return (int)(rawDamage*multiplier);
+  }
+
+  public int calculateHealing(int rawHeal) {
+    return (int)(rawHeal*healingMultiplier);
   }
 
   public void takeDamage(int damage) {

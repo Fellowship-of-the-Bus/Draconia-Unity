@@ -10,7 +10,7 @@ public class RegenerationEffect : DurationEffect {
     detachListener(owner);
   }
   protected override void additionalEffect(Event e) {
-    owner.takeHealing(healing);
+    owner.takeHealing(owner.calculateHealing(healing));
   }
   protected override bool isGreaterThan(Effect e) {
     Debug.Assert(e is RegenerationEffect);

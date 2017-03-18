@@ -17,8 +17,4 @@ public class WarCry: CircleAoE {
     e.duration = 1;
     target.applyEffect(e);
   }
-
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }
