@@ -19,8 +19,4 @@ public class Empower: SingleTarget {
     buffEvent.appliedBuff = e;
     self.onEvent(buffEvent);
   }
-
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

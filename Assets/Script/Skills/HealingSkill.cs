@@ -3,5 +3,5 @@ using System.Collections.Generic;
 
 public interface HealingSkill {
   void activate(Character target);
-  int calculateHealing(Character source, Character target);
+  int healingFormula();
 }

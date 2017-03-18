@@ -11,11 +11,14 @@ public class PointBlankShot: SingleTarget {
     name = "Point Blank Shot";
     maxCooldown = 2;
   }
+  public override int damageFormula() {
+    return (int)(self.strength*(1+level*0.1));
+  }
 
-  public override int calculateDamage(Character source, Character target) {
-    float distance = (target.gameObject.transform.position - source.gameObject.transform.position).magnitude;
+  public override int calculateDamage(Character target) {
+    float distance = (target.gameObject.transform.position - self.gameObject.transform.position).magnitude;
     float multiplier = 2.5f / distance;
 
-    return (int)((source.strength*(1+level*0.1) - target.physicalDefense) * multiplier);
+    return (int)(base.calculateDamage(target) * multiplier);
   }
 }

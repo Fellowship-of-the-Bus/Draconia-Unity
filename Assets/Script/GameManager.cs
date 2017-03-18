@@ -12,6 +12,7 @@ public enum GameState {
 }
 
 public class GameManager : MonoBehaviour {
+  readonly Vector3 portalDir = Vector3.one;
 
   // Selected Piece
   List<GameObject> cubes = null;
@@ -272,8 +273,8 @@ public class GameManager : MonoBehaviour {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
-      if (hskill != null) cTarget.PreviewHealing = hskill.calculateHealing(selectedCharacter, cTarget);
-      else cTarget.PreviewDamage = skill.calculateDamage(selectedCharacter, cTarget);
+      if (hskill != null) cTarget.PreviewHealing = skill.calculateHealing(cTarget);
+      else cTarget.PreviewDamage = skill.calculateDamage(cTarget);
     }
     //todo: aoe health bar hover?
   }
@@ -297,7 +298,7 @@ public class GameManager : MonoBehaviour {
         curTargets.Add(target.GetComponent<Character>());
       }
       targets.Add(curTargets);
- 
+
       if (targets.Count() == skill.ntargets) {
         selectedCharacter.attackWithSkill(skill, targets.flatten().toList());
         StartCoroutine(endTurn());
@@ -624,7 +625,6 @@ public class GameManager : MonoBehaviour {
         }
       }
 
-      // TODO: update portal dest distance to portal src distance
       Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
       foreach (Vector3 dir in directions) {
         Vector3 neighbour = minTile.gameObject.transform.position + dir;
@@ -634,6 +634,15 @@ public class GameManager : MonoBehaviour {
           if (d < neighbourTile.distance) {
             neighbourTile.distance = d;
             neighbourTile.dir = dir;
+          }
+          // update portal dest distance to portal src distance
+          PortalEffect portal = neighbourTile.getEffect<PortalEffect>();
+          if (portal != null) {
+            Tile sibling = portal.sibling.ownerTile;
+            if (d < sibling.distance) {
+              sibling.distance = d;
+              sibling.dir = portalDir;
+            }
           }
         }
       }
@@ -707,8 +716,16 @@ public class GameManager : MonoBehaviour {
     Tile t = getTile(coord);
     path.AddFirst(t);
     while (t.dir != Vector3.zero) {
-      coord -= t.dir;
-      t = getTile(coord);
+      if (t.dir == portalDir) {
+        PortalEffect portal = t.getEffect<PortalEffect>();
+        Debug.Assert(portal != null, "Went through a missing portal");
+        t = portal.sibling.ownerTile;
+        coord = t.transform.position;
+      } else {
+        // normal case
+        coord -= t.dir;
+        t = getTile(coord);
+      }
       path.AddFirst(t);
     }
   }

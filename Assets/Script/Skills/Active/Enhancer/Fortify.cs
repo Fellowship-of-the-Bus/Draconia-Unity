@@ -21,7 +21,4 @@ public class Fortify: SingleTarget {
     self.onEvent(buffEvent);
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
 }

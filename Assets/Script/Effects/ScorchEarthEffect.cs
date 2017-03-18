@@ -16,7 +16,7 @@ public class ScorchEarthEffect : DurationEffect {
   }
 
   float damage(Character c) {
-    return caster.intelligence * 0.2f * c.fireResMultiplier;
+    return c.calculateDamage((int)(caster.intelligence * 0.2f), DamageType.none, DamageElement.fire);
   }
 
   protected override void additionalEffect(Event e) {

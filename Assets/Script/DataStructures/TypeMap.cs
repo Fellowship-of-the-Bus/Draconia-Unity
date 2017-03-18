@@ -11,11 +11,15 @@ public class TypeMap<Val> {
     dic[k.GetType()] = v;
   }
 
-  public Val Get<Key>(Key k) {
-    if (! ContainsKey(k.GetType())) {
+  public Val Get(Type t) {
+    if (! ContainsKey(t)) {
       return default(Val);
     }
-    return dic[k.GetType()];
+    return dic[t];
+  }
+
+  public Val Get<Key>(Key k) {
+    return Get(k.GetType());
   }
 
   public bool ContainsKey(Type t) {

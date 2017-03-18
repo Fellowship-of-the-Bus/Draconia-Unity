@@ -1,6 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum DamageType {
+  physical,
+  magical,
+  none
+}
+
+public enum DamageElement {
+  ice,
+  fire,
+  lightning,
+  none
+}
+
 public abstract class ActiveSkill : EventListener, Skill {
   public const int InfiniteCooldown = -2;
 
@@ -17,6 +30,9 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool targetsTiles = false;
   public virtual string tooltip { get { return "Skill Missing Tooltip!"; }}
 
+  public DamageType dType = DamageType.physical;
+  public DamageElement dEle = DamageElement.none;
+
   bool listenOnEndturn = false;
   public int ntargets { get; set; }
 
@@ -26,13 +42,12 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public virtual void activate(Character target) {
     if (this is HealingSkill) {
-      HealingSkill heal = this as HealingSkill;
-      if (heal.calculateHealing(self,target) != 0) {
-        target.takeHealing(heal.calculateHealing(self,target));
+      if (calculateHealing(target) != 0) {
+        target.takeHealing(calculateHealing(target));
       }
     } else {
-      if (calculateDamage(self, target) != 0) {
-        target.takeDamage(calculateDamage(self, target));
+      if (calculateDamage(target) != 0) {
+        target.takeDamage(calculateDamage(target));
       }
     }
     additionalEffects(target);
@@ -43,7 +58,15 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
-  public virtual int calculateDamage(Character source, Character target) { return 0; }
+  public virtual int calculateDamage(Character target) {
+    return target.calculateDamage(damageFormula(), dType, dEle);
+  }
+
+  public virtual int calculateHealing(Character target){
+    Debug.AssertFormat(this is HealingSkill, "calculateHealing called in a non-Healingskill {0}", this);
+    HealingSkill heal = this as HealingSkill;
+    return target.calculateHealing(heal.healingFormula());
+  }
   public virtual void additionalEffects(Character target) { }
   public virtual void tileEffects(Tile target) { }
 
@@ -73,7 +96,6 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public override sealed void onEvent(Event e) {
-    Debug.Log(listenOnEndturn);
     if (curCooldown != 0 && e.hook == EventHook.endTurn) {
       curCooldown -= 1;
       if (listenOnEndturn) {

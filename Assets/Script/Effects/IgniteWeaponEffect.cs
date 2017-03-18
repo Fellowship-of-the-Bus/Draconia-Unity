@@ -2,15 +2,28 @@ using UnityEngine;
 
 public class IgniteWeaponEffect : DurationEffect {
 
+  DamageElement originalEle;
   protected override void onActivate() {
-    attachListener(owner, EventHook.postAttack);
+    attachListener(owner, EventHook.preSkill);
+    attachListener(owner, EventHook.postSkill);
   }
   protected override void onDeactivateListeners() {
     detachListener(owner);
   }
   protected override void additionalEffect(Event e) {
-    if (e.attackTarget.team != owner.team && e.damageTaken > 0) {
-      e.attackTarget.takeDamage((int)(2*e.attackTarget.fireResMultiplier));
+    if(e.hook == EventHook.preSkill) {
+      ActiveSkill skill = e.skillUsed;
+      if (skill.dType == DamageType.physical) {
+        originalEle = skill.dEle;
+        skill.dEle = DamageElement.fire;
+        owner.attrChange.strength += 10;
+      }
+    } else if (e.hook == EventHook.postSkill) {
+      ActiveSkill skill = e.skillUsed;
+      if (skill.dType == DamageType.physical) {
+        skill.dEle = originalEle;
+        owner.attrChange.strength -= 10;
+      }
     }
   }
 }
