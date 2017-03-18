@@ -68,5 +68,4 @@ public abstract class Effect : EventListener {
   public Effect clone() {
     return MemberwiseClone() as Effect;
   }
-
 }

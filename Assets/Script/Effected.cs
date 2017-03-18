@@ -34,7 +34,6 @@ public class Effected : EventManager {
     l.add(effect);
   }
 
-
   public virtual void removeEffect(Effect effect) {
     Heap<Effect> l = effects.Get(effect);
     Debug.Assert(l.Count != 0);
@@ -56,5 +55,10 @@ public class Effected : EventManager {
       }
     }
     effect.remove();
+  }
+
+  public EffectKind getEffect<EffectKind>() where EffectKind : class {
+    Heap<Effect> heap = effects.Get(typeof(EffectKind));
+    return heap != null ? heap.getMax() as EffectKind : null;
   }
 }

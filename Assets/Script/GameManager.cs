@@ -624,7 +624,6 @@ public class GameManager : MonoBehaviour {
         }
       }
 
-      // TODO: update portal dest distance to portal src distance
       Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
       foreach (Vector3 dir in directions) {
         Vector3 neighbour = minTile.gameObject.transform.position + dir;
@@ -634,6 +633,15 @@ public class GameManager : MonoBehaviour {
           if (d < neighbourTile.distance) {
             neighbourTile.distance = d;
             neighbourTile.dir = dir;
+          }
+          // update portal dest distance to portal src distance
+          PortalEffect portal = neighbourTile.getEffect<PortalEffect>();
+          if (portal != null) {
+            Tile sibling = portal.sibling.ownerTile;
+            if (d < sibling.distance) {
+              sibling.distance = d;
+              sibling.dir = Vector3.one;
+            }
           }
         }
       }
@@ -707,8 +715,16 @@ public class GameManager : MonoBehaviour {
     Tile t = getTile(coord);
     path.AddFirst(t);
     while (t.dir != Vector3.zero) {
-      coord -= t.dir;
-      t = getTile(coord);
+      if (t.dir == Vector3.one) {
+        PortalEffect portal = t.getEffect<PortalEffect>();
+        Debug.Assert(portal != null, "Went through a missing portal");
+        t = portal.sibling.ownerTile;
+        coord = t.transform.position;
+      } else {
+        // normal case
+        coord -= t.dir;
+        t = getTile(coord);
+      }
       path.AddFirst(t);
     }
   }
