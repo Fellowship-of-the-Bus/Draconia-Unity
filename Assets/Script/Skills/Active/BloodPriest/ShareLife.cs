@@ -12,8 +12,8 @@ public class ShareLife: CircleAoE, HealingSkill {
     maxCooldown = 2;
   }
 
-  public override Character self { 
-    set {       
+  public override Character self {
+    set {
       base.self = value;
       attachListener(self, EventHook.postSkill);
     }
@@ -28,9 +28,9 @@ public class ShareLife: CircleAoE, HealingSkill {
     }
   }
 
-  public int calculateHealing(Character source, Character target) {
-    int amount = (int)(source.intelligence*(1+level*0.1));
-    if (amount >= source.curHealth) amount = source.curHealth - 1;
+  public int healingFormula() {
+    int amount = (int)(self.intelligence*(1+level*0.1));
+    if (amount >= self.curHealth) amount = self.curHealth - 1;
     return amount;
   }
 

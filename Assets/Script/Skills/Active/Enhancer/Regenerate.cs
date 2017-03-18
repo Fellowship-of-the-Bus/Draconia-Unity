@@ -10,7 +10,7 @@ public class Regenerate: SingleTarget, HealingSkill {
     maxCooldown = 2;
   }
 
-  public int calculateHealing(Character source, Character target) {
+  public int healingFormula() {
     return 0;
   }
 
@@ -18,7 +18,8 @@ public class Regenerate: SingleTarget, HealingSkill {
     RegenerationEffect buff = new RegenerationEffect();
     buff.level = level;
     buff.duration = (level+5)/2;
-    buff.healing = (int)System.Math.Max((int)calculateDamage(self, target)*(0.2f + 0.1f*level), 1);
+    //something about the damage needs to be addressed
+    buff.healing = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
     target.applyEffect(buff);
 
 

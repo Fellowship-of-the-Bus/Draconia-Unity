@@ -11,7 +11,7 @@ public class HealWhenHitEffect : DurationEffect {
 
   protected override void additionalEffect(Event e) {
     if (owner.isAlive()) {
-      owner.takeHealing((int)(level*owner.healingMultiplier));
+      owner.takeHealing(owner.calculateHealing(level));
     }
   }
 }

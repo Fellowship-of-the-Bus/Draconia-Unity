@@ -31,8 +31,4 @@ public class Knockback: SingleTarget {
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }
-
-  public override int calculateDamage(Character source, Character target) {
-     return damageFormula() - target.physicalDefense;
-  }
 }

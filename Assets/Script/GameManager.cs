@@ -273,8 +273,8 @@ public class GameManager : MonoBehaviour {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
-      if (hskill != null) cTarget.PreviewHealing = hskill.calculateHealing(selectedCharacter, cTarget);
-      else cTarget.PreviewDamage = skill.calculateDamage(selectedCharacter, cTarget);
+      if (hskill != null) cTarget.PreviewHealing = skill.calculateHealing(cTarget);
+      else cTarget.PreviewDamage = skill.calculateDamage(cTarget);
     }
     //todo: aoe health bar hover?
   }

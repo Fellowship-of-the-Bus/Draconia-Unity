@@ -9,11 +9,13 @@ public class KillingBlow: SingleTarget {
     name = "Killing Blow";
     maxCooldown = 2;
   }
+  public override int damageFormula() {
+    return (int)(self.strength*(1+level*0.1));
+  }
 
-  public override int calculateDamage(Character source, Character target) {
+  public override int calculateDamage(Character target) {
     float missingPct = 1 - (float)target.curHealth/target.maxHealth;
-
-    return (int)((source.strength*(1+level*0.1) - target.physicalDefense) * (1 + missingPct * (0.5f + 0.1f * level)));
+    return (int)(base.calculateDamage(target)*(1 + missingPct * (0.5f + 0.1f * level)));
   }
 
 

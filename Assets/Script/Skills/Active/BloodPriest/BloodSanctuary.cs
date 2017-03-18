@@ -47,9 +47,5 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
     target.applyEffect(block);
   }
 
-  public override int calculateDamage(Character source, Character target) {
-    return 0;
-  }
-
 
 }
