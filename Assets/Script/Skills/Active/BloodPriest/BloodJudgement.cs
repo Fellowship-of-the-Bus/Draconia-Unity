@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class BloodJudgement: CircleAoE {
-  bool listenerAttached = false;
   int cost = 0;
 
   public BloodJudgement() {
@@ -14,27 +13,27 @@ public class BloodJudgement: CircleAoE {
     effectsTiles = false;
     maxCooldown = 2;
     targetsTiles = true;
+    dType = DamageType.magical;
   }
 
-  float percent() {
-    if (self.curHealth <= cost) {
-      return 1 - ((cost - self.curHealth + 1 * 1.0f) / cost);
-    }
-    return 1f;
-  }
-  //This is not the right place to do this, but there doesn't seem to be a better function for it.
-  public override void setCooldown() {
-    base.setCooldown();
-    if (!listenerAttached) {
+  public override Character self {
+    set {
+      base.self = value;
       attachListener(self, EventHook.postSkill);
-      listenerAttached = true;
       cost = self.maxHealth / 10;
     }
   }
 
-  public override void onEvent(Event e) {
-    base.onEvent(e);
+  float percent() {
+    if (self.curHealth <= cost) {
+      return 1 - ((cost - self.curHealth + 1.0f) / cost);
+    }
+    return 1f;
+  }
+
+  protected override void trigger(Event e) {
     if (e.hook == EventHook.postSkill) {
+      //Does not use calculate damage since the cost should not be effected by any defenses
       self.takeDamage((int)(cost * percent()));
     }
   }
@@ -47,9 +46,9 @@ public class BloodJudgement: CircleAoE {
     if (target == self) return;
 
     if (target.team == self.team) {
-      target.takeHealing((int)(amount() * percent()));
+      target.takeHealing((int)(target.calculateHealing((int)(amount() * percent()))));
     } else {
-      target.takeDamage((int)(amount() * percent()));
+      target.takeDamage((int)(target.calculateDamage((int)(amount() * percent()), DamageType.magical, DamageElement.none)));
     }
   }
 
