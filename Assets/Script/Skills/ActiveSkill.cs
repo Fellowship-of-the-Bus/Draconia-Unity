@@ -73,7 +73,6 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public override sealed void onEvent(Event e) {
-    Debug.Log(listenOnEndturn);
     if (curCooldown != 0 && e.hook == EventHook.endTurn) {
       curCooldown -= 1;
       if (listenOnEndturn) {

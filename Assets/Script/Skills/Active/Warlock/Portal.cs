@@ -34,7 +34,6 @@ public class Portal : ActiveSkill, AoeSkill {
 
   protected override void trigger(Event e) {
     List<Effected> targets = e.targets;
-    Debug.Log(e.hook);
     Debug.AssertFormat(targets != null, "Portal on event with null targets");
     Debug.AssertFormat(targets.Count == 2, "Portal on event with wrong number of targets {0}", targets.Count);
     PortalEffect eff1 = makeEffect();
