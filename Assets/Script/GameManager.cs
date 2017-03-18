@@ -12,25 +12,20 @@ public enum GameState {
 }
 
 public class GameManager : MonoBehaviour {
-  readonly Vector3 portalDir = Vector3.one;
-
   // Selected Piece
-  List<GameObject> cubes = null;
-  List<Tile> tiles = null;
+  public Map map = new Map();
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
   public GameObject turnButton;
   public GameObject iceBlock;
 
-  public LinkedList<Tile> path = null;
-
   //variables to handles turns
   /** stack of (position, remaining move range), where top of stack is previous location */
   public Stack<Pair<Tile,int>> positionStack = new Stack<Pair<Tile, int>>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
-  List<GameObject> skillTargets;
+  public List<GameObject> skillTargets;
   GameObject previewTarget;
 
   public GameState gameState = GameState.moving;
@@ -86,8 +81,6 @@ public class GameManager : MonoBehaviour {
     waitEndTurn = new LinkedList<Coroutine>();
     get = this;
     moving = false;
-    cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
-    tiles = new List<Tile>();
     UILock = new lockUICount();
     UILock.count = 0;
 
@@ -96,13 +89,8 @@ public class GameManager : MonoBehaviour {
       skillButtons.Add(o.GetComponent<Button>());
       o.AddComponent<Tooltip>();
     }
-    foreach (GameObject cube in cubes) {
-      cube.AddComponent<Tile>();
-      Tile t = cube.GetComponent<Tile>();
-      tiles.Add(t);
-    }
 
-    path = new LinkedList<Tile>();
+    map.awake();
 
     line = gameObject.GetComponent<LineRenderer>();
 
@@ -124,7 +112,7 @@ public class GameManager : MonoBehaviour {
     foreach (var l in characters.Values) {
       foreach (var o in l) {
         Character c = o.GetComponent<Character>();
-        Tile t = getTile(o.transform.position);
+        Tile t = map.getTile(o.transform.position);
         t.occupant = o;
         c.curTile = t;
       }
@@ -182,7 +170,7 @@ public class GameManager : MonoBehaviour {
       SelectedSkill = -1;
     }
     gameState = newState;
-    setTileColours();
+    map.setTileColours();
   }
 
   //start the next turn,
@@ -203,8 +191,8 @@ public class GameManager : MonoBehaviour {
 
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
-    clearColour();
-    clearPath();
+    map.clearColour();
+    map.clearPath();
     if (SelectedPiece) {
       if (SelectedPiece.GetComponent<Character>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
@@ -223,7 +211,7 @@ public class GameManager : MonoBehaviour {
 
 
     Vector3 position = SelectedPiece.transform.position;
-    djikstra(position, SelectedPiece.GetComponent<Character>());
+    map.djikstra(position, SelectedPiece.GetComponent<Character>());
 
     changeState(GameState.moving);
     // enemy
@@ -279,7 +267,7 @@ public class GameManager : MonoBehaviour {
     //todo: aoe health bar hover?
   }
 
-  List<List<Effected>> targets = new List<List<Effected>>();
+  public List<List<Effected>> targets = new List<List<Effected>>();
   public void attackTarget(GameObject target) {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
@@ -299,7 +287,7 @@ public class GameManager : MonoBehaviour {
       }
       targets.Add(curTargets);
       skill.validate(targets);
- 
+
       if (targets.Count() == skill.ntargets) {
         selectedCharacter.attackWithSkill(skill, targets.flatten().toList());
         StartCoroutine(endTurn());
@@ -328,12 +316,12 @@ public class GameManager : MonoBehaviour {
     if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
     else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     actionQueue.endTurn();
-    clearColour();
+    map.clearColour();
     startTurn();
   }
 
   public void MovePiece(Character c, Tile t) {
-    djikstra(t.transform.position, c);
+    map.djikstra(t.transform.position, c);
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
@@ -355,7 +343,7 @@ public class GameManager : MonoBehaviour {
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.gameObject.transform.position;
-      pos.y = destination.transform.position.y + getHeight(destination);
+      pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // move piece
       Vector3 d = speed*(pos-piece.transform.position)/FPS;
@@ -372,8 +360,8 @@ public class GameManager : MonoBehaviour {
         break; // character can die mid-move now
       }
     }
-    clearPath();
-    setTileColours();
+    map.clearPath();
+    map.setTileColours();
 
     if (gameState == GameState.moving) {
       yield return new WaitForSeconds(0.25f);
@@ -405,9 +393,9 @@ public class GameManager : MonoBehaviour {
   public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     // don't start moving twice
     if (moving) return null;
-    LinkedList<Tile> localPath = new LinkedList<Tile>(path);
+    LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
 
-    Tile destination = getTile(coordToMove);
+    Tile destination = map.getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
 
     if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
@@ -416,15 +404,15 @@ public class GameManager : MonoBehaviour {
       if (moveCommand) {
         positionStack.Push(Pair.create(c.curTile, moveRange));
         moveRange -= destination.distance;
-        djikstra(coordToMove, c);
+        map.djikstra(coordToMove, c);
       }
       //after moving, remove from origin tile,
       //add to new tile
       updateTile(c,destination);
 
-      coordToMove.y = destination.transform.position.y + getHeight(destination);
+      coordToMove.y = destination.transform.position.y + map.getHeight(destination);
       if (smooth) {
-        path.RemoveFirst(); // discard current position
+        localPath.RemoveFirst(); // discard current position
         moving = true;
         line.GetComponent<Renderer>().material.color = Color.clear;
         return StartCoroutine(IterateMove(localPath, SelectedPiece));
@@ -449,8 +437,8 @@ public class GameManager : MonoBehaviour {
       moveRange = val.second;
       MovePiece(coordToMove, false, false);
       changeState(GameState.moving);
-      djikstra(coordToMove, character);
-      setTileColours();
+      map.djikstra(coordToMove, character);
+      map.setTileColours();
     }
     eventManager.onEvent(new Event(character, EventHook.cancel));
   }
@@ -463,9 +451,9 @@ public class GameManager : MonoBehaviour {
     lockUI();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     Vector3 destination = selectedCharacter.moveAI.move();
-    Tile t = getTile(destination);
-    while(t != path.Last.Value) {
-      path.RemoveLast();
+    Tile t = map.getTile(destination);
+    while(t != map.path.Last.Value) {
+      map.path.RemoveLast();
     }
     t.gameObject.GetComponent<Renderer>().material.color = Color.black;
     yield return MovePiece(destination, true);
@@ -563,185 +551,6 @@ public class GameManager : MonoBehaviour {
       return hitInfo.collider.gameObject;
     }
     return null;
-  }
-
-
-  // GameMap functions
-  public void setTileColours(Tile src = null) {
-    if (src == null) src = getTile(SelectedPiece.transform.position);
-    clearColour();
-    if (gameState == GameState.moving) {
-      foreach (Tile tile in tiles) {
-        if (tile.distance <= moveRange && !tile.occupied()) {
-          tile.setColor(Color.green);
-        } else {
-          tile.setColor(Color.clear);
-        }
-      }
-    } else if (gameState == GameState.attacking && SelectedSkill != -1) {
-      bool aoe = (SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] is AoeSkill);
-      int range = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].range;
-      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
-      if (!aoe) {
-        foreach (Tile tile in inRangeTiles) {
-          tile.setColor(Color.blue);
-        }
-        foreach (GameObject o in skillTargets) {
-          getTile(o.transform.position).setColor(Color.red);
-        }
-      } else {
-        foreach (GameObject o in SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets()) {
-          getTile(o.transform.position).setColor(Color.blue);
-        }
-        AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
-        var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
-        if (targetsInAoe != null) {
-          foreach (GameObject o in targetsInAoe) {
-            if (o.tag == "Cube") getTile(o.transform.position).setColor(Color.yellow);
-            else getTile(o.transform.position).setColor(Color.red);
-          }
-        }
-      }
-      // color the selected targets
-      foreach (List<Effected> target in targets) {
-        foreach (Effected eff in target) {
-          Tile t = eff as Tile;
-          if (eff == null) t = (eff as Character).curTile;
-          Debug.AssertFormat(eff != null, "Effected is not a character or tile.");
-          t.setColor(Color.magenta);
-        }
-      }
-    }
-  }
-
-  public void djikstra(Vector3 unitLocation, Character charToMove) {
-    foreach (Tile tile in tiles) {
-      tile.distance = System.Int32.MaxValue/2;
-      tile.dir = Vector3.zero;
-    }
-
-    HashSet<Tile> tilesToGo = new HashSet<Tile>(tiles);
-
-    Tile startTile = getTile(unitLocation);
-    startTile.distance = 0;
-
-    while (tilesToGo.Count != 0) {
-      int minDistance = System.Int32.MaxValue;
-      Tile minTile = null;
-      foreach (Tile tile in tilesToGo) {
-        if (tile.distance <= minDistance) {
-          minDistance = tile.distance;
-          minTile = tile;
-        }
-      }
-
-      Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
-      foreach (Vector3 dir in directions) {
-        Vector3 neighbour = minTile.gameObject.transform.position + dir;
-        Tile neighbourTile = getTile(neighbour, tilesToGo);
-        if (neighbourTile != null) {
-          int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
-          if (d < neighbourTile.distance) {
-            neighbourTile.distance = d;
-            neighbourTile.dir = dir;
-          }
-          // update portal dest distance to portal src distance
-          PortalEffect portal = neighbourTile.getEffect<PortalEffect>();
-          if (portal != null) {
-            Tile sibling = portal.sibling.ownerTile;
-            if (d < sibling.distance) {
-              sibling.distance = d;
-              sibling.dir = portalDir;
-            }
-          }
-        }
-      }
-      tilesToGo.Remove(minTile);
-    }
-  }
-
-  public int distance(Tile from, Tile to, float moveTolerance) {
-    //check heights
-    if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
-      return Int32.MaxValue/2;
-    }
-    if (from.occupied() && !(SelectedPiece.GetComponent<Character>().team == from.occupant.GetComponent<Character>().team)) {
-      return Int32.MaxValue/4;
-    }
-
-    return Math.Max((int)(to.movePointSpent - moveTolerance + 1), 1);
-  }
-
-  public float getHeight(Tile t) {
-    float scale = t.getHeight();//t.gameObject.transform.localScale.y;
-    return scale + 0.5f;
-  }
-
-
-  public Tile getTile(Vector3 location) {
-    return getTile(location, tiles);
-  }
-
-  public Tile getTile(Vector3 location, IEnumerable<Tile> list) {
-    foreach (Tile tile in list) {
-      if (Math.Abs(tile.gameObject.transform.position.x - location.x) < 0.05f &&
-          Math.Abs(tile.gameObject.transform.position.z - location.z) < 0.05f) {
-        return tile;
-      }
-    }
-    return null;
-  }
-
-  public List<Tile> getTilesWithinRange(Tile t, int range) {
-    List<Tile> inRangeTiles = new List<Tile>();
-    foreach (Tile other in tiles) {
-      if (l1Distance(t, other) <= range && l1Distance(t, other) != 0) {
-        inRangeTiles.Add(other);
-      }
-    }
-    return inRangeTiles;
-  }
-
-  public List<Tile> getCardinalTilesWithinRange(Tile t, int range) {
-    List<Tile> inRangeTiles = getTilesWithinRange(t, range);
-    inRangeTiles = new List<Tile>(inRangeTiles.Filter((tile) =>
-      Math.Abs(tile.gameObject.transform.position.x - t.gameObject.transform.position.x) < 0.05f  ||
-      Math.Abs(tile.gameObject.transform.position.z - t.gameObject.transform.position.z) < 0.05f));
-    return inRangeTiles;
-  }
-
-  public int l1Distance(Tile t1, Tile t2) {
-    return (int)Math.Floor(Math.Abs(t1.gameObject.transform.position.x - t2.gameObject.transform.position.x) + 0.5f)  +
-          (int)Math.Floor(Math.Abs(t1.gameObject.transform.position.z - t2.gameObject.transform.position.z) + 0.5f) ;
-  }
-
-  public void clearColour() {
-    foreach (Tile tile in tiles) {
-      tile.setColor(Color.clear);
-    }
-  }
-
-  public void setPath(Vector3 coord) {
-    clearPath();
-    Tile t = getTile(coord);
-    path.AddFirst(t);
-    while (t.dir != Vector3.zero) {
-      if (t.dir == portalDir) {
-        PortalEffect portal = t.getEffect<PortalEffect>();
-        Debug.Assert(portal != null, "Went through a missing portal");
-        t = portal.sibling.ownerTile;
-        coord = t.transform.position;
-      } else {
-        // normal case
-        coord -= t.dir;
-        t = getTile(coord);
-      }
-      path.AddFirst(t);
-    }
-  }
-
-  public void clearPath() {
-    path.Clear();
   }
 
   public GameObject piece;

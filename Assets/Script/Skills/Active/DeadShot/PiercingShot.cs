@@ -16,7 +16,7 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     range = self.weapon.range;
     aoe = self.weapon.range;
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getCardinalTilesWithinRange(self.curTile, range);
+    List<Tile> tiles = gm.map.getCardinalTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       if (t == self.curTile) {
@@ -30,7 +30,7 @@ public class PiercingShot: ActiveSkill, AoeSkill {
 
   public List<GameObject> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getCardinalTilesWithinRange(self.curTile, aoe);
+    List<Tile> tiles = gm.map.getCardinalTilesWithinRange(self.curTile, aoe);
     var myPosition = self.curTile.gameObject.transform.position;
 
     //break up the tiles into the 4 cardinal directions
@@ -39,7 +39,7 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     List<Tile> left = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.x < myPosition.x - 0.05f));
     List<Tile> right = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.x > myPosition.x + 0.05f));
 
-    Tile t = gm.getTile(position);
+    Tile t = gm.map.getTile(position);
     //return the stuff in the right direction
     if (up.Contains(t)) {
       return getObjectsFromTile(up);

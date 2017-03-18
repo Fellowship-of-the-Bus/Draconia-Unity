@@ -20,18 +20,20 @@ public class ForceShot: SingleTarget {
     direction.x = Mathf.Round(direction.x);
     direction.z = Mathf.Round(direction.z);
 
-    Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
+    Tile t = GameManager.get.map.getTile(c.gameObject.transform.position + direction);
     return t;
   }
 
   public override void additionalEffects(Character c) {
     Tile t = knockTo(c);
-    if (t != null && !t.occupied() && ((GameManager.get.getHeight(t) + upThreshold) > GameManager.get.getHeight(t))) {
-      GameManager.get.updateTile(c,t);
+    GameManager game = GameManager.get;
+    Map map = game.map;
+    if (t != null && !t.occupied() && ((map.getHeight(t) + upThreshold) > map.getHeight(t))) {
+      game.updateTile(c,t);
       LinkedList<Tile> tile = new LinkedList<Tile>();
       tile.AddFirst(t);
-      GameManager.get.moving = true;
-      GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject)));
+      game.moving = true;
+      game.waitToEndTurn(game.StartCoroutine(game.IterateMove(tile, c.gameObject)));
     }
   }
 

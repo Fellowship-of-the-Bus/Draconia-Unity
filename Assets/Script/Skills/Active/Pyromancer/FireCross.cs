@@ -20,8 +20,8 @@ public class FireCross: ActiveSkill, AoeSkill {
   }
 
   public override List<GameObject> getTargets() {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       if (t == self.curTile) {
@@ -34,9 +34,9 @@ public class FireCross: ActiveSkill, AoeSkill {
   }
 
   public List<GameObject> getTargetsInAoe(Vector3 position) {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getCardinalTilesWithinRange(gm.getTile(position), aoe);
-    tiles.Add(gm.getTile(position));
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getCardinalTilesWithinRange(map.getTile(position), aoe);
+    tiles.Add(map.getTile(position));
     return getObjectsFromTile(tiles);
   }
 

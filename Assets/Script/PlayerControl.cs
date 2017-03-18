@@ -20,6 +20,7 @@ public class PlayerControl : MonoBehaviour {
 
   // Detect Mouse Inputs
   void GetMouseInputs() {
+    Map map = gameManager.map;
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
     GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
@@ -29,19 +30,18 @@ public class PlayerControl : MonoBehaviour {
       }
       if (gameManager.gameState == GameState.moving) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
-        Tile t = gameManager.getTile(coord);
+        Tile t = map.getTile(coord);
         if (t.distance <= gameManager.moveRange) {
-          gameManager.setPath(coord);
-          gameManager.setTileColours();
-          foreach (Tile ti in gameManager.path) {
+          map.setPath(coord);
+          map.setTileColours();
+          foreach (Tile ti in map.path) {
             ti.setColor(Color.blue);
-            //ti.gameObject.GetComponent<Renderer>().material.color = Color.blue;
           }
         }
       } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
-        Tile t = gameManager.getTile(coord);
-        if (gameManager.SelectedSkill > -1 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].getTargets().Contains(t.gameObject)) gameManager.setTileColours(t);
+        Tile t = map.getTile(coord);
+        if (gameManager.SelectedSkill > -1 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].getTargets().Contains(t.gameObject)) map.setTileColours(t);
       }
       gameManager.lineTo(gameManager.SelectedPiece);
     }
@@ -74,7 +74,7 @@ public class PlayerControl : MonoBehaviour {
       if (hoveredObject && hoveredObject.tag == "Unit") {
         // set color of hovered tile
         if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<Character>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
-          gameManager.setTileColours(hoveredObject.GetComponent<Character>().curTile);
+          map.setTileColours(hoveredObject.GetComponent<Character>().curTile);
         }
         // draw line to object
         gameManager.lineTo(hoveredObject);

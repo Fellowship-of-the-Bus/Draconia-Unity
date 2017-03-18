@@ -17,13 +17,13 @@ public class Knockback: SingleTarget {
   Tile knockTo(Character c) {
       Vector3 heading = c.curTile.transform.position - self.curTile.transform.position;
       Vector3 direction = heading / heading.magnitude;
-      Tile t = GameManager.get.getTile(c.gameObject.transform.position + direction);
+      Tile t = GameManager.get.map.getTile(c.gameObject.transform.position + direction);
       return t;
   }
 
   public override void additionalEffects(Character c) {
     Tile t = knockTo(c);
-    if (t != null && !t.occupied() && ((GameManager.get.getHeight(c.curTile) + upThreshold) > GameManager.get.getHeight(t))) {
+    if (t != null && !t.occupied() && ((GameManager.get.map.getHeight(c.curTile) + upThreshold) > GameManager.get.map.getHeight(t))) {
       GameManager.get.MovePiece(c, t);
     }
   }

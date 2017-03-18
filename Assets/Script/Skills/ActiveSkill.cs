@@ -139,8 +139,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   protected List<GameObject> tileTargetting() {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       targets.Add(t.gameObject);
@@ -150,13 +150,13 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   protected List<GameObject> getTargetsInAoe(Vector3 position, int aoe) {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(gm.getTile(position), aoe);
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getTilesWithinRange(map.getTile(position), aoe);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
         targets.Add(t.gameObject);
     }
-    targets.Add(gm.getTile(position).gameObject);
+    targets.Add(map.getTile(position).gameObject);
     return targets;
   }
 

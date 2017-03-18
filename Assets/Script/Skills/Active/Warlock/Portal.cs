@@ -17,8 +17,8 @@ public class Portal : ActiveSkill, AoeSkill {
     targetsTiles = true;
   }
 
-  public override Character self { 
-    set {       
+  public override Character self {
+    set {
       base.self = value;
       attachListener(self, EventHook.postSkill);
     }
@@ -33,6 +33,7 @@ public class Portal : ActiveSkill, AoeSkill {
   }
 
   protected override void trigger(Event e) {
+    if (e.skillUsed != this) return;
     List<Effected> targets = e.targets;
     Debug.AssertFormat(targets != null, "Portal on event with null targets");
     Debug.AssertFormat(targets.Count == 2, "Portal on event with wrong number of targets {0}", targets.Count);

@@ -18,7 +18,7 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
 
   public override List<GameObject> getTargets() {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
+    List<Tile> tiles = gm.map.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       targets.Add(t.gameObject);
@@ -29,12 +29,12 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
 
   public List<GameObject> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(gm.getTile(position), aoe);
+    List<Tile> tiles = gm.map.getTilesWithinRange(gm.map.getTile(position), aoe);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
         targets.Add(t.gameObject);
     }
-    targets.Add(gm.getTile(position).gameObject);
+    targets.Add(gm.map.getTile(position).gameObject);
     return targets;
   }
 

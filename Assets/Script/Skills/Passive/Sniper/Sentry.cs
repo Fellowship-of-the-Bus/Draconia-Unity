@@ -13,7 +13,7 @@ public class Sentry : PassiveSkill {
   }
 
   protected override void additionalEffect(Event e) {
-    List<Tile> tiles = GameManager.get.getTilesWithinRange(owner.curTile, aoe);
+    List<Tile> tiles = GameManager.get.map.getTilesWithinRange(owner.curTile, aoe);
     if (e.sender.team == owner.team) return; // don't shoot teammates
     if (tiles.Find(t => t.transform.position == e.position) != null) {
       owner.attackWithSkill(skill, new List<Effected>(new Effected[]{ e.sender }));

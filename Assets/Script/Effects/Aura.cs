@@ -38,7 +38,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
   }
 
   private void addAura() {
-    List<Tile> tiles = GameManager.get.getTilesWithinRange(owner.curTile, radius);
+    List<Tile> tiles = GameManager.get.map.getTilesWithinRange(owner.curTile, radius);
 
     if (applyToSelf) {
       setup(owner);

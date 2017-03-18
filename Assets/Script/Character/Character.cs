@@ -134,7 +134,7 @@ public class Character : Effected {
   }
 
   public bool inRange(Character target, int range) {
-    return GameManager.get.getTilesWithinRange(curTile, range).Contains(target.curTile);
+    return GameManager.get.map.getTilesWithinRange(curTile, range).Contains(target.curTile);
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Effected> targets) {

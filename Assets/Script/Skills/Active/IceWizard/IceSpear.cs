@@ -13,8 +13,8 @@ public class IceSpear: SingleTarget {
     dEle = DamageElement.ice;
   }
   public override List<GameObject> getTargets() {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       if (t.occupied()) {

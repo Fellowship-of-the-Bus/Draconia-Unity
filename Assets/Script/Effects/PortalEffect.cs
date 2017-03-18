@@ -9,7 +9,8 @@ public class PortalEffect : DurationEffect {
   public List<Character> effected = new List<Character>();
   protected override void onActivate() {
     attachListener(caster, EventHook.endTurn);
-    block = (GameObject) GameObject.Instantiate(GameManager.get.iceBlock, new Vector3(ownerTile.gameObject.transform.position.x, ownerTile.gameObject.transform.position.y + ownerTile.getHeight() + 0.5f, ownerTile.gameObject.transform.position.z), Quaternion.identity);
+    block = (GameObject) GameObject.Instantiate(GameManager.get.iceBlock, new Vector3(ownerTile.gameObject.transform.position.x, ownerTile.gameObject.transform.position.y + ownerTile.getHeight() + 0.5f, ownerTile.gameObject.transform.position.z), Quaternion.identity,
+      ownerTile.transform);
   }
 
   protected override void onDeactivateListeners() {

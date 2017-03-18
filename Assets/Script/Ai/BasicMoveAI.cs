@@ -8,20 +8,19 @@ public class BasicMoveAI : BaseMoveAI {
   public override Vector3 move() {
     GameManager game = GameManager.get;
     List<GameObject> characterObjects = game.players;
+    Map map = game.map;
 
     int minDistance = Int32.MaxValue/2;
     foreach (GameObject o in characterObjects) {
-      game.setPath(o.transform.position);
-      if (game.path.Count < minDistance) {
-        minDistance = game.getTile(o.transform.position).distance;
+      map.setPath(o.transform.position);
+      if (map.path.Count < minDistance) {
+        minDistance = map.getTile(o.transform.position).distance;
         break;
       }
     }
     Tile destination = owner.curTile;
 
-    //Debug.Log(game.path.Count);
-    for (LinkedListNode<Tile> t = game.path.Last; t != game.path.First; t = t.Previous) {
-      //Debug.Log("loop");
+    for (LinkedListNode<Tile> t = map.path.Last; t != map.path.First; t = t.Previous) {
       if (t.Value.distance <= owner.moveRange && !t.Value.occupied()) {
         destination = t.Value;
         break;

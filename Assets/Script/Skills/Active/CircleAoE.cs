@@ -15,7 +15,7 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
     }
 
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getTilesWithinRange(self.curTile, range);
+    List<Tile> tiles = gm.map.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       targets.Add(t.gameObject);
@@ -26,8 +26,8 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
 
   public virtual List<GameObject> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
-    Tile cur = gm.getTile(position);
-    List<Tile> tiles = gm.getTilesWithinRange(cur, aoe);
+    Tile cur = gm.map.getTile(position);
+    List<Tile> tiles = gm.map.getTilesWithinRange(cur, aoe);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
         if (t.occupant) targets.Add(t.occupant);

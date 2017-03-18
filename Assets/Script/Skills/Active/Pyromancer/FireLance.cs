@@ -20,8 +20,8 @@ public class FireLance: ActiveSkill, AoeSkill {
   }
 
   public override List<GameObject> getTargets() {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getCardinalTilesWithinRange(self.curTile, range);
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       if (t == self.curTile) {
@@ -33,9 +33,10 @@ public class FireLance: ActiveSkill, AoeSkill {
     return targets;
   }
 
+
   public List<GameObject> getTargetsInAoe(Vector3 position) {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.getCardinalTilesWithinRange(self.curTile, aoe);
+    Map map = GameManager.get.map;
+    List<Tile> tiles = map.getCardinalTilesWithinRange(self.curTile, aoe);
     var myPosition = self.curTile.gameObject.transform.position;
 
     //break up the tiles into the 4 cardinal directions
@@ -44,7 +45,7 @@ public class FireLance: ActiveSkill, AoeSkill {
     List<Tile> left = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.x < myPosition.x - 0.05f));
     List<Tile> right = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.x > myPosition.x + 0.05f));
 
-    Tile t = gm.getTile(position);
+    Tile t = map.getTile(position);
     //return the stuff in the right direction
     if (up.Contains(t)) {
       return getObjectsFromTile(up);
