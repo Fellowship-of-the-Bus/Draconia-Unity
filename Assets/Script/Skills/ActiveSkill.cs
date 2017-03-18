@@ -114,4 +114,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     targets.Add(gm.getTile(position).gameObject);
     return targets;
   }
+
+  // ensure that targets are valid
+  public virtual void validate(List<List<Effected>> targets) {}
 }
