@@ -12,6 +12,7 @@ public enum GameState {
 }
 
 public class GameManager : MonoBehaviour {
+  readonly Vector3 portalDir = Vector3.one;
 
   // Selected Piece
   List<GameObject> cubes = null;
@@ -640,7 +641,7 @@ public class GameManager : MonoBehaviour {
             Tile sibling = portal.sibling.ownerTile;
             if (d < sibling.distance) {
               sibling.distance = d;
-              sibling.dir = Vector3.one;
+              sibling.dir = portalDir;
             }
           }
         }
@@ -715,7 +716,7 @@ public class GameManager : MonoBehaviour {
     Tile t = getTile(coord);
     path.AddFirst(t);
     while (t.dir != Vector3.zero) {
-      if (t.dir == Vector3.one) {
+      if (t.dir == portalDir) {
         PortalEffect portal = t.getEffect<PortalEffect>();
         Debug.Assert(portal != null, "Went through a missing portal");
         t = portal.sibling.ownerTile;
