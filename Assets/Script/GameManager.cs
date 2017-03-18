@@ -298,7 +298,8 @@ public class GameManager : MonoBehaviour {
         curTargets.Add(target.GetComponent<Character>());
       }
       targets.Add(curTargets);
-
+      skill.validate(targets);
+ 
       if (targets.Count() == skill.ntargets) {
         selectedCharacter.attackWithSkill(skill, targets.flatten().toList());
         StartCoroutine(endTurn());
