@@ -331,11 +331,12 @@ public class GameManager : MonoBehaviour {
   }
 
   public void MovePiece(Character c, Tile t) {
+    djikstra(t.transform.position, c);
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
-    GameManager.get.moving = true;
-    GameManager.get.waitToEndTurn(GameManager.get.StartCoroutine(GameManager.get.IterateMove(tile, c.gameObject)));
+    moving = true;
+    waitToEndTurn(StartCoroutine(IterateMove(tile, c.gameObject)));
   }
 
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
@@ -372,7 +373,6 @@ public class GameManager : MonoBehaviour {
     clearPath();
     setTileColours();
 
-
     if (gameState == GameState.moving) {
       yield return new WaitForSeconds(0.25f);
       cam.unfollow();
@@ -408,7 +408,7 @@ public class GameManager : MonoBehaviour {
     Tile destination = getTile(coordToMove);
     Character c = SelectedPiece.GetComponent<Character>();
 
-    if (destination.distance <= moveRange && !destination.occupied()) {
+    if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
       // if player chose to move, update position stack with current values,
       // update remaining move range, and recolor the tiles given the new current position
       if (moveCommand) {
@@ -437,6 +437,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public void cancelAction() {
+    Character character = SelectedPiece.GetComponent<Character>();
     if (gameState == GameState.attacking) {
       changeState(GameState.moving);
     } else if (positionStack.Count() > 0) {
@@ -446,10 +447,10 @@ public class GameManager : MonoBehaviour {
       moveRange = val.second;
       MovePiece(coordToMove, false, false);
       changeState(GameState.moving);
-      djikstra(coordToMove, SelectedPiece.GetComponent<Character>());
+      djikstra(coordToMove, character);
       setTileColours();
     }
-    eventManager.onEvent(new Event(SelectedPiece.GetComponent<Character>(), EventHook.cancel));
+    eventManager.onEvent(new Event(character, EventHook.cancel));
   }
 
   public void endGame(bool win) {
