@@ -56,9 +56,7 @@ public class Portal : ActiveSkill, AoeSkill {
   public override void validate(List<List<Effected>> targets) {
     // prevent targetting the same tile twice
     if (targets.Count == 2) {
-      Debug.Log("two targets");
       if (targets[0][0] == targets[1][0]) {
-        Debug.Log("Targets are the same");
         targets.RemoveAt(1);
       }
     }
