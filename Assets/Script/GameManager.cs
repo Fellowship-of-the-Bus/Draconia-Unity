@@ -602,6 +602,15 @@ public class GameManager : MonoBehaviour {
           }
         }
       }
+      // color the selected targets
+      foreach (List<Effected> target in targets) {
+        foreach (Effected eff in target) {
+          Tile t = eff as Tile;
+          if (eff == null) t = (eff as Character).curTile;
+          Debug.AssertFormat(eff != null, "Effected is not a character or tile.");
+          t.setColor(Color.magenta);
+        }
+      }
     }
   }
 
