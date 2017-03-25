@@ -560,5 +560,5 @@ public class GameManager : MonoBehaviour {
     actionQueue.add(newCharObj);
   }
 
-  public static GameManager get { get; private set; }
+  public static GameManager get { get; set; }
 }

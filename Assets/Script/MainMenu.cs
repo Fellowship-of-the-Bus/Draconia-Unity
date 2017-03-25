@@ -8,4 +8,4 @@ public class MainMenu: MonoBehaviour {
   public void test() {
     SceneManager.LoadSceneAsync ("testMap");
   }
- }
+}
