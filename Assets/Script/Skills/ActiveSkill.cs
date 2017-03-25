@@ -19,7 +19,8 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public int level {get; set;}
   public virtual Character self {get; set;}
-  public int range {get; set;}
+  public int range;
+  public int Range {get {if (useWepRange) return self.weapon.range; else return range;} set {range = value;}}
   public bool useWepRange {get; set;}
   public bool useLos {get; set;}
   public string name {get; set;}
@@ -81,7 +82,14 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public virtual int damageFormula() { return 0; }
   public virtual int calculateDamage(Character target) {
-    return target.calculateDamage(damageFormula(), dType, dEle);
+    float heightDifference = self.curTile.getHeight() - target.curTile.getHeight();
+    float multiplier = 1;
+    if (Range >= 1) {
+      //balance here
+      multiplier += heightDifference * 1f;
+    }
+    multiplier = Math.Max(0, multiplier);
+    return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier);
   }
 
   public virtual int calculateHealing(Character target){
@@ -140,7 +148,7 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   protected List<GameObject> tileTargetting() {
     Map map = GameManager.get.map;
-    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
+    List<Tile> tiles = map.getTilesWithinRange(self.curTile, Range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       targets.Add(t.gameObject);

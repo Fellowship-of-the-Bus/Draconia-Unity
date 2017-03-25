@@ -6,7 +6,6 @@ public class ExsanguinationAura: PassiveSkill {
   public int aoe {get; set;}
 
   protected override void onApply(Character c) {
-    range = 0;
     aoe = 3;
     useLos = false;
     name = "Exsanguination Aura";

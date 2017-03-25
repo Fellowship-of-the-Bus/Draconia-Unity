@@ -100,7 +100,11 @@ public class Map {
   public List<Tile> getTilesWithinRange(Tile t, int range) {
     List<Tile> inRangeTiles = new List<Tile>();
     foreach (Tile other in tiles) {
-      if (l1Distance(t, other) <= range && l1Distance(t, other) != 0) {
+      int rangeChange = 0;
+      if (range >= 2) {
+        rangeChange = (int)(t.getHeight() - other.getHeight());
+      }
+      if (l1Distance(t, other) - rangeChange <= range && l1Distance(t, other) != 0) {
         inRangeTiles.Add(other);
       }
     }
