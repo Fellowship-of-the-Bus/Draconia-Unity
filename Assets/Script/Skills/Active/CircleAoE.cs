@@ -10,12 +10,8 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
   }
 
   public override List<GameObject> getTargets() {
-    if (useWepRange) {
-      range = self.weapon.range;
-    }
-
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.map.getTilesWithinRange(self.curTile, range);
+    List<Tile> tiles = gm.map.getTilesWithinRange(self.curTile, Range);
     List<GameObject> targets = new List<GameObject>();
     foreach (Tile t in tiles) {
       targets.Add(t.gameObject);

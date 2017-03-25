@@ -6,7 +6,6 @@ public class SlowAura: PassiveSkill {
   public int aoe {get; set;}
 
   protected override void onApply(Character c) {
-    range = 0;
     aoe = 2;
     useLos = false;
     name = "SlowAura";
