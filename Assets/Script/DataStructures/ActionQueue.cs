@@ -123,15 +123,20 @@ public class ActionQueue {
 
   public void remove(GameObject piece) {
     int i = 0;
+    List<LinkedListNode<actionTime>> toRemove = new List<LinkedListNode<actionTime>>();
 
     pieces.Remove(piece);
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece.Equals(piece)) {
         gameManager.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
-        queue.Remove(n);
+        toRemove.Add(n);
         moveUp(i - 1);
       }
       i++;
+    }
+
+    foreach (LinkedListNode<actionTime> n in toRemove) {
+      queue.Remove(n);
     }
   }
 
