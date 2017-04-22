@@ -21,6 +21,9 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
       }
     } else if (tooltipShown) {
       tipbox.transform.localPosition = tipPosition(Input.mousePosition);
+      if (tipbox.transform.TransformPoint(tipbox.transform.localPosition).x < 0) {
+        tipbox.transform.Translate(new Vector3(tipbox.GetComponent<RectTransform>().rect.width,0,0));
+      }
       tipbox.GetComponent<CanvasGroup>().alpha = 1;
     }
   }

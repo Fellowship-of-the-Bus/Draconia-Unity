@@ -17,8 +17,11 @@ public class GameManager : MonoBehaviour {
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
+  public BFEventManager BFEvents;
   public GameObject turnButton;
   public GameObject iceBlock;
+  public BuffBar buffBar;
+  public GameObject buffButton;
 
   //variables to handles turns
   /** stack of (position, remaining move range), where top of stack is previous location */
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour {
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
+    BFEvents = new BFEventManager();
     startTurn();
   }
 
@@ -117,6 +121,8 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
+
+    buffBar = new BuffBar(GameObject.FindGameObjectsWithTag("BuffBar")[0], buffButton);
   }
 
   int blinkFrameNumber = 0;
@@ -210,6 +216,7 @@ public class GameManager : MonoBehaviour {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
+    buffBar.update(selectedCharacter);
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -316,6 +323,7 @@ public class GameManager : MonoBehaviour {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     Event e = new Event(null, EventHook.endTurn);
     e.endTurnChar = selectedCharacter;
+    e.nextCharTime = actionQueue.peekNext();
     eventManager.onEvent(e);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
