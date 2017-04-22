@@ -17,12 +17,14 @@ public class Event {
   public Character healTarget;
 
   public Character endTurnChar;
+  public float nextCharTime;
 
   public Vector3 position;
 
   public Effect appliedBuff;
 
   public List<Effected> targets;
+
 
   public Event(Effected sender, EventHook hook) {
     this.sender = sender as Character;

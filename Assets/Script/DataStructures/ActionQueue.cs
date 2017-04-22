@@ -38,6 +38,10 @@ public class ActionQueue {
     buttonHeight = turnButton.GetComponent<RectTransform>().rect.height;
   }
 
+  public float peekNext() {
+    return queue.First.Value.piece.GetComponent<Character>().nextMoveTime;
+  }
+
   public GameObject getNext() {
     GameObject next = queue.First.Value.piece;
     float newTime = queue.First.Value.time;

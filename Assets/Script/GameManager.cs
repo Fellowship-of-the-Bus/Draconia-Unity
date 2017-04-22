@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
+  public BFEventManager BFEvents;
   public GameObject turnButton;
   public GameObject iceBlock;
   public BuffBar buffBar;
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour {
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
+    BFEvents = new BFEventManager();
     startTurn();
   }
 
@@ -321,6 +323,7 @@ public class GameManager : MonoBehaviour {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     Event e = new Event(null, EventHook.endTurn);
     e.endTurnChar = selectedCharacter;
+    e.nextCharTime = actionQueue.peekNext();
     eventManager.onEvent(e);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
