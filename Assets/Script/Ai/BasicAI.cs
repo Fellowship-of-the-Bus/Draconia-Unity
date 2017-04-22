@@ -11,8 +11,6 @@ public class BasicAI : BaseAI {
     public ActiveSkill skill;
     public List<Effected> effected;
 
-    GameManager game = GameManager.get;
-    Map map = game.map;
 
     public SkillData(BasicAI ai, int index, int score, List<Effected> effected) {
       this.index = index;
@@ -52,6 +50,8 @@ public class BasicAI : BaseAI {
   }
 
   public override Vector3 move() {
+    GameManager game = GameManager.get;
+    Map map = game.map;
     List<GameObject> characterObjects = game.players;
 
     int minDistance = Int32.MaxValue/2;
