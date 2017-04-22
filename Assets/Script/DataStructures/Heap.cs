@@ -7,7 +7,7 @@ using System.Collections;
 
 //ideally we want constraint T to implement >
 public class Heap<T> where T: Effect {
-  LinkedList<T> heap;
+  public LinkedList<T> heap {get; private set;}
 
   public Heap() {
     heap = new LinkedList<T>();

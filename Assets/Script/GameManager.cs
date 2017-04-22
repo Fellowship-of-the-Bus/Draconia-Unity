@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
   public ActionQueue actionQueue;
   public GameObject turnButton;
   public GameObject iceBlock;
+  public BuffBar buffBar;
+  public GameObject buffButton;
 
   //variables to handles turns
   /** stack of (position, remaining move range), where top of stack is previous location */
@@ -117,6 +119,8 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
+
+    buffBar = new BuffBar(GameObject.FindGameObjectsWithTag("BuffBar")[0], buffButton);
   }
 
   int blinkFrameNumber = 0;
@@ -204,6 +208,7 @@ public class GameManager : MonoBehaviour {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
+    buffBar.update(selectedCharacter);
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
