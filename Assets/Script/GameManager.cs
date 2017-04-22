@@ -122,6 +122,12 @@ public class GameManager : MonoBehaviour {
   int blinkFrameNumber = 0;
   bool displayChangedHealth = false;
   void Update() {
+    if (UILock.count == 0) {
+      if (Input.GetKeyDown(KeyCode.Return)) {
+        endTurnWrapper();
+      }
+    }
+
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
 

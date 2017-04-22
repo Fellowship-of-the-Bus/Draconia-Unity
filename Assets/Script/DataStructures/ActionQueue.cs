@@ -96,23 +96,29 @@ public class ActionQueue {
   }
 
   void enqueue(GameObject piece) {
-    GameObject button = GameObject.Instantiate(turnButton, new Vector3 (-25 + buttonWidth,0,0), Quaternion.identity) as GameObject;
-    button.transform.SetParent(actionBar.transform, false);
+    GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (-25 + buttonWidth,0,0), Quaternion.identity) as GameObject;
+    buttonObject.transform.SetParent(actionBar.transform, false);
     Character newCharacter = piece.GetComponent<Character>();
+
+    Button button = buttonObject.GetComponent<Button>();
+    button.onClick.AddListener(delegate {
+      GameManager.get.cam.panTo(piece.transform.position);
+    });
+
     int i = 0;
 
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       GameObject o = n.Value.piece;
       Character c = o.GetComponent<Character>();
       if (c.nextMoveTime > newCharacter.nextMoveTime) {
-        queue.AddBefore(n, new actionTime(piece, button));
+        queue.AddBefore(n, new actionTime(piece, buttonObject));
         break;
       }
       i++;
     }
 
     if (i == queue.Count) {
-      queue.AddLast(new actionTime(piece, button));
+      queue.AddLast(new actionTime(piece, buttonObject));
     }
 
     float posn = getPosn(i);
@@ -120,9 +126,9 @@ public class ActionQueue {
     if (newCharacter.name == "") {
       newCharacter.name = queue.Count.ToString();
     }
-    button.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
-    button.transform.Translate(new Vector3(0, posn, 0));
-    gameManager.StartCoroutine(SlideButton(button, -buttonWidth, 0));
+    buttonObject.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
+    buttonObject.transform.Translate(new Vector3(0, posn, 0));
+    gameManager.StartCoroutine(SlideButton(buttonObject, -buttonWidth, 0));
   }
 
   float getPosn(int i) {
