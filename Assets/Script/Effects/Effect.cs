@@ -1,6 +1,7 @@
 using UnityEngine;
+using System;
 
-public abstract class Effect : EventListener {
+public abstract class Effect : EventListener, IComparable<Effect> {
   public Character owner = null;
   public Tile ownerTile = null;
   public int level = 0;
@@ -53,16 +54,16 @@ public abstract class Effect : EventListener {
 
   protected virtual void additionalEffect(Event e) {}
 
-  protected virtual bool isGreaterThan(Effect other) {
-    return this.level > other.level;
+  public virtual int CompareTo(Effect other) {
+    return this.level.CompareTo(other.level);
   }
 
   public static bool operator >(Effect e1, Effect e2) {
-    return e1.isGreaterThan(e2);
+    return e1.CompareTo(e2) > 0;
   }
 
   public static bool operator <(Effect e1, Effect e2) {
-    return e2.isGreaterThan(e1);
+    return e2 > e1;
   }
 
   public Effect clone() {

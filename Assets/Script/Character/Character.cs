@@ -43,8 +43,7 @@ public class Character : Effected {
     set { previewHealing = value; }
   }
 
-  public BaseMoveAI moveAI = new BasicMoveAI();
-  public BaseAttackAI attackAI = new BasicAttackAI();
+  public BaseAI ai = new BasicAI();
 
   public string[] skillSet;
 
@@ -67,8 +66,7 @@ public class Character : Effected {
     setSkills();
 
     curHealth = maxHealth;
-    moveAI.owner = this;
-    attackAI.owner = this;
+    ai.owner = this;
 
     applyPassives();
 
