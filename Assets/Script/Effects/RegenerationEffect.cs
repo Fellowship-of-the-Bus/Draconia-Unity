@@ -12,13 +12,13 @@ public class RegenerationEffect : DurationEffect {
   protected override void additionalEffect(Event e) {
     owner.takeHealing(owner.calculateHealing(healing));
   }
-  protected override bool isGreaterThan(Effect e) {
+  public override int CompareTo(Effect e) {
     Debug.Assert(e is RegenerationEffect);
     if (e is RegenerationEffect) {
-      return this.healing > (e as RegenerationEffect).healing;
+      return this.healing.CompareTo((e as RegenerationEffect).healing);
     } else {
       //should only be comparing regeneration effects, shouldn't ever get here.
-      return true;
+      return base.CompareTo(e);
     }
   }
 }
