@@ -23,7 +23,6 @@ public class BuffBar {
     }
     float offset = 0;
     foreach (Effect e in selected.getEffects()) {
-      Debug.Log(e);
       GameObject b = GameObject.Instantiate(button, bar.transform) as GameObject;
       b.transform.position = new Vector3(offset,671,0); //???
       b.GetComponentsInChildren<Text>()[0].text = e.GetType().Name;
