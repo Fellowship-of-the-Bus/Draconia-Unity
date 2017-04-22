@@ -14,13 +14,13 @@ public class PoisonEffect : DurationEffect {
     owner.takeDamage((int)(damage * multiplier));
     multiplier += 0.15f;
   }
-  protected override bool isGreaterThan(Effect e) {
+  public override int CompareTo(Effect e) {
     Debug.Assert(e is PoisonEffect);
     if (e is PoisonEffect) {
-      return this.damage > (e as PoisonEffect).damage;
+      return this.damage.CompareTo((e as PoisonEffect).damage);
     } else {
       //should only be comparing Poison effects, shouldn't ever get here.
-      return true;
+      return base.CompareTo(e);
     }
   }
 }

@@ -14,13 +14,13 @@ public class BurnEffect : DurationEffect {
     owner.takeDamage(owner.calculateDamage((int)(damage * multiplier), DamageType.none, DamageElement.fire));
     multiplier -= 0.15f;
   }
-  protected override bool isGreaterThan(Effect e) {
+  public override int CompareTo(Effect e) {
     Debug.Assert(e is BurnEffect);
     if (e is BurnEffect) {
-      return this.damage > (e as BurnEffect).damage;
+      return this.damage.CompareTo((e as BurnEffect).damage);
     } else {
       //should only be comparing Burn effects, shouldn't ever get here.
-      return true;
+      return base.CompareTo(e);
     }
   }
 }

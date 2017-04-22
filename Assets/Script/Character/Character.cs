@@ -26,7 +26,6 @@ public class Character : Effected {
   public int curHealth;
   public float maxAction = 1000f;
   public float curAction = 0;
-  public float nextMoveTime = 0f;
   public new string name = "";
   public int team = 0;
   public Weapon weapon = new Weapon();
@@ -43,8 +42,7 @@ public class Character : Effected {
     set { previewHealing = value; }
   }
 
-  public BaseMoveAI moveAI = new BasicMoveAI();
-  public BaseAttackAI attackAI = new BasicAttackAI();
+  public BaseAI ai = new BasicAI();
 
   public string[] skillSet;
 
@@ -67,8 +65,7 @@ public class Character : Effected {
     setSkills();
 
     curHealth = maxHealth;
-    moveAI.owner = this;
-    attackAI.owner = this;
+    ai.owner = this;
 
     applyPassives();
 
@@ -129,8 +126,8 @@ public class Character : Effected {
     }
   }
 
-  public float calcMoveTime(float time) {
-    return nextMoveTime = time + ((maxAction - curAction) / speed);
+  public float calcMoveTime(float time, int turns = 1) {
+    return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
   }
 
   public bool inRange(Character target, int range) {

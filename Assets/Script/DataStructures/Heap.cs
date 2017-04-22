@@ -6,7 +6,7 @@ using System.Collections;
 
 
 //ideally we want constraint T to implement >
-public class Heap<T> where T: Effect {
+public class Heap<T> where T: IComparable<T> {
   public LinkedList<T> heap {get; private set;}
 
   public Heap() {
@@ -15,7 +15,7 @@ public class Heap<T> where T: Effect {
 
   public T getMax() {
     if (heap.Count == 0) {
-      return null;
+      return default(T);
     }
     return heap.First.Value;
   }
@@ -26,7 +26,7 @@ public class Heap<T> where T: Effect {
 
   public bool hasObject (T o) {
     foreach (LinkedListNode<T> n in new NodeIterator<T>(heap)) {
-      if (n.Value == o) {
+      if (n.Value.CompareTo(o) == 0) {
         return true;
       }
     }
@@ -36,7 +36,7 @@ public class Heap<T> where T: Effect {
   public void add(T o) {
     int i = 0;
     foreach (LinkedListNode<T> n in new NodeIterator<T>(heap)) {
-      if (o > n.Value) {
+      if (o.CompareTo(n.Value) > 0) {
         heap.AddBefore(n, o);
         break;
       }
@@ -50,7 +50,7 @@ public class Heap<T> where T: Effect {
 
   public void remove(T o) {
     foreach (LinkedListNode<T> n in new NodeIterator<T>(heap)) {
-      if (n.Value == o) {
+      if (n.Value.CompareTo(o) == 0) {
         heap.Remove(n);
       }
     }

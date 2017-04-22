@@ -12,13 +12,13 @@ public class BleedEffect : DurationEffect {
   protected override void additionalEffect(Event e) {
     owner.takeDamage(damage);
   }
-  protected override bool isGreaterThan(Effect e) {
+  public override int CompareTo(Effect e) {
     Debug.Assert(e is BleedEffect);
     if (e is BleedEffect) {
-      return this.damage > (e as BleedEffect).damage;
+      return this.damage.CompareTo((e as BleedEffect).damage);
     } else {
       //should only be comparing bleed effects, shouldn't ever get here.
-      return true;
+      return base.CompareTo(e);
     }
   }
 }

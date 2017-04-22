@@ -126,6 +126,12 @@ public class GameManager : MonoBehaviour {
   int blinkFrameNumber = 0;
   bool displayChangedHealth = false;
   void Update() {
+    if (UILock.count == 0) {
+      if (Input.GetKeyDown(KeyCode.Return)) {
+        endTurnWrapper();
+      }
+    }
+
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
 
@@ -455,7 +461,7 @@ public class GameManager : MonoBehaviour {
   IEnumerator doHandleAI(int time) {
     lockUI();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
-    Vector3 destination = selectedCharacter.moveAI.move();
+    Vector3 destination = selectedCharacter.ai.move();
     Tile t = map.getTile(destination);
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
@@ -474,7 +480,7 @@ public class GameManager : MonoBehaviour {
   public IEnumerator AIperformAttack(Character selectedCharacter) {
     cam.follow(SelectedPiece);
     yield return new WaitForSeconds(0.5f);
-    selectedCharacter.attackAI.target();
+    selectedCharacter.ai.target();
     yield return new WaitForSeconds(0.25f);
     cam.unfollow();
   }

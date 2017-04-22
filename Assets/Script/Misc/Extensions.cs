@@ -46,7 +46,7 @@ public static class Extensions {
   public static IEnumerable<LinkedListNode<T>> nodeIterate<T>(this LinkedList<T> l) {
     for (LinkedListNode<T> n = l.First; n != null; n = n.Next) {
       yield return n;
-    }    
+    }
   }
 
   // switch to this instead of Range?
@@ -62,7 +62,7 @@ public static class Extensions {
     return source;
   }
 
-  public static List<T> toList<T>(this IEnumerable<T> source) { 
+  public static List<T> toList<T>(this IEnumerable<T> source) {
     return new List<T>(source);
   }
 
