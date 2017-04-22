@@ -39,7 +39,7 @@ public class ActionQueue {
   }
 
   public float peekNext() {
-    return queue.First.Value.piece.GetComponent<Character>().nextMoveTime;
+    return queue.First.Value.time;
   }
 
   public GameObject getNext() {
