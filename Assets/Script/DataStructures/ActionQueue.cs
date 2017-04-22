@@ -8,6 +8,7 @@ public class ActionQueue {
   GameObject turnButton;
   GameObject actionBar;
   LinkedList<actionTime> queue;
+  List<GameObject> pieces;
   private GameManager gameManager;
   float curTime = 0;
 
@@ -17,15 +18,18 @@ public class ActionQueue {
   struct actionTime {
     public GameObject piece;
     public GameObject button;
+    public float time;
 
-    public actionTime(GameObject p, GameObject b) {
+    public actionTime(GameObject p, GameObject b, float t) {
       piece = p;
       button = b;
+      time = t;
     }
   }
 
   public ActionQueue(GameObject bar, GameObject buttonPrefab, GameManager game) {
     get = this;
+    pieces = new List<GameObject>();
     queue = new LinkedList<actionTime>();
     turnButton = buttonPrefab;
     actionBar = bar;
@@ -36,7 +40,7 @@ public class ActionQueue {
 
   public GameObject getNext() {
     GameObject next = queue.First.Value.piece;
-    float newTime = next.GetComponent<Character>().nextMoveTime;
+    float newTime = queue.First.Value.time;
     float timePassed = newTime - curTime;
 
     //update action bars for all characters
@@ -51,10 +55,18 @@ public class ActionQueue {
 
   public void endTurn() {
     GameObject SelectedPiece = queue.First.Value.piece;
-    remove(SelectedPiece);
-    Character SelectedCharacter = SelectedPiece.GetComponent<Character>();
-    SelectedCharacter.calcMoveTime(curTime);
-    enqueue(SelectedPiece);
+    removeFirst(SelectedPiece);
+
+    if (!hasObject(SelectedPiece)) {
+      bool last = enqueue(SelectedPiece);
+      if (last) {
+        foreach (GameObject p in pieces) {
+          if (p != SelectedPiece) {
+            fillActions(p);
+          }
+        }
+      }
+    }
   }
 
   public bool hasObject (GameObject piece) {
@@ -66,25 +78,53 @@ public class ActionQueue {
     return false;
   }
 
+  int actionsCount (GameObject piece) {
+    int count = 0;
+    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+      if (n.Value.piece == piece) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   public void updateTime(GameObject piece) {
     if (!hasObject(piece)) {
       return;
     }
-    Character character = piece.GetComponent<Character>();
-    character.calcMoveTime(curTime);
     remove(piece);
-    enqueue(piece);
+    add(piece);
   }
 
   public void add(GameObject piece) {
-    Character character = piece.GetComponent<Character>();
-    character.calcMoveTime(curTime);
-    enqueue(piece);
+    int i = 1;
+    bool last = enqueue(piece);
+    if (last) {
+      foreach (GameObject p in pieces) {
+        fillActions(p);
+      }
+    }
+    while (!last) {
+      i++;
+      last = enqueue(piece, i);
+    }
+
+    pieces.Add(piece);
+  }
+
+  void fillActions(GameObject piece) {
+    int k = actionsCount(piece) + 1;
+    bool filledIn = false;
+    while (!filledIn) {
+      filledIn = enqueue(piece, k);
+      k++;
+    }
   }
 
   public void remove(GameObject piece) {
     int i = 0;
 
+    pieces.Remove(piece);
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece.Equals(piece)) {
         gameManager.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
@@ -95,30 +135,46 @@ public class ActionQueue {
     }
   }
 
-  void enqueue(GameObject piece) {
-    GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (-25 + buttonWidth,0,0), Quaternion.identity) as GameObject;
-    buttonObject.transform.SetParent(actionBar.transform, false);
-    Character newCharacter = piece.GetComponent<Character>();
-
-    Button button = buttonObject.GetComponent<Button>();
-    button.onClick.AddListener(delegate {
-      GameManager.get.cam.panTo(piece.transform.position);
-    });
-
+  public void removeFirst(GameObject piece) {
     int i = 0;
 
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
-      GameObject o = n.Value.piece;
-      Character c = o.GetComponent<Character>();
-      if (c.nextMoveTime > newCharacter.nextMoveTime) {
-        queue.AddBefore(n, new actionTime(piece, buttonObject));
+      if (n.Value.piece.Equals(piece)) {
+        gameManager.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
+        queue.Remove(n);
+        moveUp(i - 1);
+        break;
+      }
+      i++;
+    }
+  }
+
+  // Add a turn marker to the action queue
+  // Does not add to the end unless it is the only turn marker for that piece
+  // Returns whether the requested marker belongs at the end of the queue
+  bool enqueue(GameObject piece, int turn = 1) {
+    bool isLast = false;
+    Character newCharacter = piece.GetComponent<Character>();
+    GameObject buttonObject = null;
+
+    int i = 0;
+    float newTime = newCharacter.calcMoveTime(curTime, turn);
+    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+      float time = n.Value.time;
+      if (time > newTime) {
+        buttonObject = makeButton(piece);
+        queue.AddBefore(n, new actionTime(piece, buttonObject, newTime));
         break;
       }
       i++;
     }
 
     if (i == queue.Count) {
-      queue.AddLast(new actionTime(piece, buttonObject));
+      isLast = true;
+      if (turn == 1) {
+        buttonObject = makeButton(piece);
+        queue.AddLast(new actionTime(piece, buttonObject, newTime));
+      }
     }
 
     float posn = getPosn(i);
@@ -126,9 +182,25 @@ public class ActionQueue {
     if (newCharacter.name == "") {
       newCharacter.name = queue.Count.ToString();
     }
-    buttonObject.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
-    buttonObject.transform.Translate(new Vector3(0, posn, 0));
-    gameManager.StartCoroutine(SlideButton(buttonObject, -buttonWidth, 0));
+
+    if (buttonObject != null) {
+      buttonObject.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
+      buttonObject.transform.Translate(new Vector3(0, posn, 0));
+      gameManager.StartCoroutine(SlideButton(buttonObject, -buttonWidth, 0));
+    }
+
+    return isLast;
+  }
+
+  GameObject makeButton(GameObject piece) {
+    GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (-25 + buttonWidth,0,0), Quaternion.identity) as GameObject;
+    buttonObject.transform.SetParent(actionBar.transform, false);
+    Button button = buttonObject.GetComponent<Button>();
+    button.onClick.AddListener(delegate {
+      GameManager.get.cam.panTo(piece.transform.position);
+    });
+
+    return buttonObject;
   }
 
   float getPosn(int i) {
