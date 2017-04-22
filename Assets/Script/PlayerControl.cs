@@ -34,9 +34,6 @@ public class PlayerControl : MonoBehaviour {
         if (t.distance <= gameManager.moveRange) {
           map.setPath(coord);
           map.setTileColours();
-          foreach (Tile ti in map.path) {
-            ti.setColor(Color.blue);
-          }
         }
       } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);

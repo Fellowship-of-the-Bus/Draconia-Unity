@@ -457,11 +457,11 @@ public class GameManager : MonoBehaviour {
     lockUI();
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     Vector3 destination = selectedCharacter.ai.move();
+    map.setTileColours();
     Tile t = map.getTile(destination);
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
-    t.gameObject.GetComponent<Renderer>().material.color = Color.black;
     yield return MovePiece(destination, true);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));

@@ -149,6 +149,16 @@ public class Map {
     }
   }
 
+  public List<Tile> tilesInMoveRange(Character character) {
+    List<Tile> ret = new List<Tile>();
+    foreach (Tile tile in tiles) {
+      if (tile.distance <= character.moveRange && !tile.occupied()) {
+        ret.Add(tile);
+      }
+    }
+    return ret;
+  }
+
   // GameMap functions
   public void setTileColours(Tile src = null) {
     GameObject SelectedPiece = GameManager.get.SelectedPiece;
@@ -196,6 +206,10 @@ public class Map {
           t.setColor(Color.magenta);
         }
       }
+    }
+    // color the path
+    foreach (Tile ti in path) {
+      ti.setColor(Color.blue);
     }
   }
 

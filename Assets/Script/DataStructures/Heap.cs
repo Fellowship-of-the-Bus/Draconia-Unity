@@ -56,4 +56,7 @@ public class Heap<T> where T: IComparable<T> {
     }
   }
 
+  public void clear() {
+    heap.Clear();
+  }
 }
