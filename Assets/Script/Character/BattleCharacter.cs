@@ -6,18 +6,34 @@ using System;
 using System.Reflection;
 
 public class BattleCharacter : Effected {
+  public Character baseChar = new Character();
+  public new string name {
+    get { return baseChar.name; } 
+    set { baseChar.name = value; }
+  }
+
   //inventory
   //skill tree
-  public SkillTree skills;
+  public SkillTree skills {
+    get { return baseChar.skills; }
+  }
 
   //base stats + permanent stat passives
-  public Attributes attr = new Attributes();
+  public Attributes attr {
+    get { return baseChar.attr; } 
+  }
   //change in stats due to buffs/debuffs
   public Attributes attrChange = new Attributes();
   //Sum of stats from equipments
   public Attributes attrEquip {
     get {return weapon.attr;}
   }
+  public Weapon weapon {
+    get { return baseChar.weapon; } 
+  }
+
+  // Allow setting skills in editor
+  public string[] skillSet;
 
   public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
 
@@ -26,9 +42,7 @@ public class BattleCharacter : Effected {
   public int curHealth;
   public float maxAction = 1000f;
   public float curAction = 0;
-  public new string name = "";
   public int team = 0;
-  public Weapon weapon = new Weapon();
 
   private int previewDamage;
   public int PreviewDamage{
@@ -43,8 +57,6 @@ public class BattleCharacter : Effected {
   }
 
   public BaseAI ai = new BasicAI();
-
-  public string[] skillSet;
 
   public LinkedList<Effect> allEffects = new LinkedList<Effect>();
 
@@ -61,13 +73,13 @@ public class BattleCharacter : Effected {
   }
 
   public void init() {
-    skills = new SkillTree(this);
     setSkills();
 
     curHealth = maxHealth;
     ai.owner = this;
 
     applyPassives();
+    equippedSkills = skills.getActives(this);
 
     ui = gameObject.transform.Find("UI");
   }
@@ -76,7 +88,8 @@ public class BattleCharacter : Effected {
     int i = 0;
     foreach (string skillName in skillSet) {
       ActiveSkill skill = null;
-      bool invalidSkill = true;;
+      bool invalidSkill = true;
+      ;
       foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
         if (t.IsSubclassOf(Type.GetType("ActiveSkill")) && t.FullName == skillName) {
           skill = (ActiveSkill)Activator.CreateInstance(t);
@@ -121,7 +134,7 @@ public class BattleCharacter : Effected {
 
   public void applyPassives() {
     BattleCharacter c = GetComponent<BattleCharacter>();
-    foreach (PassiveSkill passive in skills.getPassives()) {
+    foreach (PassiveSkill passive in skills.getPassives(c)) {
       passive.activate(c);
     }
   }
