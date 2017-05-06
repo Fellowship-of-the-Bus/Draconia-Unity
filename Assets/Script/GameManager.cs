@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour {
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
-  public BFEventManager BFEvents;
   public GameObject turnButton;
   public GameObject iceBlock;
   public BuffBar buffBar;
@@ -60,6 +59,8 @@ public class GameManager : MonoBehaviour {
 
   private LinkedList<Coroutine> waitEndTurn;
 
+  private List<BFEvent> BFevents = new List<BFEvent>();
+
   public void waitToEndTurn(Coroutine c) {
     waitEndTurn.AddFirst(c);
   }
@@ -75,7 +76,6 @@ public class GameManager : MonoBehaviour {
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
-    BFEvents = new BFEventManager();
     startTurn();
   }
 
