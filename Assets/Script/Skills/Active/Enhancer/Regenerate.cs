@@ -14,7 +14,7 @@ public class Regenerate: SingleTarget, HealingSkill {
     return 0;
   }
 
-  public override void additionalEffects(Character target) {
+  public override void additionalEffects(BattleCharacter target) {
     RegenerationEffect buff = new RegenerationEffect();
     buff.level = level;
     buff.duration = (level+5)/2;

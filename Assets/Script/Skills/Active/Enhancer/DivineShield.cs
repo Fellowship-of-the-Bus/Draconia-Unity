@@ -9,7 +9,7 @@ public class DivineShield: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     DodgeEffect e = new DodgeEffect();
     e.level = level;
     e.duration = 3;

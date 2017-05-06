@@ -9,7 +9,7 @@ public class IgniteWeapon: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     IgniteWeaponEffect buff = new IgniteWeaponEffect();
     buff.level = level;
     buff.duration = 2;

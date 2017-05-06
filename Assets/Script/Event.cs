@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System;
 
 public class Event {
-  public Character sender;
+  public BattleCharacter sender;
   public EventHook hook;
   public bool finishAttack = true;
   public bool preventDeath = false;
-  public Character newTarget;
+  public BattleCharacter newTarget;
 
   public int damageTaken;
-  public Character attackTarget;
+  public BattleCharacter attackTarget;
   public ActiveSkill skillUsed;
 
   public int healingDone;
-  public Character healTarget;
+  public BattleCharacter healTarget;
 
-  public Character endTurnChar;
+  public BattleCharacter endTurnChar;
   public float nextCharTime;
 
   public Vector3 position;
@@ -27,7 +27,7 @@ public class Event {
 
 
   public Event(Effected sender, EventHook hook) {
-    this.sender = sender as Character;
+    this.sender = sender as BattleCharacter;
     this.hook = hook;
   }
 }

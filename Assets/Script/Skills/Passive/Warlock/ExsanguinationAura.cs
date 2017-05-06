@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class ExsanguinationAura: PassiveSkill {
   public int aoe {get; set;}
 
-  protected override void onApply(Character c) {
+  protected override void onApply(BattleCharacter c) {
     aoe = 3;
     useLos = false;
     name = "Exsanguination Aura";

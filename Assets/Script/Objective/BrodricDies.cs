@@ -9,7 +9,7 @@ public class BrodricDies : Objective {
     List<GameObject> allies = game.players;
     if (allies.Count == 0) return true;
     foreach(GameObject o in allies) {
-      if (o.GetComponent<Character>().name == "Brodric") {
+      if (o.GetComponent<BattleCharacter>().name == "Brodric") {
         return false;
       }
     }

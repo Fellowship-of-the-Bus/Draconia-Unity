@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System;
 
 public class DialogueFragment {
-  public Character speaker;
+  public BattleCharacter speaker;
   public string text;
   public bool hasNextFrame = true;
-  public DialogueFragment(Character c, string t) {
+  public DialogueFragment(BattleCharacter c, string t) {
     speaker = c;
     text = t;
   }

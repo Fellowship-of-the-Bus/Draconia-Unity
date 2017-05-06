@@ -9,7 +9,7 @@ public class Ward: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     WardEffect e = new WardEffect();
     e.level = level;
     e.duration = 2;

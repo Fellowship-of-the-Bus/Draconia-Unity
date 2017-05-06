@@ -9,7 +9,7 @@ public class Enlighten: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     EnlightenEffect e = new EnlightenEffect();
     e.level = level;
     e.duration = 2;

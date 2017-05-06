@@ -15,7 +15,7 @@ public class BluntShot: SingleTarget {
     return (int)(self.strength*(0.5+level*0.05));
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     target.curAction = Math.Max(0, target.curAction - 200);
     ActionQueue.get.updateTime(target.gameObject);
   }

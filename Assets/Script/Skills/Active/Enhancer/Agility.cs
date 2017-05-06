@@ -9,7 +9,7 @@ public class Agility: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     ClimbEffect e = new ClimbEffect();
     e.level = level;
     e.duration = 1;

@@ -13,7 +13,7 @@ public class BrainFreeze: SingleTarget {
     dEle = DamageElement.ice;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     foreach (ActiveSkill a in target.equippedSkills) {
       if (a.curCooldown > 0) a.curCooldown += level;
     }

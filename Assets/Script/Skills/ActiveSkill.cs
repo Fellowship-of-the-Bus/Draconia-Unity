@@ -19,7 +19,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public const int InfiniteCooldown = -2;
 
   public int level {get; set;}
-  public virtual Character self {get; set;}
+  public virtual BattleCharacter self {get; set;}
   public int range;
   public int Range {get {if (useWepRange) return self.weapon.range; else return range;} set {range = value;}}
   public bool useWepRange {get; set;}
@@ -42,7 +42,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     ntargets = 1;
   }
 
-  public virtual void activate(Character target) {
+  public virtual void activate(BattleCharacter target) {
     if (this is HealingSkill) {
       if (calculateHealing(target) != 0) {
         target.takeHealing(calculateHealing(target));
@@ -82,7 +82,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
-  public virtual int calculateDamage(Character target) {
+  public virtual int calculateDamage(BattleCharacter target) {
     float heightDifference = self.curTile.getHeight() - target.curTile.getHeight();
     float multiplier = 1;
     if (Range >= 1) {
@@ -93,12 +93,12 @@ public abstract class ActiveSkill : EventListener, Skill {
     return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier);
   }
 
-  public virtual int calculateHealing(Character target){
+  public virtual int calculateHealing(BattleCharacter target){
     Debug.AssertFormat(this is HealingSkill, "calculateHealing called in a non-Healingskill {0}", this);
     HealingSkill heal = this as HealingSkill;
     return target.calculateHealing(heal.healingFormula());
   }
-  public virtual void additionalEffects(Character target) { }
+  public virtual void additionalEffects(BattleCharacter target) { }
   public virtual void tileEffects(Tile target) { }
 
   public abstract List<GameObject> getTargets();

@@ -9,7 +9,7 @@ public class Fortify: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     FortifyEffect e = new FortifyEffect();
     e.level = level;
     e.duration = 2;

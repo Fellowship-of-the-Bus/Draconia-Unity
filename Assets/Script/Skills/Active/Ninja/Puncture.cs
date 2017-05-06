@@ -14,7 +14,7 @@ public class Puncture: SingleTarget {
     return (int)(self.strength*(0.5+level*0.05));
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     BleedEffect debuff = new BleedEffect();
     debuff.level = level;
     debuff.duration = (level+5)/2;

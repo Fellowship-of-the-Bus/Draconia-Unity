@@ -2,17 +2,17 @@ using UnityEngine;
 using System;
 
 public abstract class Effect : EventListener, IComparable<Effect> {
-  public Character owner = null;
+  public BattleCharacter owner = null;
   public Tile ownerTile = null;
   public int level = 0;
 
   public bool stackable = false;
 
   public virtual void apply(Effected e) {
-    if (e is Character) apply(e as Character);
+    if (e is BattleCharacter) apply(e as BattleCharacter);
     else apply(e as Tile);
   }
-  public void apply(Character c) {
+  public void apply(BattleCharacter c) {
     Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     owner = c;
     onApply(c);
@@ -23,7 +23,7 @@ public abstract class Effect : EventListener, IComparable<Effect> {
     ownerTile = t;
     onApply(t);
   }
-  protected virtual void onApply(Character c) {}
+  protected virtual void onApply(BattleCharacter c) {}
   protected virtual void onApply(Tile t) {}
   //when this is removed from owner
 

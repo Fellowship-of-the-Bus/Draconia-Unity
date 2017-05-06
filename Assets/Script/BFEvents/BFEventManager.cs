@@ -7,7 +7,7 @@ public class BFEventManager : EventListener {
   //Manager class to manage more complex trigger conditions
   public List<BFEvent> timeTriggered = new List<BFEvent>();
   public List<BFEvent> turnTriggered = new List<BFEvent>();
-  Character boss;
+  BattleCharacter boss;
   int previousTime;
   int bossTurns = 0;
 
@@ -16,7 +16,7 @@ public class BFEventManager : EventListener {
   }
 
   public override void onEvent(Event e) {
-    Character endTurnChar = e.endTurnChar;
+    BattleCharacter endTurnChar = e.endTurnChar;
     float nextCharTime = e.nextCharTime;
 
     if (endTurnChar == boss) {
@@ -27,7 +27,7 @@ public class BFEventManager : EventListener {
     doTurnTriggeredEvents();
   }
 
-  public void setBoss(Character c) {
+  public void setBoss(BattleCharacter c) {
     boss = c;
   }
 

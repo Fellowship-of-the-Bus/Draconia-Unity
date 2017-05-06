@@ -11,7 +11,7 @@ public class Levitate: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     LevitateEffect debuff = new LevitateEffect();
     debuff.level = level;
     debuff.duration = 3;
