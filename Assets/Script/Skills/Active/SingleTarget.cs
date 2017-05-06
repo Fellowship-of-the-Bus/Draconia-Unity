@@ -23,7 +23,7 @@ public abstract class SingleTarget: ActiveSkill {
         }
       }
     }
-    targets.Add(self.curTile);
+    if (canTargetSelf) targets.Add(self.curTile);
     return targets;
   }
 
@@ -51,10 +51,10 @@ public abstract class SingleTarget: ActiveSkill {
   //       // Debug.Log("Skill " + cur + ", " + skill.name + ", num targets: " + targets.Count);
   //       if (targets.Count == 0) continue;
 
-  //       List<Character> c = new List<Character>(targets.Select(x => x.GetComponent<Character>()));
-  //       c = new List<Character>(c.Filter((character) => character.team != owner.team));
+  //       List<BattleCharacter> c = new List<BattleCharacter>(targets.Select(x => x.GetComponent<BattleCharacter>()));
+  //       c = new List<BattleCharacter>(c.Filter((character) => character.team != owner.team));
 
-  //       foreach (Character ch in c) {
+  //       foreach (BattleCharacter ch in c) {
   //         int damage = skill.calculateDamage(ch);
   //         // Debug.Log("character: " + ch.name + " damage: " + damage);
   //         List<Effected> e = new List<Effected>();

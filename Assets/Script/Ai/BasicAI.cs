@@ -37,25 +37,25 @@ public class BasicAI : BaseAI {
         if (targets.Count == 0) continue;
         AoeSkill aoe = skill as AoeSkill;
 
-        List<List<Character>> targetCharacters = null;
+        List<List<BattleCharacter>> targetCharacters = null;
         if (aoe != null) {
           foreach(Tile t in targets) {
             // Tile t = (Tile)obj;
 
             // targetCharacters.Add(aoe.getTargetsInAoe(t.gameObject.transform.position));
           }
-          // c = new List<Character>()
+          // c = new List<BattleCharacter>()
         } else {
-          targetCharacters = new List<List<Character>>();
-          List<Character> chars = new List<Character>(targets.Select(x => x.occupant));
-          chars = new List<Character>(chars.Filter((character) => character != null && character.team != owner.team));
+          targetCharacters = new List<List<BattleCharacter>>();
+          List<BattleCharacter> chars = new List<BattleCharacter>(targets.Select(x => x.occupant));
+          chars = new List<BattleCharacter>(chars.Filter((character) => character != null && character.team != owner.team));
           targetCharacters.Add(chars);
         }
 
-        foreach (List<Character> c in targetCharacters) {
+        foreach (List<BattleCharacter> c in targetCharacters) {
           List<Effected> e = new List<Effected>();
           int damage = 0;
-          foreach (Character ch in c) {
+          foreach (BattleCharacter ch in c) {
             damage = skill.calculateDamage(ch);
             // Debug.Log("character: " + ch.name + " damage: " + damage);
             e.Add(ch);

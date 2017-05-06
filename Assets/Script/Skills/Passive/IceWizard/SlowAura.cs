@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class SlowAura: PassiveSkill {
   public int aoe {get; set;}
 
-  protected override void onApply(Character c) {
+  protected override void onApply(BattleCharacter c) {
     aoe = 2;
     useLos = false;
     name = "SlowAura";

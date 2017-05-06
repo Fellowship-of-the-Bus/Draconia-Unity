@@ -14,7 +14,7 @@ public class HookShot: SingleTarget {
 
   float upThreshold = 0.5f;
 
-  Tile pullTo(Character c) {
+  Tile pullTo(BattleCharacter c) {
     Vector3 heading =  self.gameObject.transform.position - c.gameObject.transform.position;
     Vector3 direction = heading / heading.magnitude;
     direction.x = Mathf.Round(direction.x);
@@ -24,7 +24,7 @@ public class HookShot: SingleTarget {
     return t;
   }
 
-  public override void additionalEffects(Character c) {
+  public override void additionalEffects(BattleCharacter c) {
     Tile t = pullTo(c);
     GameManager game = GameManager.get;
     Map map = game.map;

@@ -7,9 +7,10 @@ public class Enlighten: SingleTarget {
     useLos = false;
     name = "Enlighten";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     EnlightenEffect e = new EnlightenEffect();
     e.level = level;
     e.duration = 2;

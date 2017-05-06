@@ -7,9 +7,10 @@ public class Reflect: SingleTarget {
     useLos = false;
     name = "Reflect";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     int cost = self.maxHealth / 10;
     if (self.curHealth > cost) {
       self.takeDamage(cost);

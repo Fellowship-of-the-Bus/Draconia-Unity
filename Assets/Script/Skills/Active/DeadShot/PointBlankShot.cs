@@ -15,7 +15,7 @@ public class PointBlankShot: SingleTarget {
     return (int)(self.strength*(1+level*0.1));
   }
 
-  public override int calculateDamage(Character target) {
+  public override int calculateDamage(BattleCharacter target) {
     float distance = (target.gameObject.transform.position - self.gameObject.transform.position).magnitude;
     float multiplier = 2.5f / distance;
 

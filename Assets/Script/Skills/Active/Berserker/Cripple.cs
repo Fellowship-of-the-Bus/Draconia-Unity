@@ -15,7 +15,7 @@ public class Cripple: SingleTarget {
     return (int)(self.strength*(0.5+level*0.05));
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     CrippleEffect debuff = new CrippleEffect();
     debuff.level = level;
     debuff.duration = 2;

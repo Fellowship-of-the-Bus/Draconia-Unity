@@ -9,9 +9,10 @@ public class Levitate: SingleTarget {
     useLos = false;
     name = "Levitate";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     LevitateEffect debuff = new LevitateEffect();
     debuff.level = level;
     debuff.duration = 3;

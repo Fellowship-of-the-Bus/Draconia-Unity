@@ -16,7 +16,7 @@ public class BloodJudgement: CircleAoE {
     dType = DamageType.magical;
   }
 
-  public override Character self {
+  public override BattleCharacter self {
     set {
       base.self = value;
       attachListener(self, EventHook.postSkill);
@@ -42,7 +42,7 @@ public class BloodJudgement: CircleAoE {
     return (int)(self.intelligence * 0.25f);
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     if (target == self) return;
 
     if (target.team == self.team) {

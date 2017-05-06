@@ -14,7 +14,7 @@ public class FortifyAura: SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     Func<FortifyEffect> f = () => {
       FortifyEffect eff = new FortifyEffect();
       eff.duration = -1;

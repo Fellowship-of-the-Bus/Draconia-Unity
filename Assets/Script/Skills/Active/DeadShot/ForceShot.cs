@@ -14,7 +14,7 @@ public class ForceShot: SingleTarget {
 
   float upThreshold = 0.5f;
 
-  Tile knockTo(Character c) {
+  Tile knockTo(BattleCharacter c) {
     Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
     Vector3 direction = heading / heading.magnitude;
     direction.x = Mathf.Round(direction.x);
@@ -24,7 +24,7 @@ public class ForceShot: SingleTarget {
     return t;
   }
 
-  public override void additionalEffects(Character c) {
+  public override void additionalEffects(BattleCharacter c) {
     Tile t = knockTo(c);
     GameManager game = GameManager.get;
     Map map = game.map;

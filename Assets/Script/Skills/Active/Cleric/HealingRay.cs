@@ -8,6 +8,7 @@ public class HealingRay: SingleTarget, HealingSkill {
     useLos = false;
     name = "Healing Ray";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public int healingFormula() {

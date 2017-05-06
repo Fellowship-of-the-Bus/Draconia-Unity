@@ -14,14 +14,17 @@ public class Knockback: SingleTarget {
   public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}
   float upThreshold = 0.5f;
 
-  Tile knockTo(Character c) {
-      Vector3 heading = c.curTile.transform.position - self.curTile.transform.position;
-      Vector3 direction = heading / heading.magnitude;
-      Tile t = GameManager.get.map.getTile(c.gameObject.transform.position + direction);
-      return t;
+  Tile knockTo(BattleCharacter c) {
+    Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
+    Vector3 direction = heading / heading.magnitude;
+    direction.x = Mathf.Round(direction.x);
+    direction.z = Mathf.Round(direction.z);
+
+    Tile t = GameManager.get.map.getTile(c.gameObject.transform.position + direction);
+    return t;
   }
 
-  public override void additionalEffects(Character c) {
+  public override void additionalEffects(BattleCharacter c) {
     Tile t = knockTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.map.getHeight(c.curTile) + upThreshold) > GameManager.get.map.getHeight(t))) {
       GameManager.get.MovePiece(c, t);

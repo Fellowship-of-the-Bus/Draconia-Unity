@@ -12,7 +12,7 @@ public class ShareLife: CircleAoE, HealingSkill {
     maxCooldown = 2;
   }
 
-  public override Character self {
+  public override BattleCharacter self {
     set {
       base.self = value;
       attachListener(self, EventHook.postSkill);

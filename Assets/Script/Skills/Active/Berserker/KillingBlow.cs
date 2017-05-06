@@ -13,7 +13,7 @@ public class KillingBlow: SingleTarget {
     return (int)(self.strength*(1+level*0.1));
   }
 
-  public override int calculateDamage(Character target) {
+  public override int calculateDamage(BattleCharacter target) {
     float missingPct = 1 - (float)target.curHealth/target.maxHealth;
     return (int)(base.calculateDamage(target)*(1 + missingPct * (0.5f + 0.1f * level)));
   }

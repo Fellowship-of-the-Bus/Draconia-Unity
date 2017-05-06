@@ -11,7 +11,7 @@ public class BloodSacrifice : SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects(Character target) {
+  public override void additionalEffects(BattleCharacter target) {
     BloodSacrificeEffect e = new BloodSacrificeEffect();
     e.setLevel(level);
     e.duration = 2;

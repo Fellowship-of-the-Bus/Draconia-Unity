@@ -19,7 +19,7 @@ public class Map {
     path = new LinkedList<Tile>();
   }
 
-  public void djikstra(Vector3 unitLocation, Character charToMove) {
+  public void djikstra(Vector3 unitLocation, BattleCharacter charToMove) {
     foreach (Tile tile in tiles) {
       tile.distance = System.Int32.MaxValue/2;
       tile.dir = Vector3.zero;
@@ -70,7 +70,7 @@ public class Map {
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
     }
-    if (from.occupied() && !(GameManager.get.SelectedPiece.GetComponent<Character>().team == from.occupant.GetComponent<Character>().team)) {
+    if (from.occupied() && !(GameManager.get.SelectedPiece.GetComponent<BattleCharacter>().team == from.occupant.GetComponent<BattleCharacter>().team)) {
       return Int32.MaxValue/4;
     }
 
@@ -149,7 +149,7 @@ public class Map {
     }
   }
 
-  public List<Tile> tilesInMoveRange(Character character) {
+  public List<Tile> tilesInMoveRange(BattleCharacter character) {
     List<Tile> ret = new List<Tile>();
     foreach (Tile tile in tiles) {
       if (tile.distance <= character.moveRange && !tile.occupied()) {
@@ -174,8 +174,8 @@ public class Map {
         }
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
-      bool aoe = (SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] is AoeSkill);
-      int range = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].range;
+      bool aoe = (SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] is AoeSkill);
+      int range = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
         foreach (Tile tile in inRangeTiles) {
@@ -185,10 +185,10 @@ public class Map {
           t.setColor(Color.red);
         }
       } else {
-        foreach (Tile t in SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets()) {
+        foreach (Tile t in SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].getTargets()) {
           t.setColor(Color.blue);
         }
-        AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
+        AoeSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] as AoeSkill;
         var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
         if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
@@ -201,7 +201,7 @@ public class Map {
       foreach (List<Effected> target in GameManager.get.targets) {
         foreach (Effected eff in target) {
           Tile t = eff as Tile;
-          if (eff == null) t = (eff as Character).curTile;
+          if (t == null) t = (eff as BattleCharacter).curTile;
           Debug.AssertFormat(eff != null, "Effected is not a character or tile.");
           t.setColor(Color.magenta);
         }

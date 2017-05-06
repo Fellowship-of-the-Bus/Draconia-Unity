@@ -14,7 +14,7 @@ public class RegenerateAura: SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     Func<RegenerationEffect> f = () => {
       RegenerationEffect buff = new RegenerationEffect();
       buff.level = level;

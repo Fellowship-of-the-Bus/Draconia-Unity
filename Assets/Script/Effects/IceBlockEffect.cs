@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class IceBlockEffect : DurationEffect {
   GameObject block;
-  public Character caster;
+  public BattleCharacter caster;
   protected override void onActivate() {
     block = (GameObject) GameObject.Instantiate(GameManager.get.iceBlock, new Vector3(ownerTile.gameObject.transform.position.x, ownerTile.gameObject.transform.position.y + ownerTile.getHeight() + 0.5f, ownerTile.gameObject.transform.position.z), Quaternion.identity,
       ownerTile.transform);

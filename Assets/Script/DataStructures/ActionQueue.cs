@@ -49,10 +49,10 @@ public class ActionQueue {
 
     //update action bars for all characters
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
-      n.Value.piece.GetComponent<Character>().updateActionBar(timePassed);
+      n.Value.piece.GetComponent<BattleCharacter>().updateActionBar(timePassed);
     }
 
-    next.GetComponent<Character>().curAction = 0f;
+    next.GetComponent<BattleCharacter>().curAction = 0f;
     curTime = newTime;
     return next;
   }
@@ -163,7 +163,7 @@ public class ActionQueue {
   // Returns whether the requested marker belongs at the end of the queue
   bool enqueue(GameObject piece, int turn = 1) {
     bool isLast = false;
-    Character newCharacter = piece.GetComponent<Character>();
+    BattleCharacter newCharacter = piece.GetComponent<BattleCharacter>();
     GameObject buttonObject = null;
 
     int i = 0;

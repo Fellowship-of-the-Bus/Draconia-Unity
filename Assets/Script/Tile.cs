@@ -5,7 +5,7 @@ public class Tile : Effected {
   public int distance = 0;
   public int movePointSpent = 1;
   public Vector3 dir = Vector3.zero;
-  public Character occupant = null;
+  public BattleCharacter occupant = null;
   public float additionalHeight = 0f;
 
   public bool occupied() {

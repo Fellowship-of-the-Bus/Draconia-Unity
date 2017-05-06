@@ -17,7 +17,7 @@ public class Portal : ActiveSkill, AoeSkill {
     targetsTiles = true;
   }
 
-  public override Character self {
+  public override BattleCharacter self {
     set {
       base.self = value;
       attachListener(self, EventHook.postSkill);
@@ -41,7 +41,7 @@ public class Portal : ActiveSkill, AoeSkill {
     PortalEffect eff2 = makeEffect();
     eff1.sibling = eff2;
     eff2.sibling = eff1;
-    eff1.effected = eff2.effected = new List<Character>();
+    eff1.effected = eff2.effected = new List<BattleCharacter>();
     targets[0].applyEffect(eff1);
     targets[1].applyEffect(eff2);
   }

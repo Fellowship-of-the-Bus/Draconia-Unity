@@ -7,7 +7,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
   public bool applyToSelf = true;
   private bool applyToEnemies = false;
   private Func<T> effectFactory;
-  private Dictionary<Character, T> affected = new Dictionary<Character, T>();
+  private Dictionary<BattleCharacter, T> affected = new Dictionary<BattleCharacter, T>();
 
   public Aura(int r, Func<T> f, bool enemyAffecting = false) {
     radius = r;
@@ -45,7 +45,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     }
     foreach (Tile t in tiles) {
       if (t.occupied()) {
-        Character c = t.occupant.GetComponent<Character>();
+        BattleCharacter c = t.occupant.GetComponent<BattleCharacter>();
         if (c.team == owner.team ^ applyToEnemies) {
           setup(c);
         }
@@ -54,13 +54,13 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
   }
 
   private void removeAura() {
-    foreach (KeyValuePair<Character, T> c in affected) {
+    foreach (KeyValuePair<BattleCharacter, T> c in affected) {
       c.Key.removeEffect(c.Value);
     }
-    affected = new Dictionary<Character, T>();
+    affected = new Dictionary<BattleCharacter, T>();
   }
 
-  private void setup(Character c) {
+  private void setup(BattleCharacter c) {
     T effect = effectFactory();
     effect.level = level;
     c.applyEffect(effect);

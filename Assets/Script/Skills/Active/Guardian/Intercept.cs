@@ -14,7 +14,7 @@ public class Intercept: SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     Func<InterceptEffect> f = () => {
       InterceptEffect eff = new InterceptEffect();
       eff.origin = self;
