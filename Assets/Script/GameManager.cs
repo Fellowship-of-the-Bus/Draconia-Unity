@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour {
 
   private LinkedList<Coroutine> waitEndTurn;
 
-  private List<BFEvent> BFevents = new List<BFEvent>();
+  //private List<BFEvent> BFevents = new List<BFEvent>();
 
   public void waitToEndTurn(Coroutine c) {
     waitEndTurn.AddFirst(c);
