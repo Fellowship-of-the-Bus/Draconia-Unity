@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour {
     foreach (var l in characters.Values) {
       foreach (var o in l) {
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
+        o.GetComponent<BattleCharacter>().init();
       }
     }
     startTurn();
@@ -122,6 +123,7 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
+
     GameObject[] buffBars = GameObject.FindGameObjectsWithTag("BuffBar");
     if (buffBars[0].name == "BuffBar") {
       activeBuffBar = new BuffBar(buffBars[0], buffButton);

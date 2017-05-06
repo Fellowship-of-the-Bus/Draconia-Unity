@@ -60,7 +60,7 @@ public class BattleCharacter : Effected {
     allEffects.Remove(effect);
   }
 
-  void Start() {
+  public void init() {
     skills = new SkillTree(this);
     setSkills();
 
