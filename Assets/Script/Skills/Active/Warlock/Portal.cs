@@ -24,11 +24,11 @@ public class Portal : ActiveSkill, AoeSkill {
     }
   }
 
-  public override List<GameObject> getTargets() {
-    return tileTargetting();
+  public override List<Tile> getTargets() {
+    return getTargetsInRange();
   }
 
-  public List<GameObject> getTargetsInAoe(Vector3 position) {
+  public List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);
   }
 

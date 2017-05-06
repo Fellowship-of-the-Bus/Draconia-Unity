@@ -52,9 +52,9 @@ public class BloodJudgement: CircleAoE {
     }
   }
 
-    public override List<GameObject> getTargetsInAoe(Vector3 position) {
-    List<GameObject> l = base.getTargetsInAoe(position);
-    l.Remove(self.gameObject);
+  public override List<Tile> getTargetsInAoe(Vector3 position) {
+    List<Tile> l = base.getTargetsInAoe(position);
+    l.Remove(self.curTile);
     return l;
   }
 }

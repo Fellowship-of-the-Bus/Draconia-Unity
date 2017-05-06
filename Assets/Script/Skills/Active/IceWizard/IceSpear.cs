@@ -12,18 +12,9 @@ public class IceSpear: SingleTarget {
     dType = DamageType.magical;
     dEle = DamageElement.ice;
   }
-  public override List<GameObject> getTargets() {
-    Map map = GameManager.get.map;
-    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      if (t.occupied()) {
-        targets.Add(t.occupant);
-      }
-    }
-    return targets;
+  public override List<Tile> getTargets() {
+    return getTargetsInRange();
   }
-
 
   public override int damageFormula() {
     return (int)(self.intelligence*(1+level*0.1));

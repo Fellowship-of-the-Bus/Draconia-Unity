@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public class Intercept: ActiveSkill {
+public class Intercept: SelfTarget {
   public int aoe {get; set;}
 
   public Intercept() {
@@ -28,11 +28,5 @@ public class Intercept: ActiveSkill {
     e.applyToSelf = false;
 
     target.applyEffect(e);
-  }
-
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
-    return targets;
   }
 }

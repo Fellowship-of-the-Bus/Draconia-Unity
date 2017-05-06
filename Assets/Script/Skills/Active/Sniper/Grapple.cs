@@ -13,10 +13,9 @@ public class Grapple: CircleAoE {
     effectsTiles = true;
   }
 
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = base.getTargets();
-
-    return new List<GameObject>(targets.Filter((tile) => tile.GetComponent<Tile>() != null && !tile.GetComponent<Tile>().occupied()));
+  public override List<Tile> getTargets() {
+    List<Tile> targets = base.getTargets();
+    return new List<Tile>(targets.Filter(tile => !tile.occupied()));
   }
 
   public override void tileEffects(Tile t) {

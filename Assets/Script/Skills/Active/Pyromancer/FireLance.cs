@@ -10,7 +10,7 @@ public class FireLance: ActiveSkill, AoeSkill {
     useWepRange = false;
     aoe = 4;
     useLos = false;
-    name = "FireLance";
+    name = "Fire Lance";
     effectsTiles = false;
     maxCooldown = 2;
     targetsTiles = true;
@@ -19,22 +19,12 @@ public class FireLance: ActiveSkill, AoeSkill {
     dEle = DamageElement.fire;
   }
 
-  public override List<GameObject> getTargets() {
-    Map map = GameManager.get.map;
-    List<Tile> tiles = map.getTilesWithinRange(self.curTile, range);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      if (t == self.curTile) {
-        continue;
-      }
-      targets.Add(t.gameObject);
-    }
-    targets.Add(self.curTile.gameObject);
-    return targets;
+  public override List<Tile> getTargets() {
+    return getTargetsInRange();
   }
 
 
-  public List<GameObject> getTargetsInAoe(Vector3 position) {
+  public List<Tile> getTargetsInAoe(Vector3 position) {
     Map map = GameManager.get.map;
     List<Tile> tiles = map.getCardinalTilesWithinRange(self.curTile, aoe);
     var myPosition = self.curTile.gameObject.transform.position;
@@ -48,28 +38,17 @@ public class FireLance: ActiveSkill, AoeSkill {
     Tile t = map.getTile(position);
     //return the stuff in the right direction
     if (up.Contains(t)) {
-      return getObjectsFromTile(up);
+      return up;
     } else if (down.Contains(t)) {
-      return getObjectsFromTile(down);
+      return down;
     } else if (left.Contains(t)) {
-      return getObjectsFromTile(left);
+      return left;
     } else if (right.Contains(t)) {
-      return getObjectsFromTile(right);
+      return right;
     } else {
       return null;
     }
   }
-
-  List<GameObject> getObjectsFromTile(List<Tile> tiles) {
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-
-        if (t.occupant) targets.Add(t.occupant);
-        else targets.Add(t.gameObject);
-    }
-    return targets;
-  }
-
 
   public override int damageFormula() {
     return (int)(self.intelligence*(1+level*0.1));

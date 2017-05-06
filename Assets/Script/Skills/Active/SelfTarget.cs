@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 public abstract class SelfTarget: ActiveSkill {
-  public override List<GameObject> getTargets() {
-    List<GameObject> targets = new List<GameObject>();
-    targets.Add(self.gameObject);
+  public override List<Tile> getTargets() {
+    List<Tile> targets = new List<Tile>();
+    targets.Add(self.curTile);
     return targets;
   }
 }

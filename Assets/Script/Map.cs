@@ -181,19 +181,19 @@ public class Map {
         foreach (Tile tile in inRangeTiles) {
           tile.setColor(Color.blue);
         }
-        foreach (GameObject o in GameManager.get.skillTargets) {
-          getTile(o.transform.position).setColor(Color.red);
+        foreach (Tile t in GameManager.get.skillTargets) {
+          t.setColor(Color.red);
         }
       } else {
-        foreach (GameObject o in SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets()) {
-          getTile(o.transform.position).setColor(Color.blue);
+        foreach (Tile t in SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill].getTargets()) {
+          t.setColor(Color.blue);
         }
         AoeSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[SelectedSkill] as AoeSkill;
         var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
         if (targetsInAoe != null) {
-          foreach (GameObject o in targetsInAoe) {
-            if (o.tag == "Cube") getTile(o.transform.position).setColor(Color.yellow);
-            else getTile(o.transform.position).setColor(Color.red);
+          foreach (Tile t in targetsInAoe) {
+            if (t.gameObject.tag == "Cube") t.setColor(Color.yellow);
+            else t.setColor(Color.red);
           }
         }
       }

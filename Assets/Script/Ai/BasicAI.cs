@@ -5,26 +5,6 @@ using System;
 using System.Collections;
 
 public class BasicAI : BaseAI {
-  private class SkillData : IComparable<SkillData> {
-    public int index;  // index in equippedSkills
-    public int score;  // how good is this skill right now?
-    public ActiveSkill skill;
-    public List<Effected> effected;
-    public Tile tile;  // location from which skill is used
-
-    public SkillData(BasicAI ai, int index, int score, List<Effected> effected, Tile tile) {
-      this.index = index;
-      this.score = score;
-      this.effected = effected;
-      this.skill = ai.owner.equippedSkills[index];
-      this.tile = tile;
-    }
-
-    public int CompareTo(SkillData other) {
-      return score.CompareTo(other.score);
-    }
-  }
-
   SkillData best;
 
   public override void target() {
@@ -52,18 +32,34 @@ public class BasicAI : BaseAI {
       foreach (ActiveSkill skill in owner.equippedSkills) {
         int cur = index++;
         if (! skill.canUse()) continue;
-        List<GameObject> targets = skill.getTargets();
+        List<Tile> targets = skill.getTargets();
         // Debug.Log("Skill " + cur + ", " + skill.name + ", num targets: " + targets.Count);
         if (targets.Count == 0) continue;
+        AoeSkill aoe = skill as AoeSkill;
 
-        List<Character> c = new List<Character>(targets.Select(x => x.GetComponent<Character>()));
-        c = new List<Character>(c.Filter((character) => character.team != owner.team));
+        List<List<Character>> targetCharacters = null;
+        if (aoe != null) {
+          foreach(Tile t in targets) {
+            // Tile t = (Tile)obj;
 
-        foreach (Character ch in c) {
-          int damage = skill.calculateDamage(ch);
-          // Debug.Log("character: " + ch.name + " damage: " + damage);
+            // targetCharacters.Add(aoe.getTargetsInAoe(t.gameObject.transform.position));
+          }
+          // c = new List<Character>()
+        } else {
+          targetCharacters = new List<List<Character>>();
+          List<Character> chars = new List<Character>(targets.Select(x => x.occupant));
+          chars = new List<Character>(chars.Filter((character) => character != null && character.team != owner.team));
+          targetCharacters.Add(chars);
+        }
+
+        foreach (List<Character> c in targetCharacters) {
           List<Effected> e = new List<Effected>();
-          e.Add(ch);
+          int damage = 0;
+          foreach (Character ch in c) {
+            damage = skill.calculateDamage(ch);
+            // Debug.Log("character: " + ch.name + " damage: " + damage);
+            e.Add(ch);
+          }
           db.add(new SkillData(this, cur, damage, e, tile));
         }
       }

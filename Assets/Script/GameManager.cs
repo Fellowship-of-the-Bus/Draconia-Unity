@@ -28,8 +28,8 @@ public class GameManager : MonoBehaviour {
   public Stack<Pair<Tile,int>> positionStack = new Stack<Pair<Tile, int>>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
-  public List<GameObject> skillTargets;
-  GameObject previewTarget;
+  public List<Tile> skillTargets;
+  Character previewTarget;
 
   public GameState gameState = GameState.moving;
   public bool playerTurn = true;
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour {
       foreach (var o in l) {
         Character c = o.GetComponent<Character>();
         Tile t = map.getTile(o.transform.position);
-        t.occupant = o;
+        t.occupant = c;
         c.curTile = t;
       }
     }
@@ -152,19 +152,17 @@ public class GameManager : MonoBehaviour {
     if (previewTarget == null) {
       targetPanel.SetActive(false);
     } else {
-      Character targetCharacter = previewTarget.GetComponent<Character>();
-      if (targetCharacter == null) return;
       targetPanel.SetActive(true);
       if (displayChangedHealth) {
         Character selectedCharacter = SelectedPiece.GetComponent<Character>();
         Vector3 scale = targetHealth.transform.localScale;
         Skill s = selectedCharacter.equippedSkills[SelectedSkill];
-        if (s is HealingSkill) scale.x = (float)(targetCharacter.curHealth + targetCharacter.PreviewHealing)/targetCharacter.maxHealth;
-        else scale.x = (float)(targetCharacter.curHealth - targetCharacter.PreviewDamage)/targetCharacter.maxHealth;
+        if (s is HealingSkill) scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
+        else scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
         targetHealth.transform.localScale = scale;
       } else {
         Vector3 scale = targetHealth.transform.localScale;
-        scale.x = (float)targetCharacter.curHealth/targetCharacter.maxHealth;
+        scale.x = (float)previewTarget.curHealth/previewTarget.maxHealth;
         targetHealth.transform.localScale = scale;
       }
       blinkFrameNumber = (blinkFrameNumber+1)%30;
@@ -261,42 +259,41 @@ public class GameManager : MonoBehaviour {
     changeState(GameState.attacking);
   }
 
-  public void selectTarget(GameObject target) {
-    if (SelectedSkill != -1 && skillTargets.Contains(target)) {
+  public void selectTarget(Character target) {
+    if (SelectedSkill != -1 && skillTargets.Contains(target.curTile)) {
       previewTarget = target;
     } else {
       previewTarget = null;
       return;
     }
 
-    Character cTarget = target.GetComponent<Character>();
-    if (cTarget != null) {
+    if (previewTarget != null) {
       Character selectedCharacter = SelectedPiece.GetComponent<Character>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
-      if (hskill != null) cTarget.PreviewHealing = skill.calculateHealing(cTarget);
-      else cTarget.PreviewDamage = skill.calculateDamage(cTarget);
+      if (hskill != null) previewTarget.PreviewHealing = skill.calculateHealing(previewTarget);
+      else previewTarget.PreviewDamage = skill.calculateDamage(previewTarget);
     }
     //todo: aoe health bar hover?
   }
 
   public List<List<Effected>> targets = new List<List<Effected>>();
-  public void attackTarget(GameObject target) {
+  public void attackTarget(Tile target) {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
-    List<GameObject> validTargets = skill.getTargets();
+    List<Tile> validTargets = skill.getTargets();
 
     if (validTargets.Contains(target)){
       AoeSkill aoe = skill as AoeSkill;
       List<Effected> curTargets = new List<Effected>();
       if (aoe != null) {
-        foreach (GameObject o in aoe.getTargetsInAoe(target.transform.position)) {
-          Character c = o.GetComponent<Character>();
+        foreach (Tile t in aoe.getTargetsInAoe(target.gameObject.transform.position)) {
+          Character c = t.occupant;
           if (c) curTargets.Add(c);
-          if (aoe.effectsTiles) curTargets.Add(o.GetComponent<Tile>());
+          if (aoe.effectsTiles) curTargets.Add(t);
         }
       } else {
-        curTargets.Add(target.GetComponent<Character>());
+        curTargets.Add(target.occupant);
       }
       targets.Add(curTargets);
       skill.validate(targets);
@@ -398,7 +395,7 @@ public class GameManager : MonoBehaviour {
     eventManager.onEvent(new Event(c, EventHook.preMove));
     c.curTile.occupant = null;
     c.curTile = t;
-    t.occupant = c.gameObject;
+    t.occupant = c;
     eventManager.onEvent(new Event(c, EventHook.postMove));
   }
 

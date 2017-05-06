@@ -9,28 +9,11 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
     targetsTiles = true;
   }
 
-  public override List<GameObject> getTargets() {
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.map.getTilesWithinRange(self.curTile, Range);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      targets.Add(t.gameObject);
-    }
-    targets.Add(self.curTile.gameObject);
-    return targets;
+  public override List<Tile> getTargets() {
+    return getTargetsInRange();
   }
 
-  public virtual List<GameObject> getTargetsInAoe(Vector3 position) {
-    GameManager gm = GameManager.get;
-    Tile cur = gm.map.getTile(position);
-    List<Tile> tiles = gm.map.getTilesWithinRange(cur, aoe);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-        if (t.occupant) targets.Add(t.occupant);
-        else targets.Add(t.gameObject);
-    }
-    if (cur.occupant) targets.Add(cur.occupant);
-    else targets.Add(cur.gameObject);
-    return targets;
+  public virtual List<Tile> getTargetsInAoe(Vector3 position) {
+    return getTargetsInAoe(position, aoe);
   }
 }

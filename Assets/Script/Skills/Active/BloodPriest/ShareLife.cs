@@ -34,10 +34,10 @@ public class ShareLife: CircleAoE, HealingSkill {
     return amount;
   }
 
-  public override List<GameObject> getTargetsInAoe(Vector3 position) {
-    List<GameObject> l = base.getTargetsInAoe(position);
-    l.Remove(self.gameObject);
-    List<GameObject> l2 = new List<GameObject>(l.Filter((go) => go.GetComponent<Character>() == null || go.GetComponent<Character>().team == self.team));
+  public override List<Tile> getTargetsInAoe(Vector3 position) {
+    List<Tile> l = base.getTargetsInAoe(position);
+    l.Remove(self.curTile);
+    List<Tile> l2 = new List<Tile>(l.Filter(tile => tile.occupant == null || tile.occupant.team == self.team));
     return l2;
   }
 }

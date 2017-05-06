@@ -12,23 +12,11 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     maxCooldown = 2;
   }
 
-  public override List<GameObject> getTargets() {
-    range = self.weapon.range;
-    aoe = self.weapon.range;
-    GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.map.getCardinalTilesWithinRange(self.curTile, range);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      if (t == self.curTile) {
-        continue;
-      }
-      targets.Add(t.gameObject);
-    }
-    targets.Add(self.curTile.gameObject);
-    return targets;
+  public override List<Tile> getTargets() {
+    return getTargetsInRange();
   }
 
-  public List<GameObject> getTargetsInAoe(Vector3 position) {
+  public List<Tile> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.map.getCardinalTilesWithinRange(self.curTile, aoe);
     var myPosition = self.curTile.gameObject.transform.position;
@@ -42,28 +30,17 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     Tile t = gm.map.getTile(position);
     //return the stuff in the right direction
     if (up.Contains(t)) {
-      return getObjectsFromTile(up);
+      return up;
     } else if (down.Contains(t)) {
-      return getObjectsFromTile(down);
+      return down;
     } else if (left.Contains(t)) {
-      return getObjectsFromTile(left);
+      return left;
     } else if (right.Contains(t)) {
-      return getObjectsFromTile(right);
+      return right;
     } else {
       return null;
     }
   }
-
-  List<GameObject> getObjectsFromTile(List<Tile> tiles) {
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-
-      if (t.occupant) targets.Add(t.occupant);
-      else targets.Add(t.gameObject);
-    }
-    return targets;
-  }
-
 
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));

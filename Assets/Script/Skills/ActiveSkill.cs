@@ -20,8 +20,8 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public int level {get; set;}
   public virtual Character self {get; set;}
-  public int range;
-  public int Range {get {if (useWepRange) return self.weapon.range; else return range;} set {range = value;}}
+  private int _range;
+  public int range {get {if (useWepRange) return self.weapon.range; else return _range;} set {_range = value;}}
   public bool useWepRange {get; set;}
   public bool useLos {get; set;}
   public string name {get; set;}
@@ -85,7 +85,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual int calculateDamage(Character target) {
     float heightDifference = self.curTile.getHeight() - target.curTile.getHeight();
     float multiplier = 1;
-    if (Range >= 1) {
+    if (range >= 1) {
       //balance here
       multiplier += heightDifference * 1f;
     }
@@ -100,8 +100,6 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
   public virtual void additionalEffects(Character target) { }
   public virtual void tileEffects(Tile target) { }
-
-  public abstract List<GameObject> getTargets();
 
   public virtual bool canUse() {
     return curCooldown == 0 && usableWeapon[(int)self.weapon.kind];
@@ -147,28 +145,21 @@ public abstract class ActiveSkill : EventListener, Skill {
     base.attachListener(e, hook);
   }
 
-  protected List<GameObject> tileTargetting() {
-    Map map = GameManager.get.map;
-    List<Tile> tiles = map.getTilesWithinRange(self.curTile, Range);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-      targets.Add(t.gameObject);
-    }
-    targets.Add(self.curTile.gameObject);
-    return targets;
+  public abstract List<Tile> getTargets();
+
+  protected List<Tile> getTargetsInRange() {
+    return getTargetsInAoe(self.gameObject.transform.position, range);
   }
 
-  protected List<GameObject> getTargetsInAoe(Vector3 position, int aoe) {
+  protected List<Tile> getTargetsInAoe(Vector3 position, int aoe) {
     Map map = GameManager.get.map;
-    List<Tile> tiles = map.getTilesWithinRange(map.getTile(position), aoe);
-    List<GameObject> targets = new List<GameObject>();
-    foreach (Tile t in tiles) {
-        targets.Add(t.gameObject);
-    }
-    targets.Add(map.getTile(position).gameObject);
+    List<Tile> targets = map.getTilesWithinRange(map.getTile(position), aoe);
+    targets.Add(map.getTile(position));
     return targets;
   }
 
   // ensure that targets are valid
   public virtual void validate(List<List<Effected>> targets) {}
+
+  // public abstract virtual SkillData calculateSkill();
 }
