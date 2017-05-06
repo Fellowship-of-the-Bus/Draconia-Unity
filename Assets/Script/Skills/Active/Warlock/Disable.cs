@@ -10,7 +10,7 @@ public class Disable : SingleTarget {
     maxCooldown = 0;
   }
   // TODO: UI to select skill
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     DisableEffect debuff = new DisableEffect();
     debuff.origin = this;
     debuff.target = target.equippedSkills[0]; // TODO: fix this to use the skill that the player selected

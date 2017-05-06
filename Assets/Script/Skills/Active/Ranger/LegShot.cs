@@ -13,7 +13,7 @@ public class LegShot: SingleTarget {
     return (int)(self.strength*(1+level*0.1));
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     CrippleEffect debuff = new CrippleEffect();
     debuff.level = level;
     debuff.duration = 2;

@@ -14,7 +14,7 @@ public class EmpowerAura: SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     Func<EmpowerEffect> f = () => {
       EmpowerEffect eff = new EmpowerEffect();
       eff.duration = -1;

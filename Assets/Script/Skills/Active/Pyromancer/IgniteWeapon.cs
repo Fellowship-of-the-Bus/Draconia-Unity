@@ -10,7 +10,7 @@ public class IgniteWeapon: SingleTarget {
     canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     IgniteWeaponEffect buff = new IgniteWeaponEffect();
     buff.level = level;
     buff.duration = 2;

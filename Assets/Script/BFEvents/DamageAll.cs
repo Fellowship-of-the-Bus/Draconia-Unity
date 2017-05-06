@@ -7,10 +7,10 @@ public class DamageAll : BFTimeEvent{
 
   public override void trigger() {
     foreach (GameObject c in GameManager.get.players) {
-      c.GetComponent<Character>().takeDamage(2);
+      c.GetComponent<BattleCharacter>().takeDamage(2);
     }
     foreach (GameObject c in GameManager.get.enemies) {
-      c.GetComponent<Character>().takeDamage(3);
+      c.GetComponent<BattleCharacter>().takeDamage(3);
     }
   }
 }

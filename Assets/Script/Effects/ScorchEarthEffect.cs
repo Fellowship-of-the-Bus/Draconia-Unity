@@ -2,8 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class ScorchEarthEffect : DurationEffect {
-  public Character caster;
-  List<Character> effected = new List<Character>();
+  public BattleCharacter caster;
+  List<BattleCharacter> effected = new List<BattleCharacter>();
   protected override void onActivate() {
     attachListener(GameManager.get.eventManager, EventHook.endTurn);
     attachListener(GameManager.get.eventManager, EventHook.enterTile);
@@ -15,15 +15,15 @@ public class ScorchEarthEffect : DurationEffect {
     detachListener(caster);
   }
 
-  float damage(Character c) {
+  float damage(BattleCharacter c) {
     return c.calculateDamage((int)(caster.intelligence * 0.2f), DamageType.none, DamageElement.fire);
   }
 
   protected override void additionalEffect(Event e) {
     if (e.sender == null && e.hook == EventHook.endTurn) {
-      Character occupant = null;
+      BattleCharacter occupant = null;
       if (ownerTile.occupant != null) {
-        occupant = ownerTile.occupant.GetComponent<Character>();
+        occupant = ownerTile.occupant.GetComponent<BattleCharacter>();
       }
       if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !(occupant.levitating)) {
         occupant.takeDamage((int)(damage(occupant)));

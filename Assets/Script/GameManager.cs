@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
 
-    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<Character>().team);
+    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
     foreach (var x in objs) {
       characters[x.Key] = new List<GameObject>(x);
     }
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour {
     actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
     foreach (var l in characters.Values) {
       foreach (var o in l) {
-        Character c = o.GetComponent<Character>();
+        BattleCharacter c = o.GetComponent<BattleCharacter>();
         Tile t = map.getTile(o.transform.position);
         t.occupant = o;
         c.curTile = t;
@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour {
     line.enabled = gameState == GameState.attacking;
 
     if (SelectedPiece) {
-      Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
       for (int i = 0; i < skillButtons.Count; i++) {
         ActiveSkill s = selectedCharacter.equippedSkills[i];
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour {
     if (previewTarget == null) {
       targetPanel.SetActive(false);
     } else {
-      Character targetCharacter = previewTarget.GetComponent<Character>();
+      BattleCharacter targetCharacter = previewTarget.GetComponent<BattleCharacter>();
       if (targetCharacter == null) {
         targetPanel.SetActive(false);
         return;
@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour {
       targetPanel.SetActive(true);
       if (gameState == GameState.moving) displayChangedHealth = false;
       if (displayChangedHealth && skillTargets.Contains(previewTarget)) {
-        Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+        BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
         Vector3 scale = targetHealth.transform.localScale;
         Skill s = selectedCharacter.equippedSkills[SelectedSkill];
         if (s is HealingSkill) scale.x = (float)(targetCharacter.curHealth + targetCharacter.PreviewHealing)/targetCharacter.maxHealth;
@@ -219,14 +219,14 @@ public class GameManager : MonoBehaviour {
     map.clearColour();
     map.clearPath();
     if (SelectedPiece) {
-      if (SelectedPiece.GetComponent<Character>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
-    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
@@ -237,11 +237,11 @@ public class GameManager : MonoBehaviour {
 
 
     Vector3 position = SelectedPiece.transform.position;
-    map.djikstra(position, SelectedPiece.GetComponent<Character>());
+    map.djikstra(position, SelectedPiece.GetComponent<BattleCharacter>());
 
     changeState(GameState.moving);
     // enemy
-    if (SelectedPiece.GetComponent<Character>().team == 1) {
+    if (SelectedPiece.GetComponent<BattleCharacter>().team == 1) {
       playerTurn = false;
       handleAI();
       return;
@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour {
     positionStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
-      skillButtons[i].enabled = i < SelectedPiece.GetComponent<Character>().equippedSkills.Count;
+      skillButtons[i].enabled = i < SelectedPiece.GetComponent<BattleCharacter>().equippedSkills.Count;
     }
   }
 
@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour {
     }
 
     SelectedSkill = i;
-    ActiveSkill skill = SelectedPiece.GetComponent<Character>().equippedSkills[i];
+    ActiveSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[i];
 
     skillTargets = skill.getTargets();
     //change colours of the tiles for attacking
@@ -280,9 +280,9 @@ public class GameManager : MonoBehaviour {
       return;
     }
 
-    Character cTarget = target.GetComponent<Character>();
+    BattleCharacter cTarget = target.GetComponent<BattleCharacter>();
     if (cTarget != null) {
-      Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
       if (hskill != null) cTarget.PreviewHealing = skill.calculateHealing(cTarget);
@@ -293,7 +293,7 @@ public class GameManager : MonoBehaviour {
 
   public List<List<Effected>> targets = new List<List<Effected>>();
   public void attackTarget(GameObject target) {
-    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
     List<GameObject> validTargets = skill.getTargets();
 
@@ -302,12 +302,12 @@ public class GameManager : MonoBehaviour {
       List<Effected> curTargets = new List<Effected>();
       if (aoe != null) {
         foreach (GameObject o in aoe.getTargetsInAoe(target.transform.position)) {
-          Character c = o.GetComponent<Character>();
+          BattleCharacter c = o.GetComponent<BattleCharacter>();
           if (c) curTargets.Add(c);
           if (aoe.effectsTiles) curTargets.Add(o.GetComponent<Tile>());
         }
       } else {
-        curTargets.Add(target.GetComponent<Character>());
+        curTargets.Add(target.GetComponent<BattleCharacter>());
       }
       targets.Add(curTargets);
       skill.validate(targets);
@@ -331,7 +331,7 @@ public class GameManager : MonoBehaviour {
     targets.Clear();
 
     //send endTurn event to the current piece
-    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     Event e = new Event(null, EventHook.endTurn);
     e.endTurnChar = selectedCharacter;
     e.nextCharTime = actionQueue.peekNext();
@@ -345,7 +345,7 @@ public class GameManager : MonoBehaviour {
     startTurn();
   }
 
-  public void MovePiece(Character c, Tile t) {
+  public void MovePiece(BattleCharacter c, Tile t) {
     map.djikstra(t.transform.position, c);
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour {
     const float FPS = 60f;
     const float speed = 4f;
     lockUI();
-    Character character = piece.GetComponent<Character>();
+    BattleCharacter character = piece.GetComponent<BattleCharacter>();
 
     if (gameState == GameState.moving) {
       cam.follow(SelectedPiece);
@@ -395,7 +395,7 @@ public class GameManager : MonoBehaviour {
 
     moving = false;
     for (int i = 0; i < skillButtons.Count; i++) {
-      skillButtons[i].enabled = i < piece.GetComponent<Character>().equippedSkills.Count;
+      skillButtons[i].enabled = i < piece.GetComponent<BattleCharacter>().equippedSkills.Count;
     }
     unlockUI();
   }
@@ -405,7 +405,7 @@ public class GameManager : MonoBehaviour {
   // Move the SelectedPiece to the inputted coords
 
 
-  public void updateTile(Character c, Tile t) {
+  public void updateTile(BattleCharacter c, Tile t) {
     eventManager.onEvent(new Event(c, EventHook.preMove));
     c.curTile.occupant = null;
     c.curTile = t;
@@ -421,7 +421,7 @@ public class GameManager : MonoBehaviour {
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
 
     Tile destination = map.getTile(coordToMove);
-    Character c = SelectedPiece.GetComponent<Character>();
+    BattleCharacter c = SelectedPiece.GetComponent<BattleCharacter>();
 
     if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
       // if player chose to move, update position stack with current values,
@@ -452,7 +452,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public void cancelAction() {
-    Character character = SelectedPiece.GetComponent<Character>();
+    BattleCharacter character = SelectedPiece.GetComponent<BattleCharacter>();
     if (gameState == GameState.attacking) {
       changeState(GameState.moving);
     } else if (positionStack.Count() > 0) {
@@ -474,7 +474,7 @@ public class GameManager : MonoBehaviour {
 
   IEnumerator doHandleAI(int time) {
     lockUI();
-    Character selectedCharacter = SelectedPiece.GetComponent<Character>();
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     Vector3 destination = selectedCharacter.ai.move();
     map.setTileColours();
     Tile t = map.getTile(destination);
@@ -491,7 +491,7 @@ public class GameManager : MonoBehaviour {
     StartCoroutine(doHandleAI(1));
   }
 
-  public IEnumerator AIperformAttack(Character selectedCharacter) {
+  public IEnumerator AIperformAttack(BattleCharacter selectedCharacter) {
     cam.follow(SelectedPiece);
     yield return new WaitForSeconds(0.5f);
     selectedCharacter.ai.target();

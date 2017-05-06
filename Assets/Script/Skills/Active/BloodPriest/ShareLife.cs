@@ -12,7 +12,7 @@ public class ShareLife: CircleAoE, HealingSkill {
     maxCooldown = 2;
   }
 
-  public override Character self {
+  public override BattleCharacter self {
     set {
       base.self = value;
       attachListener(self, EventHook.postSkill);
@@ -37,7 +37,7 @@ public class ShareLife: CircleAoE, HealingSkill {
   public override List<GameObject> getTargetsInAoe(Vector3 position) {
     List<GameObject> l = base.getTargetsInAoe(position);
     l.Remove(self.gameObject);
-    List<GameObject> l2 = new List<GameObject>(l.Filter((go) => go.GetComponent<Character>() == null || go.GetComponent<Character>().team == self.team));
+    List<GameObject> l2 = new List<GameObject>(l.Filter((go) => go.GetComponent<BattleCharacter>() == null || go.GetComponent<BattleCharacter>().team == self.team));
     return l2;
   }
 }

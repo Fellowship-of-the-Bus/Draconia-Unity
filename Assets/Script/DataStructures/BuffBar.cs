@@ -17,7 +17,7 @@ public class BuffBar {
     button = buttonPrefab;
   }
 
-  public void update(Character selected) { //Call every time selection changes
+  public void update(BattleCharacter selected) { //Call every time selection changes
     foreach (Transform child in bar.transform) {
       if (child.gameObject) GameObject.Destroy(child.gameObject);
     }

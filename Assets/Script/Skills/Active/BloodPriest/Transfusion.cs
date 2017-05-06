@@ -14,7 +14,7 @@ public class Transfusion: SingleTarget, HealingSkill {
     return (int)(self.intelligence*(1+level*0.1));
   }
 
-  public override void additionalEffects(Character target) {
+  public override void additionalEffects(BattleCharacter target) {
     //This can kill you, should do something about this.
     self.takeDamage(healingFormula());
   }

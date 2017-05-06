@@ -9,7 +9,7 @@ public class RealityDistortion : SingleTarget {
     canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     RealityDistortionEffect debuff = new RealityDistortionEffect();
     debuff.level = level;
     debuff.duration = 2;

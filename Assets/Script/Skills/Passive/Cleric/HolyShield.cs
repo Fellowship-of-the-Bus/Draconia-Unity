@@ -11,7 +11,7 @@ public class HolyShield : PassiveSkill {
   }
   protected override void additionalEffect(Event e) {
     if (e.healingDone > 0) {
-      Character target = e.healTarget;
+      BattleCharacter target = e.healTarget;
       FortifyEffect effect = new FortifyEffect();
       effect.level = level;
       effect.duration = 2;

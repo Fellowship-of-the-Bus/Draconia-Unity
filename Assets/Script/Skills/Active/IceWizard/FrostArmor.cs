@@ -12,7 +12,7 @@ public class FrostArmor: SingleTarget {
     canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     FrostArmorEffect debuff = new FrostArmorEffect();
     debuff.level = level;
     debuff.duration = 3;

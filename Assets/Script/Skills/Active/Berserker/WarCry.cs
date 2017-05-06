@@ -11,7 +11,7 @@ public class WarCry: CircleAoE {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     WarCryEffect e = new WarCryEffect();
     e.level = level;
     e.duration = 1;
