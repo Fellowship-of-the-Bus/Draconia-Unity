@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour {
   public BFEventManager BFEvents;
   public GameObject turnButton;
   public GameObject iceBlock;
-  public BuffBar buffBar;
+  public BuffBar activeBuffBar;
+  public BuffBar targetBuffBar;
   public GameObject buffButton;
 
   //variables to handles turns
@@ -121,8 +122,15 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
+    GameObject[] buffBars = GameObject.FindGameObjectsWithTag("BuffBar");
+    if (buffBars[0].name == "BuffBar") {
+      activeBuffBar = new BuffBar(buffBars[0], buffButton);
+      targetBuffBar = new BuffBar(buffBars[1], buffButton);
+    } else {
+      activeBuffBar = new BuffBar(buffBars[1], buffButton);
+      targetBuffBar = new BuffBar(buffBars[0], buffButton);
+    }
 
-    buffBar = new BuffBar(GameObject.FindGameObjectsWithTag("BuffBar")[0], buffButton);
   }
 
   int blinkFrameNumber = 0;
@@ -153,9 +161,14 @@ public class GameManager : MonoBehaviour {
       targetPanel.SetActive(false);
     } else {
       Character targetCharacter = previewTarget.GetComponent<Character>();
-      if (targetCharacter == null) return;
+      if (targetCharacter == null) {
+        targetPanel.SetActive(false);
+        return;
+      }
+      targetBuffBar.update(targetCharacter);
       targetPanel.SetActive(true);
-      if (displayChangedHealth) {
+      if (gameState == GameState.moving) displayChangedHealth = false;
+      if (displayChangedHealth && skillTargets.Contains(previewTarget)) {
         Character selectedCharacter = SelectedPiece.GetComponent<Character>();
         Vector3 scale = targetHealth.transform.localScale;
         Skill s = selectedCharacter.equippedSkills[SelectedSkill];
@@ -216,7 +229,7 @@ public class GameManager : MonoBehaviour {
     Character selectedCharacter = SelectedPiece.GetComponent<Character>();
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
-    buffBar.update(selectedCharacter);
+    activeBuffBar.update(selectedCharacter);
 
     SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -262,10 +275,8 @@ public class GameManager : MonoBehaviour {
   }
 
   public void selectTarget(GameObject target) {
-    if (SelectedSkill != -1 && skillTargets.Contains(target)) {
-      previewTarget = target;
-    } else {
-      previewTarget = null;
+    previewTarget = target;
+    if (SelectedSkill == -1 || !skillTargets.Contains(target)) {
       return;
     }
 
