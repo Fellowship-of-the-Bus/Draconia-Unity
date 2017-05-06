@@ -584,6 +584,7 @@ public class GameManager : MonoBehaviour {
   // Test function that instantiates a character
   public void createPiece() {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
+    newCharObj.GetComponent<BattleCharacter>().init();
     actionQueue.add(newCharObj);
   }
 

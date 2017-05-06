@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 114622824004391372}
   m_Layer: 0
   m_Name: Pawn
-  m_TagString: PiecePlayer1
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,22 +247,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb399188fca783c4983e2908a35d06a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 492e74dd2e979c74c84cf581b959ce25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attr:
-    strength: 0
-    intelligence: 0
-    speed: 2
-    maxHealth: 10
-    physicalDefense: 0
-    magicDefense: 0
-    healingMultiplier: 1
-    moveRange: 4
-    moveTolerance: 1
-    fireResistance: 0
-    iceResistance: 0
-    lightningResistance: 0
+  baseChar:
+    attr:
+      strength: 2
+      intelligence: 2
+      speed: 8
+      maxHealth: 10
+      physicalDefense: 0
+      magicDefense: 0
+      healingMultiplier: 1
+      moveRange: 4
+      moveTolerance: 0
+      fireResistance: 0
+      iceResistance: 0
+      lightningResistance: 0
+    name: 
+    weapon:
+      attr:
+        strength: 0
+        intelligence: 0
+        speed: 0
+        maxHealth: 0
+        physicalDefense: 0
+        magicDefense: 0
+        healingMultiplier: 1
+        moveRange: 0
+        moveTolerance: 0
+        fireResistance: 0
+        iceResistance: 0
+        lightningResistance: 0
+      range: 1
+      kind: 0
   attrChange:
     strength: 0
     intelligence: 0
@@ -276,33 +294,13 @@ MonoBehaviour:
     fireResistance: 0
     iceResistance: 0
     lightningResistance: 0
+  skillSet: []
   curTile: {fileID: 0}
   curHealth: 0
   maxAction: 1000
   curAction: 0
-  nextMoveTime: 0
-  characterName: 
   team: 0
-  weapon:
-    attr:
-      strength: 0
-      intelligence: 0
-      speed: 0
-      maxHealth: 0
-      physicalDefense: 0
-      magicDefense: 0
-      healingMultiplier: 1
-      moveRange: 0
-      moveTolerance: 0
-      fireResistance: 0
-      iceResistance: 0
-      lightningResistance: 0
-    range: 1
-    kind: 0
-  skillSet:
-  - Cripple
-  - Cripple
-  - Cripple
+  levitating: 0
 --- !u!222 &222000011600158032
 CanvasRenderer:
   m_ObjectHideFlags: 1
