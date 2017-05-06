@@ -7,6 +7,7 @@ public class Reflect: SingleTarget {
     useLos = false;
     name = "Reflect";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

@@ -7,6 +7,7 @@ public class Empower: SingleTarget {
     useLos = false;
     name = "Empower";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

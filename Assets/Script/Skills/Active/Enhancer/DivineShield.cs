@@ -7,6 +7,7 @@ public class DivineShield: SingleTarget {
     useLos = false;
     name = "DivineShield";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

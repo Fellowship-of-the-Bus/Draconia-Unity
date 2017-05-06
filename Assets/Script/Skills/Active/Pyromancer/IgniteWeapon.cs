@@ -7,6 +7,7 @@ public class IgniteWeapon: SingleTarget {
     useLos = false;
     name = "IgniteWeapon";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

@@ -35,6 +35,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   public DamageType dType = DamageType.physical;
   public DamageElement dEle = DamageElement.none;
 
+  public bool canTargetSelf = false;
+
   bool listenOnEndturn = false;
   public int ntargets { get; set; }
 

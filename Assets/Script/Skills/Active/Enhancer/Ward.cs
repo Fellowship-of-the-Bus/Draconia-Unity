@@ -7,6 +7,7 @@ public class Ward: SingleTarget {
     useLos = false;
     name = "Ward";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

@@ -7,6 +7,7 @@ public class Fortify: SingleTarget {
     useLos = false;
     name = "Fortify";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

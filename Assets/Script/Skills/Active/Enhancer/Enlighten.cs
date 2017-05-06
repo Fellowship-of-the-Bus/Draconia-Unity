@@ -7,6 +7,7 @@ public class Enlighten: SingleTarget {
     useLos = false;
     name = "Enlighten";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

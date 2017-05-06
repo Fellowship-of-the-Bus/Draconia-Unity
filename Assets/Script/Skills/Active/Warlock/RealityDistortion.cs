@@ -6,6 +6,7 @@ public class RealityDistortion : SingleTarget {
     useLos = false;
     name = "Reality Distortion";
     maxCooldown = 0;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

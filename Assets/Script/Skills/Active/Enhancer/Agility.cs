@@ -7,6 +7,7 @@ public class Agility: SingleTarget {
     useLos = false;
     name = "Agility";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public override void additionalEffects (Character target) {

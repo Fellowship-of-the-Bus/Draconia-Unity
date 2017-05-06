@@ -8,6 +8,7 @@ public class HealingTouch: SingleTarget, HealingSkill {
     useLos = false;
     name = "Healing Touch";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
   public int healingFormula() {
