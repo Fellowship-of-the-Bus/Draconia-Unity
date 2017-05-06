@@ -24,7 +24,7 @@ public class BuffBar {
     float offset = 0;
     foreach (Effect e in selected.getEffects()) {
       GameObject b = GameObject.Instantiate(button, bar.transform) as GameObject;
-      b.transform.position = new Vector3(offset,671,0); //???
+      b.transform.localPosition = new Vector3(offset,25,0);
       b.GetComponentsInChildren<Text>()[0].text = e.GetType().Name;
       offset += button.GetComponent<RectTransform>().rect.width;
       if (e is DurationEffect) {

@@ -65,9 +65,7 @@ public class PlayerControl : MonoBehaviour {
       }
     } else if (!gameManager.moving && gameManager.playerTurn) {
       // show projected damage
-      if (gameManager.gameState == GameState.attacking && hoveredObject) {
-        gameManager.selectTarget(hoveredObject);
-      }
+      gameManager.selectTarget(hoveredObject);
       if (hoveredObject && hoveredObject.tag == "Unit") {
         // set color of hovered tile
         if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
