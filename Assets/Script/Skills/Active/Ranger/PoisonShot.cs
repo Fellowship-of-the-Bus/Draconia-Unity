@@ -14,7 +14,7 @@ public class PoisonShot: SingleTarget {
     return (int)(self.strength*(0.5+level*0.05));
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     PoisonEffect debuff = new PoisonEffect();
     debuff.level = level;
     debuff.duration = (level+5)/2;

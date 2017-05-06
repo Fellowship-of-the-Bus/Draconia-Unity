@@ -17,7 +17,7 @@ public class LifeDrain: SingleTarget {
     return (int)(self.intelligence*(1+level*0.1));
   }
 
-  public override void additionalEffects(Character target) {
+  public override void additionalEffects(BattleCharacter target) {
     self.takeHealing(calculateDamage(target));
   }
 }

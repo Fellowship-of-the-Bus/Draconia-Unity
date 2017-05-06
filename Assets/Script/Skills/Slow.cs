@@ -10,7 +10,7 @@ public class Slow: SingleTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     SlowEffect debuff = new SlowEffect();
     debuff.level = level*2;
     debuff.duration = 2;

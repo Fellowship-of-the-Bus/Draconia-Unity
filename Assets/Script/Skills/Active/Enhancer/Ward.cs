@@ -7,9 +7,10 @@ public class Ward: SingleTarget {
     useLos = false;
     name = "Ward";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     WardEffect e = new WardEffect();
     e.level = level;
     e.duration = 2;

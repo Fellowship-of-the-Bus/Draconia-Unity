@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class SkillTree {
-  Character self;
+  BattleCharacter self;
 
-  public SkillTree(Character c) {
+  public SkillTree(BattleCharacter c) {
     self = c;
   }
 

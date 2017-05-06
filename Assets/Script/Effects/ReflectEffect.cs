@@ -11,7 +11,7 @@ public class ReflectEffect : DurationEffect {
   }
 
   protected override void additionalEffect(Event e) {
-    if (e.sender is Character) {
+    if (e.sender is BattleCharacter) {
       e.newTarget = e.sender;
       owner.removeEffect(this);
     }

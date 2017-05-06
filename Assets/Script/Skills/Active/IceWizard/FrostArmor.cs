@@ -9,12 +9,10 @@ public class FrostArmor: SingleTarget {
     useLos = false;
     name = "Frost Armor";
     maxCooldown = 2;
-
-    dType = DamageType.magical;
-    dEle = DamageElement.ice;
+    canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     FrostArmorEffect debuff = new FrostArmorEffect();
     debuff.level = level;
     debuff.duration = 3;

@@ -11,7 +11,7 @@ public class Alacrity : PassiveSkill {
   }
   protected override void additionalEffect(Event e) {
     if (e.healingDone > 0) {
-      Character target = e.healTarget;
+      BattleCharacter target = e.healTarget;
       target.curAction = Math.Min(target.maxAction, target.curAction + 100f);
       ActionQueue.get.updateTime(target.gameObject);
     }

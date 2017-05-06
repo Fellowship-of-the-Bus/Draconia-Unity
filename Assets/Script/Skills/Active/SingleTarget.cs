@@ -23,7 +23,7 @@ public abstract class SingleTarget: ActiveSkill {
         }
       }
     }
-    targets.Add(self.gameObject);
+    if (canTargetSelf) targets.Add(self.gameObject);
     return targets;
   }
 }

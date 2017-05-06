@@ -8,9 +8,10 @@ public class Purge: SingleTarget {
     useLos = false;
     name = "Purge";
     maxCooldown = 2;
+    canTargetSelf = true;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(target.allEffects)) {
       if (n.Value is DurationEffect) target.removeEffect(n.Value);
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 public class InterceptEffect : DurationEffect {
-  public Character origin;
+  public BattleCharacter origin;
 
   protected override void onActivate() {
     attachListener(owner, EventHook.preDamage);

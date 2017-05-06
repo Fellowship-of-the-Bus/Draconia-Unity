@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 
-public class Character : Effected {
+public class BattleCharacter : Effected {
   //inventory
   //skill tree
   public SkillTree skills;
@@ -120,7 +120,7 @@ public class Character : Effected {
   }
 
   public void applyPassives() {
-    Character c = GetComponent<Character>();
+    BattleCharacter c = GetComponent<BattleCharacter>();
     foreach (PassiveSkill passive in skills.getPassives()) {
       passive.activate(c);
     }
@@ -130,15 +130,15 @@ public class Character : Effected {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
   }
 
-  public bool inRange(Character target, int range) {
+  public bool inRange(BattleCharacter target, int range) {
     return GameManager.get.map.getTilesWithinRange(curTile, range).Contains(target.curTile);
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Effected> targets) {
-    List<Character> cTargets = new List<Character>();
+    List<BattleCharacter> cTargets = new List<BattleCharacter>();
     List<Tile> tTargets = new List<Tile>();
     foreach(Effected e in targets) {
-      if (e is Character) cTargets.Add(e as Character);
+      if (e is BattleCharacter) cTargets.Add(e as BattleCharacter);
       else tTargets.Add(e as Tile);
     }
     skill.setCooldown();
@@ -147,7 +147,7 @@ public class Character : Effected {
     onEvent(preSkillEvent);
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
-      foreach (Character c in cTargets) {
+      foreach (BattleCharacter c in cTargets) {
         onEvent(new Event(this, EventHook.preHealing));
         int amount = skill.calculateHealing(c);
         if (amount > 0) c.onEvent(new Event(this, EventHook.preHealed));
@@ -159,7 +159,7 @@ public class Character : Effected {
         onEvent(postHealingEvent);
       }
     } else {
-      foreach (Character target in cTargets) {
+      foreach (BattleCharacter target in cTargets) {
         onEvent(new Event(this, EventHook.preAttack));
         var c = target;
         int damage = skill.calculateDamage(c);

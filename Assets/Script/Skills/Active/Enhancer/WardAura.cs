@@ -14,7 +14,7 @@ public class WardAura: SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     Func<WardEffect> f = () => {
       WardEffect eff = new WardEffect();
       eff.duration = -1;

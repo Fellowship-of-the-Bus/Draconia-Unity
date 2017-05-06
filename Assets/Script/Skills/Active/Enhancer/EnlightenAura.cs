@@ -14,7 +14,7 @@ public class EnlightenAura: SelfTarget {
     maxCooldown = 2;
   }
 
-  public override void additionalEffects (Character target) {
+  public override void additionalEffects (BattleCharacter target) {
     Func<EnlightenEffect> f = () => {
       EnlightenEffect eff = new EnlightenEffect();
       eff.duration = -1;
