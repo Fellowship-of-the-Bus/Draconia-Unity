@@ -5,7 +5,7 @@ using System;
 
 public abstract class BFTurnEvent : BFEvent {
   // be sure to set the boss when you create it.
-  BattleCharacter boss;
+  /*BattleCharacter boss;
   int bossTurns = 0;
 
   public override void onEvent(Event e) {
@@ -15,5 +15,5 @@ public abstract class BFTurnEvent : BFEvent {
         trigger();
       }
     }
-  }
+  }*/
 }
