@@ -162,10 +162,6 @@ public class GameManager : MonoBehaviour {
     if (previewTarget == null) {
       targetPanel.SetActive(false);
     } else {
-      if (previewTarget == null) {
-        targetPanel.SetActive(false);
-        return;
-      }
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
       if (gameState == GameState.moving) displayChangedHealth = false;
@@ -276,14 +272,11 @@ public class GameManager : MonoBehaviour {
   }
 
   public void selectTarget(BattleCharacter target) {
-    if (SelectedSkill != -1 && skillTargets.Contains(target.curTile)) {
-      previewTarget = target;
-    } else {
-      previewTarget = null;
-      return;
-    }
+    previewTarget = target;
 
-    if (previewTarget != null) {
+    if (target == null) return;
+
+    if (SelectedSkill != -1 && skillTargets.Contains(target.curTile)) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
