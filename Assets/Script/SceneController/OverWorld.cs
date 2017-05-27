@@ -19,4 +19,8 @@ public class OverWorld: MonoBehaviour {
     SaveLoad.save();
   }
 
+  public void inventory() {
+    SceneManager.LoadSceneAsync ("Inventory");
+  }
+
 }
