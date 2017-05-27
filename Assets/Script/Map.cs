@@ -6,8 +6,10 @@ public class Map {
   readonly Vector3 portalDir = Vector3.one;
 
   public LinkedList<Tile> path = null;
-  List<Tile> tiles = new List<Tile>();
+  public List<Tile> tiles = new List<Tile>();
   List<GameObject> cubes;
+
+  public List<Tile> startPositions = new List<Tile>();
 
   public void awake() {
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));

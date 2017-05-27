@@ -16,6 +16,14 @@ public class Tile : Effected {
     return gameObject.transform.localScale.y/2 + additionalHeight;
   }
 
+  public Vector3 position {
+    get {
+      Vector3 pos = gameObject.transform.position;
+      pos.y = 0.5f + getHeight();
+      return pos;
+    }
+  }
+
   public void setColor(Color c) {
     Renderer r = this.gameObject.GetComponent<Renderer>();
     if (r == null) {
