@@ -124,15 +124,6 @@ public class GameManager : MonoBehaviour {
       }
     }
 
-    GameObject[] buffBars = GameObject.FindGameObjectsWithTag("BuffBar");
-    if (buffBars[0].name == "BuffBar") {
-      activeBuffBar = new BuffBar(buffBars[0], buffButton);
-      targetBuffBar = new BuffBar(buffBars[1], buffButton);
-    } else {
-      activeBuffBar = new BuffBar(buffBars[1], buffButton);
-      targetBuffBar = new BuffBar(buffBars[0], buffButton);
-    }
-
   }
 
   int blinkFrameNumber = 0;
@@ -499,7 +490,6 @@ public class GameManager : MonoBehaviour {
       UILock.count++;
       if (UILock.count == 1) {
         mainUI.GetComponent<CanvasGroup>().interactable = false;
-        gameObject.GetComponent<PlayerControl>().enabled = false;
       }
     }
   }
@@ -509,7 +499,6 @@ public class GameManager : MonoBehaviour {
       UILock.count--;
       if (UILock.count == 0) {
         mainUI.GetComponent<CanvasGroup>().interactable = true;
-        gameObject.GetComponent<PlayerControl>().enabled = true;
       }
     }
   }

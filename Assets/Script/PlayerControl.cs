@@ -24,7 +24,7 @@ public class PlayerControl : MonoBehaviour {
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
     GameObject hoveredObject = gameManager.getHovered(PlayerCam);
 
-    if (hoveredObject && (hoveredObject.tag == "Cube" || hoveredObject.transform.parent.tag == "Cube")) {
+    if (hoveredObject && (hoveredObject.tag == "Cube" || hoveredObject.transform.parent.tag == "Cube") && !gameManager.moving) {
       if (hoveredObject.transform.parent.tag == "Cube") {
         hoveredObject = hoveredObject.transform.parent.gameObject;
       }
@@ -44,7 +44,7 @@ public class PlayerControl : MonoBehaviour {
     }
 
     // clicked something
-    if (!EventSystem.current.IsPointerOverGameObject() && clickedObject) {
+    if (!EventSystem.current.IsPointerOverGameObject() && clickedObject && !gameManager.moving) {
       if (clickedObject.tag == "Cube" || clickedObject.transform.parent.tag == "Cube") {
         if (clickedObject.transform.parent.tag == "Cube") {
           clickedObject = clickedObject.transform.parent.gameObject;
@@ -60,21 +60,22 @@ public class PlayerControl : MonoBehaviour {
         // attack ground or attack unit
         gameManager.attackTarget(clickedObject.GetComponent<BattleCharacter>().curTile);
       }
-    } else if (!gameManager.moving && gameManager.playerTurn) {
+    } else if (hoveredObject) {
       // show projected damage
       BattleCharacter character = hoveredObject.GetComponent<BattleCharacter>();
       gameManager.selectTarget(character);
-
-      if (hoveredObject.tag == "Unit") {
-        // set color of hovered tile
-        if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
-          map.setTileColours(hoveredObject.GetComponent<BattleCharacter>().curTile);
+      if (gameManager.playerTurn) {
+        if (hoveredObject.tag == "Unit") {
+          // set color of hovered tile
+          if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
+            map.setTileColours(hoveredObject.GetComponent<BattleCharacter>().curTile);
+          }
+          // draw line to object
+          gameManager.lineTo(hoveredObject);
+        } else {
+          // don't draw line
+          gameManager.lineTo(gameManager.SelectedPiece);
         }
-        // draw line to object
-        gameManager.lineTo(hoveredObject);
-      } else {
-        // don't draw line
-        gameManager.lineTo(gameManager.SelectedPiece);
       }
     }
   }

@@ -6,25 +6,22 @@ using System.Collections;
 using System.Threading;
 using System.Linq;
 
-public class BuffBar {
+public class BuffBar : MonoBehaviour {
 
-  GameObject bar;
-  GameObject button;
+  public GameObject button;
+  public Transform content;
 
-  public BuffBar(GameObject b, GameObject buttonPrefab) {
+  void Start() {
     get = this;
-    bar = b;
-    button = buttonPrefab;
   }
 
   public void update(BattleCharacter selected) { //Call every time selection changes
-    foreach (Transform child in bar.transform) {
+    foreach (Transform child in content) {
       if (child.gameObject) GameObject.Destroy(child.gameObject);
     }
     float offset = 0;
     foreach (Effect e in selected.getEffects()) {
-      GameObject b = GameObject.Instantiate(button, bar.transform) as GameObject;
-      b.transform.localPosition = new Vector3(offset,25,0);
+      GameObject b = GameObject.Instantiate(button, new Vector3 (0,0,0), Quaternion.identity, content) as GameObject;
       b.GetComponentsInChildren<Text>()[0].text = e.GetType().Name;
       offset += button.GetComponent<RectTransform>().rect.width;
       if (e is DurationEffect) {
@@ -32,7 +29,9 @@ public class BuffBar {
         b.AddComponent<Tooltip>();
         b.GetComponent<Tooltip>().tiptext = "Turns remaining: " + de.duration;
       }
-      if (offset > bar.GetComponent<RectTransform>().rect.width) break;
+      //if (offset > bar.GetComponent<RectTransform>().rect.width) {
+      //  break;
+      //}
     }
   }
 

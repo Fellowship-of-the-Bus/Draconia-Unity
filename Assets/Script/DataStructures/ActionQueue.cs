@@ -194,15 +194,14 @@ public class ActionQueue {
 
     if (buttonObject != null) {
       buttonObject.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
-      buttonObject.transform.Translate(new Vector3(0, posn, 0));
-      gameManager.StartCoroutine(SlideButton(buttonObject, -buttonWidth, 0));
+      buttonObject.transform.localPosition += new Vector3(0, posn, 0);
     }
 
     return isLast;
   }
 
   GameObject makeButton(GameObject piece) {
-    GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (-25 + buttonWidth,0,0), Quaternion.identity) as GameObject;
+    GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
     buttonObject.transform.SetParent(actionBar.transform, false);
     Button button = buttonObject.GetComponent<Button>();
     button.onClick.AddListener(delegate {
@@ -213,8 +212,7 @@ public class ActionQueue {
   }
 
   float getPosn(int i) {
-    float bottom = actionBar.GetComponent<RectTransform>().rect.height;
-    return (bottom / 2) - ((i + 0.5f) * buttonHeight);
+    return -i * buttonHeight;
   }
 
   void moveDown(int i) {
@@ -243,11 +241,12 @@ public class ActionQueue {
     const float FPS = 60f;
     const float time = 0.25f;
 
+
     gameManager.lockUI();
 
     Vector3 d = new Vector3(x, y, 0) / (FPS * time);
     for (int i = 0; i < FPS * time; i++) {
-      button.transform.Translate(d);
+      button.transform.localPosition += d;
       yield return new WaitForSeconds(1/FPS);
     }
 
