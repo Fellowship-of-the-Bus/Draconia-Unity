@@ -90,6 +90,8 @@ public class GameManager : MonoBehaviour {
     UILock = new lockUICount();
     UILock.count = 0;
 
+    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
+
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
       skillButtons.Add(o.GetComponent<Button>());
@@ -99,6 +101,17 @@ public class GameManager : MonoBehaviour {
     map.awake();
 
     line = gameObject.GetComponent<LineRenderer>();
+
+
+    int index = 1;
+    foreach (Character c in GameData.gameData.characters) {
+      //Todo: use starting positions and place this on them
+      //      use characters selected instead of all characters.
+      var battleChar = createPiece();
+      battleChar.baseChar = c;
+      battleChar.gameObject.transform.position = map.tiles[index].position;
+      index++;
+    }
 
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
     foreach (var x in objs) {
@@ -114,7 +127,6 @@ public class GameManager : MonoBehaviour {
 
     winningConditions.Add(new Rout());
     losingConditions.Add(new BrodricDies());
-    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
     foreach (var l in characters.Values) {
       foreach (var o in l) {
         BattleCharacter c = o.GetComponent<BattleCharacter>();
@@ -151,6 +163,9 @@ public class GameManager : MonoBehaviour {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
       for (int i = 0; i < skillButtons.Count; i++) {
+        skillButtons[i].interactable = false;
+      }
+      for (int i = 0; i < skillButtons.Count && i < selectedCharacter.equippedSkills.Count; i++) {
         ActiveSkill s = selectedCharacter.equippedSkills[i];
         Debug.AssertFormat(s.name != "", "Skill Name is empty");
         skillButtons[i].GetComponentInChildren<Text>().text = s.name;
@@ -582,10 +597,12 @@ public class GameManager : MonoBehaviour {
 
   public GameObject piece;
   // Test function that instantiates a character
-  public void createPiece() {
+  public BattleCharacter createPiece() {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
-    newCharObj.GetComponent<BattleCharacter>().init();
+    var c = newCharObj.GetComponent<BattleCharacter>();
+    c.init();
     actionQueue.add(newCharObj);
+    return c;
   }
 
   public static GameManager get { get; set; }

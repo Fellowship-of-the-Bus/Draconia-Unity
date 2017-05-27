@@ -9,7 +9,7 @@ public static class SaveLoad {
   public static void save() {
     BinaryFormatter bf = new BinaryFormatter();
     FileStream file = File.Create(saveName);
-    bf.Serialize(file, GameManager.get);
+    bf.Serialize(file, GameData.gameData);
     file.Close();
   }
 
@@ -17,7 +17,7 @@ public static class SaveLoad {
     if (File.Exists(saveName)) {
       BinaryFormatter bf = new BinaryFormatter();
       FileStream file = File.Open(saveName, FileMode.Open);
-      GameManager.get = (GameManager)bf.Deserialize(file);
+      GameData.gameData = (GameData)bf.Deserialize(file);
       file.Close();
     }
   }

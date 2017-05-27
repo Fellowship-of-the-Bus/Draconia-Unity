@@ -2,19 +2,15 @@ using System;
 
 [System.Serializable]
 public class Character {
-  public SkillTree skills;
-  public Attributes attr;
-  public string name;
-  public Weapon weapon;
+  public SkillTree skills = new SkillTree();
+  public Attributes attr = new Attributes();
+  public string name = "";
+  public Weapon weapon = new Weapon();
+
+  public Character(string name): this() {
+    this.name = name;
+  }
 
   public Character() {
-  	skills = new SkillTree();
-  	attr = new Attributes();
-  	name = "";
-  	weapon = new Weapon();
-
-    skills.addSkill<Cripple>();
-    skills.addSkill<Knockback>();
-    skills.addSkill<Cripple>();
   }
 }
