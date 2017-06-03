@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class OverWorld: MonoBehaviour {
+  public FileBrowser saveBrowser;
 
   public void test() {
     SceneManager.LoadSceneAsync ("testMap");
@@ -16,7 +17,7 @@ public class OverWorld: MonoBehaviour {
   }
 
   public void save() {
-    SaveLoad.save();
+    saveBrowser.createOptions(SaveLoad.listSaveFiles());
   }
 
   public void inventory() {

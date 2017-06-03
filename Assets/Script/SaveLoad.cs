@@ -1,24 +1,38 @@
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
 
 public static class SaveLoad {
-  public static string saveName = Path.Combine(Application.persistentDataPath, "save.bro");
+  public static string dirPath = Path.Combine(Application.persistentDataPath, "savedGames");
 
-  public static void save() {
+  private static DirectoryInfo dir = System.IO.Directory.CreateDirectory(dirPath);
+
+  public static void save(string saveName) {
     BinaryFormatter bf = new BinaryFormatter();
-    FileStream file = File.Create(saveName);
+    FileStream file = File.Create(Path.Combine(dirPath, saveName));
     bf.Serialize(file, GameData.gameData);
     file.Close();
   }
 
-  public static void load() {
+  public static bool load(string saveName) {
+    bool success = false;
     if (File.Exists(saveName)) {
       BinaryFormatter bf = new BinaryFormatter();
       FileStream file = File.Open(saveName, FileMode.Open);
-      GameData.gameData = (GameData)bf.Deserialize(file);
+      try {
+        GameData.gameData = (GameData)bf.Deserialize(file);
+        success = true;
+      } catch (SerializationException) {
+        Debug.Log("Corrupted save file: " + saveName);
+      }
       file.Close();
     }
+    return success;
+  }
+
+  public static IEnumerable<FileInfo> listSaveFiles() {
+    return dir.GetFiles("*.bro");
   }
 }
