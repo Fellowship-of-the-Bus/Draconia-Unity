@@ -17,6 +17,8 @@ public class MainMenu: MonoBehaviour {
     GameData.gameData = new GameData();
     GameData.gameData.characters.Add(new Character());
     GameData.gameData.characters.Add(new Character("Brodric"));
+    Character c = GameData.gameData.characters[0];
+    c.attr.strength = 200;
     SceneManager.LoadSceneAsync("OverWorld");
   }
 }

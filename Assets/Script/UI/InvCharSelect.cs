@@ -14,6 +14,7 @@ public class InvCharSelect: MonoBehaviour {
 
   public GameObject panel;
   public Transform parent;
+  public AttrView attrView;
   //public List<Selection> panels = new List<GameObject>();
   Selection selectedPanel;
   void Start() {
@@ -32,8 +33,8 @@ public class InvCharSelect: MonoBehaviour {
         onButtonClick(s);
       });
       if (firstIter) {
-        s.background.color = Color.red;
         selectedPanel = s;
+        onButtonClick(s);
       }
       firstIter = false;
       //panels.Add(s);
@@ -44,6 +45,7 @@ public class InvCharSelect: MonoBehaviour {
     selectedPanel.background.color = Color.white;
     s.background.color = Color.red;
     selectedPanel = s;
+    attrView.updateAttr(s.c.totalAttr);
   }
 
 

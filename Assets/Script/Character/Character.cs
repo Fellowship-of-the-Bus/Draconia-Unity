@@ -11,6 +11,9 @@ public class Character {
     this.name = name;
   }
 
+  public Attributes totalAttr { get { return attr+ weapon.attr; } }
+
+
   public Character() {
   }
 }
