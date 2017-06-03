@@ -18,7 +18,6 @@ public class FileBrowser : MonoBehaviour {
   public GameObject fileSelection;
   public Transform content;
   public InputField textField;
-  public Text textFieldText;
   public bool isSaveBrowser;
   public GameObject saveButton;
   public GameObject loadButton;
@@ -52,7 +51,7 @@ public class FileBrowser : MonoBehaviour {
     }
     curSelection = sel;
     curSelection.image.color = Color.red;
-    textFieldText.text = curSelection.file.Name;
+    textField.text = curSelection.file.Name;
     // enable button when something is selected
   }
 
@@ -62,7 +61,7 @@ public class FileBrowser : MonoBehaviour {
   }
 
   public void saveButtonClicked() {
-    onTextFieldEnter(textFieldText.text);
+    onTextFieldEnter(textField.text);
   }
 
   public void loadButtonClicked() {
