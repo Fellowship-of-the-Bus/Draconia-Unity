@@ -238,16 +238,15 @@ public class ActionQueue {
   }
 
   IEnumerator SlideButton(GameObject button, float x, float y, bool deleteAfter = false) {
-    const float FPS = 60f;
     const float time = 0.25f;
 
 
     gameManager.lockUI();
 
-    Vector3 d = new Vector3(x, y, 0) / (FPS * time);
-    for (int i = 0; i < FPS * time; i++) {
+    Vector3 d = new Vector3(x, y, 0) / (Options.FPS * time);
+    for (int i = 0; i < Options.FPS * time; i++) {
       button.transform.localPosition += d;
-      yield return new WaitForSeconds(1/FPS);
+      yield return new WaitForSeconds(1/Options.FPS);
     }
 
     if (deleteAfter) {

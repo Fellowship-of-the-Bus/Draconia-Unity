@@ -8,7 +8,7 @@ using System.Reflection;
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
   public new string name {
-    get { return baseChar.name; } 
+    get { return baseChar.name; }
     set { baseChar.name = value; }
   }
 
@@ -20,7 +20,7 @@ public class BattleCharacter : Effected {
 
   //base stats + permanent stat passives
   public Attributes attr {
-    get { return baseChar.attr; } 
+    get { return baseChar.attr; }
   }
   //change in stats due to buffs/debuffs
   public Attributes attrChange = new Attributes();
@@ -29,7 +29,7 @@ public class BattleCharacter : Effected {
     get {return weapon.attr;}
   }
   public Weapon weapon {
-    get { return baseChar.weapon; } 
+    get { return baseChar.weapon; }
   }
 
   // Allow setting skills in editor
@@ -73,13 +73,16 @@ public class BattleCharacter : Effected {
   }
 
   public void init() {
-    setSkills();
+    if (Options.debugMode) {
+      setSkills();
+    } else {
+      equippedSkills = skills.getActives(this);
+    }
 
     curHealth = maxHealth;
     ai.owner = this;
 
     applyPassives();
-    equippedSkills = skills.getActives(this);
 
     ui = gameObject.transform.Find("UI");
   }
@@ -119,8 +122,7 @@ public class BattleCharacter : Effected {
   private Transform ui;
 
   void Update() {
-    bool debugMode = true;
-    if (debugMode) {
+    if (Options.debugMode) {
       //equippedSkills = new List<ActiveSkill>();
       setSkills();
     }

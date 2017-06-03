@@ -23,7 +23,6 @@ public class Dialogue : MonoBehaviour {
   }
   int currentFragment = 0;
   int charactersPerFrame = 1;
-  int FPS = 60;
   public void goToNextFrame() {
     if (currentFragment >= dialogues.Count) {
       return;
@@ -42,7 +41,7 @@ public class Dialogue : MonoBehaviour {
     int curChar = 0;
     while (curChar < text.Length) {
       textBox.text = text.Substring(0, curChar);
-      yield return new WaitForSeconds(1/FPS);
+      yield return new WaitForSeconds(1/Options.FPS);
       curChar += charactersPerFrame;
     }
     nextButton.interactable = true;

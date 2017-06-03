@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour {
     //set skill buttons to the selected piece's skills, enable those that actually have skills
     new Range(0, skillButtons.Count).ForEach(i => {
       skillButtons[i].onClick.AddListener(() => selectSkill(i));
-      skillButtons[i].enabled = false;
+      skillButtons[i].enabled = true;
     });
 
 
@@ -154,16 +154,6 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
-      for (int i = 0; i < skillButtons.Count; i++) {
-        skillButtons[i].interactable = false;
-      }
-      for (int i = 0; i < skillButtons.Count && i < selectedCharacter.equippedSkills.Count; i++) {
-        ActiveSkill s = selectedCharacter.equippedSkills[i];
-        Debug.AssertFormat(s.name != "", "Skill Name is empty");
-        skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-        skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
-        skillButtons[i].interactable = s.canUse();
-      }
     }
 
     if (previewTarget == null) {
@@ -257,7 +247,16 @@ public class GameManager : MonoBehaviour {
     positionStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
-      skillButtons[i].enabled = i < SelectedPiece.GetComponent<BattleCharacter>().equippedSkills.Count;
+      skillButtons[i].interactable = false;
+    }
+
+
+    for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+      ActiveSkill s = selectedCharacter.equippedSkills[i];
+      Debug.AssertFormat(s.name != "", "Skill Name is empty");
+      skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+      skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+      skillButtons[i].interactable = s.canUse();
     }
   }
 
@@ -357,7 +356,6 @@ public class GameManager : MonoBehaviour {
   }
 
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
-    const float FPS = 60f;
     const float speed = 4f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -373,10 +371,10 @@ public class GameManager : MonoBehaviour {
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // move piece
-      Vector3 d = speed*(pos-piece.transform.position)/FPS;
-      for (int i = 0; i < FPS/speed; i++) {
+      Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
+      for (int i = 0; i < Options.FPS/speed; i++) {
         piece.transform.Translate(d);
-        yield return new WaitForSeconds(1/FPS);
+        yield return new WaitForSeconds(1/Options.FPS);
       }
       // tell listeners that this character moved
       Event enterEvent = new Event(character, EventHook.enterTile);
