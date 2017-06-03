@@ -110,6 +110,7 @@ public class GameManager : MonoBehaviour {
       var battleChar = createPiece();
       battleChar.baseChar = c;
       battleChar.gameObject.transform.position = map.tiles[index].position;
+      battleChar.skillSet = new string[]{"Punch", "Punch", "Punch"};
       index++;
     }
 
