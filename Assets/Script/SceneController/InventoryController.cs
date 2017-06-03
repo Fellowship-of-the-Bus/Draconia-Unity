@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class InventoryController: MonoBehaviour {
 
-  Inventory inv = GameData.gameData.inv;
+  //Inventory inv = GameData.gameData.inv;
 
 
 
