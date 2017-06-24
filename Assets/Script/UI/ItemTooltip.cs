@@ -35,13 +35,7 @@ public class ItemTooltip : Tooltip {
     if (e == null) {
       return;
     }
-    attrView.updateAttr(e.attr);
-    equipName.text = e.name();
-    if (e.equippedTo != null) {
-      equippedTo.text = "Equipped To: " + e.equippedTo.name;
-    } else {
-      equippedTo.text = "Equipped To: No one.";
-    }
+    setTipbox();
   }
 
 
@@ -88,5 +82,16 @@ public class ItemTooltip : Tooltip {
 
   protected override bool showTip() {
     return equip != null;
+  }
+
+  protected override void setTipbox() {
+    if (equip == null) return;
+    attrView.updateAttr(equip.attr);
+    equipName.text = equip.name();
+    if (equip.equippedTo != null) {
+      equippedTo.text = "Equipped To: " + equip.equippedTo.name;
+    } else {
+      equippedTo.text = "Equipped To: No one.";
+    }
   }
 }

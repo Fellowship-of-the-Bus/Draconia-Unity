@@ -23,11 +23,13 @@ public class MainMenu: MonoBehaviour {
     Equipment e = new Weapon();
     e.attr.strength = 1;
     GameData.gameData.inv.equipments.Add(e);
+    e.equipmentClass = "sis weapon";
     c.equip(e);
 
     e = new Armour();
     e.attr.intelligence = 1;
     GameData.gameData.inv.equipments.Add(e);
+    e.equipmentClass = "sis armour";
     c.equip(e);
 
     c = GameData.gameData.characters[1];
@@ -35,15 +37,18 @@ public class MainMenu: MonoBehaviour {
     e = new Armour();
     e.attr.intelligence = 2;
     GameData.gameData.inv.equipments.Add(e);
+    e.equipmentClass = "bro armour";
     c.equip(e);
 
     e = new Weapon();
     e.attr.strength = 2;
     GameData.gameData.inv.equipments.Add(e);
+    e.equipmentClass = "weapon";
 
     e = new Armour();
     e.attr.intelligence = 3;
     GameData.gameData.inv.equipments.Add(e);
+    e.equipmentClass = "armour";
 
     SceneManager.LoadSceneAsync("OverWorld");
   }
