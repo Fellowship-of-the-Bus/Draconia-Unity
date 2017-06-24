@@ -9,4 +9,7 @@ public class Armour : Equipment {
   public override void upgrade() {
 
   }
+  public Armour() {
+    type = EquipType.armour;
+  }
 }

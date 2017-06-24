@@ -10,6 +10,10 @@ public class Weapon : Equipment {
   public override void upgrade() {
 
   }
+
+  public Weapon() {
+    type = EquipType.weapon;
+  }
   /*public Weapon(kinds k) {
     range = k == Ranged ? 3 : 1;
     kind = k;

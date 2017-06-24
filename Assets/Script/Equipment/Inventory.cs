@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Inventory {
-  public List<Equipment> inv = new List<Equipment>();
+  public List<Equipment> equipments = new List<Equipment>();
 
   public void combine(Equipment b, Equipment e, Equipment e2) {
     //check same tier
@@ -11,8 +11,8 @@ public class Inventory {
       return;
     }
     if (b.canUpgrade()) {
-      inv.Remove(e);
-      inv.Remove(e2);
+      equipments.Remove(e);
+      equipments.Remove(e2);
       b.upgrade();
     }
   }

@@ -4,14 +4,14 @@ using System;
 
 [System.Serializable]
 public class Attributes {
-  public int strength = 2;
-  public int intelligence = 2;
-  public int speed = 2;
-  public int maxHealth = 10;
+  public int strength;
+  public int intelligence;
+  public int speed;
+  public int maxHealth;
   public int physicalDefense;
   public int magicDefense;
   public float healingMultiplier = 1;
-  public int moveRange = 4;
+  public int moveRange;
   public float moveTolerance;
 
   public int fireResistance;

@@ -29,7 +29,7 @@ public class BattleCharacter : Effected {
     get {return weapon.attr;}
   }
   public Weapon weapon {
-    get { return baseChar.weapon; }
+    get { return (Weapon)baseChar.gear[EquipType.weapon]; }
   }
 
   // Allow setting skills in editor

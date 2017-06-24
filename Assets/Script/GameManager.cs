@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour {
 
   public GameObject text;
 
+  //skillbutton tooltip
+  public GameObject tooltip;
+
   public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }

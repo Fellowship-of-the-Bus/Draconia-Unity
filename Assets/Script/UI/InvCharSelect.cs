@@ -6,7 +6,7 @@ using System.Collections;
 
 
 public class InvCharSelect: MonoBehaviour {
-  private class Selection {
+  public class Selection {
     public Text t;
     public Image background;
     public Character c;
@@ -15,9 +15,11 @@ public class InvCharSelect: MonoBehaviour {
   public GameObject panel;
   public Transform parent;
   public AttrView attrView;
+
+  public ItemTooltip[] items;
   //public List<Selection> panels = new List<GameObject>();
-  Selection selectedPanel;
-  void Start() {
+  public Selection selectedPanel;
+  void Awake() {
     //Assumes that gameData.characters is not empty. (reasonable)
     bool firstIter = true;
     foreach (Character c in GameData.gameData.characters) {
@@ -34,11 +36,14 @@ public class InvCharSelect: MonoBehaviour {
       });
       if (firstIter) {
         selectedPanel = s;
-        onButtonClick(s);
       }
       firstIter = false;
       //panels.Add(s);
     }
+    get = this;
+  }
+  void Start() {
+    onButtonClick(selectedPanel);
   }
 
   private void onButtonClick(Selection s){
@@ -46,7 +51,12 @@ public class InvCharSelect: MonoBehaviour {
     s.background.color = Color.red;
     selectedPanel = s;
     attrView.updateAttr(s.c.totalAttr);
+    foreach (Equipment e in s.c.gear) {
+      items[e.type].setItem(e);
+    }
   }
 
+
+  public static InvCharSelect get { get; set; }
 
 }

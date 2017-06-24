@@ -15,10 +15,36 @@ public class MainMenu: MonoBehaviour {
 
   public void newGame() {
     GameData.gameData = new GameData();
-    GameData.gameData.characters.Add(new Character());
+    GameData.gameData.characters.Add(new Character("Sisdric"));
     GameData.gameData.characters.Add(new Character("Brodric"));
     Character c = GameData.gameData.characters[0];
     c.attr.strength = 200;
+
+    Equipment e = new Weapon();
+    e.attr.strength = 1;
+    GameData.gameData.inv.equipments.Add(e);
+    c.equip(e);
+
+    e = new Armour();
+    e.attr.intelligence = 1;
+    GameData.gameData.inv.equipments.Add(e);
+    c.equip(e);
+
+    c = GameData.gameData.characters[1];
+
+    e = new Armour();
+    e.attr.intelligence = 2;
+    GameData.gameData.inv.equipments.Add(e);
+    c.equip(e);
+
+    e = new Weapon();
+    e.attr.strength = 2;
+    GameData.gameData.inv.equipments.Add(e);
+
+    e = new Armour();
+    e.attr.intelligence = 3;
+    GameData.gameData.inv.equipments.Add(e);
+
     SceneManager.LoadSceneAsync("OverWorld");
   }
 }
