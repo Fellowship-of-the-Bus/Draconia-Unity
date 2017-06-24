@@ -8,6 +8,8 @@ public class PoisonShot: SingleTarget {
     useLos = true;
     name = "Poison Shot";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

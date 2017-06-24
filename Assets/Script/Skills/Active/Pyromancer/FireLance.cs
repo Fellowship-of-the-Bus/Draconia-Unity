@@ -17,6 +17,8 @@ public class FireLance: ActiveSkill, AoeSkill {
 
     dType = DamageType.magical;
     dEle = DamageElement.fire;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override List<Tile> getTargets() {

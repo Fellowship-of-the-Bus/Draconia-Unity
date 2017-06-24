@@ -8,6 +8,8 @@ public class Cripple: SingleTarget {
     useLos = false;
     name = "Cripple";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
   public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and cripple the target, reducing their movement range by 2"; }}
 

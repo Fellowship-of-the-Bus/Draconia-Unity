@@ -12,6 +12,8 @@ public class Intercept: SelfTarget {
     useLos = false;
     name = "Intercept";
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

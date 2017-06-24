@@ -9,6 +9,8 @@ public class Regenerate: SingleTarget, HealingSkill {
     name = "Regenerate";
     maxCooldown = 2;
     canTargetSelf = true;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public int healingFormula() {

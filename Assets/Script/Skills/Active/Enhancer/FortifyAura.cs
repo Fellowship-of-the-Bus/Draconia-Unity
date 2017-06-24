@@ -12,6 +12,8 @@ public class FortifyAura: SelfTarget {
     useLos = false;
     name = "FortifyAura";
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

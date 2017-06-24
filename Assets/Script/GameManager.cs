@@ -46,9 +46,7 @@ public class GameManager : MonoBehaviour {
 
   //health/mana bars
   public GameObject selectedHealth;
-  public GameObject SelectedMana;
   public GameObject targetHealth;
-  public GameObject targetMana;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -154,6 +152,15 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
+      if (Options.debugMode) {
+        for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+          ActiveSkill s = selectedCharacter.equippedSkills[i];
+          Debug.AssertFormat(s.name != "", "Skill Name is empty");
+          skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+          skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+          skillButtons[i].interactable = s.canUse();
+        }
+      }
     }
 
     if (previewTarget == null) {

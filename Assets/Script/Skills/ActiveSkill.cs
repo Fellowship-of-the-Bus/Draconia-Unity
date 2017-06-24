@@ -27,6 +27,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   public string name {get; set;}
   public int maxCooldown {get; set;}
   private bool[] usableWeapon = new bool[3] { true, true, true };
+  //[0] = targets allies, [0] = targets enemies
+  protected bool[] targets = new bool[2] { true, true };
   //number of turns before usable
   public int curCooldown = 0;
   public bool targetsTiles = false;
@@ -45,6 +47,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual void activate(BattleCharacter target) {
+    if (!canTarget(target.curTile)) return;
     if (this is HealingSkill) {
       if (calculateHealing(target) != 0) {
         target.takeHealing(calculateHealing(target));
@@ -117,6 +120,13 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
   }
 
+  protected void targetAlly(bool b) {
+    targets[0] = b;
+  }
+  protected void targetEnemy(bool b) {
+    targets[1] = b;
+  }
+
   bool attachedListener = false;
   public virtual void setCooldown() {
     if (!attachedListener) {
@@ -157,6 +167,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     Map map = GameManager.get.map;
     List<Tile> targets = map.getTilesWithinRange(map.getTile(position), aoe);
     targets.Add(map.getTile(position));
+    //targets.Filter((x) => canTarget(x));
     return targets;
   }
 
@@ -164,4 +175,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual void validate(List<List<Effected>> targets) {}
 
   // public abstract virtual SkillData calculateSkill();
+
+  public bool canTarget(Tile other) {
+    return !other.occupied() || ((other.occupant.team == self.team && targets[0]) || (other.occupant.team != self.team && targets[1]));
+  }
 }

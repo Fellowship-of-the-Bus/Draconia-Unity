@@ -9,6 +9,8 @@ public class BluntShot: SingleTarget {
     useLos = true;
     name = "Blunt Shot";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

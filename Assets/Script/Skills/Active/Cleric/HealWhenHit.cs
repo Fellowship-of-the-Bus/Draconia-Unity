@@ -10,6 +10,8 @@ public class HealWhenHit : CircleAoE {
     name = "HealWhenHit";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects(BattleCharacter target) {

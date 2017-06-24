@@ -11,6 +11,8 @@ public class Fireball: SingleTarget {
 
     dType = DamageType.magical;
     dEle = DamageElement.fire;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula(){

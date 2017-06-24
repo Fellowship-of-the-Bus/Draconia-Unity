@@ -12,6 +12,8 @@ public class Entrench: SelfTarget {
     useLos = false;
     name = "Entrench";
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

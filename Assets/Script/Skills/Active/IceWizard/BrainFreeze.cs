@@ -11,6 +11,9 @@ public class BrainFreeze: SingleTarget {
 
     dType = DamageType.magical;
     dEle = DamageElement.ice;
+
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override void additionalEffects (BattleCharacter target) {

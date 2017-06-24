@@ -9,6 +9,8 @@ public class SkullBash: SingleTarget {
     useLos = false;
     name = "Skull Bash";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

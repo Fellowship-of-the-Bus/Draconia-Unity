@@ -7,6 +7,8 @@ public class LegShot: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Leg Shot";
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

@@ -12,6 +12,8 @@ public class EmpowerAura: SelfTarget {
     useLos = false;
     name = "EmpowerAura";
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

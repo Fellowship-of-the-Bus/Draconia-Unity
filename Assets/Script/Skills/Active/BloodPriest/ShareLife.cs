@@ -10,6 +10,8 @@ public class ShareLife: CircleAoE, HealingSkill {
     name = "Share Life";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override BattleCharacter self {

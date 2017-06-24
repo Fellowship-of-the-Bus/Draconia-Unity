@@ -8,6 +8,8 @@ public class Transfusion: SingleTarget, HealingSkill {
     useLos = false;
     name = "Transfusion";
     maxCooldown = 0;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public int healingFormula() {

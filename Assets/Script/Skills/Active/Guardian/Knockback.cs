@@ -9,6 +9,8 @@ public class Knockback: SingleTarget {
     useLos = false;
     name = "Knockback";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}

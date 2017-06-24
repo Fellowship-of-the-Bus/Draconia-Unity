@@ -9,6 +9,8 @@ public class WarCry: CircleAoE {
     name = "WarCry";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

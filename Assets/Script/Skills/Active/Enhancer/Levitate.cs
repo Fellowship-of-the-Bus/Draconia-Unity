@@ -10,6 +10,8 @@ public class Levitate: SingleTarget {
     name = "Levitate";
     maxCooldown = 2;
     canTargetSelf = true;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

@@ -8,6 +8,8 @@ public class Puncture: SingleTarget {
     useLos = false;
     name = "Puncture";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

@@ -12,6 +12,8 @@ public class DarkPower: CircleAoE {
     name = "Dark Power";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {
