@@ -77,7 +77,6 @@ public class ItemTooltip : Tooltip {
       linkedTo.linkedTo = null;
       linkedTo = null;
       equip = null;
-      inv.updateAttrView();
     } else {
       //disallow equipping other characters items for now
       if (equip.equippedTo != null) return;
@@ -98,8 +97,8 @@ public class ItemTooltip : Tooltip {
       tooltip.setItem(equip);
       updateColour();
       tooltip.updateColour();
-      inv.updateAttrView();
     }
+    inv.updateAttrView();
   }
 
   protected override bool showTip() {
