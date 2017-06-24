@@ -72,8 +72,8 @@ public class GameManager : MonoBehaviour {
   void Start() {
     foreach (var l in characters.Values) {
       foreach (var o in l) {
-        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
         o.GetComponent<BattleCharacter>().init();
+        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
     startTurn();
@@ -588,8 +588,6 @@ public class GameManager : MonoBehaviour {
   public BattleCharacter createPiece() {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
     var c = newCharObj.GetComponent<BattleCharacter>();
-    c.init();
-    actionQueue.add(newCharObj);
     return c;
   }
 
