@@ -50,10 +50,24 @@ public class InvCharSelect: MonoBehaviour {
     selectedPanel.background.color = Color.white;
     s.background.color = Color.red;
     selectedPanel = s;
-    attrView.updateAttr(s.c.totalAttr);
-    foreach (Equipment e in s.c.gear) {
-      items[e.type].setItem(e);
+    updateAttrView();
+    //reset all items
+    foreach (ItemTooltip tooltip in items) {
+      tooltip.setItem(null);
     }
+    //add new items and set up links
+    foreach (Equipment e in s.c.gear) {
+      if (e != null) {
+        items[e.type].setItem(e);
+        ItemTooltip tooltip = InvItemSelect.get.getTooltipWithEquipment(e);
+        tooltip.linkedTo = items[e.type];
+        items[e.type].linkedTo = tooltip;
+      }
+    }
+  }
+
+  public void updateAttrView () {
+    attrView.updateAttr(selectedPanel.c.totalAttr);
   }
 
 

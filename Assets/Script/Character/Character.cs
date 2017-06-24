@@ -7,7 +7,7 @@ public class Character {
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";
-  public Equipment[] gear = new Equipment[]{new Weapon(), null};
+  public Equipment[] gear = new Equipment[]{null, null};
   public Character(string name): this() {
     this.name = name;
   }
@@ -22,7 +22,7 @@ public class Character {
   }
 
   public void unEquip(Equipment e) {
-    e.equippedTo = this;
+    e.equippedTo = null;
     gear[e.type] = null;
   }
 
@@ -31,6 +31,7 @@ public class Character {
       gear[e.type].equippedTo = null;
     }
     gear[e.type] = e;
+    e.equippedTo = this;
   }
   public Attributes gearAttr() {
     Attributes attr = new Attributes();

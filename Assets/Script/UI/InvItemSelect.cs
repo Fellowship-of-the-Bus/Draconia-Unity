@@ -34,6 +34,17 @@ public class InvItemSelect: MonoBehaviour {
 
   }
 
+  public ItemTooltip getTooltipWithEquipment(Equipment e) {
+    int index = 0;
+    foreach (Equipment equip in GameData.gameData.inv.equipments) {
+      if (equip == e) {
+        break;
+      }
+      index++;
+    }
+    return parent.GetChild(index).gameObject.GetComponent<ItemTooltip>();
+  }
+
   public static InvItemSelect get { get; set; }
 
 }

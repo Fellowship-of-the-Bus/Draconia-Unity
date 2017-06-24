@@ -33,6 +33,11 @@ public class ItemTooltip : Tooltip {
     init();
     equip = e;
     if (e == null) {
+      //break links if necessary
+      if (linkedTo != null) {
+        linkedTo.linkedTo = null;
+        linkedTo = null;
+      }
       return;
     }
     setTipbox();
@@ -43,10 +48,12 @@ public class ItemTooltip : Tooltip {
     if (inCharacterView){
       return;
     }
+    //green = unequipped
+    //red = equipped to selected character
     if (equip.equippedTo != null) {
-      gameObject.GetComponent<Image>().color = Color.green;
-    } else {
       gameObject.GetComponent<Image>().color = Color.white;
+    } else {
+      gameObject.GetComponent<Image>().color = Color.green;
     }
 
   }
@@ -61,22 +68,37 @@ public class ItemTooltip : Tooltip {
     }
   }
   private void onDoubleClick() {
+    InvCharSelect inv = InvCharSelect.get;
     if (inCharacterView) {
+      if (equip == null) return;
       equip.equippedTo.unEquip(equip);
 
       linkedTo.updateColour();
       linkedTo.linkedTo = null;
       linkedTo = null;
+      equip = null;
+      inv.updateAttrView();
     } else {
-      InvCharSelect inv = InvCharSelect.get;
+      //disallow equipping other characters items for now
+      if (equip.equippedTo != null) return;
       var charEquip = inv.items[equip.type].equip;
-      charEquip.equippedTo.unEquip(charEquip);
-
       var tooltip = inv.items[equip.type];
+      if (charEquip != null) {
+        charEquip.equippedTo.unEquip(charEquip);
+        inv.items[equip.type].linkedTo.updateColour();
+        //break previous link
+        tooltip.linkedTo.linkedTo = null;
+      }
+
+
+      //set new link
       tooltip.linkedTo = this;
       linkedTo = tooltip;
       inv.selectedPanel.c.equip(equip);
+      tooltip.setItem(equip);
       updateColour();
+      tooltip.updateColour();
+      inv.updateAttrView();
     }
   }
 
