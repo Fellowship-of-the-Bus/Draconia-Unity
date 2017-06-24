@@ -14,6 +14,8 @@ public class BloodJudgement: CircleAoE {
     maxCooldown = 2;
     targetsTiles = true;
     dType = DamageType.magical;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override BattleCharacter self {

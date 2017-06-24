@@ -8,6 +8,8 @@ public class Disable : SingleTarget {
     useLos = false;
     name = "Disable";
     maxCooldown = 0;
+    targetAlly(false);
+    targetEnemy(true);
   }
   // TODO: UI to select skill
   public override void additionalEffects (BattleCharacter target) {

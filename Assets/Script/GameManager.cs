@@ -46,9 +46,7 @@ public class GameManager : MonoBehaviour {
 
   //health/mana bars
   public GameObject selectedHealth;
-  public GameObject SelectedMana;
   public GameObject targetHealth;
-  public GameObject targetMana;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -77,8 +75,8 @@ public class GameManager : MonoBehaviour {
   void Start() {
     foreach (var l in characters.Values) {
       foreach (var o in l) {
-        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
         o.GetComponent<BattleCharacter>().init();
+        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
     startTurn();
@@ -157,6 +155,15 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
+      if (Options.debugMode) {
+        for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+          ActiveSkill s = selectedCharacter.equippedSkills[i];
+          Debug.AssertFormat(s.name != "", "Skill Name is empty");
+          skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+          skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+          skillButtons[i].interactable = s.canUse();
+        }
+      }
     }
 
     if (previewTarget == null) {
@@ -584,8 +591,6 @@ public class GameManager : MonoBehaviour {
   public BattleCharacter createPiece() {
     GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
     var c = newCharObj.GetComponent<BattleCharacter>();
-    c.init();
-    actionQueue.add(newCharObj);
     return c;
   }
 

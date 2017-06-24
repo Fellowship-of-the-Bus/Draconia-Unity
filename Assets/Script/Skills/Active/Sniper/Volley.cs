@@ -10,6 +10,8 @@ public class Volley: CircleAoE {
     name = "Volley";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

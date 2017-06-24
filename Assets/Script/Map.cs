@@ -194,8 +194,8 @@ public class Map {
         var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
         if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
-            if (t.gameObject.tag == "Cube") t.setColor(Color.yellow);
-            else t.setColor(Color.red);
+            if (t.occupied() && SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
+            else t.setColor(Color.yellow);
           }
         }
       }

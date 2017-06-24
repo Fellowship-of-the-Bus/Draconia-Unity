@@ -12,6 +12,8 @@ public class WardAura: SelfTarget {
     useLos = false;
     name = "WardAura";
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override void additionalEffects (BattleCharacter target) {

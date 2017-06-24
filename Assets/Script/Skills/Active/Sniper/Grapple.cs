@@ -11,6 +11,8 @@ public class Grapple: CircleAoE {
     name = "Grapple";
     maxCooldown = 2;
     effectsTiles = true;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override List<Tile> getTargets() {

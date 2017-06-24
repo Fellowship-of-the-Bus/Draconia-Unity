@@ -17,6 +17,8 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
 
     dType = DamageType.magical;
     dEle = DamageElement.fire;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override List<Tile> getTargets() {

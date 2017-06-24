@@ -8,6 +8,8 @@ public class SerratedShot: SingleTarget {
     useLos = true;
     name = "Serrated Shot";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

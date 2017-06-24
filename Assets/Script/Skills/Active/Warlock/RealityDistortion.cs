@@ -7,6 +7,8 @@ public class RealityDistortion : SingleTarget {
     name = "Reality Distortion";
     maxCooldown = 0;
     canTargetSelf = true;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override void additionalEffects (BattleCharacter target) {

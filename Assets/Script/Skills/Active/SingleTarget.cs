@@ -11,14 +11,14 @@ public abstract class SingleTarget: ActiveSkill {
     foreach (Tile t in tiles) {
       if (t.occupied()) {
         if (!useLos) {
-          targets.Add(t);
+          if (canTarget(t)) targets.Add(t);
         } else {
           GameObject o = t.occupant.gameObject;
           float heightOther = o.GetComponent<MeshFilter>().mesh.bounds.extents.y;
           Vector3 target = new Vector3(t.transform.position.x, t.transform.position.y + 2*heightOther/3, t.transform.position.z);
           RaycastHit hitInfo;
           if (gm.checkLine(source, target, out hitInfo)) {
-            targets.Add(t);
+            if (canTarget(t)) targets.Add(t);
           }
         }
       }

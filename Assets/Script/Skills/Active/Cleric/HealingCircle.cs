@@ -10,6 +10,8 @@ public class HealingCircle: CircleAoE, HealingSkill {
     name = "Healing Circle";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public int healingFormula() {

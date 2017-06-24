@@ -9,6 +9,8 @@ public class BloodSacrifice : SelfTarget {
     useLos = false;
     name = "Blood Sacrifice";
     maxCooldown = 2;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects(BattleCharacter target) {

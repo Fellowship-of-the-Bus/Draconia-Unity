@@ -16,6 +16,8 @@ public class IceBlock: ActiveSkill, AoeSkill {
 
     dType = DamageType.magical;
     dEle = DamageElement.ice;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override List<Tile> getTargets() {

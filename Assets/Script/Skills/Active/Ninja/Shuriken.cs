@@ -7,6 +7,8 @@ public class Shuriken: SingleTarget {
     useLos = true;
     name = "Shuriken";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

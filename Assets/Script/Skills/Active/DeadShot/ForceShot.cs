@@ -10,6 +10,8 @@ public class ForceShot: SingleTarget {
     useLos = true;
     name = "Force Shot";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   float upThreshold = 0.5f;

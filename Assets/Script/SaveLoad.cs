@@ -11,6 +11,7 @@ public static class SaveLoad {
 
   public static void save(string saveName) {
     BinaryFormatter bf = new BinaryFormatter();
+    if (!saveName.EndsWith(".bro")) saveName += ".bro";
     FileStream file = File.Create(Path.Combine(dirPath, saveName));
     bf.Serialize(file, GameData.gameData);
     file.Close();

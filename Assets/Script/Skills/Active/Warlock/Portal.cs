@@ -15,6 +15,8 @@ public class Portal : ActiveSkill, AoeSkill {
     effectsTiles = true;
     maxCooldown = 1;
     targetsTiles = true;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override BattleCharacter self {

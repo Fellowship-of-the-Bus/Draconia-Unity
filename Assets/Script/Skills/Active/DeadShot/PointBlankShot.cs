@@ -10,6 +10,8 @@ public class PointBlankShot: SingleTarget {
     useLos = true;
     name = "Point Blank Shot";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));

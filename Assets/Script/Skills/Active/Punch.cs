@@ -8,6 +8,8 @@ public class Punch: SingleTarget {
     useLos = false;
     name = "Punch";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
 

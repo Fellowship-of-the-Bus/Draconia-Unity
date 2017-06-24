@@ -10,6 +10,8 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     name = "Piercing Shot";
     effectsTiles = false;
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override List<Tile> getTargets() {

@@ -14,6 +14,8 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
     effectsTiles = true;
     maxCooldown = 1;
     targetsTiles = true;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override List<Tile> getTargets() {

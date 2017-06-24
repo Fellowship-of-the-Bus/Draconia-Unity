@@ -10,6 +10,8 @@ public class FlameShot: SingleTarget {
     maxCooldown = 2;
 
     dEle = DamageElement.fire;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

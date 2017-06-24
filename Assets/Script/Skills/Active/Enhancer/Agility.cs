@@ -8,6 +8,8 @@ public class Agility: SingleTarget {
     name = "Agility";
     maxCooldown = 2;
     canTargetSelf = true;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

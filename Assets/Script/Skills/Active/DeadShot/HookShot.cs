@@ -10,6 +10,8 @@ public class HookShot: SingleTarget {
     useLos = true;
     name = "Hook Shot";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   float upThreshold = 0.5f;

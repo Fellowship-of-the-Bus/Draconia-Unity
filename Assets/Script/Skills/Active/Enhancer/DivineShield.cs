@@ -8,6 +8,8 @@ public class DivineShield: SingleTarget {
     name = "DivineShield";
     maxCooldown = 2;
     canTargetSelf = true;
+    targetAlly(true);
+    targetEnemy(false);
   }
 
   public override void additionalEffects (BattleCharacter target) {

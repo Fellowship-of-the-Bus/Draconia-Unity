@@ -9,6 +9,8 @@ public class Purge: SingleTarget {
     name = "Purge";
     maxCooldown = 2;
     canTargetSelf = true;
+    targetAlly(true);
+    targetEnemy(true);
   }
 
   public override void additionalEffects (BattleCharacter target) {

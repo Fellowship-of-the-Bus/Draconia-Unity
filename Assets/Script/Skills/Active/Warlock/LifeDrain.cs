@@ -11,6 +11,8 @@ public class LifeDrain: SingleTarget {
 
 
     dType = DamageType.magical;
+    targetAlly(false);
+    targetEnemy(true);
   }
 
   public override int damageFormula() {

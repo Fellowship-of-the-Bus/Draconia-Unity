@@ -8,6 +8,8 @@ public class KillingBlow: SingleTarget {
     useLos = false;
     name = "Killing Blow";
     maxCooldown = 2;
+    targetAlly(false);
+    targetEnemy(true);
   }
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));

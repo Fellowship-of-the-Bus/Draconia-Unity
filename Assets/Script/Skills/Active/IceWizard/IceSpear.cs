@@ -11,6 +11,8 @@ public class IceSpear: SingleTarget {
 
     dType = DamageType.magical;
     dEle = DamageElement.ice;
+    targetAlly(false);
+    targetEnemy(true);
   }
   public override List<Tile> getTargets() {
     return getTargetsInRange();
