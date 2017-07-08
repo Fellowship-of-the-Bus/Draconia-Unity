@@ -17,12 +17,12 @@ public class Knockback: SingleTarget {
   float upThreshold = 0.5f;
 
   Tile knockTo(BattleCharacter c) {
-    Vector3 heading = c.gameObject.transform.position - self.gameObject.transform.position;
+    Vector3 heading = c.transform.position - self.transform.position;
     Vector3 direction = heading / heading.magnitude;
     direction.x = Mathf.Round(direction.x);
     direction.z = Mathf.Round(direction.z);
 
-    Tile t = GameManager.get.map.getTile(c.gameObject.transform.position + direction);
+    Tile t = GameManager.get.map.getTile(c.transform.position + direction);
     return t;
   }
 

@@ -85,7 +85,7 @@ public class BattleCharacter : Effected {
 
     applyPassives();
 
-    ui = gameObject.transform.Find("UI");
+    ui = transform.Find("UI");
   }
 
   void setSkills() {

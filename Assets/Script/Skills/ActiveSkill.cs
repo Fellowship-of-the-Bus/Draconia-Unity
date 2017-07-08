@@ -166,7 +166,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public abstract List<Tile> getTargets();
 
   protected List<Tile> getTargetsInRange() {
-    return getTargetsInAoe(self.gameObject.transform.position, range);
+    return getTargetsInAoe(self.transform.position, range);
   }
 
   protected List<Tile> getTargetsInAoe(Vector3 position, int aoe) {

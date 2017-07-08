@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour {
       //      use characters selected instead of all characters.
       var battleChar = createPiece();
       battleChar.baseChar = c;
-      battleChar.gameObject.transform.position = map.tiles[index].position;
+      battleChar.transform.position = map.tiles[index].position;
       battleChar.skillSet = new string[]{"Punch", "Punch", "Punch"};
       index++;
     }
@@ -312,7 +312,7 @@ public class GameManager : MonoBehaviour {
       AoeSkill aoe = skill as AoeSkill;
       List<Effected> curTargets = new List<Effected>();
       if (aoe != null) {
-        foreach (Tile t in aoe.getTargetsInAoe(target.gameObject.transform.position)) {
+        foreach (Tile t in aoe.getTargetsInAoe(target.transform.position)) {
           BattleCharacter c = t.occupant;
           if (c) curTargets.Add(c);
           if (aoe.effectsTiles) curTargets.Add(t);
@@ -377,7 +377,7 @@ public class GameManager : MonoBehaviour {
 
     foreach (Tile destination in path) {
       // fix height
-      Vector3 pos = destination.gameObject.transform.position;
+      Vector3 pos = destination.transform.position;
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // move piece
@@ -468,7 +468,7 @@ public class GameManager : MonoBehaviour {
     } else if (positionStack.Count() > 0) {
       // reset character to previous position and remaining move range, then recolor movable tiles
       Pair<Tile, int> val = positionStack.Pop();
-      Vector3 coordToMove = val.first.gameObject.transform.position;
+      Vector3 coordToMove = val.first.transform.position;
       moveRange = val.second;
       MovePiece(coordToMove, false, false);
       changeState(GameState.moving);
@@ -541,7 +541,7 @@ public class GameManager : MonoBehaviour {
     Physics.Raycast(ray, out hitInfo);
     info = hitInfo;
     if (hitInfo.collider == null) return false;
-    Vector3 hit = new Vector3(hitInfo.collider.gameObject.transform.position.x, hitInfo.collider.gameObject.transform.position.y + offset, hitInfo.collider.gameObject.transform.position.z);
+    Vector3 hit = new Vector3(hitInfo.collider.transform.position.x, hitInfo.collider.transform.position.y + offset, hitInfo.collider.transform.position.z);
     return (hit == target);
   }
 
