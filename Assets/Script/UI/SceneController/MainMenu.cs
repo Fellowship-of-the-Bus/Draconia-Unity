@@ -28,6 +28,7 @@ public class MainMenu: MonoBehaviour {
 
     e = new Armour();
     e.attr.intelligence = 1;
+    e.attr.healingMultiplier = 0.9f;
     GameData.gameData.inv.addEquipment(e);
     e.equipmentClass = "sis armour";
     c.equip(e);

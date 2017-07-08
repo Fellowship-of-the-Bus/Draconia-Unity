@@ -28,10 +28,13 @@ public class AttrView: MonoBehaviour {
 
   public void updateAttr(Attributes attr) {
     initFields();
+    Attributes baseAttr = new Attributes();
     curAttr = attr;
     foreach(FieldInfo f in typeof(Attributes).GetFields()) {
       if (attrDict.ContainsKey(f.Name)) {
+        var v = f.GetValue(attr);
         attrDict[f.Name].text = f.Name + " " + f.GetValue(attr);
+        attrDict[f.Name].enabled = !v.Equals(f.GetValue(baseAttr));
       } else {
         Debug.Log(f.Name);
         throw(new Exception());
