@@ -13,12 +13,12 @@ public class Tile : Effected {
   }
 
   public float getHeight() {
-    return gameObject.transform.localScale.y/2 + additionalHeight;
+    return transform.localScale.y/2 + additionalHeight;
   }
 
   public Vector3 position {
     get {
-      Vector3 pos = gameObject.transform.position;
+      Vector3 pos = transform.position;
       pos.y = 0.5f + getHeight();
       return pos;
     }

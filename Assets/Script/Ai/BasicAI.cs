@@ -42,7 +42,7 @@ public class BasicAI : BaseAI {
           foreach(Tile t in targets) {
             // Tile t = (Tile)obj;
 
-            // targetCharacters.Add(aoe.getTargetsInAoe(t.gameObject.transform.position));
+            // targetCharacters.Add(aoe.getTargetsInAoe(t.transform.position));
           }
           // c = new List<BattleCharacter>()
         } else {

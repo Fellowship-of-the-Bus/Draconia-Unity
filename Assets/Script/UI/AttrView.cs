@@ -19,7 +19,7 @@ public class AttrView: MonoBehaviour {
   public void initFields() {
     if (!onceOnly) return;
     foreach(FieldInfo f in typeof(Attributes).GetFields()) {
-      Text t = Instantiate(text, gameObject.transform).GetComponent<Text>();
+      Text t = Instantiate(text, transform).GetComponent<Text>();
       attrDict.Add(f.Name, t);
     }
     onceOnly = false;
