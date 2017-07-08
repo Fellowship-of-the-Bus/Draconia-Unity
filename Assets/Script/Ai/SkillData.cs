@@ -18,6 +18,12 @@ public class SkillData : IComparable<SkillData> {
   }
 
   public int CompareTo(SkillData other) {
-    return score.CompareTo(other.score);
+    int diff = score.CompareTo(other.score);
+
+    if (diff == 0) {
+      return -tile.distance.CompareTo(other.tile.distance);
+    } else {
+      return diff;
+    }
   }
 }

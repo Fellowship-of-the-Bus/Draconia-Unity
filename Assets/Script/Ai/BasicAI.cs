@@ -37,16 +37,14 @@ public class BasicAI : BaseAI {
         if (targets.Count == 0) continue;
         AoeSkill aoe = skill as AoeSkill;
 
-        List<List<BattleCharacter>> targetCharacters = null;
+        List<List<BattleCharacter>> targetCharacters = new List<List<BattleCharacter>>();
         if (aoe != null) {
           foreach(Tile t in targets) {
-            // Tile t = (Tile)obj;
-
-            // targetCharacters.Add(aoe.getTargetsInAoe(t.gameObject.transform.position));
+            List<Tile> affectedTiles = aoe.getTargetsInAoe(t.gameObject.transform.position);
+            affectedTiles = new List<Tile>(affectedTiles.Filter((x) => x.occupied()));
+            targetCharacters.Add(new List<BattleCharacter>(affectedTiles.Select(x => x.occupant)));
           }
-          // c = new List<BattleCharacter>()
         } else {
-          targetCharacters = new List<List<BattleCharacter>>();
           List<BattleCharacter> chars = new List<BattleCharacter>(targets.Select(x => x.occupant));
           chars = new List<BattleCharacter>(chars.Filter((character) => character != null && character.team != owner.team));
           targetCharacters.Add(chars);
@@ -56,8 +54,11 @@ public class BasicAI : BaseAI {
           List<Effected> e = new List<Effected>();
           int damage = 0;
           foreach (BattleCharacter ch in c) {
-            damage = skill.calculateDamage(ch);
-            // Debug.Log("character: " + ch.name + " damage: " + damage);
+            if (ch.team != owner.team) {
+              damage += skill.calculateDamage(ch);
+            } else {
+              damage -= skill.calculateDamage(ch);
+            }
             e.Add(ch);
           }
           db.add(new SkillData(this, cur, damage, e, tile));
@@ -65,7 +66,34 @@ public class BasicAI : BaseAI {
       }
     }
     best = db.getMax();
-    Vector3 newPosition = best == null ? owner.curTile.transform.position : best.tile.transform.position;
+
+    Vector3 newPosition = owner.curTile.transform.position;
+    if (best == null) {
+      int closest = System.Int32.MaxValue;
+      LinkedList<Tile> path = null;
+
+      foreach (GameObject c in characterObjects) {
+        BattleCharacter bc = c.GetComponent<BattleCharacter>();
+        if (bc.team != owner.team) {
+          if (bc.curTile.distance < closest) {
+            closest = bc.curTile.distance;
+            path = map.getPath(bc.curTile.transform.position);
+          }
+        }
+      }
+
+      if (closest != System.Int32.MaxValue) {
+        foreach (Tile t in path) {
+          if (t.distance > owner.moveRange) {
+            break;
+          }
+          newPosition = t.transform.position;
+        }
+      }
+    } else {
+      newPosition = best.tile.transform.position;
+    }
+
     map.setPath(newPosition);
     // int damage = best == null ? 0 : best.score;
     // Debug.Log("Location: " + newPosition + " damage: " + best.score);

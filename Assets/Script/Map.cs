@@ -5,7 +5,7 @@ using UnityEngine;
 public class Map {
   readonly Vector3 portalDir = Vector3.one;
 
-  public LinkedList<Tile> path = null;
+  public LinkedList<Tile> path = new LinkedList<Tile>();
   public List<Tile> tiles = new List<Tile>();
   List<GameObject> cubes;
 
@@ -18,7 +18,6 @@ public class Map {
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
     }
-    path = new LinkedList<Tile>();
   }
 
   public void djikstra(Vector3 unitLocation, BattleCharacter charToMove) {
@@ -67,7 +66,7 @@ public class Map {
     }
   }
 
-  public int distance(Tile from, Tile to, float moveTolerance) {
+  private int distance(Tile from, Tile to, float moveTolerance) {
     //check heights
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
@@ -133,9 +132,13 @@ public class Map {
   }
 
   public void setPath(Vector3 coord) {
-    clearPath();
+    path = getPath(coord);
+  }
+
+  public LinkedList<Tile> getPath(Vector3 coord) {
+    LinkedList<Tile> newPath = new LinkedList<Tile>();
     Tile t = getTile(coord);
-    path.AddFirst(t);
+    newPath.AddFirst(t);
     while (t.dir != Vector3.zero) {
       if (t.dir == portalDir) {
         PortalEffect portal = t.getEffect<PortalEffect>();
@@ -147,8 +150,10 @@ public class Map {
         coord -= t.dir;
         t = getTile(coord);
       }
-      path.AddFirst(t);
+      newPath.AddFirst(t);
     }
+
+    return newPath;
   }
 
   public List<Tile> tilesInMoveRange(BattleCharacter character) {
