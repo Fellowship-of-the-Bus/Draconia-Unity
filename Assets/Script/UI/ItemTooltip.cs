@@ -133,11 +133,12 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
 
   private void onRightClick() {
     InvItemSelect inv = InvItemSelect.get;
-    //make sure its not equipped
-    if (!inCombineView && equip.equippedTo == null) {
+    //from inventory, add it to materials
+    //from materials remove it
+    if (!inCombineView) {
       inv.addMaterial(equip);
     } else if (inCombineView) {
-      if (inv.isResult(this)) {
+      if (inv.isResult(this) && equip != null) {
         inv.createUpgrade();
       } else {
         equip = null;

@@ -110,8 +110,21 @@ public class InvItemSelect: MonoBehaviour {
       e = new Armour();
       e.equipmentClass = "newly created";
     }
-    //preview the new equipment;
+    //add new equipment to created slot to preview
+    AttrView view = InventoryController.get.attrView;
+    Text equipName = InventoryController.get.equipName;
+    Text equippedTo = InventoryController.get.equippedTo;
+
+    //make sure this does not change the attribute view
+    Attributes attr = view.curAttr;
+    string name = equipName.text;
+    string charaName = equippedTo.text;
+
     items[numMaterials].setItem(e);
+
+    view.updateAttr(attr);
+    equipName.text = name;
+    equippedTo.text = charaName;
   }
 
   //called when actually creating item
@@ -131,10 +144,17 @@ public class InvItemSelect: MonoBehaviour {
       tooltip.gameObject.transform.SetParent(null);
       Destroy(tooltip.gameObject);
     }
+
+
     //remove from inventory
-    GameData.gameData.inv.deleteEquipment(material1);
-    GameData.gameData.inv.deleteEquipment(material2);
-    GameData.gameData.inv.deleteEquipment(material3);
+    deleteEquipment(material1);
+    deleteEquipment(material2);
+    deleteEquipment(material3);
+
+    //remove from inventory
+//    GameData.gameData.inv.deleteEquipment(material1);
+  //  GameData.gameData.inv.deleteEquipment(material2);
+    //GameData.gameData.inv.deleteEquipment(material3);
 
     Equipment created = items[numMaterials].equip;
 
@@ -151,6 +171,24 @@ public class InvItemSelect: MonoBehaviour {
     foreach (ItemTooltip tooltip in items) {
       tooltip.setItem(null);
     }
+  }
+
+  private void deleteEquipment(Equipment e) {
+    if (e.equippedTo != null) {
+      Character c = e.equippedTo;
+      Equipment def = new Weapon();
+      if (e is Weapon) {
+        def = new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1);
+      } else if (e is Armour) {
+        def = new Armour("Unarmed", Armour.ArmourKinds.Leather, 1);
+      }
+      c.equip(def);
+      if (c == InvCharSelect.get.selectedPanel.c){
+        InvCharSelect.get.items[e.type].equip = def;
+      }
+    }
+    GameData.gameData.inv.deleteEquipment(e);
+
   }
 
   public void removeCreated() {
