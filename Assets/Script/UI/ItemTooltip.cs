@@ -51,9 +51,9 @@ public class ItemTooltip : Tooltip {
     //green = unequipped
     //red = equipped to selected character
     if (equip.equippedTo != null) {
-      gameObject.GetComponent<Image>().color = Color.white;
-    } else {
       gameObject.GetComponent<Image>().color = Color.green;
+    } else {
+      gameObject.GetComponent<Image>().color = Color.white;
     }
 
   }
