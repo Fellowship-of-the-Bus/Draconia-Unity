@@ -21,13 +21,13 @@ public class PiercingShot: ActiveSkill, AoeSkill {
   public List<Tile> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.map.getCardinalTilesWithinRange(self.curTile, aoe);
-    var myPosition = self.curTile.gameObject.transform.position;
+    var myPosition = self.curTile.transform.position;
 
     //break up the tiles into the 4 cardinal directions
-    List<Tile> up = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.z > myPosition.z + 0.05f));
-    List<Tile> down = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.z < myPosition.z - 0.05f));
-    List<Tile> left = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.x < myPosition.x - 0.05f));
-    List<Tile> right = new List<Tile>(tiles.Filter((tile) => tile.gameObject.transform.position.x > myPosition.x + 0.05f));
+    List<Tile> up = new List<Tile>(tiles.Filter((tile) => tile.transform.position.z > myPosition.z + 0.05f));
+    List<Tile> down = new List<Tile>(tiles.Filter((tile) => tile.transform.position.z < myPosition.z - 0.05f));
+    List<Tile> left = new List<Tile>(tiles.Filter((tile) => tile.transform.position.x < myPosition.x - 0.05f));
+    List<Tile> right = new List<Tile>(tiles.Filter((tile) => tile.transform.position.x > myPosition.x + 0.05f));
 
     Tile t = gm.map.getTile(position);
     //return the stuff in the right direction

@@ -19,6 +19,7 @@ public static class SaveLoad {
 
   public static bool load(string saveName) {
     bool success = false;
+    saveName = Path.Combine(dirPath, saveName);
     if (File.Exists(saveName)) {
       BinaryFormatter bf = new BinaryFormatter();
       FileStream file = File.Open(saveName, FileMode.Open);
@@ -29,7 +30,7 @@ public static class SaveLoad {
         Debug.Log("Corrupted save file: " + saveName);
       }
       file.Close();
-    }
+    } else Debug.Log(saveName + " doesn't exist");
     return success;
   }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Map {
   readonly Vector3 portalDir = Vector3.one;
 
-  public LinkedList<Tile> path = null;
+  public LinkedList<Tile> path = new LinkedList<Tile>();
   public List<Tile> tiles = new List<Tile>();
   List<GameObject> cubes;
 
@@ -18,7 +18,6 @@ public class Map {
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
     }
-    path = new LinkedList<Tile>();
   }
 
   public void djikstra(Vector3 unitLocation, BattleCharacter charToMove) {
@@ -44,7 +43,7 @@ public class Map {
 
       Vector3[] directions = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
       foreach (Vector3 dir in directions) {
-        Vector3 neighbour = minTile.gameObject.transform.position + dir;
+        Vector3 neighbour = minTile.transform.position + dir;
         Tile neighbourTile = getTile(neighbour, tilesToGo);
         if (neighbourTile != null) {
           int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
@@ -67,7 +66,7 @@ public class Map {
     }
   }
 
-  public int distance(Tile from, Tile to, float moveTolerance) {
+  private int distance(Tile from, Tile to, float moveTolerance) {
     //check heights
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
@@ -75,12 +74,12 @@ public class Map {
     if (from.occupied() && !(GameManager.get.SelectedPiece.GetComponent<BattleCharacter>().team == from.occupant.GetComponent<BattleCharacter>().team)) {
       return Int32.MaxValue/4;
     }
-
+    //Look at what moveTolerance actually means
     return Math.Max((int)(to.movePointSpent - moveTolerance + 1), 1);
   }
 
   public float getHeight(Tile t) {
-    float scale = t.getHeight();//t.gameObject.transform.localScale.y;
+    float scale = t.getHeight();//t.transform.localScale.y;
     return scale + 0.5f;
   }
 
@@ -91,8 +90,8 @@ public class Map {
 
   public Tile getTile(Vector3 location, IEnumerable<Tile> list) {
     foreach (Tile tile in list) {
-      if (Math.Abs(tile.gameObject.transform.position.x - location.x) < 0.05f &&
-          Math.Abs(tile.gameObject.transform.position.z - location.z) < 0.05f) {
+      if (Math.Abs(tile.transform.position.x - location.x) < 0.05f &&
+          Math.Abs(tile.transform.position.z - location.z) < 0.05f) {
         return tile;
       }
     }
@@ -116,14 +115,14 @@ public class Map {
   public List<Tile> getCardinalTilesWithinRange(Tile t, int range) {
     List<Tile> inRangeTiles = getTilesWithinRange(t, range);
     inRangeTiles = new List<Tile>(inRangeTiles.Filter((tile) =>
-      Math.Abs(tile.gameObject.transform.position.x - t.gameObject.transform.position.x) < 0.05f  ||
-      Math.Abs(tile.gameObject.transform.position.z - t.gameObject.transform.position.z) < 0.05f));
+      Math.Abs(tile.transform.position.x - t.transform.position.x) < 0.05f  ||
+      Math.Abs(tile.transform.position.z - t.transform.position.z) < 0.05f));
     return inRangeTiles;
   }
 
   public int l1Distance(Tile t1, Tile t2) {
-    return (int)Math.Floor(Math.Abs(t1.gameObject.transform.position.x - t2.gameObject.transform.position.x) + 0.5f)  +
-          (int)Math.Floor(Math.Abs(t1.gameObject.transform.position.z - t2.gameObject.transform.position.z) + 0.5f) ;
+    return (int)Math.Floor(Math.Abs(t1.transform.position.x - t2.transform.position.x) + 0.5f)  +
+          (int)Math.Floor(Math.Abs(t1.transform.position.z - t2.transform.position.z) + 0.5f) ;
   }
 
   public void clearColour() {
@@ -133,9 +132,13 @@ public class Map {
   }
 
   public void setPath(Vector3 coord) {
-    clearPath();
+    path = getPath(coord);
+  }
+
+  public LinkedList<Tile> getPath(Vector3 coord) {
+    LinkedList<Tile> newPath = new LinkedList<Tile>();
     Tile t = getTile(coord);
-    path.AddFirst(t);
+    newPath.AddFirst(t);
     while (t.dir != Vector3.zero) {
       if (t.dir == portalDir) {
         PortalEffect portal = t.getEffect<PortalEffect>();
@@ -147,8 +150,10 @@ public class Map {
         coord -= t.dir;
         t = getTile(coord);
       }
-      path.AddFirst(t);
+      newPath.AddFirst(t);
     }
+
+    return newPath;
   }
 
   public List<Tile> tilesInMoveRange(BattleCharacter character) {
@@ -191,7 +196,7 @@ public class Map {
           t.setColor(Color.blue);
         }
         AoeSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] as AoeSkill;
-        var targetsInAoe = skill.getTargetsInAoe(src.gameObject.transform.position);
+        var targetsInAoe = skill.getTargetsInAoe(src.transform.position);
         if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             if (t.occupied() && SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
