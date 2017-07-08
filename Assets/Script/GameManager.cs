@@ -366,7 +366,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
-    const float speed = 4f;
+    const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
 
@@ -382,10 +382,21 @@ public class GameManager : MonoBehaviour {
 
       // move piece
       Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
+      float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
+      float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;
+      float dDown = speed*2*(pos.y - hopHeight)/Options.FPS;
       for (int i = 0; i < Options.FPS/speed; i++) {
+        if (d.y != 0) {
+          if (i < Options.FPS/(speed*2)) {
+            d.y = dUp;
+          } else {
+            d.y = dDown;
+          }
+        }
         piece.transform.Translate(d);
         yield return new WaitForSeconds(1/Options.FPS);
       }
+      piece.transform.Translate(pos-piece.transform.position);
       // tell listeners that this character moved
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
