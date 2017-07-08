@@ -71,10 +71,11 @@ public class BattleCharacter : Effected {
     base.removeEffect(effect);
     allEffects.Remove(effect);
   }
-
+  List<String> prevSkillSet = new List<String>();
   public void init() {
     if (Options.debugMode) {
       setSkills();
+      prevSkillSet = new List<String>(skillSet);
     } else {
       equippedSkills = skills.getActives(this);
     }
@@ -90,6 +91,12 @@ public class BattleCharacter : Effected {
   void setSkills() {
     int i = 0;
     foreach (string skillName in skillSet) {
+      if (i < prevSkillSet.Count && skillName == prevSkillSet[i]) {
+        i++;
+        continue;
+      }
+      if (i >= prevSkillSet.Count) prevSkillSet.Add(skillName);
+      else prevSkillSet[i] = skillName;
       ActiveSkill skill = null;
       bool invalidSkill = true;
       ;
@@ -123,7 +130,6 @@ public class BattleCharacter : Effected {
 
   void Update() {
     if (Options.debugMode) {
-      //equippedSkills = new List<ActiveSkill>();
       setSkills();
     }
     // rotate overhead UI (health bar) to look at camera
