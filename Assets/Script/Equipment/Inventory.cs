@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Inventory {
-  public List<Equipment> equipments = new List<Equipment>();
+  public LinkedList<Equipment> equipments = new LinkedList<Equipment>();
 
   public void combine(Equipment b, Equipment e, Equipment e2) {
     //check same tier
@@ -15,5 +15,12 @@ public class Inventory {
       equipments.Remove(e2);
       b.upgrade();
     }
+  }
+  public void deleteEquipment(Equipment e) {
+    equipments.Remove(e);
+  }
+
+  public void addEquipment(Equipment e) {
+    equipments.AddLast(e);
   }
 }

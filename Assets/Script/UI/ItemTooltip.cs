@@ -3,8 +3,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemTooltip : Tooltip {
-  public Equipment equip;
+public class ItemTooltip : Tooltip, IPointerClickHandler {
+  private Equipment _equip;
+  public Equipment equip {
+    get { return _equip;}
+    set { setItem(value);}
+  }
   public AttrView attrView;
   public Text equipName;
   public Text equippedTo;
@@ -12,6 +16,7 @@ public class ItemTooltip : Tooltip {
   //if false it is in the list of equipments
   //if true it is on character
   public bool inCharacterView = false;
+  public bool inCombineView = false;
   public ItemTooltip linkedTo;
 
   void Start() {
@@ -31,7 +36,7 @@ public class ItemTooltip : Tooltip {
   //also need to set the image eventually and colour
   public void setItem(Equipment e) {
     init();
-    equip = e;
+    _equip = e;
     if (e == null) {
       //break links if necessary
       if (linkedTo != null) {
@@ -41,6 +46,20 @@ public class ItemTooltip : Tooltip {
       return;
     }
     setTipbox();
+  }
+
+  public void OnPointerClick(PointerEventData eventData) {
+    if (eventData.button == PointerEventData.InputButton.Left){
+      if (!inCombineView) {
+        onButtonClick();
+      }
+    } else if (eventData.button == PointerEventData.InputButton.Middle){
+      //Debug.Log("Middle click");
+    } else if (eventData.button == PointerEventData.InputButton.Right){
+      if (!inCharacterView){
+        onRightClick();
+      }
+    }
   }
 
 
@@ -74,7 +93,8 @@ public class ItemTooltip : Tooltip {
       if (equip == null || equip.defaultEquipment) return;
       Character c = equip.equippedTo;
       c.unEquip(equip);
-      //need default value to use
+
+      //need default value so it doesnt complain about uninit variable
       Equipment def = new Weapon();
       if (equip is Weapon) {
         def = new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1);
@@ -100,7 +120,6 @@ public class ItemTooltip : Tooltip {
         }
       }
 
-
       //set new link
       tooltip.linkedTo = this;
       linkedTo = tooltip;
@@ -112,7 +131,24 @@ public class ItemTooltip : Tooltip {
     inv.updateAttrView();
   }
 
+  private void onRightClick() {
+    InvItemSelect inv = InvItemSelect.get;
+    //make sure its not equipped
+    if (!inCombineView && equip.equippedTo == null) {
+      inv.addMaterial(equip);
+    } else if (inCombineView) {
+      if (inv.isResult(this)) {
+        inv.createUpgrade();
+      } else {
+        equip = null;
+        inv.removeCreated();
+      }
+    }
+
+  }
+
   protected override bool showTip() {
+    init();
     return equip != null && !equip.defaultEquipment;
   }
 
