@@ -11,6 +11,10 @@ public abstract class Equipment {
   //could be null if not equipped.
   public Character equippedTo;
 
+  public bool defaultEquipment {
+    get { return equipmentClass == "Unarmed";}
+  }
+
   public string name() {
     return tierName[tier] + " " + equipmentClass;
   }

@@ -26,7 +26,7 @@ public class BattleCharacter : Effected {
   public Attributes attrChange = new Attributes();
   //Sum of stats from equipments
   public Attributes attrEquip {
-    get {return weapon.attr;}
+    get {if (weapon != null ) return weapon.attr; else return new Attributes();}
   }
   public Weapon weapon {
     get { return (Weapon)baseChar.gear[EquipType.weapon]; }

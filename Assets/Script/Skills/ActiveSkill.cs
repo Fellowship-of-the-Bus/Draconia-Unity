@@ -27,6 +27,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   public string name {get; set;}
   public int maxCooldown {get; set;}
   private bool[] usableWeapon = new bool[3] { true, true, true };
+  private bool unarmed = true;
+
   //[0] = targets allies, [0] = targets enemies
   protected bool[] targets = new bool[2] { true, true };
   //number of turns before usable
@@ -107,7 +109,11 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual void tileEffects(Tile target) { }
 
   public virtual bool canUse() {
-    return curCooldown == 0 && usableWeapon[(int)self.weapon.kind];
+    if (self.weapon != null){
+      return curCooldown == 0 && usableWeapon[(int)self.weapon.kind];
+    } else {
+      return curCooldown == 0 && unarmed;
+    }
   }
 
   protected void requireMelee() {

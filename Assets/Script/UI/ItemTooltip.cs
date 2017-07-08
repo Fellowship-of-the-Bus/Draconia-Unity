@@ -70,13 +70,22 @@ public class ItemTooltip : Tooltip {
   private void onDoubleClick() {
     InvCharSelect inv = InvCharSelect.get;
     if (inCharacterView) {
-      if (equip == null) return;
-      equip.equippedTo.unEquip(equip);
-
+      //no equipment or default do nothing.
+      if (equip == null || equip.defaultEquipment) return;
+      Character c = equip.equippedTo;
+      c.unEquip(equip);
+      //need default value to use
+      Equipment def = new Weapon();
+      if (equip is Weapon) {
+        def = new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1);
+      } else if (equip is Armour) {
+        def = new Armour("Unarmed", Armour.ArmourKinds.Leather, 1);
+      }
+      c.equip(def);
       linkedTo.updateColour();
       linkedTo.linkedTo = null;
       linkedTo = null;
-      equip = null;
+      equip = def;
     } else {
       //disallow equipping other characters items for now
       if (equip.equippedTo != null) return;
@@ -84,9 +93,11 @@ public class ItemTooltip : Tooltip {
       var tooltip = inv.items[equip.type];
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
-        inv.items[equip.type].linkedTo.updateColour();
-        //break previous link
-        tooltip.linkedTo.linkedTo = null;
+        if (inv.items[equip.type].linkedTo != null) {
+          inv.items[equip.type].linkedTo.updateColour();
+          //break previous link
+          tooltip.linkedTo.linkedTo = null;
+        }
       }
 
 
@@ -102,7 +113,7 @@ public class ItemTooltip : Tooltip {
   }
 
   protected override bool showTip() {
-    return equip != null;
+    return equip != null && !equip.defaultEquipment;
   }
 
   protected override void setTipbox() {

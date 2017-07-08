@@ -12,4 +12,10 @@ public class Armour : Equipment {
   public Armour() {
     type = EquipType.armour;
   }
+
+  public Armour(string equipmentClass, ArmourKinds kind, int tier) : this() {
+    this.equipmentClass = equipmentClass;
+    this.kind = kind;
+    this.tier = tier;
+  }
 }

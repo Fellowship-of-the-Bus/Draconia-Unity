@@ -7,7 +7,8 @@ public class Character {
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";
-  public Equipment[] gear = new Equipment[]{null, null};
+  public Equipment[] gear = new Equipment[]{new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1),
+                                            new Armour("Unarmed", Armour.ArmourKinds.Leather, 1)};
   public Character(string name): this() {
     this.name = name;
   }
