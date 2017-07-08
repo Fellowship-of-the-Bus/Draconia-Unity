@@ -67,8 +67,10 @@ public class FileBrowser : MonoBehaviour {
   public void loadButtonClicked() {
     // do something with selected
     if (SaveLoad.load(curSelection.file.Name)) {
+      Debug.Log("loaded");
       SceneManager.LoadSceneAsync("OverWorld");
     }
+    else Debug.Log("fail");
     gameObject.SetActive(false);
   }
 

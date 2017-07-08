@@ -1,3 +1,5 @@
+using System;
+
 [System.Serializable]
 public class EquipType {
   readonly int type;
@@ -10,5 +12,21 @@ public class EquipType {
 
   public static implicit operator int(EquipType x) {
     return x.type;
+  }
+
+  //assume we are comparing non-null types.
+  public static bool operator==(EquipType a, EquipType b) {
+    return a.type == b.type;
+  }
+  public static bool operator!=(EquipType a, EquipType b) {
+    return a.type != b.type;
+  }
+
+  public override bool Equals(Object other) {
+    return other is EquipType && ((EquipType)other).type == type;
+  }
+
+  public override int GetHashCode() {
+    return type;
   }
 }

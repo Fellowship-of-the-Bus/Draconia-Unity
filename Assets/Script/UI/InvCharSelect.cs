@@ -44,6 +44,10 @@ public class InvCharSelect: MonoBehaviour {
   }
   void Start() {
     onButtonClick(selectedPanel);
+    foreach (ItemTooltip tooltip in items) {
+      tooltip.inCharacterView = true;
+      tooltip.inCombineView = false;
+    }
   }
 
   private void onButtonClick(Selection s){

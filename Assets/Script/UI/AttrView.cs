@@ -10,6 +10,7 @@ public class AttrView: MonoBehaviour {
 
   public Dictionary<string, Text> attrDict = new Dictionary<string,Text>();
   public GameObject text;
+  public Attributes curAttr;
 
   void Awake() {
     initFields();
@@ -27,6 +28,7 @@ public class AttrView: MonoBehaviour {
 
   public void updateAttr(Attributes attr) {
     initFields();
+    curAttr = attr;
     foreach(FieldInfo f in typeof(Attributes).GetFields()) {
       if (attrDict.ContainsKey(f.Name)) {
         attrDict[f.Name].text = f.Name + " " + f.GetValue(attr);

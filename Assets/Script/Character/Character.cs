@@ -7,8 +7,7 @@ public class Character {
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";
-  public Equipment[] gear = new Equipment[]{new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1),
-                                            new Armour("Unarmed", Armour.ArmourKinds.Leather, 1)};
+  public Equipment[] gear = new Equipment[]{null,null};
   public Character(string name): this() {
     this.name = name;
   }
@@ -20,6 +19,8 @@ public class Character {
     attr.maxHealth = 10;
     attr.speed = 2;
     attr.moveRange = 4;
+    equip(new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1));
+    equip(new Armour("Unarmed", Armour.ArmourKinds.Leather, 1));
   }
 
   public void unEquip(Equipment e) {
