@@ -1,3 +1,4 @@
+[System.Serializable]
 public class EquipType {
   readonly int type;
   public readonly static EquipType weapon = new EquipType(0);
