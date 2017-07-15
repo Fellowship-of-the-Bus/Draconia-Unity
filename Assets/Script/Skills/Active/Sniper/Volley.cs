@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Volley: CircleAoE {
   public Volley() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     aoe = 2;
     useLos = false;

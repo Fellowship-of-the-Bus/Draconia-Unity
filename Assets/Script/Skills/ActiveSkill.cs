@@ -26,6 +26,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool useLos {get; set;}
   public string name {get; set;}
   public int maxCooldown {get; set;}
+
+  //experience gained when used
+  public int expGainUse = 10;
+
   private bool[] usableWeapon = new bool[3] { true, true, true };
   private bool unarmed = true;
 
@@ -117,10 +121,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   protected void requireMelee() {
-    usableWeapon[(int)Weapon.kinds.Ranged] = false;
+    usableWeapon[(int)Weapon.Kinds.Ranged] = false;
   }
 
-  protected void requireWeapon(Weapon.kinds k) {
+  protected void requireWeapon(Weapon.Kinds k) {
     for (int i = 0; i < usableWeapon.Length; i++) {
       usableWeapon[i] = i == (int)k;
     }
@@ -185,4 +189,5 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool canTarget(Tile other) {
     return !other.occupied() || ((other.occupant.team == self.team && targets[0]) || (other.occupant.team != self.team && targets[1]));
   }
+
 }

@@ -32,11 +32,20 @@ public class BattleCharacter : Effected {
     get { return (Weapon)baseChar.gear[EquipType.weapon]; }
   }
 
+  public int curExp {
+    get { return baseChar.curExp;}
+  }
+
+  public int curLevel {
+    get {return baseChar.curLevel;}
+  }
+
   [System.Serializable]
   public struct SkillData {
     public string name;
     public int level;
   }
+
   // Allow setting skills in editor
   public SkillData[] skillSet;
   public SkillData[] passiveSet;
@@ -174,6 +183,7 @@ public class BattleCharacter : Effected {
   }
 
   public void attackWithSkill(ActiveSkill skill, List<Effected> targets) {
+    int expGained = getExpGained(skill, null);
     List<BattleCharacter> cTargets = new List<BattleCharacter>();
     List<Tile> tTargets = new List<Tile>();
     foreach(Effected e in targets) {
@@ -218,6 +228,8 @@ public class BattleCharacter : Effected {
               postDamageEvent.damageTaken = damage;
               c.onEvent(postDamageEvent);
             }
+          } else {
+            expGained += getExpGained(skill, c);
           }
           Event postAttackEvent = new Event(this, EventHook.postAttack);
           postAttackEvent.damageTaken = damage;
@@ -235,6 +247,8 @@ public class BattleCharacter : Effected {
     postSkill.targets = targets;
     postSkill.skillUsed = skill;
     onEvent(postSkill);
+
+    baseChar.gainExp(expGained);
   }
 
   void floatingText(int val, Color colour) {
@@ -303,6 +317,19 @@ public class BattleCharacter : Effected {
     foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(allEffects)) {
       removeEffect(n.Value);
     }
+  }
+
+  //kill = null => get base exp for using skill
+  //get = character => get exp for killing it
+  public int getExpGained(ActiveSkill skill, BattleCharacter killed) {
+    int exp;
+    if (killed != null) {
+      //TODO: scale exp based on level difference
+      exp = killed.baseChar.expGiven;
+    } else {
+      exp = skill.expGainUse;
+    }
+    return exp;
   }
 
   public bool isAlive() {

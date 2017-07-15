@@ -17,7 +17,6 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
   //if true it is on character
   public bool inCharacterView = false;
   public bool inCombineView = false;
-  public ItemTooltip linkedTo;
 
   void Start() {
   }
@@ -38,11 +37,6 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
     init();
     _equip = e;
     if (e == null) {
-      //break links if necessary
-      if (linkedTo != null) {
-        linkedTo.linkedTo = null;
-        linkedTo = null;
-      }
       return;
     }
     setTipbox();
@@ -90,21 +84,16 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
     InvCharSelect inv = InvCharSelect.get;
     if (inCharacterView) {
       //no equipment or default do nothing.
-      if (equip == null || equip.defaultEquipment) return;
+      if (equip == null || equip.isDefaultEquipment) return;
       Character c = equip.equippedTo;
       c.unEquip(equip);
 
       //need default value so it doesnt complain about uninit variable
-      Equipment def = new Weapon();
-      if (equip is Weapon) {
-        def = new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1);
-      } else if (equip is Armour) {
-        def = new Armour("Unarmed", Armour.ArmourKinds.Leather, 1);
-      }
+      Equipment def = equip.getDefault();
       c.equip(def);
-      linkedTo.updateColour();
-      linkedTo.linkedTo = null;
-      linkedTo = null;
+      if (!equip.isDefaultEquipment){
+        InvItemSelect.get.getTooltipWithEquipment(equip).updateColour();
+      }
       equip = def;
     } else {
       //disallow equipping other characters items for now
@@ -113,16 +102,11 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
       var tooltip = inv.items[equip.type];
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
-        if (inv.items[equip.type].linkedTo != null) {
-          inv.items[equip.type].linkedTo.updateColour();
-          //break previous link
-          tooltip.linkedTo.linkedTo = null;
+        if (!charEquip.isDefaultEquipment) {
+          InvItemSelect.get.getTooltipWithEquipment(charEquip).updateColour();
         }
       }
 
-      //set new link
-      tooltip.linkedTo = this;
-      linkedTo = tooltip;
       inv.selectedPanel.c.equip(equip);
       tooltip.setItem(equip);
       updateColour();
@@ -150,7 +134,7 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
 
   protected override bool showTip() {
     init();
-    return equip != null && !equip.defaultEquipment;
+    return equip != null && !equip.isDefaultEquipment;
   }
 
   protected override void setTipbox() {

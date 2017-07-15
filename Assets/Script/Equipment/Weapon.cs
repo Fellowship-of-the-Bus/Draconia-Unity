@@ -4,22 +4,27 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Weapon : Equipment {
   public int range = 1;
-  public enum kinds { Sharp, Blunt, Ranged };
-  public kinds kind = kinds.Blunt;
+  public enum Kinds { Melee, Ranged, Default };
+  public Kinds kind = Kinds.Default;
 
-  public override void upgrade() {
+  public static readonly Weapon defaultWeapon = new Weapon(EquipmentClass.Unarmed, 1, 1);
 
+  public override Equipment getDefault() { return defaultWeapon; }
+
+  public override Equipment upgrade(Equipment e1, Equipment e2) {
+    return new Weapon(equipmentClass, range, tier, kind);
   }
 
-  public Weapon() {
-    type = EquipType.weapon;
-  }
-
-  public Weapon(string equipmentClass, kinds kind, int range, int tier) : this() {
+  public Weapon(EquipmentClass equipmentClass, int range, int tier, Kinds kind = Kinds.Default) {
+    this.type = EquipType.weapon;
     this.equipmentClass = equipmentClass;
-    this.kind = kind;
     this.range = range;
     this.tier = tier;
+    if (kind == Kinds.Default) {
+      this.kind = equipmentClass.getWeaponKind();
+    } else {
+      this.kind = kind;
+    }
   }
 
   /*public Weapon(kinds k) {

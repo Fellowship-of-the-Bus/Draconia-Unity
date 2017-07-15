@@ -33,6 +33,11 @@ public class SkillTree {
 
     return actives;
   }
+  //called when character levels up
+  public void gainLevels(int levelsToGain) {
+
+  }
+
 }
 
 

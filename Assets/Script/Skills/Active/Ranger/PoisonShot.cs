@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PoisonShot: SingleTarget {
   public PoisonShot() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Poison Shot";
