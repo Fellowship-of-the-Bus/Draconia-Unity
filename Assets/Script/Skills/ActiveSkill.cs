@@ -26,6 +26,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool useLos {get; set;}
   public string name {get; set;}
   public int maxCooldown {get; set;}
+
+  //experience gained when used
+  public int expGainUse = 10;
+
   private bool[] usableWeapon = new bool[3] { true, true, true };
   private bool unarmed = true;
 
@@ -185,4 +189,5 @@ public abstract class ActiveSkill : EventListener, Skill {
   public bool canTarget(Tile other) {
     return !other.occupied() || ((other.occupant.team == self.team && targets[0]) || (other.occupant.team != self.team && targets[1]));
   }
+
 }
