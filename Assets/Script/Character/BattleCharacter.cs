@@ -32,8 +32,14 @@ public class BattleCharacter : Effected {
     get { return (Weapon)baseChar.gear[EquipType.weapon]; }
   }
 
+  [System.Serializable]
+  public struct SkillData {
+    public string name;
+    public int level;
+  }
   // Allow setting skills in editor
-  public string[] skillSet;
+  public SkillData[] skillSet;
+  public SkillData[] passiveSet;
 
   public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
 
@@ -73,11 +79,10 @@ public class BattleCharacter : Effected {
   }
   List<String> prevSkillSet = new List<String>();
   public void init() {
-    if (Options.debugMode) {
+    equippedSkills = skills.getActives(this);
+    if (Options.debugMode || equippedSkills.IsEmpty()) {
       setSkills();
-      prevSkillSet = new List<String>(skillSet);
-    } else {
-      equippedSkills = skills.getActives(this);
+      prevSkillSet = new List<String>(skillSet.Select(x => x.name));
     }
 
     curHealth = maxHealth;
@@ -90,21 +95,22 @@ public class BattleCharacter : Effected {
 
   void setSkills() {
     int i = 0;
-    foreach (string skillName in skillSet) {
-      if (i < prevSkillSet.Count && skillName == prevSkillSet[i]) {
+    foreach (SkillData data in skillSet) {
+      if (i < prevSkillSet.Count && data.name == prevSkillSet[i]) {
+        equippedSkills[i].level = data.level;
         i++;
         continue;
       }
-      if (i >= prevSkillSet.Count) prevSkillSet.Add(skillName);
-      else prevSkillSet[i] = skillName;
+      if (i >= prevSkillSet.Count) prevSkillSet.Add(data.name);
+      else prevSkillSet[i] = data.name;
       ActiveSkill skill = null;
       bool invalidSkill = true;
-      ;
+
       foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
-        if (t.IsSubclassOf(Type.GetType("ActiveSkill")) && t.FullName == skillName) {
+        if (t.IsSubclassOf(Type.GetType("ActiveSkill")) && t.FullName == data.name) {
           skill = (ActiveSkill)Activator.CreateInstance(t);
         }
-        if (equippedSkills.Count > i && t.FullName == skillName && t == equippedSkills[i].GetType()) {
+        if (equippedSkills.Count > i && t.FullName == data.name && t == equippedSkills[i].GetType()) {
           skill = null;
           invalidSkill = false;
         }
@@ -114,7 +120,7 @@ public class BattleCharacter : Effected {
         skill = new Punch();
       }
       if (skill != null) {
-        skill.level = 1;
+        skill.level = data.level;
         skill.self = this;
         if (equippedSkills.Count > i) {
           equippedSkills[i] = skill;
@@ -123,6 +129,24 @@ public class BattleCharacter : Effected {
         }
       }
       i++;
+    }
+  }
+
+  public void applyPassives() {
+    BattleCharacter c = GetComponent<BattleCharacter>();
+    foreach (SkillData data in passiveSet) {
+      PassiveSkill skill = null;
+      foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
+        if (t.IsSubclassOf(Type.GetType("PassiveSkill")) && t.FullName == data.name) {
+          skill = (PassiveSkill)Activator.CreateInstance(t);
+          skill.level = data.level;
+          skill.self = c;
+          skill.activate(c);
+        }
+      }
+    }
+    foreach (PassiveSkill passive in skills.getPassives(c)) {
+      passive.activate(c);
     }
   }
 
@@ -140,12 +164,6 @@ public class BattleCharacter : Effected {
     updateLifeBar(lifebar);
   }
 
-  public void applyPassives() {
-    BattleCharacter c = GetComponent<BattleCharacter>();
-    foreach (PassiveSkill passive in skills.getPassives(c)) {
-      passive.activate(c);
-    }
-  }
 
   public float calcMoveTime(float time, int turns = 1) {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
