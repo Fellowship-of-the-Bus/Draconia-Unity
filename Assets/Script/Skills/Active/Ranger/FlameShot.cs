@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class FlameShot: SingleTarget {
   public FlameShot() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Flame Shot";

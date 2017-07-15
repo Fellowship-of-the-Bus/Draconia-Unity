@@ -121,10 +121,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   protected void requireMelee() {
-    usableWeapon[(int)Weapon.kinds.Ranged] = false;
+    usableWeapon[(int)Weapon.Kinds.Ranged] = false;
   }
 
-  protected void requireWeapon(Weapon.kinds k) {
+  protected void requireWeapon(Weapon.Kinds k) {
     for (int i = 0; i < usableWeapon.Length; i++) {
       usableWeapon[i] = i == (int)k;
     }

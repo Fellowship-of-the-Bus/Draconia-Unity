@@ -3,19 +3,17 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Armour : Equipment {
-  public enum ArmourKinds { Metal, Robe, Leather };
-  public ArmourKinds kind = ArmourKinds.Metal;
+  public static readonly Armour defaultArmour = new Armour(EquipmentClass.Unarmed, 1);
 
-  public override void upgrade() {
+  public override Equipment getDefault() { return defaultArmour; }
 
-  }
-  public Armour() {
-    type = EquipType.armour;
+  public override Equipment upgrade(Equipment e1, Equipment e2) {
+    return new Armour(equipmentClass, tier);
   }
 
-  public Armour(string equipmentClass, ArmourKinds kind, int tier) : this() {
+  public Armour(EquipmentClass equipmentClass, int tier) {
     this.equipmentClass = equipmentClass;
-    this.kind = kind;
     this.tier = tier;
+    this.type = EquipType.armour;
   }
 }

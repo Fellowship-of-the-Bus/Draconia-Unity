@@ -5,16 +5,15 @@ using System.Collections.Generic;
 public class Inventory {
   public LinkedList<Equipment> equipments = new LinkedList<Equipment>();
 
-  public void combine(Equipment b, Equipment e, Equipment e2) {
+  public Equipment combine(Equipment b, Equipment e, Equipment e2) {
     //check same tier
     if (b.tier != e.tier || b.tier != e2.tier) {
-      return;
+      return null;
     }
     if (b.canUpgrade()) {
-      equipments.Remove(e);
-      equipments.Remove(e2);
-      b.upgrade();
+      return b.upgrade(e, e2);
     }
+    return null;
   }
   public void deleteEquipment(Equipment e) {
     equipments.Remove(e);

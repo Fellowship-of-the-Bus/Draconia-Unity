@@ -29,8 +29,8 @@ public class Character {
     attr.maxHealth = 10;
     attr.speed = 2;
     attr.moveRange = 4;
-    equip(new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1));
-    equip(new Armour("Unarmed", Armour.ArmourKinds.Leather, 1));
+    equip(Weapon.defaultWeapon);
+    equip(Armour.defaultArmour);
   }
 
   public void unEquip(Equipment e) {

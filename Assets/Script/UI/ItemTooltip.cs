@@ -84,19 +84,14 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
     InvCharSelect inv = InvCharSelect.get;
     if (inCharacterView) {
       //no equipment or default do nothing.
-      if (equip == null || equip.defaultEquipment) return;
+      if (equip == null || equip.isDefaultEquipment) return;
       Character c = equip.equippedTo;
       c.unEquip(equip);
 
       //need default value so it doesnt complain about uninit variable
-      Equipment def = new Weapon();
-      if (equip is Weapon) {
-        def = new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1);
-      } else if (equip is Armour) {
-        def = new Armour("Unarmed", Armour.ArmourKinds.Leather, 1);
-      }
+      Equipment def = equip.getDefault();
       c.equip(def);
-      if (!equip.defaultEquipment){
+      if (!equip.isDefaultEquipment){
         InvItemSelect.get.getTooltipWithEquipment(equip).updateColour();
       }
       equip = def;
@@ -107,7 +102,7 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
       var tooltip = inv.items[equip.type];
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
-        if (!charEquip.defaultEquipment) {
+        if (!charEquip.isDefaultEquipment) {
           InvItemSelect.get.getTooltipWithEquipment(charEquip).updateColour();
         }
       }
@@ -139,7 +134,7 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
 
   protected override bool showTip() {
     init();
-    return equip != null && !equip.defaultEquipment;
+    return equip != null && !equip.isDefaultEquipment;
   }
 
   protected override void setTipbox() {

@@ -5,7 +5,7 @@ using System.Collections;
 public class ForceShot: SingleTarget {
 
   public ForceShot() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Force Shot";
