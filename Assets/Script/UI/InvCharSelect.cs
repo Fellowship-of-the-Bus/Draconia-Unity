@@ -63,11 +63,6 @@ public class InvCharSelect: MonoBehaviour {
     foreach (Equipment e in s.c.gear) {
       if (e != null) {
         items[e.type].setItem(e);
-        //if default don't link
-        if (e.defaultEquipment) continue;
-        ItemTooltip tooltip = InvItemSelect.get.getTooltipWithEquipment(e);
-        tooltip.linkedTo = items[e.type];
-        items[e.type].linkedTo = tooltip;
       }
     }
   }

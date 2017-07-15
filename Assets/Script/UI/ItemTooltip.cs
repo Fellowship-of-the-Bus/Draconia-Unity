@@ -17,7 +17,6 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
   //if true it is on character
   public bool inCharacterView = false;
   public bool inCombineView = false;
-  public ItemTooltip linkedTo;
 
   void Start() {
   }
@@ -38,11 +37,6 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
     init();
     _equip = e;
     if (e == null) {
-      //break links if necessary
-      if (linkedTo != null) {
-        linkedTo.linkedTo = null;
-        linkedTo = null;
-      }
       return;
     }
     setTipbox();
@@ -102,9 +96,9 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
         def = new Armour("Unarmed", Armour.ArmourKinds.Leather, 1);
       }
       c.equip(def);
-      linkedTo.updateColour();
-      linkedTo.linkedTo = null;
-      linkedTo = null;
+      if (!equip.defaultEquipment){
+        InvItemSelect.get.getTooltipWithEquipment(equip).updateColour();
+      }
       equip = def;
     } else {
       //disallow equipping other characters items for now
@@ -113,16 +107,11 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
       var tooltip = inv.items[equip.type];
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
-        if (inv.items[equip.type].linkedTo != null) {
-          inv.items[equip.type].linkedTo.updateColour();
-          //break previous link
-          tooltip.linkedTo.linkedTo = null;
+        if (!charEquip.defaultEquipment) {
+          InvItemSelect.get.getTooltipWithEquipment(charEquip).updateColour();
         }
       }
 
-      //set new link
-      tooltip.linkedTo = this;
-      linkedTo = tooltip;
       inv.selectedPanel.c.equip(equip);
       tooltip.setItem(equip);
       updateColour();

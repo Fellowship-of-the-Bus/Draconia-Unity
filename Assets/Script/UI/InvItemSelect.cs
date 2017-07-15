@@ -28,10 +28,6 @@ public class InvItemSelect: MonoBehaviour {
       tooltip.inCombineView = false;
       tooltip.setItem(e);
       InvCharSelect charSelect = InvCharSelect.get;
-      if (e == charSelect.items[e.type].equip) {
-        tooltip.linkedTo = charSelect.items[e.type];
-        charSelect.items[e.type].linkedTo = tooltip;
-      }
       tooltip.updateColour();
       index++;
     }
