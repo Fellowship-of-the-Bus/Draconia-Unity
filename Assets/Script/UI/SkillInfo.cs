@@ -58,9 +58,9 @@ public class SkillInfo: MonoBehaviour {
       if (parent) parent.removeChild(this);
     } else {
       if (skillLevel < 1) return;
-      tree.equipSkill(skillType);
       SkillInfo s = controller.equip(skillType);
       if (s) {
+        tree.equipSkill(skillType);
         s.parent = this;
         children.Add(s);
       }
