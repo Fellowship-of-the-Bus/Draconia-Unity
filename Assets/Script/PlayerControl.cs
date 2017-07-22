@@ -73,7 +73,7 @@ public class PlayerControl : MonoBehaviour {
       // show projected damage
       BattleCharacter character = hoveredObject.GetComponent<BattleCharacter>();
       gameManager.selectTarget(character);
-      if (gameManager.playerTurn) {
+      if (gameManager.playerTurn && !gameManager.moving) {
         if (hoveredObject.tag == "Unit") {
           // set color of hovered tile
           if (gameManager.SelectedSkill >= 0 && gameManager.SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[gameManager.SelectedSkill].targetsTiles) {
