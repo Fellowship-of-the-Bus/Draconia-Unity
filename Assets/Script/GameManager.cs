@@ -355,7 +355,7 @@ public class GameManager : MonoBehaviour {
     startTurn();
   }
 
-  public void MovePiece(BattleCharacter c, Tile t) {
+  public void movePiece(BattleCharacter c, Tile t) {
     map.djikstra(t.transform.position, c);
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
@@ -435,7 +435,7 @@ public class GameManager : MonoBehaviour {
 
   /** remaining move amount */
   public int moveRange = 0;
-  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
+  public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     // don't start moving twice
     if (moving) return null;
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
@@ -480,7 +480,7 @@ public class GameManager : MonoBehaviour {
       Pair<Tile, int> val = positionStack.Pop();
       Vector3 coordToMove = val.first.transform.position;
       moveRange = val.second;
-      MovePiece(coordToMove, false, false);
+      movePiece(coordToMove, false, false);
       changeState(GameState.moving);
       map.djikstra(coordToMove, character);
       map.setTileColours();
@@ -501,7 +501,7 @@ public class GameManager : MonoBehaviour {
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
-    yield return MovePiece(destination, true);
+    yield return movePiece(destination, true);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();

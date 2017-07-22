@@ -112,6 +112,16 @@ public class Map {
     return inRangeTiles;
   }
 
+  public List<Tile> getTilesWithinMovementRange(int mvRange) {
+    List<Tile> inRangeTiles = new List<Tile>();
+    foreach (Tile other in tiles) {
+      if (other.distance <= mvRange) {
+        inRangeTiles.Add(other);
+      }
+    }
+    return inRangeTiles;
+  }
+
   public List<Tile> getCardinalTilesWithinRange(Tile t, int range) {
     List<Tile> inRangeTiles = getTilesWithinRange(t, range);
     inRangeTiles = new List<Tile>(inRangeTiles.Filter((tile) =>
@@ -180,24 +190,33 @@ public class Map {
           tile.setColor(Color.clear);
         }
       }
+      // color the path
+      foreach (Tile ti in path) {
+        ti.setColor(Color.blue);
+      }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
       bool aoe = (SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] is AoeSkill);
       int range = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
         foreach (Tile tile in inRangeTiles) {
-          tile.setColor(Color.blue);
+          tile.setColor(Color.gray);
         }
         foreach (Tile t in GameManager.get.skillTargets) {
           t.setColor(Color.red);
         }
       } else {
         foreach (Tile t in SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].getTargets()) {
-          t.setColor(Color.blue);
+          t.setColor(Color.gray);
         }
         AoeSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] as AoeSkill;
         var targetsInAoe = skill.getTargetsInAoe(src.transform.position);
-        if (targetsInAoe != null) {
+        if (skill is Sprint) {
+          //set path to blue
+          foreach (Tile ti in path) {
+            ti.setColor(Color.yellow);
+          }
+        } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             if (t.occupied() && SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
             else t.setColor(Color.yellow);
@@ -213,10 +232,6 @@ public class Map {
           t.setColor(Color.magenta);
         }
       }
-    }
-    // color the path
-    foreach (Tile ti in path) {
-      ti.setColor(Color.blue);
     }
   }
 

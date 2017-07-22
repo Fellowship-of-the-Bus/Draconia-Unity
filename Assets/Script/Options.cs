@@ -9,7 +9,6 @@ public class Options {
     protected string name;
     public OpField(string name) {
       this.name = name;
-      Debug.Log(name);
     }
     public abstract void init(GameObject o);
   }
