@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Armour : Equipment {
-  public static readonly Armour defaultArmour = new Armour(EquipmentClass.Unarmed, 1);
+  public static Armour defaultArmour {
+    get { return new Armour(EquipmentClass.Unarmed, 1); }
+  }
 
   public override Equipment getDefault() { return defaultArmour; }
 
