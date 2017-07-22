@@ -29,7 +29,7 @@ public class Knockback: SingleTarget {
   public override void additionalEffects(BattleCharacter c) {
     Tile t = knockTo(c);
     if (t != null && !t.occupied() && ((GameManager.get.map.getHeight(c.curTile) + upThreshold) > GameManager.get.map.getHeight(t))) {
-      GameManager.get.MovePiece(c, t);
+      GameManager.get.movePiece(c, t);
     }
   }
 

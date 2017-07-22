@@ -72,16 +72,6 @@ public class GameManager : MonoBehaviour {
   }
   private lockUICount UILock;
 
-  void Start() {
-    foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        o.GetComponent<BattleCharacter>().init();
-        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
-      }
-    }
-    startTurn();
-  }
-
   void Awake() {
     eventManager.setGlobal();
 
@@ -111,7 +101,6 @@ public class GameManager : MonoBehaviour {
       var battleChar = createPiece();
       battleChar.baseChar = c;
       battleChar.transform.position = map.tiles[index].position;
-      battleChar.skillSet = new string[]{"Punch", "Punch", "Punch"};
       index++;
     }
 
@@ -137,7 +126,16 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
+  }
 
+  void Start() {
+    foreach (var l in characters.Values) {
+      foreach (var o in l) {
+        o.GetComponent<BattleCharacter>().init();
+        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
+      }
+    }
+    startTurn();
   }
 
   int blinkFrameNumber = 0;
@@ -199,6 +197,7 @@ public class GameManager : MonoBehaviour {
       SelectedSkill = -1;
     }
     gameState = newState;
+    if (newState == GameState.attacking) map.clearPath();
     map.setTileColours();
   }
 
@@ -356,7 +355,7 @@ public class GameManager : MonoBehaviour {
     startTurn();
   }
 
-  public void MovePiece(BattleCharacter c, Tile t) {
+  public void movePiece(BattleCharacter c, Tile t) {
     map.djikstra(t.transform.position, c);
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
@@ -436,7 +435,7 @@ public class GameManager : MonoBehaviour {
 
   /** remaining move amount */
   public int moveRange = 0;
-  public Coroutine MovePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
+  public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     // don't start moving twice
     if (moving) return null;
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
@@ -481,7 +480,7 @@ public class GameManager : MonoBehaviour {
       Pair<Tile, int> val = positionStack.Pop();
       Vector3 coordToMove = val.first.transform.position;
       moveRange = val.second;
-      MovePiece(coordToMove, false, false);
+      movePiece(coordToMove, false, false);
       changeState(GameState.moving);
       map.djikstra(coordToMove, character);
       map.setTileColours();
@@ -502,7 +501,7 @@ public class GameManager : MonoBehaviour {
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
-    yield return MovePiece(destination, true);
+    yield return movePiece(destination, true);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();

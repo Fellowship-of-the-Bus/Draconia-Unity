@@ -16,9 +16,10 @@ public class InvCharSelect: MonoBehaviour {
   public Transform parent;
   public AttrView attrView;
 
-  public ItemTooltip[] items;
+  public ItemTooltipSimple[] items;
   //public List<Selection> panels = new List<GameObject>();
   public Selection selectedPanel;
+
   void Awake() {
     //Assumes that gameData.characters is not empty. (reasonable)
     bool firstIter = true;
@@ -42,15 +43,16 @@ public class InvCharSelect: MonoBehaviour {
     }
     get = this;
   }
+
   void Start() {
     onButtonClick(selectedPanel);
-    foreach (ItemTooltip tooltip in items) {
+    foreach (ItemTooltip tooltip in items.Map((i) => i as ItemTooltip).Filter((i) => i != null)) {
       tooltip.inCharacterView = true;
       tooltip.inCombineView = false;
     }
   }
 
-  private void onButtonClick(Selection s){
+  protected virtual void onButtonClick(Selection s){
     selectedPanel.background.color = Color.white;
     s.background.color = Color.red;
     selectedPanel = s;

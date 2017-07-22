@@ -27,8 +27,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     rectTrans = tipbox.GetComponent<RectTransform>();
   }
 
-  void Update () {
-
+  void Update() {
     if (mouseOver && hoverTime <= hoverThreshold) {
       hoverTime += Time.deltaTime;
       if (hoverTime >= hoverThreshold) {
@@ -39,6 +38,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
         }
       }
     }
+
     if (tooltipShown) {
       tipbox.transform.position = tipPosition(Input.mousePosition);
       if (tipbox.transform.TransformPoint(tipbox.transform.position).x - width  < 0) {

@@ -1,5 +1,6 @@
 using System;
 
+//we are doing this instead of just casting to allow implicit casts...
 [System.Serializable]
 public class EquipType {
   readonly int type;

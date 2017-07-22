@@ -48,6 +48,10 @@ public static class Extensions {
     return source;
   }
 
+  public static bool IsEmpty<T>(this ICollection<T> source) {
+    return source.Count == 0;
+  }
+
   public static List<T> toList<T>(this IEnumerable<T> source) {
     return new List<T>(source);
   }

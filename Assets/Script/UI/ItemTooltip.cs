@@ -5,40 +5,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemTooltip : Tooltip, IPointerClickHandler {
-  private Equipment _equip;
-  public Equipment equip {
-    get { return _equip;}
-    set { setItem(value);}
-  }
-  public AttrView attrView;
-  public Text equipName;
-  public Text equippedTo;
-
+public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
   //if false it is in the list of equipments
   //if true it is on character
   public bool inCharacterView = false;
   public bool inCombineView = false;
 
-  // must override Start so that Tooltip Start is not called.
-  void Start() {}
-
-  bool onlyOnce = true;
-  public void init() {
+  override public void init() {
     if (!onlyOnce) return;
     attrView = InventoryController.get.attrView;
     equipName = InventoryController.get.equipName;
     equippedTo = InventoryController.get.equippedTo;
     tipbox = InventoryController.get.tooltip;
-    rectTrans = tipbox.GetComponent<RectTransform>();
-    onlyOnce = false;
-  }
-
-  //also need to set the image eventually and colour
-  public void setItem(Equipment e) {
-    init();
-    _equip = e;
-    setTipbox();
+    base.init();
   }
 
   public void OnPointerClick(PointerEventData eventData) {
@@ -96,7 +75,7 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
       // disallow equipping other characters items for now.
       if (equip.equippedTo != null) return;
       var charEquip = inv.items[equip.type].equip;
-      var tooltip = inv.items[equip.type];
+      var tooltip = inv.items[equip.type] as ItemTooltip;
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
         if (! charEquip.isDefaultEquipment) {
@@ -130,23 +109,6 @@ public class ItemTooltip : Tooltip, IPointerClickHandler {
     ItemTooltip tip = inv.getTooltipWithEquipment(curEquip);
     if (tip != null) {
       tip.updateColour();
-    }
-  }
-
-  protected override bool showTip() {
-    init();
-    return equip != null && !equip.isDefaultEquipment;
-  }
-
-  protected override void setTipbox() {
-    if (equip == null) return;
-    if (equip.isDefaultEquipment) tipbox.SetActive(false);
-    attrView.updateAttr(equip.attr);
-    equipName.text = equip.name();
-    if (equip.equippedTo != null) {
-      equippedTo.text = "Equipped To: " + equip.equippedTo.name;
-    } else {
-      equippedTo.text = "Equipped To: No one.";
     }
   }
 }
