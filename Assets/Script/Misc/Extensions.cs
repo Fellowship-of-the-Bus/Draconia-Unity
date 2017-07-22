@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public static class Extensions {
@@ -13,25 +14,10 @@ public static class Extensions {
     }
   }
 
-  public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) {
-    IEnumerator<TSource> it = source.GetEnumerator();
-    while (it.MoveNext()) {
-      yield return selector(it.Current);
-    }
-  }
-
   public static IEnumerable<TResult> Map<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> f) {
     return source.Select(f);
   }
 
-  public static IEnumerable<TResult> Where<TResult> (this IEnumerable<TResult> source, Func<TResult, bool> f) {
-    IEnumerator<TResult> it = source.GetEnumerator();
-    while(it.MoveNext()) {
-      if (f(it.Current)) {
-        yield return it.Current;
-      }
-    }
-  }
   public static IEnumerable<TResult> Filter<TResult> (this IEnumerable<TResult> source, Func<TResult, bool> f) {
     return source.Where(f);
   }
@@ -85,8 +71,20 @@ public static class Extensions {
     return transform;
   }
 
-  public static int toInt(this IConvertible e) {
-    return e.ToInt32(null);
+  public static IEnumerable<T> GetValues<T>(this T x) where T : IConvertible {
+    return (T[])Enum.GetValues(typeof(T));
+  }
+
+  public static Dictionary<TKey, TVal> toDictionary<TKey,TVal>(this IEnumerable<IGrouping<TKey, TVal>> x) {
+    return (Dictionary<TKey,TVal>)x;
+  }
+
+  public static TVal safeGet<TKey, TVal>(this IDictionary<TKey, TVal> x, TKey key) where TVal : new() {
+    TVal value;
+    if (! x.TryGetValue(key, out value)) {
+      return new TVal();
+    }
+    return value;
   }
 }
 

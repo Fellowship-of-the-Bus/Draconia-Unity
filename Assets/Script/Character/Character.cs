@@ -34,14 +34,13 @@ public class Character {
   }
 
   public void unEquip(Equipment e) {
+    if (e == null) return;
     e.equippedTo = null;
     gear[e.type] = null;
   }
 
   public void equip(Equipment e) {
-    if (gear[e.type] != null){
-      gear[e.type].equippedTo = null;
-    }
+    unEquip(gear[e.type]);
     gear[e.type] = e;
     e.equippedTo = this;
   }

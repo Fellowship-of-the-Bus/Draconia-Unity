@@ -6,7 +6,7 @@ public enum EquipmentClass {
   Sword, Bow, Axe, // Weapon
   Shield, Metal, Robe, Leather, // Armor
   Unarmed // Unarmed works for either, so keep it last
-}
+} // MUST keep getWeaponKind consistent with this enum
 
 public static class EquipmentClassMethods {
   public static Weapon.Kinds getWeaponKind(this EquipmentClass e) {

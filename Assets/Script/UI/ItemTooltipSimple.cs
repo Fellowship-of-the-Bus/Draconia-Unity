@@ -13,8 +13,8 @@ public class ItemTooltipSimple : Tooltip {
   public Text equipName;
   public Text equippedTo;
 
-  void Start() {
-  }
+  // must override Start so that Tooltip Start is not called.
+  void Start() {}
 
   protected bool onlyOnce = true;
   virtual public void init() {
@@ -23,7 +23,8 @@ public class ItemTooltipSimple : Tooltip {
     onlyOnce = false;
   }
 
-  virtual public void setItem(Equipment e) {
+  //also need to set the image eventually and colour
+  public void setItem(Equipment e) {
     init();
     _equip = e;
     setTipbox();
@@ -36,6 +37,7 @@ public class ItemTooltipSimple : Tooltip {
 
   protected override void setTipbox() {
     if (equip == null) return;
+    if (equip.isDefaultEquipment) tipbox.SetActive(false);
     attrView.updateAttr(equip.attr);
     equipName.text = equip.name();
     if (equip.equippedTo != null) {

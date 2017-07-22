@@ -57,15 +57,9 @@ public class InvCharSelect: MonoBehaviour {
     s.background.color = Color.red;
     selectedPanel = s;
     updateAttrView();
-    //reset all items
-    foreach (ItemTooltipSimple tooltip in items) {
-      tooltip.setItem(null);
-    }
     //add new items and set up links
     foreach (Equipment e in s.c.gear) {
-      if (e != null) {
-        items[e.type].setItem(e);
-      }
+      items[e.type].setItem(e);
     }
   }
 

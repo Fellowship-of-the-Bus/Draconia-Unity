@@ -8,7 +8,9 @@ public class Weapon : Equipment {
   public enum Kinds { Melee, Ranged, Default };
   public Kinds kind = Kinds.Default;
 
-  public static readonly Weapon defaultWeapon = new Weapon(EquipmentClass.Unarmed, 1, 1);
+  public static Weapon defaultWeapon {
+    get { return new Weapon(EquipmentClass.Unarmed, 1, 1); }
+  }
 
   public override Equipment getDefault() { return defaultWeapon; }
 

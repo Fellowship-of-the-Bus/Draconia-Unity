@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,26 +11,13 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
   public bool inCharacterView = false;
   public bool inCombineView = false;
 
-
-
   override public void init() {
     if (!onlyOnce) return;
     attrView = InventoryController.get.attrView;
     equipName = InventoryController.get.equipName;
     equippedTo = InventoryController.get.equippedTo;
     tipbox = InventoryController.get.tooltip;
-    rectTrans = tipbox.GetComponent<RectTransform>();
-    onlyOnce = false;
-  }
-
-  //also need to set the image eventually and colour
-  override public void setItem(Equipment e) {
-    init();
-    _equip = e;
-    if (e == null) {
-      return;
-    }
-    setTipbox();
+    base.init();
   }
 
   public void OnPointerClick(PointerEventData eventData) {
@@ -36,8 +25,6 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
       if (!inCombineView) {
         onButtonClick();
       }
-    } else if (eventData.button == PointerEventData.InputButton.Middle){
-      //Debug.Log("Middle click");
     } else if (eventData.button == PointerEventData.InputButton.Right){
       if (!inCharacterView){
         onRightClick();
@@ -45,39 +32,38 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
     }
   }
 
-
   public void updateColour() {
     if (inCharacterView){
       return;
     }
-    //green = unequipped
-    //red = equipped to selected character
+    List<Color> colors = new List<Color>();
+    if (InvItemSelect.get.isMaterial(equip)) {
+      // material
+      colors.Add(Color.red);
+    }
     if (equip.equippedTo != null) {
-      gameObject.GetComponent<Image>().color = Color.green;
-    } else {
-      gameObject.GetComponent<Image>().color = Color.white;
+      // equipped
+      colors.Add(Color.green);
     }
+    Color c;
+    if (colors.Count == 0) {
+      c = Color.white;
+    } else {
+      c = colors.Aggregate((Color a, Color b) => a+b);
+    }
+    gameObject.GetComponent<Image>().color = c;
+  }
 
-  }
-  float doubleClickStart = 0;
-  float doubleClickInterval = 0.5f;
   public void onButtonClick(){
-    if ((Time.time - doubleClickStart) < doubleClickInterval){
-      onDoubleClick();
-      doubleClickStart = -1;
-    } else {
-      doubleClickStart = Time.time;
-    }
-  }
-  private void onDoubleClick() {
     InvCharSelect inv = InvCharSelect.get;
     if (inCharacterView) {
-      //no equipment or default do nothing.
+      // unequip item from character.
+      // no equipment or default do nothing
       if (equip == null || equip.isDefaultEquipment) return;
       Character c = equip.equippedTo;
       c.unEquip(equip);
 
-      //need default value so it doesnt complain about uninit variable
+      // need default value so it doesnt complain about uninit variable
       Equipment def = equip.getDefault();
       c.equip(def);
       if (!equip.isDefaultEquipment){
@@ -85,55 +71,44 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
       }
       equip = def;
     } else {
-      //disallow equipping other characters items for now
+      // equip item to character.
+      // disallow equipping other characters items for now.
       if (equip.equippedTo != null) return;
       var charEquip = inv.items[equip.type].equip;
       var tooltip = inv.items[equip.type] as ItemTooltip;
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
-        if (!charEquip.isDefaultEquipment) {
+        if (! charEquip.isDefaultEquipment) {
           InvItemSelect.get.getTooltipWithEquipment(charEquip).updateColour();
         }
       }
-
       inv.selectedPanel.c.equip(equip);
       tooltip.setItem(equip);
       updateColour();
-      tooltip.updateColour();
     }
     inv.updateAttrView();
   }
 
   private void onRightClick() {
     InvItemSelect inv = InvItemSelect.get;
-    //from inventory, add it to materials
-    //from materials remove it
-    if (!inCombineView) {
-      inv.addMaterial(equip);
-    } else if (inCombineView) {
+    Equipment curEquip = equip;
+    if (inCombineView) {
       if (inv.isResult(this) && equip != null) {
+        // item is combine result, create it.
         inv.createUpgrade();
       } else {
+        // remove item from materials
         equip = null;
         inv.removeCreated();
+        tipbox.SetActive(false);
       }
-    }
-
-  }
-
-  protected override bool showTip() {
-    init();
-    return equip != null && !equip.isDefaultEquipment;
-  }
-
-  protected override void setTipbox() {
-    if (equip == null) return;
-    attrView.updateAttr(equip.attr);
-    equipName.text = equip.name();
-    if (equip.equippedTo != null) {
-      equippedTo.text = "Equipped To: " + equip.equippedTo.name;
     } else {
-      equippedTo.text = "Equipped To: No one.";
+      // from inventory, add it to materials
+      inv.addMaterial(equip);
+    }
+    ItemTooltip tip = inv.getTooltipWithEquipment(curEquip);
+    if (tip != null) {
+      tip.updateColour();
     }
   }
 }
