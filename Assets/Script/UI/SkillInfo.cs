@@ -47,7 +47,7 @@ public class SkillInfo: MonoBehaviour {
     if (parent) parent.update(tree, this);
   }
 
-  public void removeChild(SkillInfo s) {
+  private void removeChild(SkillInfo s) {
     children.Remove(s);
   }
 
