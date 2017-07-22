@@ -24,4 +24,8 @@ public class OverWorld: MonoBehaviour {
     SceneManager.LoadSceneAsync ("Inventory");
   }
 
+  public void option() {
+    SceneManager.LoadSceneAsync("Option");
+  }
+
 }
