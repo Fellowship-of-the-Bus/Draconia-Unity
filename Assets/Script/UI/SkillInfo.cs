@@ -41,6 +41,10 @@ public class SkillInfo: MonoBehaviour {
 
   public void equip(bool state) {
     equipped = state;
+    if (skillLevel < 1) {
+      equipped = false;
+      return;
+    }
     if (equipped) {
       tree.equipSkill(skillType);
       if (controller.equip(this)) equipText.text = "Unequip";
