@@ -84,5 +84,9 @@ public static class Extensions {
     }
     return transform;
   }
+
+  public static int toInt(this IConvertible e) {
+    return e.ToInt32(null);
+  }
 }
 

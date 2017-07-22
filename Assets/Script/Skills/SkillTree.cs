@@ -1,38 +1,85 @@
 using UnityEngine;
+using System;
+using System.Reflection;
 using System.Collections.Generic;
 
 [System.Serializable]
 public class SkillTree {
-  List<PassiveSkill> passives = new List<PassiveSkill>();
-  List<ActiveSkill> actives = new List<ActiveSkill>();
+  Dictionary<Type, int> passives = new Dictionary<Type, int>();
+  Dictionary<Type, int> actives = new Dictionary<Type, int>();
 
-  public void addSkill<T>(int level = 1) where T : Skill, new() {
-    T skill = new T();
-    skill.level = level;
+  List<Type> equippedSkills = new List<Type>();
 
-    if (skill as PassiveSkill != null) {
-      passives.Add(skill as PassiveSkill);
-    } else if (skill as ActiveSkill != null) {
-      actives.Add(skill as ActiveSkill);
+  public SkillTree() {
+    foreach(Type t in SkillList.get.skills) {
+      addSkill(t, 0);
+    }
+  }
+
+  private Type pskill = Type.GetType("PassiveSkill");
+  private Type askill = Type.GetType("ActiveSkill");
+
+  public void addSkill(Type t, int level = 1) {
+    if (t.IsSubclassOf(pskill)) {
+      passives.Add(t, level);
+    } else {
+      Debug.Assert(t.IsSubclassOf(askill));
+      actives.Add(t, level);
     }
   }
 
   //just return something for testing for now
   public List<PassiveSkill> getPassives(BattleCharacter self) {
-    foreach (PassiveSkill p in passives) {
+    List<PassiveSkill> l = new List<PassiveSkill>();
+    foreach ( KeyValuePair<Type, int> kvp in passives) {
+      if (kvp.Value == 0) continue;
+      PassiveSkill p = (PassiveSkill)Activator.CreateInstance(kvp.Key);
+      p.level = kvp.Value;
       p.self = self;
+      l.Add(p);
     }
 
-    return passives;
+    return l;
   }
 
   public List<ActiveSkill> getActives(BattleCharacter self) {
-    foreach (ActiveSkill a in actives) {
+    List<ActiveSkill> l = new List<ActiveSkill>();
+    foreach (Type t in equippedSkills) {
+      ActiveSkill a = (ActiveSkill)Activator.CreateInstance(t);
+      a.level = actives[t];
       a.self = self;
+      l.Add(a);
     }
 
-    return actives;
+    return l;
   }
+
+  public int getSkillLevel(Type t) {
+    if (passives.ContainsKey(t)) return passives[t];
+    else return actives[t];
+  }
+
+  public void setSkillLevel(Type t, int lvl) {
+    if (passives.ContainsKey(t)) passives[t] = lvl;
+    else actives[t] = lvl;
+  }
+
+  public void equipSkill(Type t) {
+    if (!equippedSkills.Contains(t)) equippedSkills.Add(t);
+  }
+
+  public void unequipSkill(Type t) {
+    equippedSkills.Remove(t);
+  }
+
+  public bool isEquipped(Type t) {
+    return equippedSkills.Contains(t);
+  }
+
+  public bool isActive(Type t) {
+    return actives.ContainsKey(t);
+  }
+
   //called when character levels up
   public void gainLevels(int levelsToGain) {
 

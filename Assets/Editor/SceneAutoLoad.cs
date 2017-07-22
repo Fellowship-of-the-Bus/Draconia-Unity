@@ -82,6 +82,7 @@ static class SceneAutoLoader
             {
                 // User cancelled the save operation -- cancel play as well.
                 EditorApplication.isPlaying = false;
+                Debug.Log("CANCEL");
             }
         }
 

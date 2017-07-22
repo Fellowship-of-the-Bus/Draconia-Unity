@@ -33,8 +33,10 @@ public class PlayerControl : MonoBehaviour {
         Tile t = map.getTile(coord);
         if (t.distance <= gameManager.moveRange) {
           map.setPath(coord);
-          map.setTileColours();
+        } else {
+          map.clearPath();
         }
+        map.setTileColours();
       } else if (hoveredObject && gameManager.gameState == GameState.attacking) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 0.25f, hoveredObject.transform.position.z);
         Tile t = map.getTile(coord);

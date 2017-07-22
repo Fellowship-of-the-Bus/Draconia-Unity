@@ -40,7 +40,13 @@ public class OverWorld: MonoBehaviour {
   public void inventory() {
     SceneManager.LoadSceneAsync ("Inventory");
   }
+
   public void option() {
     SceneManager.LoadSceneAsync("Option");
   }
+
+  public void skills() {
+    SceneManager.LoadSceneAsync ("SkillSelect");
+  }
+
 }

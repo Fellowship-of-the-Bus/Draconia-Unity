@@ -197,6 +197,7 @@ public class GameManager : MonoBehaviour {
       SelectedSkill = -1;
     }
     gameState = newState;
+    if (newState == GameState.attacking) map.clearPath();
     map.setTileColours();
   }
 
