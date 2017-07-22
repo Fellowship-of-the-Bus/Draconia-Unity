@@ -65,7 +65,7 @@ public class SkillTree {
   }
 
   public void equipSkill(Type t) {
-    if (!equippedSkills.Contains(t)) equippedSkills.Add(t);
+    equippedSkills.Add(t);
   }
 
   public void unequipSkill(Type t) {
@@ -74,6 +74,10 @@ public class SkillTree {
 
   public bool isEquipped(Type t) {
     return equippedSkills.Contains(t);
+  }
+
+  public List<Type> getEquippedSkills() {
+    return equippedSkills;
   }
 
   public bool isActive(Type t) {

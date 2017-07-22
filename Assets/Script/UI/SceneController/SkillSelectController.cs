@@ -15,8 +15,9 @@ public class SkillSelectController: MonoBehaviour {
   public Transform equippedSkillView;
 
   List<SkillInfo> equippedSkills  = new List<SkillInfo>();
-  List<SkillInfo> nonEquippedSkills  = new List<SkillInfo>();
   List<SkillInfo> skills = new List<SkillInfo>();
+
+  Character curChar;
 
   void Awake() {
     get = this;
@@ -33,8 +34,16 @@ public class SkillSelectController: MonoBehaviour {
   }
 
   public void setChar(Character c) {
+    curChar = c;
+    foreach(SkillInfo s in equippedSkills) {
+      GameObject.Destroy(s.gameObject);
+    }
+    equippedSkills.Clear();
     foreach (SkillInfo s in skills) {
       s.update(c.skills);
+    }
+    foreach(Type t in c.skills.getEquippedSkills()) {
+      equip(t);
     }
   }
 
@@ -42,19 +51,23 @@ public class SkillSelectController: MonoBehaviour {
     SceneManager.LoadSceneAsync ("OverWorld");
   }
 
-  public bool equip(SkillInfo s) {
-    if (!equippedSkills.Contains(s) && equippedSkills.Count < NUM_EQUIPPED_SKILLS) {
-      s.transform.SetParent(equippedSkillView,false);
-      nonEquippedSkills.Remove(s);
+  public SkillInfo equip(Type t) {
+    if (equippedSkills.Count < NUM_EQUIPPED_SKILLS) {
+      GameObject o = Instantiate(skillInfo, equippedSkillView);
+      SkillInfo s = o.GetComponent<SkillInfo>();
+      s.init(true);
+      s.info.GetComponent<Text>().text = t.FullName;
+      s.skillType = t;
+      s.update(curChar.skills);
       equippedSkills.Add(s);
-      return true;
-    } else return false;
+      return s;
+    }
+    return null;
   }
 
   public void unequip(SkillInfo s) {
-    s.transform.SetParent(skillView,false);
-    nonEquippedSkills.Add(s);
     equippedSkills.Remove(s);
+    GameObject.Destroy(s.gameObject);
   }
 
   public static SkillSelectController get { get; set; }

@@ -10,55 +10,64 @@ public class SkillInfo: MonoBehaviour {
   public Button equipButton;
 
   public Type skillType;
-  public int skillLevel;
+  public int skillLevel {
+    get {return tree.getSkillLevel(skillType);}
+    set {tree.setSkillLevel(skillType, value);}
+  }
   public SkillTree tree;
 
   SkillSelectController controller;
 
   Text equipText;
 
-  public void init() {
+  SkillInfo parent = null;
+  List<SkillInfo> children = new List<SkillInfo>();
+
+  public bool equipped { get; private set; }
+
+  public void init(bool isEquipped = false) {
     controller = SkillSelectController.get;
     equipText = equipButton.GetComponentInChildren<Text>();
+    equipped = isEquipped;
+    if (equipped) equipText.text = "Unequip";
   }
 
-  public void update(SkillTree t) {
+  public void update(SkillTree t, SkillInfo caller = null) {
     tree = t;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
-    skillLevel = tree.getSkillLevel(skillType);
-    equipped = tree.isEquipped(skillType);
     info.text = skillType.FullName + ", level " + skillLevel;
-    equip(equipped);
+    foreach(SkillInfo s in children) {
+      if (s != caller) s.update(tree);
+    }
   }
 
   public void levelup() {
-    skillLevel++;
-    tree.setSkillLevel(skillType, skillLevel);
+    skillLevel = skillLevel + 1;
     update(tree);
+    if (parent) parent.update(tree, this);
   }
 
-  private bool equipped = false;
+  public void removeChild(SkillInfo s) {
+    children.Remove(s);
+  }
 
   public void equip(bool state) {
-    equipped = state;
-    if (skillLevel < 1) {
-      equipped = false;
-      return;
-    }
     if (equipped) {
-      tree.equipSkill(skillType);
-      if (controller.equip(this)) equipText.text = "Unequip";
-    }
-    else {
       tree.unequipSkill(skillType);
       controller.unequip(this);
-      equipText.text = "Equip";
+      if (parent) parent.removeChild(this);
+    } else {
+      if (skillLevel < 1) return;
+      tree.equipSkill(skillType);
+      SkillInfo s = controller.equip(skillType);
+      if (s) {
+        s.parent = this;
+        children.Add(s);
+      }
     }
-    info.text = skillType.FullName + ", level " + skillLevel;
   }
 
   public void equip() {
-    equipped = !equipped;
     equip(equipped);
   }
 }
