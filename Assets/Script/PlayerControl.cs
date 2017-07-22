@@ -23,15 +23,22 @@ public class PlayerControl : MonoBehaviour {
     Map map = gameManager.map;
     GameObject clickedObject = gameManager.getClicked(PlayerCam);
     GameObject hoveredObject = gameManager.getHovered(PlayerCam);
+    BattleCharacter selectedCharacter =  gameManager.SelectedPiece.GetComponent<BattleCharacter>();
+    Skill s = null;
+    if (gameManager.SelectedSkill != -1) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];
 
     if (hoveredObject && (hoveredObject.tag == "Cube" || hoveredObject.transform.parent.tag == "Cube") && !gameManager.moving) {
       if (hoveredObject.transform.parent.tag == "Cube") {
         hoveredObject = hoveredObject.transform.parent.gameObject;
       }
-      if (gameManager.gameState == GameState.moving) {
+      if (gameManager.gameState == GameState.moving || (s != null && s is Sprint)) {
         Vector3 coord = new Vector3(hoveredObject.transform.position.x, hoveredObject.transform.position.y + 1, hoveredObject.transform.position.z);
         Tile t = map.getTile(coord);
-        if (t.distance <= gameManager.moveRange) {
+        int rangeToMove = gameManager.moveRange;
+        if (s is Sprint) {
+          rangeToMove += s.range;
+        }
+        if (t.distance <= rangeToMove) {
           map.setPath(coord);
           map.setTileColours();
         }
@@ -52,7 +59,7 @@ public class PlayerControl : MonoBehaviour {
         // move unit to cube or attack ground
         if (gameManager.gameState == GameState.moving) {
           Vector3 selectedCoord = new Vector3(clickedObject.transform.position.x, clickedObject.transform.position.y + 1, clickedObject.transform.position.z);
-          gameManager.waitToEndTurn(gameManager.MovePiece(selectedCoord));
+          gameManager.waitToEndTurn(gameManager.movePiece(selectedCoord));
         } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
           gameManager.attackTarget(clickedObject.GetComponent<Tile>());
         }

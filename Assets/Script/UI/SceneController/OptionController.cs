@@ -32,12 +32,10 @@ public class OptionController: MonoBehaviour {
   }
 
   public void onToggleChange(bool val, int location) {
-    Debug.Log(location);
     ((Options.OpToggleField)Options.displayedOptions[location]).val = val;
   }
 
   public void onSliderChange(int val, int location) {
-    Debug.Log(location);
     ((Options.OpSlideField)Options.displayedOptions[location]).val = val;
     ((Options.OpSlideField)Options.displayedOptions[location]).slideVal.text = val.ToString();
   }
