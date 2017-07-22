@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class ArcShot: SingleTarget {
   public ArcShot() {
     useWepRange = true;
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useLos = false;
     name = "Arc Shot";
     maxCooldown = 2;

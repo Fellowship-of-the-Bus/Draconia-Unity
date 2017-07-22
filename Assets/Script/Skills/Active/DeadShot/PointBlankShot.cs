@@ -5,7 +5,7 @@ using System.Collections;
 public class PointBlankShot: SingleTarget {
 
   public PointBlankShot() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Point Blank Shot";

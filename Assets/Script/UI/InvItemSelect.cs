@@ -36,7 +36,6 @@ public class InvItemSelect: MonoBehaviour {
       tooltip.inCharacterView = false;
       tooltip.inCombineView = true;
     }
-
   }
 
   public ItemTooltip getTooltipWithEquipment(Equipment e) {
@@ -97,15 +96,9 @@ public class InvItemSelect: MonoBehaviour {
         return;
       }
     }
-    //weapon
-    Equipment e = null;
-    if (type == 0) {
-      e = new Weapon();
-      e.equipmentClass = "newly created";
-    } else if(type == 1) {
-      e = new Armour();
-      e.equipmentClass = "newly created";
-    }
+
+    Equipment e = GameData.gameData.inv.combine(items[0].equip, items[1].equip, items[2].equip);
+
     //add new equipment to created slot to preview
     AttrView view = InventoryController.get.attrView;
     Text equipName = InventoryController.get.equipName;
@@ -141,19 +134,12 @@ public class InvItemSelect: MonoBehaviour {
       Destroy(tooltip.gameObject);
     }
 
-
     //remove from inventory
     deleteEquipment(material1);
     deleteEquipment(material2);
     deleteEquipment(material3);
 
-    //remove from inventory
-//    GameData.gameData.inv.deleteEquipment(material1);
-  //  GameData.gameData.inv.deleteEquipment(material2);
-    //GameData.gameData.inv.deleteEquipment(material3);
-
     Equipment created = items[numMaterials].equip;
-
 
     GameData.gameData.inv.addEquipment(created);
     //make new tooltip
@@ -172,12 +158,7 @@ public class InvItemSelect: MonoBehaviour {
   private void deleteEquipment(Equipment e) {
     if (e.equippedTo != null) {
       Character c = e.equippedTo;
-      Equipment def = new Weapon();
-      if (e is Weapon) {
-        def = new Weapon("Unarmed", Weapon.kinds.Blunt, 1, 1);
-      } else if (e is Armour) {
-        def = new Armour("Unarmed", Armour.ArmourKinds.Leather, 1);
-      }
+      Equipment def = e.getDefault();
       c.equip(def);
       if (c == InvCharSelect.get.selectedPanel.c){
         InvCharSelect.get.items[e.type].equip = def;

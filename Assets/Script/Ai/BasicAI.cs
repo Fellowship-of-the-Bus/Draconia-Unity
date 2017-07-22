@@ -47,7 +47,11 @@ public class BasicAI : BaseAI {
         } else {
           List<BattleCharacter> chars = new List<BattleCharacter>(targets.Select(x => x.occupant));
           chars = new List<BattleCharacter>(chars.Filter((character) => character != null && character.team != owner.team));
-          targetCharacters.Add(chars);
+          foreach (BattleCharacter t in chars) {
+            List<BattleCharacter> singleton = new List<BattleCharacter>();
+            singleton.Add(t);
+            targetCharacters.Add(singleton);
+          }
         }
 
         foreach (List<BattleCharacter> c in targetCharacters) {

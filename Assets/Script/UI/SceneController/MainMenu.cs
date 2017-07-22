@@ -20,52 +20,43 @@ public class MainMenu: MonoBehaviour {
     Character c = GameData.gameData.characters[0];
     c.attr.strength = 200;
 
-    Equipment e = new Weapon();
+    Equipment e = new Weapon(EquipmentClass.Sword, 1, 1);
     e.attr.strength = 1;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "sis weapon";
     c.equip(e);
 
-    e = new Armour();
+    e = new Armour(EquipmentClass.Shield, 1);
     e.attr.intelligence = 1;
     e.attr.healingMultiplier = 0.9f;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "sis armour";
     c.equip(e);
 
     c = GameData.gameData.characters[1];
 
-    e = new Armour();
+    e = new Armour(EquipmentClass.Robe, 1);
     e.attr.intelligence = 2;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "bro armour";
     c.equip(e);
 
-    e = new Weapon();
+    e = new Weapon(EquipmentClass.Axe, 1, 1);
     e.attr.strength = 2;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "weapon";
 
-    e = new Armour();
+    e = new Armour(EquipmentClass.Leather, 1);
     e.attr.intelligence = 3;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "armour";
 
-    e = new Weapon();
+    e = new Weapon(EquipmentClass.Bow, 3, 1);
     e.attr.strength = 2;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "weapon material1";
 
-    e = new Weapon();
+    e = new Weapon(EquipmentClass.Bow, 4, 2);
     e.attr.strength = 2;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "weapon material2";
 
-    e = new Weapon();
+    e = new Weapon(EquipmentClass.Axe, 1, 1);
     e.attr.strength = 2;
     GameData.gameData.inv.addEquipment(e);
-    e.equipmentClass = "weapon material3";
-
 
     SceneManager.LoadSceneAsync("OverWorld");
   }

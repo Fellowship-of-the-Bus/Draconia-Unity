@@ -5,7 +5,7 @@ using System.Collections;
 public class HookShot: SingleTarget {
 
   public HookShot() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Hook Shot";

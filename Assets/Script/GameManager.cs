@@ -72,16 +72,6 @@ public class GameManager : MonoBehaviour {
   }
   private lockUICount UILock;
 
-  void Start() {
-    foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        o.GetComponent<BattleCharacter>().init();
-        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
-      }
-    }
-    startTurn();
-  }
-
   void Awake() {
     eventManager.setGlobal();
 
@@ -111,7 +101,6 @@ public class GameManager : MonoBehaviour {
       var battleChar = createPiece();
       battleChar.baseChar = c;
       battleChar.transform.position = map.tiles[index].position;
-      battleChar.skillSet = new string[]{"Punch", "Punch", "Punch"};
       index++;
     }
 
@@ -137,7 +126,16 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
+  }
 
+  void Start() {
+    foreach (var l in characters.Values) {
+      foreach (var o in l) {
+        o.GetComponent<BattleCharacter>().init();
+        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
+      }
+    }
+    startTurn();
   }
 
   int blinkFrameNumber = 0;

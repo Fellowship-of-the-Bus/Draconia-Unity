@@ -4,7 +4,7 @@ using System;
 
 public class BluntShot: SingleTarget {
   public BluntShot() {
-    requireWeapon(Weapon.kinds.Ranged);
+    requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Blunt Shot";
