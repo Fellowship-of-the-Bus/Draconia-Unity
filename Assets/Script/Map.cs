@@ -235,6 +235,10 @@ public class Map {
     }
   }
 
+  public List<Tile> getStartTiles() {
+    return new List<Tile>(tiles.Filter((t) => t.startTile));
+  }
+
   public void clearPath() {
     path.Clear();
   }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
@@ -93,28 +94,24 @@ public class GameManager : MonoBehaviour {
 
     line = gameObject.GetComponent<LineRenderer>();
 
-
-    int index = 1;
-    foreach (Character c in GameData.gameData.characters) {
-      //Todo: use starting positions and place this on them
-      //      use characters selected instead of all characters.
-      var battleChar = createPiece();
-      battleChar.baseChar = c;
-      battleChar.transform.position = map.tiles[index].position;
-      index++;
-    }
-
-    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
-    foreach (var x in objs) {
-      characters[x.Key] = new List<GameObject>(x);
-    }
-
     //set skill buttons to the selected piece's skills, enable those that actually have skills
     new Range(0, skillButtons.Count).ForEach(i => {
       skillButtons[i].onClick.AddListener(() => selectSkill(i));
       skillButtons[i].enabled = true;
     });
 
+
+  }
+  //should begin in character select phase, probably using a different camera...
+  void Start() {
+    //startTurn();
+  }
+
+  public void init() {
+    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
+    foreach (var x in objs) {
+      characters[x.Key] = new List<GameObject>(x);
+    }
 
     winningConditions.Add(new Rout());
     losingConditions.Add(new BrodricDies());
@@ -126,16 +123,13 @@ public class GameManager : MonoBehaviour {
         c.curTile = t;
       }
     }
-  }
 
-  void Start() {
     foreach (var l in characters.Values) {
       foreach (var o in l) {
         o.GetComponent<BattleCharacter>().init();
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
-    startTurn();
   }
 
   int blinkFrameNumber = 0;
@@ -605,4 +599,5 @@ public class GameManager : MonoBehaviour {
   }
 
   public static GameManager get { get; set; }
+
 }

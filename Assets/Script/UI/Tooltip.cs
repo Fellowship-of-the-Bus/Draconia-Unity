@@ -23,7 +23,9 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
   protected RectTransform rectTrans;
 
   void Start() {
-    tipbox = GameManager.get.tooltip;
+    if (tipbox == null) {
+      tipbox = GameManager.get.tooltip;
+    }
     rectTrans = tipbox.GetComponent<RectTransform>();
   }
 

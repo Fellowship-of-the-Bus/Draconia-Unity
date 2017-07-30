@@ -57,6 +57,8 @@ public class BattleCharacter : Effected {
   public int curHealth;
   public float maxAction = 1000f;
   public float curAction = 0;
+
+  //0 = player, 1 = enemy, 2 = ally
   public int team = 0;
 
   private int previewDamage;
@@ -87,7 +89,14 @@ public class BattleCharacter : Effected {
     allEffects.Remove(effect);
   }
   List<String> prevSkillSet = new List<String>();
+
+  void Start(){
+    init();
+  }
+  bool called = false;
   public void init() {
+    if (called) return;
+    called = true;
     equippedSkills = skills.getActives(this);
     if (Options.debugMode || equippedSkills.IsEmpty()) {
       setSkills();

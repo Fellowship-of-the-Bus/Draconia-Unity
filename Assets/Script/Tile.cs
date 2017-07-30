@@ -7,6 +7,7 @@ public class Tile : Effected {
   public Vector3 dir = Vector3.zero;
   public BattleCharacter occupant = null;
   public float additionalHeight = 0f;
+  public bool startTile = false;
 
   public bool occupied() {
     return occupant != null;

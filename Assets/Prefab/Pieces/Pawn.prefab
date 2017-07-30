@@ -265,22 +265,11 @@ MonoBehaviour:
       iceResistance: 0
       lightningResistance: 0
     name: 
-    weapon:
-      attr:
-        strength: 0
-        intelligence: 0
-        speed: 0
-        maxHealth: 0
-        physicalDefense: 0
-        magicDefense: 0
-        healingMultiplier: 1
-        moveRange: 0
-        moveTolerance: 0
-        fireResistance: 0
-        iceResistance: 0
-        lightningResistance: 0
-      range: 1
-      kind: 0
+    curLevel: 1
+    maxLevel: 100
+    curExp: 0
+    maxExp: 100
+    expGiven: 30
   attrChange:
     strength: 0
     intelligence: 0
@@ -295,6 +284,7 @@ MonoBehaviour:
     iceResistance: 0
     lightningResistance: 0
   skillSet: []
+  passiveSet: []
   curTile: {fileID: 0}
   curHealth: 0
   maxAction: 1000
