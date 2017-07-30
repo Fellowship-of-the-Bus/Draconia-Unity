@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour {
       foreach (var o in l) {
         BattleCharacter c = o.GetComponent<BattleCharacter>();
         Tile t = map.getTile(o.transform.position);
+        c.transform.position = t.position;
         t.occupant = c;
         c.curTile = t;
       }

@@ -81,6 +81,9 @@ public class PositioningControl : MonoBehaviour {
     if (clickedObject == null) {
       return;
     }
+    if (clickedObject.transform.parent != null && clickedObject.transform.parent.tag == "Cube") {
+      clickedObject = clickedObject.transform.parent.gameObject;
+    }
     BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
     Tile clickedTile = clickedObject.GetComponent<Tile>();
 
