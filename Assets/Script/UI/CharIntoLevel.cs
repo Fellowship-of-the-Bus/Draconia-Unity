@@ -65,6 +65,7 @@ public class CharIntoLevel: MonoBehaviour {
     });
 
     addedCharacters.Add(c);
+    setText(addedCharacters.Count);
   }
 
   public void removeCharacter() {
@@ -73,6 +74,7 @@ public class CharIntoLevel: MonoBehaviour {
     curPreview.gameObject.transform.SetParent(null, false);
     addedCharacters.Remove(curPreview.c.baseChar);
     curPreview = null;
+    setText(addedCharacters.Count);
   }
 
 

@@ -17,6 +17,7 @@ public class CharPreview: MonoBehaviour {
     List<ActiveSkill> skills = c.baseChar.skills.getActives(c);
     foreach (ActiveSkill skill in skills) {
       GameObject o = Instantiate(skillButton, content);
+      o.GetComponentInChildren<Text>().text = skill.name;
       Tooltip tooltip = o.GetComponent<Tooltip>();
       tooltip.tiptext = skill.tooltip;
     }
