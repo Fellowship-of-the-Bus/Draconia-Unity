@@ -11,14 +11,17 @@ public class KillingBlow: SingleTarget {
     targetAlly(false);
     targetEnemy(true);
   }
+
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }
 
   public override int calculateDamage(BattleCharacter target) {
     float missingPct = 1 - (float)target.curHealth/target.maxHealth;
-    return (int)(base.calculateDamage(target)*(1 + missingPct * (0.5f + 0.1f * level)));
+    return (int)(base.calculateDamage(target)*(1 + missingPct * bonusFormula()));
   }
 
-
+  private float bonusFormula() {
+    return 0.5f + (0.1f * level);
+  }
 }

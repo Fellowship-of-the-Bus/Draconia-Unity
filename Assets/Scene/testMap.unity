@@ -293,6 +293,72 @@ Canvas:
   m_SortingLayerID: -1205292289
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &42655262
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2121152826}
+    m_Modifications:
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.39999956
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.46153846
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.39999947
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: af770dc65d2c75445965f6c12cdc0be5, type: 2}
+    - target: {fileID: 100002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+      propertyPath: m_Name
+      value: Model
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+  m_IsPrefabParent: 0
+--- !u!4 &42655263 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400002, guid: 3c0c4b5dffcfd8748990d854ee23fc7d, type: 3}
+  m_PrefabInternal: {fileID: 42655262}
 --- !u!224 &62235727 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224250062988772840, guid: b5e8c4a5fe40e384ab49027e1dcb67df,
@@ -4817,7 +4883,7 @@ Prefab:
     - target: {fileID: 224924593082116496, guid: b5e8c4a5fe40e384ab49027e1dcb67df,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.0000004172325
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b5e8c4a5fe40e384ab49027e1dcb67df, type: 2}
@@ -7587,7 +7653,7 @@ RectTransform:
   m_Children:
   - {fileID: 1621405407}
   m_Father: {fileID: 2121152826}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9241,7 +9307,7 @@ MeshRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1506969133}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -13782,6 +13848,7 @@ Transform:
   m_LocalPosition: {x: 1, y: 1, z: 3}
   m_LocalScale: {x: 0.75000083, y: 0.65000004, z: 0.7500011}
   m_Children:
+  - {fileID: 42655263}
   - {fileID: 1183164231}
   m_Father: {fileID: 1308082809}
   m_RootOrder: 0

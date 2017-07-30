@@ -300,6 +300,7 @@ public class GameManager : MonoBehaviour {
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
     List<Tile> validTargets = skill.getTargets();
+    Animator animator = SelectedPiece.GetComponentInChildren<Animator>() as Animator;
 
     if (validTargets.Contains(target)){
       AoeSkill aoe = skill as AoeSkill;
@@ -317,6 +318,9 @@ public class GameManager : MonoBehaviour {
       skill.validate(targets);
 
       if (targets.Count() == skill.ntargets) {
+        if (animator) {
+          animator.SetTrigger("Attack");
+        }
         selectedCharacter.attackWithSkill(skill, targets.flatten().toList());
         StartCoroutine(endTurn());
       }
@@ -368,6 +372,11 @@ public class GameManager : MonoBehaviour {
       yield return new WaitForSeconds(0.5f);
     }
 
+    Animator animator = piece.GetComponentInChildren<Animator>() as Animator;
+    if (animator) {
+      animator.SetBool("isWalking", true);
+    }
+
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
@@ -401,6 +410,10 @@ public class GameManager : MonoBehaviour {
     }
     map.clearPath();
     map.setTileColours();
+
+    if (animator) {
+      animator.SetBool("isWalking", false);
+    }
 
     if (gameState == GameState.moving) {
       yield return new WaitForSeconds(0.25f);
