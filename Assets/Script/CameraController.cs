@@ -22,11 +22,15 @@ public class CameraController : MonoBehaviour {
   bool animatingPan = false;
   const float maxPanTime = 0.25f;
 
+  Quaternion rot;
+
 	// Use this for initialization
 	void Start () {
-		preTransform =  new GameObject().transform;
+    GameObject o = new GameObject("Previous transform");
+    o.transform.SetParent(transform);
+		preTransform =  o.transform;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
@@ -34,7 +38,7 @@ public class CameraController : MonoBehaviour {
     // create a plane at 0,0,0 whose normal points to +Y:
     hPlane = new Plane(Vector3.up, Vector3.zero);
 		// Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
-		distance = 0; 
+		distance = 0;
 		// if the ray hits the plane...
 		hPlane.Raycast(ray, out distance);
 		rotateAbout = ray.GetPoint(distance);
@@ -78,7 +82,7 @@ public class CameraController : MonoBehaviour {
         dx = delta.x;
         dy = delta.y;
 			}
-        
+
       if (Input.GetKey(KeyCode.UpArrow))
         dy = -5;
       if (Input.GetKey(KeyCode.DownArrow))
@@ -94,6 +98,10 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+  void LateUpdate() {
+    preTransform.rotation = rot;
+  }
+
 	public void rotateLeft () {
 		setupRotation (Vector3.down);
 	}
@@ -104,13 +112,14 @@ public class CameraController : MonoBehaviour {
 
 	private void setupRotation (Vector3 direction) {
 		if (rotationTime <= 0) {
-			preTransform.localRotation = transform.localRotation;
-			preTransform.localPosition = transform.localPosition;
+			preTransform.rotation = transform.localRotation;
+			preTransform.position = transform.localPosition;
 			preTransform.localScale = transform.localScale;
 			rotating = true;
 			rotationDirection = direction;
 			rotationTime = 1.0f;
 			preTransform.RotateAround(rotateAbout, rotationDirection, 90);
+      rot = preTransform.rotation;
 		}
 	}
 
