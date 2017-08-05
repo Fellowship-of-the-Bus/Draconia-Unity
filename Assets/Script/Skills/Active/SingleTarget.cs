@@ -26,48 +26,4 @@ public abstract class SingleTarget: ActiveSkill {
     if (canTargetSelf) targets.Add(self.curTile);
     return targets;
   }
-
-
-  // public abstract virtual SkillData calculateSkill() {
-  //   Heap<SkillData> db = new Heap<SkillData>();
-
-  //   GameManager game = GameManager.get;
-  //   Map map = game.map;
-  //   List<GameObject> characterObjects = game.players;
-
-  //   List<Tile> possibilities = map.tilesInMoveRange(owner);
-  //   possibilities.Add(owner.curTile);
-
-  //   // Debug.Log("=======" + owner.name + "=======");
-  //   foreach (Tile tile in possibilities) {
-  //     owner.curTile = tile;
-  //     int index = 0;
-  //     // Debug.Log("Location: " + tile.transform.position);
-  //     foreach (ActiveSkill skill in owner.equippedSkills) {
-  //       int cur = index++;
-  //       if (! skill.canUse()) continue;
-  //       getTargets();
-  //       List<GameObject> targets = skill.getTargets();
-  //       // Debug.Log("Skill " + cur + ", " + skill.name + ", num targets: " + targets.Count);
-  //       if (targets.Count == 0) continue;
-
-  //       List<BattleCharacter> c = new List<BattleCharacter>(targets.Select(x => x.GetComponent<BattleCharacter>()));
-  //       c = new List<BattleCharacter>(c.Filter((character) => character.team != owner.team));
-
-  //       foreach (BattleCharacter ch in c) {
-  //         int damage = skill.calculateDamage(ch);
-  //         // Debug.Log("character: " + ch.name + " damage: " + damage);
-  //         List<Effected> e = new List<Effected>();
-  //         e.Add(ch);
-  //         new SkillData(this, cur, damage, e, tile);
-  //       }
-  //     }
-  //   }
-  //   best = db.getMax();
-  //   Vector3 newPosition = best == null ? owner.curTile.transform.position : best.tile.transform.position;
-  //   map.setPath(newPosition);
-  //   // int damage = best == null ? 0 : best.score;
-  //   // Debug.Log("Location: " + newPosition + " damage: " + best.score);
-  //   return newPosition;
-  // }
 }

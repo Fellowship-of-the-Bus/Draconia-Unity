@@ -25,5 +25,4 @@ public class SkullBash: SingleTarget {
     target.applyEffect(debuff);
     ActionQueue.get.updateTime(target.gameObject);
   }
-
 }

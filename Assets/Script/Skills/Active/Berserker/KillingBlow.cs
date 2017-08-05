@@ -19,6 +19,4 @@ public class KillingBlow: SingleTarget {
     float missingPct = 1 - (float)target.curHealth/target.maxHealth;
     return (int)(base.calculateDamage(target)*(1 + missingPct * (0.5f + 0.1f * level)));
   }
-
-
 }

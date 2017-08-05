@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4514035, g: 0.5008931, b: 0.57231444, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140404, g: 0.5008941, b: 0.5723157, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -7981,6 +7981,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1154147331}
     m_Modifications:
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8022,6 +8027,35 @@ Prefab:
       propertyPath: team
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 64052932fe56d334eba6445d5d182e34, type: 2}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: baseChar.attr.speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1].name
+      value: Shuriken
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1].level
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
@@ -8036,6 +8070,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1154147331}
     m_Modifications:
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -8071,6 +8110,40 @@ Prefab:
     - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 5956345972927424eba3db6f03f82542, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 64052932fe56d334eba6445d5d182e34, type: 2}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: levitating
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1].name
+      value: FireCross
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: baseChar.attr.speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[1].level
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -14750,7 +14823,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1802330222}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999996
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -35236,10 +35309,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 0}
-  playerStartLocations:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   pStartLocTiles: []
   battleCanvas: {fileID: 1203097599}
   charSelectCanvas: {fileID: 2055337945}

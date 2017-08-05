@@ -61,7 +61,7 @@ public class CharIntoLevel: MonoBehaviour {
     preview.init(newBattleChar);
     //add listener
     o.GetComponent<Button>().onClick.AddListener(() => {
-        onButtonClick(preview);
+      onButtonClick(preview);
     });
 
     addedCharacters.Add(c);

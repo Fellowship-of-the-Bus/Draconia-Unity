@@ -14,11 +14,7 @@ public class OverWorld: MonoBehaviour {
     int i = 0;
     foreach(Transform child in levelParent.transform) {
       if (i > levelsUnlocked) {
-        Button levelButton = child.gameObject.GetComponent<Button>();
         child.gameObject.SetActive(false);
-        // levelButton.enabled = false;
-        // levelButton.GetComponentInChildren<CanvasRenderer>().SetAlpha(0);
-        // levelButton.GetComponentInChildren<Text>().color = Color.clear;
       }
       i++;
     }
