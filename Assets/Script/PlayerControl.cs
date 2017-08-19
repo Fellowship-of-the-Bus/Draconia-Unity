@@ -65,13 +65,13 @@ public class PlayerControl : MonoBehaviour {
       }
     }
     //handle attack based tile colouring:
-    if ((gameManager.gameState == GameState.attacking && s != null && s.getTargets().Contains(hoveredTile))){
-    // ||
-        // (!isTile && gameManager.playerTurn && s != null && s.targetsTiles && )) {
-        //handle attack
-        map.setTileColours(hoveredTile);
+    if ((gameManager.gameState == GameState.attacking && s != null && s.getTargets().Contains(hoveredTile))) {
+      //handle attack
+      map.setTileColours(hoveredTile);
       if (isPiece) gameManager.lineTo(hoveredObject);
     }
+
+    gameManager.tInfo.setTile(hoveredTile);
   }
 
   void handleClicked(GameObject clickedObject) {
