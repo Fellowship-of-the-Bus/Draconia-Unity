@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour {
   public CameraController cam;
 
   //Objectives for this game
+  public string[] winObjs;
+  public string[] loseObjs;
   List<Objective> winningConditions = new List<Objective>();
   List<Objective> losingConditions = new List<Objective>();
 
@@ -113,8 +115,15 @@ public class GameManager : MonoBehaviour {
       characters[x.Key] = new List<GameObject>(x);
     }
 
-    winningConditions.Add(new Rout());
-    losingConditions.Add(new BrodricDies());
+    //winningConditions.Add(new Rout());
+    //losingConditions.Add(new BrodricDies());
+    foreach (string s in winObjs) {
+      winningConditions.Add(ObjectiveFactory.makeObjective(s));
+    }
+    foreach (string s in loseObjs) {
+      losingConditions.Add(ObjectiveFactory.makeObjective(s));
+    }
+
     foreach (var l in characters.Values) {
       foreach (var o in l) {
         BattleCharacter c = o.GetComponent<BattleCharacter>();
