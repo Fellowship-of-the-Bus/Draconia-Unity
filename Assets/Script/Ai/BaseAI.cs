@@ -10,27 +10,42 @@ public abstract class BaseAI {
   public abstract void target();
   public abstract Vector3 move();
 
-  protected List<List<BattleCharacter>> getTargetSets(ActiveSkill skill, List<Tile> targets) {
+  protected struct TargetSet {
+    public Tile tile;
+    public List<BattleCharacter> affected;
+  }
+
+  protected List<TargetSet> getTargetSets(ActiveSkill skill, List<Tile> targets) {
     AoeSkill aoe = skill as AoeSkill;
 
     // Determine possible targets
-    List<List<BattleCharacter>> targetCharacters = new List<List<BattleCharacter>>();
+    List<TargetSet> targetSets = new List<TargetSet>();
     if (aoe != null) {
       foreach(Tile t in targets) {
+        TargetSet tSet;
+        tSet.tile = t;
+
         List<Tile> affectedTiles = aoe.getTargetsInAoe(t.gameObject.transform.position);
         affectedTiles = new List<Tile>(affectedTiles.Filter((x) => x.occupied()));
-        targetCharacters.Add(new List<BattleCharacter>(affectedTiles.Select(x => x.occupant)));
+        tSet.affected = new List<BattleCharacter>(affectedTiles.Select(x => x.occupant));
+
+        targetSets.Add(tSet);
       }
     } else {
       List<BattleCharacter> chars = new List<BattleCharacter>(targets.Select(x => x.occupant));
       chars = new List<BattleCharacter>(chars.Filter((character) => character != null && character.team != owner.team));
       foreach (BattleCharacter t in chars) {
+        TargetSet tSet;
+        tSet.tile = t.curTile;
+
         List<BattleCharacter> singleton = new List<BattleCharacter>();
         singleton.Add(t);
-        targetCharacters.Add(singleton);
+        tSet.affected = singleton;
+
+        targetSets.Add(tSet);
       }
     }
 
-    return targetCharacters;
+    return targetSets;
   }
 }

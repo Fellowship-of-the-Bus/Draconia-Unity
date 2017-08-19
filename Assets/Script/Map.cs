@@ -224,13 +224,8 @@ public class Map {
         }
       }
       // color the selected targets
-      foreach (List<Effected> target in GameManager.get.targets) {
-        foreach (Effected eff in target) {
-          Tile t = eff as Tile;
-          if (t == null) t = (eff as BattleCharacter).curTile;
-          Debug.AssertFormat(eff != null, "Effected is not a character or tile.");
-          t.setColor(Color.magenta);
-        }
+      foreach (Tile target in GameManager.get.targets) {
+        target.setColor(Color.magenta);
       }
     }
   }

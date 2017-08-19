@@ -16,7 +16,9 @@ public class Sentry : PassiveSkill {
     List<Tile> tiles = GameManager.get.map.getTilesWithinRange(owner.curTile, aoe);
     if (e.sender.team == owner.team) return; // don't shoot teammates
     if (tiles.Find(t => t.transform.position == e.position) != null) {
-      owner.attackWithSkill(skill, new List<Effected>(new Effected[]{ e.sender }));
+      List<Tile> target = new List<Tile>();
+      target.Add(e.sender.curTile);
+      owner.useSkill(skill, new List<Tile>(target));
     }
   }
 

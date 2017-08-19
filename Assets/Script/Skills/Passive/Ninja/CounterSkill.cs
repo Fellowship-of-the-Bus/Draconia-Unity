@@ -19,9 +19,9 @@ public class CounterSkill : PassiveSkill {
       atk.level = level;
       atk.self = owner;
 
-      List<Effected> target = new List<Effected>();
-      target.Add(e.sender);
-      owner.attackWithSkill(atk, target);
+      List<Tile> target = new List<Tile>();
+      target.Add(e.sender.curTile);
+      owner.useSkill(atk, new List<Tile>(target));
     }
   }
 }

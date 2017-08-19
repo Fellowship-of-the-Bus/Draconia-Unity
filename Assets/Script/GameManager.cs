@@ -305,35 +305,28 @@ public class GameManager : MonoBehaviour {
     //todo: aoe health bar hover?
   }
 
-  public List<List<Effected>> targets = new List<List<Effected>>();
+  public List<Tile> targets = new List<Tile>();
   public void attackTarget(Tile target) {
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
     List<Tile> validTargets = skill.getTargets();
-    Animator animator = SelectedPiece.GetComponentInChildren<Animator>() as Animator;
 
-    if (validTargets.Contains(target)){
-      AoeSkill aoe = skill as AoeSkill;
-      List<Effected> curTargets = new List<Effected>();
-      if (aoe != null) {
-        foreach (Tile t in aoe.getTargetsInAoe(target.transform.position)) {
-          BattleCharacter c = t.occupant;
-          if (c) curTargets.Add(c);
-          if (aoe.effectsTiles) curTargets.Add(t);
-        }
-      } else {
-        curTargets.Add(target.occupant);
+    if (skill is Portal) {
+      if (validTargets.Contains(target)) {
+        targets.Add(target);
+        skill.validate(targets);
       }
-      targets.Add(curTargets);
-      skill.validate(targets);
 
-      if (targets.Count() == skill.ntargets) {
-        if (animator) {
-          animator.SetTrigger("Attack");
-        }
-        selectedCharacter.attackWithSkill(skill, targets.flatten().toList());
-        StartCoroutine(endTurn());
+      if (targets.Count() != skill.ntargets) {
+        return;
       }
+    } else {
+      targets.Clear();
+      targets.Add(target);
+    }
+
+    if (selectedCharacter.useSkill(skill, targets)) {
+      StartCoroutine(endTurn());
     }
   }
 
@@ -392,7 +385,10 @@ public class GameManager : MonoBehaviour {
       Vector3 pos = destination.transform.position;
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
-      // move piece
+      // Set Rotation
+      piece.GetComponent<BattleCharacter>().face(pos);
+
+      // Move Piece
       Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
       float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
       float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;

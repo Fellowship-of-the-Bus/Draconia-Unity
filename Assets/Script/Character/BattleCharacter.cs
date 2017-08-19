@@ -191,7 +191,40 @@ public class BattleCharacter : Effected {
     return GameManager.get.map.getTilesWithinRange(curTile, range).Contains(target.curTile);
   }
 
-  public void attackWithSkill(ActiveSkill skill, List<Effected> targets) {
+  public bool useSkill(ActiveSkill skill, List<Tile> tileTargets) {
+    List<Tile> validTargets = skill.getTargets();
+    List<Effected> targets = new List<Effected>();
+    Tile target = tileTargets.First();
+
+    if (skill is Portal) {
+      foreach (Tile t in tileTargets) {
+        targets.Add(t);
+      }
+    } else {
+      // Check if the usage is valid
+      if (!validTargets.Contains(target)
+        || tileTargets.Count() != skill.ntargets) {
+        return false;
+      }
+
+      AoeSkill aoe = skill as AoeSkill;
+      if (aoe != null) {
+        foreach (Tile t in aoe.getTargetsInAoe(target.transform.position)) {
+          BattleCharacter c = t.occupant;
+          if (c) targets.Add(c);
+          if (aoe.effectsTiles) targets.Add(t);
+        }
+      } else {
+        targets.Add(target.occupant);
+      }
+    }
+    
+    Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
+    if (animator) {
+      animator.SetTrigger("Attack");
+    }
+    face(target.transform.position);
+
     int expGained = getExpGained(skill, null);
     List<BattleCharacter> cTargets = new List<BattleCharacter>();
     List<Tile> tTargets = new List<Tile>();
@@ -217,9 +250,9 @@ public class BattleCharacter : Effected {
         onEvent(postHealingEvent);
       }
     } else {
-      foreach (BattleCharacter target in cTargets) {
+      foreach (BattleCharacter t in cTargets) {
         onEvent(new Event(this, EventHook.preAttack));
-        var c = target;
+        var c = t;
         int damage = skill.calculateDamage(c);
         Event preDamageEvent = new Event(this, EventHook.preDamage);
         if (damage > 0) {
@@ -249,8 +282,8 @@ public class BattleCharacter : Effected {
       }
     }
 
-    foreach (Tile target in tTargets) {
-      skill.activate(target);
+    foreach (Tile t in tTargets) {
+      skill.activate(t);
     }
     Event postSkill = new Event(this, EventHook.postSkill);
     postSkill.targets = targets;
@@ -258,6 +291,7 @@ public class BattleCharacter : Effected {
     onEvent(postSkill);
 
     baseChar.gainExp(expGained);
+    return true;
   }
 
   void floatingText(int val, Color colour) {
@@ -295,6 +329,7 @@ public class BattleCharacter : Effected {
   }
 
   public void takeDamage(int damage) {
+    Debug.Log(damage);
     if (curHealth <= 0) return;
     floatingText(damage, Color.red);
     curHealth -= damage;
@@ -353,6 +388,17 @@ public class BattleCharacter : Effected {
 
   public void updateActionBar(float timePassed) {
     curAction = Math.Min(curAction + speed*timePassed, maxAction);
+  }
+
+  public void face(Vector3 posn) {
+    // Find direction
+    Vector3 dir = posn - gameObject.transform.position;
+    // Remove y
+    dir = new Vector3(dir.x, 0, dir.z);
+
+    // Set facing
+    float angle = Vector3.Angle(new Vector3(0, 0, -1), dir);
+    gameObject.transform.GetChild(1).eulerAngles = new Vector3(0, angle - 90, 0);
   }
 
   private Attributes totalAttr { get { return attr + attrChange + attrEquip; } }

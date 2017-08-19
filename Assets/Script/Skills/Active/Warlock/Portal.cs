@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Portal : ActiveSkill, AoeSkill {
   public int aoe {get; set;}
@@ -56,10 +57,10 @@ public class Portal : ActiveSkill, AoeSkill {
     return block;
   }
 
-  public override void validate(List<List<Effected>> targets) {
+  public override void validate(List<Tile> targets) {
     // prevent targetting the same tile twice
     if (targets.Count == 2) {
-      if (targets[0][0] == targets[1][0]) {
+      if (targets.First() == targets.Last()) {
         targets.RemoveAt(1);
       }
     }
