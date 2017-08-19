@@ -217,8 +217,8 @@ public class GameManager : MonoBehaviour {
     map.clearColour();
     map.clearPath();
     if (SelectedPiece) {
-      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      // if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
     //get character whose turn it is
@@ -229,7 +229,7 @@ public class GameManager : MonoBehaviour {
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
 
-    SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
+    // SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
     line.SetPosition(1, SelectedPiece.transform.position);
 
@@ -347,8 +347,8 @@ public class GameManager : MonoBehaviour {
     eventManager.onEvent(e);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
-    if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-    else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+    // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+    // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
     actionQueue.endTurn();
     map.clearColour();
     startTurn();
@@ -577,7 +577,7 @@ public class GameManager : MonoBehaviour {
         Vector3 target = new Vector3(piece.transform.position.x, piece.transform.position.y + 0.25f, piece.transform.position.z);
         RaycastHit hitInfo;
         if (checkLine(source, target, out hitInfo)) {
-           line.GetComponent<Renderer>().material.color = Color.red;
+          line.GetComponent<Renderer>().material.color = Color.red;
         } else {
           line.GetComponent<Renderer>().material.color = Color.black;
         }
