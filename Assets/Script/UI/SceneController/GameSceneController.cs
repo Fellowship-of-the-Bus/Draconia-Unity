@@ -65,10 +65,10 @@ public class GameSceneController: MonoBehaviour {
 
     //playerStartLocations = GameManager.get.map.getStartTiles();
     battleCanvas.SetActive(false);
-    charSelectCanvas.SetActive(true);
-    positioningCanvas.SetActive(false);
+    charSelectCanvas.SetActive(false);
+    positioningCanvas.SetActive(true);
     pControl.enabled = false;
-    posControl.enabled = false;
+    posControl.enabled = true;
     GameManager.get.tooltip = charSelectTooltip;
 
     //set colour for start locations for tile variable

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140344, g: 0.5008933, b: 0.57231456, a: 1}
+  m_IndirectSpecularColor: {r: 0.4514035, g: 0.5008931, b: 0.57231444, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -36742,6 +36742,10 @@ MonoBehaviour:
   playerTurn: 1
   eventManager: {fileID: 1238965742}
   cam: {fileID: 954491009}
+  winObjs:
+  - Rout
+  loseObjs:
+  - BrodricDies
   selectedHealth: {fileID: 1466532501}
   targetHealth: {fileID: 1048835588}
   targetPanel: {fileID: 1016271927}
@@ -37929,7 +37933,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 9.999878, y: -38.999878}
+  m_AnchoredPosition: {x: 10, y: -39}
   m_SizeDelta: {x: 152, y: 67}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1285929532
