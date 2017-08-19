@@ -8,13 +8,15 @@ public class SkillData : IComparable<SkillData> {
   public ActiveSkill skill;
   public List<Effected> effected;
   public Tile tile;  // location from which skill is used
+  public Tile targetTile;  // tile targeted by the skill
 
-  public SkillData(BasicAI ai, int index, int score, List<Effected> effected, Tile tile) {
+  public SkillData(BasicAI ai, int index, int score, List<Effected> effected, Tile tile, Tile targetTile) {
     this.index = index;
     this.score = score;
     this.effected = effected;
     this.skill = ai.owner.equippedSkills[index];
     this.tile = tile;
+    this.targetTile = targetTile;
   }
 
   public int CompareTo(SkillData other) {

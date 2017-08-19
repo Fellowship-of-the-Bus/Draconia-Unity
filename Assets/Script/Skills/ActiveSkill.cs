@@ -182,7 +182,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   // ensure that targets are valid
-  public virtual void validate(List<List<Effected>> targets) {}
+  public virtual void validate(List<Tile> targets) {}
 
   // public abstract virtual SkillData calculateSkill();
 

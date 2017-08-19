@@ -11,7 +11,10 @@ public class BasicAI : BaseAI {
   public override void target() {
     if (best != null) {
       GameManager.get.SelectedSkill = best.index;
-      owner.attackWithSkill(best.skill, best.effected);
+
+      List<Tile> target = new List<Tile>();
+      target.Add(best.targetTile);
+      owner.useSkill(best.skill, new List<Tile>(target));
     }
   }
 
@@ -35,12 +38,14 @@ public class BasicAI : BaseAI {
         List<Tile> targets = skill.getTargets();
         if (targets.Count == 0) continue;
 
-        List<List<BattleCharacter>> targetCharacters = getTargetSets(skill, targets);
+        List<TargetSet> targetCharacters = getTargetSets(skill, targets);
 
         // Calculate net change in team health difference
-        foreach (List<BattleCharacter> c in targetCharacters) {
+        foreach (TargetSet tSet in targetCharacters) {
+          List<BattleCharacter> c = tSet.affected;
           List<Effected> e = new List<Effected>();
           int damage = 0;
+
           foreach (BattleCharacter ch in c) {
             if (ch.team != owner.team) {
               damage += skill.calculateDamage(ch);
@@ -51,7 +56,7 @@ public class BasicAI : BaseAI {
           }
 
           if (damage > 0) {
-            db.add(new SkillData(this, cur, damage, e, tile));
+            db.add(new SkillData(this, cur, damage, e, tile, tSet.tile));
           }
         }
       }
