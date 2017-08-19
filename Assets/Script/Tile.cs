@@ -8,6 +8,8 @@ public class Tile : Effected {
   public BattleCharacter occupant = null;
   public float additionalHeight = 0f;
   public bool startTile = false;
+  public string type;
+  public Sprite image;
 
   public bool occupied() {
     return occupant != null;
