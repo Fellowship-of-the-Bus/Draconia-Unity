@@ -58,6 +58,9 @@ public class GameManager : MonoBehaviour {
   //skillbutton tooltip
   public GameObject tooltip;
 
+  //tile information
+  public TileInfo tInfo;
+
   public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
@@ -145,7 +148,7 @@ public class GameManager : MonoBehaviour {
   int blinkFrameNumber = 0;
   bool displayChangedHealth = false;
   void Update() {
-    if (UILocked()) {
+    if (!UILocked()) {
       if (Input.GetKeyDown(KeyCode.Return)) {
         endTurnWrapper();
       }
@@ -555,7 +558,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public bool UILocked() {
-    return UILock.count == 0;
+    return UILock.count != 0;
   }
 
 
