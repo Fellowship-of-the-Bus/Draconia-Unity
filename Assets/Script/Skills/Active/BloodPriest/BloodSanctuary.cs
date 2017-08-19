@@ -34,6 +34,4 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
     block.caster = self;
     target.applyEffect(block);
   }
-
-
 }

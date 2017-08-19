@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour {
       foreach (var o in l) {
         BattleCharacter c = o.GetComponent<BattleCharacter>();
         Tile t = map.getTile(o.transform.position);
+        c.transform.position = t.position;
         t.occupant = c;
         c.curTile = t;
       }
@@ -135,7 +136,7 @@ public class GameManager : MonoBehaviour {
   int blinkFrameNumber = 0;
   bool displayChangedHealth = false;
   void Update() {
-    if (UILock.count == 0) {
+    if (UILocked()) {
       if (Input.GetKeyDown(KeyCode.Return)) {
         endTurnWrapper();
       }
@@ -542,6 +543,10 @@ public class GameManager : MonoBehaviour {
         mainUI.GetComponent<CanvasGroup>().interactable = true;
       }
     }
+  }
+
+  public bool UILocked() {
+    return UILock.count == 0;
   }
 
 

@@ -12,7 +12,6 @@ public class GameSceneController: MonoBehaviour {
    */
   public Transform parent;
 
-  public GameObject[] playerStartLocations;
   public List<Tile> pStartLocTiles;
   public GameObject battleCanvas;
   public GameObject charSelectCanvas;
@@ -58,6 +57,9 @@ public class GameSceneController: MonoBehaviour {
     GameManager.get.init();
     GameManager.get.startTurn();
   }
+  void Awake() {
+    get = this;
+  }
 
   void Start() {
 
@@ -69,24 +71,14 @@ public class GameSceneController: MonoBehaviour {
     posControl.enabled = false;
     GameManager.get.tooltip = charSelectTooltip;
 
-    //set colour for start locations for Editor drag/drop
-    foreach (GameObject o in playerStartLocations) {
-      Tile t = o.GetComponent<Tile>();
-      pStartLocTiles.Add(t);
-      t.setColor(Color.red);
-    }
     //set colour for start locations for tile variable
     List<Tile> tileStartLocs = GameManager.get.map.getStartTiles();
     foreach (Tile t in tileStartLocs) {
-      if (pStartLocTiles.Contains(t)) {
-        continue;
-      }
       pStartLocTiles.Add(t);
       t.setColor(Color.red);
     }
 
     GameManager.get.enabled = false;
-    get = this;
   }
 
   public void placeCharacter (BattleCharacter c) {
