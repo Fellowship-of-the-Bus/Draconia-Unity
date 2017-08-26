@@ -5,5 +5,6 @@ using System;
 using System.Collections;
 
 public abstract class Objective {
+  public string description;
   public abstract bool isMet(GameManager game);
 }

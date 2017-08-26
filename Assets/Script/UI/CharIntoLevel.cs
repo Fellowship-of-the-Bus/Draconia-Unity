@@ -51,8 +51,8 @@ public class CharIntoLevel: MonoBehaviour {
     }
 
     BattleCharacter newBattleChar = GameManager.get.createPiece();
-    newBattleChar.init();
     newBattleChar.baseChar = c;
+    newBattleChar.init();
     GameSceneController.get.placeCharacter(newBattleChar);
 
     //instantiate a new panel
