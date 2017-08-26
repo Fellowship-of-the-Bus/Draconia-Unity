@@ -329,7 +329,6 @@ public class BattleCharacter : Effected {
   }
 
   public void takeDamage(int damage) {
-    Debug.Log(damage);
     if (curHealth <= 0) return;
     floatingText(damage, Color.red);
     curHealth -= damage;
