@@ -1004,7 +1004,6 @@ GameObject:
   - component: {fileID: 120111511177161814}
   - component: {fileID: 114702442323913260}
   - component: {fileID: 114921485978028840}
-  - component: {fileID: 114833967626453224}
   m_Layer: 0
   m_Name: __GameManager
   m_TagString: GameManager
@@ -3832,6 +3831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016728017ad6c2e449fcf68ab4fe8b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preview: 1
 --- !u!114 &114259404883036250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7172,17 +7172,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114833967626453224
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1385580201021640}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef71f21d0b0447942b09ebdff4bdc1fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114842195381612294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7519,7 +7508,6 @@ MonoBehaviour:
   charSelectCanvas: {fileID: 1715925879154606}
   positioningCanvas: {fileID: 1390040508621620}
   pControl: {fileID: 114255871476682704}
-  posControl: {fileID: 114833967626453224}
   battleCanvasTooltip: {fileID: 1966213963606128}
   charSelectTooltip: {fileID: 1504867640473250}
   numCharInBattle: 10

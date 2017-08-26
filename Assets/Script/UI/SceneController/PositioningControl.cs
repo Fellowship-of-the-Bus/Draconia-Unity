@@ -83,7 +83,12 @@ public class PositioningControl : MonoBehaviour {
     }
     if (clickedObject.transform.parent != null && clickedObject.transform.parent.tag == "Cube") {
       clickedObject = clickedObject.transform.parent.gameObject;
-    }
+    } //else {
+    //   while(clickedObject.transform.parent != null && clickedObject.tag != "Unit") {
+    //     clickedObject = clickedObject.transform.parent.gameObject;
+    //   }
+    // }
+    // Debug.Log(clickedObject.name);
     BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
     Tile clickedTile = clickedObject.GetComponent<Tile>();
 
