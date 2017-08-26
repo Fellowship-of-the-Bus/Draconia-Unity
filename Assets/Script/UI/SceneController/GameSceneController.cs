@@ -17,11 +17,14 @@ public class GameSceneController: MonoBehaviour {
   public GameObject charSelectCanvas;
   public GameObject positioningCanvas;
   public PlayerControl pControl;
-  public PositioningControl posControl;
   public GameObject battleCanvasTooltip;
   public GameObject charSelectTooltip;
 
   public int numCharInBattle;
+
+  //objective things:
+  public Transform layout;
+  public GameObject description;
 
   public void back() {
     SceneManager.LoadSceneAsync("OverWorld");
@@ -30,13 +33,11 @@ public class GameSceneController: MonoBehaviour {
   public void toCharPositioning() {
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(true);
-    posControl.enabled = true;
   }
 
   public void toCharSelection() {
     charSelectCanvas.SetActive(true);
     positioningCanvas.SetActive(false);
-    posControl.enabled = false;
   }
 
   public void startGame() {
@@ -46,12 +47,9 @@ public class GameSceneController: MonoBehaviour {
     positioningCanvas.SetActive(false);
     //enable player control
     //disable positioning control
-    pControl.enabled = true;
-    posControl.enabled = false;
+    pControl.preview = false;
     GameManager.get.tooltip = battleCanvasTooltip;
-    foreach (Tile t in pStartLocTiles) {
-      t.setColor(Color.clear);
-    }
+    setStartTileColour(Color.clear);
     //need to reenable battleChars
     GameManager.get.enabled = true;
     GameManager.get.init();
@@ -67,18 +65,19 @@ public class GameSceneController: MonoBehaviour {
     battleCanvas.SetActive(false);
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(true);
-    pControl.enabled = false;
-    posControl.enabled = true;
+    pControl.preview = true;
     GameManager.get.tooltip = charSelectTooltip;
 
     //set colour for start locations for tile variable
     List<Tile> tileStartLocs = GameManager.get.map.getStartTiles();
     foreach (Tile t in tileStartLocs) {
       pStartLocTiles.Add(t);
-      t.setColor(Color.red);
     }
+    resetStartTileColour();
 
     GameManager.get.enabled = false;
+
+    setObjDescriptions();
   }
 
   public void placeCharacter (BattleCharacter c) {
@@ -102,6 +101,27 @@ public class GameSceneController: MonoBehaviour {
 
   public bool validStartTile(Tile t) {
     return pStartLocTiles.Contains(t);
+  }
+
+  private void setObjDescriptions() {
+    foreach (Objective o in GameManager.get.winningConditions) {
+      GameObject desc = Instantiate(description, layout);
+      desc.GetComponent<Text>().text = " - " + o.description;
+    }
+    foreach (Objective o in GameManager.get.losingConditions) {
+      GameObject desc = Instantiate(description, layout);
+      desc.GetComponent<Text>().text = " - " + o.description;
+    }
+  }
+
+  public void resetStartTileColour() {
+    setStartTileColour(Color.red);
+  }
+  public void setStartTileColour(Color c) {
+    List<Tile> tileStartLocs = GameManager.get.map.getStartTiles();
+    foreach (Tile t in tileStartLocs) {
+      t.setColor(c);
+    }
   }
 
   public static GameSceneController get {get; set;}

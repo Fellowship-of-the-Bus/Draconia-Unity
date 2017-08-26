@@ -23,6 +23,7 @@ static class MapGenerator {
   static MapGenerator() {
     cubes.Add('G', Resources.Load("Map/Grass"));
     cubes.Add('D', Resources.Load("Map/Dirt"));
+    cubes.Add('S', Resources.Load("Map/Stone"));
   }
 
 
@@ -44,7 +45,6 @@ static class MapGenerator {
 
   private static void generateRow(string s, int lineNum) {
     GameObject row = new GameObject("Row");
-    row.transform.SetParent(board.transform);
     string[] tiles = s.Split(',');
     int index = 0;
     foreach (string tile in tiles) {
@@ -69,6 +69,7 @@ static class MapGenerator {
       index++;
     }
     row.transform.position = new Vector3(lineNum,0,0);
+    row.transform.SetParent(board.transform);
   }
 
 }

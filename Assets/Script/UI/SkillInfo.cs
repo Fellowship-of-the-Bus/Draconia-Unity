@@ -36,6 +36,7 @@ public class SkillInfo: MonoBehaviour {
     tree = t;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
     info.text = skillType.FullName + ", level " + skillLevel;
+    equipButton.interactable = skillLevel > 0;
     foreach(SkillInfo s in children) {
       if (s != caller) s.update(tree);
     }

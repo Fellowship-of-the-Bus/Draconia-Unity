@@ -5,6 +5,9 @@ using System;
 using System.Collections;
 
 public class BrodricDies : Objective {
+  public BrodricDies() {
+    description = "Brodric must survive.";
+  }
   override public bool isMet(GameManager game) {
     List<GameObject> allies = game.players;
     if (allies.Count == 0) return true;
