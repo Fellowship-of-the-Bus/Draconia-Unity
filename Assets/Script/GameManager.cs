@@ -44,8 +44,8 @@ public class GameManager : MonoBehaviour {
   //Objectives for this game
   public string[] winObjs;
   public string[] loseObjs;
-  List<Objective> winningConditions = new List<Objective>();
-  List<Objective> losingConditions = new List<Objective>();
+  public List<Objective> winningConditions = new List<Objective>();
+  public List<Objective> losingConditions = new List<Objective>();
 
   //health/mana bars
   public GameObject selectedHealth;
@@ -105,7 +105,14 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].enabled = true;
     });
 
-
+    //winningConditions.Add(new Rout());
+    //losingConditions.Add(new BrodricDies());
+    foreach (string s in winObjs) {
+      winningConditions.Add(ObjectiveFactory.makeObjective(s));
+    }
+    foreach (string s in loseObjs) {
+      losingConditions.Add(ObjectiveFactory.makeObjective(s));
+    }
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {
@@ -116,15 +123,6 @@ public class GameManager : MonoBehaviour {
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
     foreach (var x in objs) {
       characters[x.Key] = new List<GameObject>(x);
-    }
-
-    //winningConditions.Add(new Rout());
-    //losingConditions.Add(new BrodricDies());
-    foreach (string s in winObjs) {
-      winningConditions.Add(ObjectiveFactory.makeObjective(s));
-    }
-    foreach (string s in loseObjs) {
-      losingConditions.Add(ObjectiveFactory.makeObjective(s));
     }
 
     foreach (var l in characters.Values) {

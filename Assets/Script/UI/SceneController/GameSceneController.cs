@@ -23,6 +23,10 @@ public class GameSceneController: MonoBehaviour {
 
   public int numCharInBattle;
 
+  //objective things:
+  public Transform layout;
+  public GameObject description;
+
   public void back() {
     SceneManager.LoadSceneAsync("OverWorld");
   }
@@ -79,6 +83,8 @@ public class GameSceneController: MonoBehaviour {
     }
 
     GameManager.get.enabled = false;
+
+    setObjDescriptions();
   }
 
   public void placeCharacter (BattleCharacter c) {
@@ -102,6 +108,17 @@ public class GameSceneController: MonoBehaviour {
 
   public bool validStartTile(Tile t) {
     return pStartLocTiles.Contains(t);
+  }
+
+  private void setObjDescriptions() {
+    foreach (Objective o in GameManager.get.winningConditions) {
+      GameObject desc = Instantiate(description, layout);
+      desc.GetComponent<Text>().text = " - " + o.description;
+    }
+    foreach (Objective o in GameManager.get.losingConditions) {
+      GameObject desc = Instantiate(description, layout);
+      desc.GetComponent<Text>().text = " - " + o.description;
+    }
   }
 
   public static GameSceneController get {get; set;}
