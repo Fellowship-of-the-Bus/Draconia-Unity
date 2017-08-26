@@ -98,7 +98,7 @@ public class BattleCharacter : Effected {
     if (called) return;
     called = true;
     equippedSkills = skills.getActives(this);
-    if (Options.debugMode || equippedSkills.IsEmpty()) {
+    if (Options.debugMode && equippedSkills.IsEmpty()) {
       setSkills();
       prevSkillSet = new List<String>(skillSet.Select(x => x.name));
     }
@@ -218,7 +218,7 @@ public class BattleCharacter : Effected {
         targets.Add(target.occupant);
       }
     }
-    
+
     Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
     if (animator) {
       animator.SetTrigger("Attack");
