@@ -396,8 +396,8 @@ public class BattleCharacter : Effected {
     dir = new Vector3(dir.x, 0, dir.z);
 
     // Set facing
-    float angle = Vector3.Angle(new Vector3(0, 0, -1), dir);
-    gameObject.transform.GetChild(1).eulerAngles = new Vector3(0, angle - 90, 0);
+    Quaternion angle = Quaternion.FromToRotation(new Vector3(-1, 0, 0), dir);
+    gameObject.transform.Find("Model").rotation = angle;
   }
 
   private Attributes totalAttr { get { return attr + attrChange + attrEquip; } }
