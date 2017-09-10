@@ -13,12 +13,12 @@ public class GameData {
   public Inventory inv = new Inventory();
 
   public void newGame() {
-  	String[] skills = {"Punch", "Ranged", "Punch"};
+  	String[] skills = {"Knockback", "ScorchEarth", "Punch"};
   	SkillTree skillTree;
 
   	GameData.gameData.characters.Add(new Character("Sisdric"));
     GameData.gameData.characters.Add(new Character("Brodric"));
-    
+
     foreach (Character c in  GameData.gameData.characters) {
    		c.attr.strength = 10;
 	    c.attr.intelligence = 10;
