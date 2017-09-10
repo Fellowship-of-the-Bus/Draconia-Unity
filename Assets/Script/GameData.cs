@@ -13,7 +13,7 @@ public class GameData {
   public Inventory inv = new Inventory();
 
   public void newGame() {
-  	String[] skills = {"Knockback", "Ranged", "Punch"};
+  	String[] skills = {"Knockback", "ScorchEarth", "Punch"};
   	SkillTree skillTree;
 
   	GameData.gameData.characters.Add(new Character("Sisdric"));

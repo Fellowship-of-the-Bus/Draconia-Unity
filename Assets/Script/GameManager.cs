@@ -71,9 +71,10 @@ public class GameManager : MonoBehaviour {
   //private List<BFEvent> BFevents = new List<BFEvent>();
 
   private class DeathListener : EventListener {
+    GameManager g = GameManager.get;
     public override void onEvent(Event e) {
-      GameManager.get.characters[team].Remove(gameObject);
-      GameManager.get.endTurnWrapper();
+      g.characters[g.SelectedPiece.GetComponent<BattleCharacter>().team].Remove(g.SelectedPiece);
+      g.endTurnWrapper();
     }
   }
 
@@ -88,8 +89,8 @@ public class GameManager : MonoBehaviour {
     waitingOn.Remove(c);
   }
 
-  IEnumerator waitUntilEmpty() {
-    while (waitingOn.Count > 0) {
+  IEnumerator waitUntilCount(int count) {
+    while (waitingOn.Count > count) {
       yield return null;
     }
   }
@@ -373,7 +374,7 @@ public class GameManager : MonoBehaviour {
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
       changeState(GameState.ending);
-      yield return StartCoroutine(waitUntilEmpty());
+      yield return StartCoroutine(waitUntilCount(0));
       waitingOn.Clear();
       targets.Clear();
 
@@ -446,9 +447,7 @@ public class GameManager : MonoBehaviour {
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
-      while (waitingOn.Count != index+1) {
-        yield return waitingOn[waitingOn.Count-1];
-      }
+      yield return waitUntilCount(index+1);
     }
     map.clearPath();
     map.setTileColours();
