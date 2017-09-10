@@ -9,7 +9,8 @@ using System.Linq;
 
 public enum GameState {
   moving,
-  attacking
+  attacking,
+  ending
 }
 
 public class GameManager : MonoBehaviour {
@@ -76,6 +77,12 @@ public class GameManager : MonoBehaviour {
   IEnumerator popAtEnd(Coroutine c) {
     yield return c;
     waitingOn.Remove(c);
+  }
+
+  IEnumerator waitUntilEmpty() {
+    while (waitingOn.Count > 0) {
+      yield return null;
+    }
   }
 
   public void waitFor(float s) {
@@ -353,26 +360,26 @@ public class GameManager : MonoBehaviour {
   }
 
   public IEnumerator endTurn() {
-    while (waitingOn.Count > 0) {
-      Coroutine c = waitingOn[waitingOn.Count-1];
-      yield return c;
+    if (gameState != GameState.ending) {
+      changeState(GameState.ending);
+      yield return StartCoroutine(waitUntilEmpty());
+      waitingOn.Clear();
+      targets.Clear();
+
+      //send endTurn event to the current piece
+      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+      Event e = new Event(null, EventHook.endTurn);
+      e.endTurnChar = selectedCharacter;
+      e.nextCharTime = actionQueue.peekNext();
+      eventManager.onEvent(e);
+      selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
+
+      // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      actionQueue.endTurn();
+      map.clearColour();
+      startTurn();
     }
-    waitingOn.Clear();
-    targets.Clear();
-
-    //send endTurn event to the current piece
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    Event e = new Event(null, EventHook.endTurn);
-    e.endTurnChar = selectedCharacter;
-    e.nextCharTime = actionQueue.peekNext();
-    eventManager.onEvent(e);
-    selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
-
-    // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-    // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
-    actionQueue.endTurn();
-    map.clearColour();
-    startTurn();
   }
 
   public void movePiece(BattleCharacter c, Tile t) {
