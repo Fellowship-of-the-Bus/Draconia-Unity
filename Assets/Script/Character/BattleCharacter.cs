@@ -222,6 +222,7 @@ public class BattleCharacter : Effected {
     Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
     if (animator) {
       animator.SetTrigger("Attack");
+      GameManager.get.waitFor(animator.GetCurrentAnimatorStateInfo(0).length);
     }
     face(target.transform.position);
 
@@ -350,11 +351,10 @@ public class BattleCharacter : Effected {
 
   public void onDeath() {
     ActionQueue.get.remove(gameObject);
-    GameManager.get.characters[team].Remove(gameObject);
 
+    onEvent(new Event(this, EventHook.postDeath));
     gameObject.SetActive(false);
     curTile.occupant = null;
-    onEvent(new Event(this, EventHook.postDeath));
 
     // remove all effects on death
     foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(allEffects)) {

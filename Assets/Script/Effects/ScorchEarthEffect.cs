@@ -27,11 +27,13 @@ public class ScorchEarthEffect : DurationEffect {
       }
       if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !(occupant.levitating)) {
         occupant.takeDamage((int)(damage(occupant)));
+        GameManager.get.waitFor(0.5f); //TODO
       }
       effected.Clear();
     } else if (e.hook == EventHook.enterTile && e.position == ownerTile.transform.position  && !(e.sender.levitating)) {
       effected.Add(e.sender);
       e.sender.takeDamage((int)(damage(e.sender)));
+      GameManager.get.waitFor(0.5f); //TODO
     }
   }
 

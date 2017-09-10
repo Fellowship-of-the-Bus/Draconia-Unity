@@ -127,7 +127,7 @@ public class PlayerControl : MonoBehaviour {
       //handle clicking on tile (move or attack ground)
       if (isTile) {
         if (gameManager.gameState == GameState.moving) {
-          gameManager.waitToEndTurn(gameManager.movePiece(clickedObject.transform.position));
+          gameManager.movePiece(clickedObject.transform.position);
         } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
           gameManager.attackTarget(clickedTile);
         }

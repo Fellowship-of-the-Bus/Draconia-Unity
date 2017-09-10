@@ -9,7 +9,8 @@ using System.Linq;
 
 public enum GameState {
   moving,
-  attacking
+  attacking,
+  ending
 }
 
 public class GameManager : MonoBehaviour {
@@ -65,12 +66,46 @@ public class GameManager : MonoBehaviour {
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
 
-  private LinkedList<Coroutine> waitEndTurn;
+  private List<Coroutine> waitingOn = new List<Coroutine>();
 
   //private List<BFEvent> BFevents = new List<BFEvent>();
 
-  public void waitToEndTurn(Coroutine c) {
-    waitEndTurn.AddFirst(c);
+  private class DeathListener : EventListener {
+    public override void onEvent(Event e) {
+      GameManager g = GameManager.get;
+      g.characters[g.SelectedPiece.GetComponent<BattleCharacter>().team].Remove(g.SelectedPiece);
+      g.endTurnWrapper();
+    }
+  }
+
+  private DeathListener d = new DeathListener();
+
+  IEnumerator waitForSeconds(float s) {
+    yield return new WaitForSeconds(s);
+  }
+
+  IEnumerator popAtEnd(Coroutine c) {
+    yield return c;
+    waitingOn.Remove(c);
+  }
+
+  IEnumerator waitUntilCount(int count) {
+    while (waitingOn.Count > count) {
+      yield return null;
+    }
+  }
+
+  public void waitFor(float s) {
+    waitFor(StartCoroutine(waitForSeconds(s)));
+  }
+
+  public void waitFor(Coroutine c) {
+    waitingOn.Add(c);
+    StartCoroutine(popAtEnd(c));
+  }
+
+  public int getWaitingIndex() {
+    return waitingOn.Count;
   }
 
   class lockUICount {
@@ -81,7 +116,6 @@ public class GameManager : MonoBehaviour {
   void Awake() {
     eventManager.setGlobal();
 
-    waitEndTurn = new LinkedList<Coroutine>();
     get = this;
     moving = false;
     UILock = new lockUICount();
@@ -229,12 +263,14 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       // if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      d.detachListener(SelectedPiece.GetComponent<BattleCharacter>());
     }
 
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+    d.attachListener(selectedCharacter, EventHook.postDeath);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
@@ -336,25 +372,26 @@ public class GameManager : MonoBehaviour {
   }
 
   public IEnumerator endTurn() {
-    foreach(Coroutine c in waitEndTurn) {
-      yield return c;
+    if (gameState != GameState.ending) {
+      changeState(GameState.ending);
+      yield return StartCoroutine(waitUntilCount(0));
+      waitingOn.Clear();
+      targets.Clear();
+
+      //send endTurn event to the current piece
+      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+      Event e = new Event(null, EventHook.endTurn);
+      e.endTurnChar = selectedCharacter;
+      e.nextCharTime = actionQueue.peekNext();
+      eventManager.onEvent(e);
+      selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
+
+      // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
+      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      actionQueue.endTurn();
+      map.clearColour();
+      startTurn();
     }
-    waitEndTurn.Clear();
-    targets.Clear();
-
-    //send endTurn event to the current piece
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    Event e = new Event(null, EventHook.endTurn);
-    e.endTurnChar = selectedCharacter;
-    e.nextCharTime = actionQueue.peekNext();
-    eventManager.onEvent(e);
-    selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
-
-    // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-    // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
-    actionQueue.endTurn();
-    map.clearColour();
-    startTurn();
   }
 
   public void movePiece(BattleCharacter c, Tile t) {
@@ -363,10 +400,10 @@ public class GameManager : MonoBehaviour {
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
     moving = true;
-    waitToEndTurn(StartCoroutine(IterateMove(tile, c.gameObject)));
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count)));
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -410,10 +447,9 @@ public class GameManager : MonoBehaviour {
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
-      if (! character.isAlive()) {
-        endTurnWrapper();
-        break; // character can die mid-move now
-      }
+      if (animator) animator.enabled = false;
+      yield return waitUntilCount(index+1);
+      if (animator) animator.enabled = true;
     }
     map.clearPath();
     map.setTileColours();
@@ -474,7 +510,9 @@ public class GameManager : MonoBehaviour {
         localPath.RemoveFirst(); // discard current position
         moving = true;
         line.GetComponent<Renderer>().material.color = Color.clear;
-        return StartCoroutine(IterateMove(localPath, SelectedPiece));
+        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count));
+        waitFor(co);
+        return co;
       } else {
         SelectedPiece.transform.position = coordToMove;
       }
@@ -515,7 +553,8 @@ public class GameManager : MonoBehaviour {
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
-    yield return movePiece(destination, true);
+    movePiece(destination, true);
+    yield return waitUntilCount(waitingOn.Count);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();
