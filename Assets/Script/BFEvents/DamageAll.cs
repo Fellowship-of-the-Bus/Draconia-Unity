@@ -5,6 +5,8 @@ using System;
 
 public class DamageAll : BFTimeEvent{
 
+  public DamageAll(int t) : base(t){}
+
   public override void trigger() {
     foreach (GameObject c in GameManager.get.players) {
       c.GetComponent<BattleCharacter>().takeDamage(2);

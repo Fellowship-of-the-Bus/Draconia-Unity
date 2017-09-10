@@ -26,6 +26,8 @@ public class GameSceneController: MonoBehaviour {
   public Transform layout;
   public GameObject description;
 
+  public Dialogue dialogue;
+
   public void back() {
     SceneManager.LoadSceneAsync("OverWorld");
   }
@@ -78,6 +80,19 @@ public class GameSceneController: MonoBehaviour {
     GameManager.get.enabled = false;
 
     setObjDescriptions();
+
+    dialogue.setOnExit(() => unlockUI());
+    dialogue.loadDialogue(GameManager.get.reader.start);
+    lockUI();
+  }
+
+  public void lockUI() {
+    positioningCanvas.gameObject.transform.Find("Panel").gameObject.SetActive(false);
+    positioningCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(false);
+  }
+  public void unlockUI() {
+    positioningCanvas.gameObject.transform.Find("Panel").gameObject.SetActive(true);
+    positioningCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(true);
   }
 
   public void placeCharacter (BattleCharacter c) {

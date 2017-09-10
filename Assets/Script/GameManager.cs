@@ -61,13 +61,20 @@ public class GameManager : MonoBehaviour {
   //tile information
   public TileInfo tInfo;
 
+  //main dialogue controller
+  public Dialogue dialogue;
+  public DialogueReader reader;
+
+  //Map Boss
+  public BattleCharacter boss;
+
   public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
 
   private LinkedList<Coroutine> waitEndTurn;
 
-  //private List<BFEvent> BFevents = new List<BFEvent>();
+  private List<BFEvent> BFevents = new List<BFEvent>();
 
   public void waitToEndTurn(Coroutine c) {
     waitEndTurn.AddFirst(c);
@@ -112,6 +119,14 @@ public class GameManager : MonoBehaviour {
     }
     foreach (string s in loseObjs) {
       losingConditions.Add(ObjectiveFactory.makeObjective(s));
+    }
+
+
+    string mapName = SceneManager.GetActiveScene().name;
+    reader = new DialogueReader(mapName);
+    BFevents = reader.inBattle;
+    foreach (BFEvent e in BFevents) {
+      e.init();
     }
   }
   //should begin in character select phase, probably using a different camera...

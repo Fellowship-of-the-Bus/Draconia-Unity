@@ -2,11 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
+
 public class DialogueFragment {
-  public BattleCharacter speaker;
+  public Character speaker;
   public string text;
   public bool hasNextFrame = true;
-  public DialogueFragment(BattleCharacter c, string t) {
+  public DialogueFragment(Character c, string t) {
     speaker = c;
     text = t;
   }
