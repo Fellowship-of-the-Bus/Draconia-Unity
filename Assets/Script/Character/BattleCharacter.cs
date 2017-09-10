@@ -352,9 +352,9 @@ public class BattleCharacter : Effected {
   public void onDeath() {
     ActionQueue.get.remove(gameObject);
 
+    onEvent(new Event(this, EventHook.postDeath));
     gameObject.SetActive(false);
     curTile.occupant = null;
-    onEvent(new Event(this, EventHook.postDeath));
 
     // remove all effects on death
     foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(allEffects)) {

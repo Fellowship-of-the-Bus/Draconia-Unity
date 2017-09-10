@@ -71,8 +71,8 @@ public class GameManager : MonoBehaviour {
   //private List<BFEvent> BFevents = new List<BFEvent>();
 
   private class DeathListener : EventListener {
-    GameManager g = GameManager.get;
     public override void onEvent(Event e) {
+      GameManager g = GameManager.get;
       g.characters[g.SelectedPiece.GetComponent<BattleCharacter>().team].Remove(g.SelectedPiece);
       g.endTurnWrapper();
     }
