@@ -351,7 +351,6 @@ public class BattleCharacter : Effected {
 
   public void onDeath() {
     ActionQueue.get.remove(gameObject);
-    GameManager.get.characters[team].Remove(gameObject);
 
     gameObject.SetActive(false);
     curTile.occupant = null;

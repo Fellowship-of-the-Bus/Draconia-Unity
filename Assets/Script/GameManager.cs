@@ -70,6 +70,15 @@ public class GameManager : MonoBehaviour {
 
   //private List<BFEvent> BFevents = new List<BFEvent>();
 
+  private class DeathListener : EventListener {
+    public override void onEvent(Event e) {
+      GameManager.get.characters[team].Remove(gameObject);
+      GameManager.get.endTurnWrapper();
+    }
+  }
+
+  private DeathListener d = new DeathListener();
+
   IEnumerator waitForSeconds(float s) {
     yield return new WaitForSeconds(s);
   }
@@ -253,12 +262,14 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       // if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
       // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
+      d.detachListener(SelectedPiece.GetComponent<BattleCharacter>());
     }
 
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+    d.attachListener(selectedCharacter, EventHook.postDeath);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
@@ -437,10 +448,6 @@ public class GameManager : MonoBehaviour {
       EventManager.get.onEvent(enterEvent);
       while (waitingOn.Count != index+1) {
         yield return waitingOn[waitingOn.Count-1];
-      }
-      if (! character.isAlive()) {
-        endTurnWrapper();
-        break; // character can die mid-move now
       }
     }
     map.clearPath();
