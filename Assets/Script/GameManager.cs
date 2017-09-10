@@ -447,7 +447,9 @@ public class GameManager : MonoBehaviour {
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
+      if (animator) animator.enabled = false;
       yield return waitUntilCount(index+1);
+      if (animator) animator.enabled = true;
     }
     map.clearPath();
     map.setTileColours();
