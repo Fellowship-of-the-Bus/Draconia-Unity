@@ -222,6 +222,7 @@ public class BattleCharacter : Effected {
     Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
     if (animator) {
       animator.SetTrigger("Attack");
+      GameManager.get.waitFor(animator.GetCurrentAnimatorStateInfo(0).length);
     }
     face(target.transform.position);
 

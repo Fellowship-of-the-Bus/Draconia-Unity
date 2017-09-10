@@ -65,12 +65,30 @@ public class GameManager : MonoBehaviour {
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
 
-  private LinkedList<Coroutine> waitEndTurn;
+  private List<Coroutine> waitingOn = new List<Coroutine>();
 
   //private List<BFEvent> BFevents = new List<BFEvent>();
 
-  public void waitToEndTurn(Coroutine c) {
-    waitEndTurn.AddFirst(c);
+  IEnumerator waitForSeconds(float s) {
+    yield return new WaitForSeconds(s);
+  }
+
+  IEnumerator popAtEnd(Coroutine c) {
+    yield return c;
+    waitingOn.Remove(c);
+  }
+
+  public void waitFor(float s) {
+    waitFor(StartCoroutine(waitForSeconds(s)));
+  }
+
+  public void waitFor(Coroutine c) {
+    waitingOn.Add(c);
+    StartCoroutine(popAtEnd(c));
+  }
+
+  public int getWaitingIndex() {
+    return waitingOn.Count;
   }
 
   class lockUICount {
@@ -81,7 +99,6 @@ public class GameManager : MonoBehaviour {
   void Awake() {
     eventManager.setGlobal();
 
-    waitEndTurn = new LinkedList<Coroutine>();
     get = this;
     moving = false;
     UILock = new lockUICount();
@@ -336,10 +353,11 @@ public class GameManager : MonoBehaviour {
   }
 
   public IEnumerator endTurn() {
-    foreach(Coroutine c in waitEndTurn) {
+    while (waitingOn.Count > 0) {
+      Coroutine c = waitingOn[waitingOn.Count-1];
       yield return c;
     }
-    waitEndTurn.Clear();
+    waitingOn.Clear();
     targets.Clear();
 
     //send endTurn event to the current piece
@@ -363,10 +381,10 @@ public class GameManager : MonoBehaviour {
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
     moving = true;
-    waitToEndTurn(StartCoroutine(IterateMove(tile, c.gameObject)));
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count)));
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -410,6 +428,9 @@ public class GameManager : MonoBehaviour {
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
+      while (waitingOn.Count != index+1) {
+        yield return waitingOn[waitingOn.Count-1];
+      }
       if (! character.isAlive()) {
         endTurnWrapper();
         break; // character can die mid-move now
@@ -474,7 +495,9 @@ public class GameManager : MonoBehaviour {
         localPath.RemoveFirst(); // discard current position
         moving = true;
         line.GetComponent<Renderer>().material.color = Color.clear;
-        return StartCoroutine(IterateMove(localPath, SelectedPiece));
+        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count));
+        waitFor(co);
+        return co;
       } else {
         SelectedPiece.transform.position = coordToMove;
       }
