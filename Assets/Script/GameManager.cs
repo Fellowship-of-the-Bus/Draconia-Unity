@@ -551,7 +551,8 @@ public class GameManager : MonoBehaviour {
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
-    yield return movePiece(destination, true);
+    movePiece(destination, true);
+    yield return waitUntilCount(waitingOn.Count);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();
