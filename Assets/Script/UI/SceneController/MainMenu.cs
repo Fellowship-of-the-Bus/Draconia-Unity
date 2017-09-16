@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 public class MainMenu: MonoBehaviour {
   public FileBrowser loadBrowser;
 
+  void Start() {
+    LootGenerator.init();
+  }
   public void test() {
     SceneManager.LoadSceneAsync("OverWorld");
   }

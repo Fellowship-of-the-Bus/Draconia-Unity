@@ -80,12 +80,19 @@ public class GameManager : MonoBehaviour {
   private class DeathListener : EventListener {
     public override void onEvent(Event e) {
       GameManager g = GameManager.get;
-      g.characters[g.SelectedPiece.GetComponent<BattleCharacter>().team].Remove(g.SelectedPiece);
-      g.endTurnWrapper();
+      g.characters[e.sender.team].Remove(e.sender.gameObject);
+      if (e.sender == g.SelectedPiece.GetComponent<BattleCharacter>()) g.endTurnWrapper();
     }
   }
 
-  private DeathListener d = new DeathListener();
+  private DeathListener deathListener = new DeathListener();
+
+  public class PostGameData {
+    public bool win;
+    public List<Character> inBattle;
+    public List<Equipment> loot;
+  }
+  public static PostGameData postData = new PostGameData();
 
   IEnumerator waitForSeconds(float s) {
     yield return new WaitForSeconds(s);
@@ -198,10 +205,15 @@ public class GameManager : MonoBehaviour {
 
     foreach (var l in characters.Values) {
       foreach (var o in l) {
-        o.GetComponent<BattleCharacter>().init();
+        var bchar = o.GetComponent<BattleCharacter>();
+        bchar.init();
+        deathListener.attachListener(bchar, EventHook.postDeath);
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
+
+    List<Character> charInBattle = new List<Character>(players.Map(x => x.GetComponent<BattleCharacter>().baseChar));
+    GameManager.postData.inBattle = charInBattle;
   }
 
   int blinkFrameNumber = 0;
@@ -275,29 +287,27 @@ public class GameManager : MonoBehaviour {
     foreach(Objective o in losingConditions) {
       if (o.isMet(this)) {
         endGame(false);
+        return;
       }
     }
+    bool win = true;
     foreach(Objective o in winningConditions) {
-      if (o.isMet(this)) {
-        endGame(true);
-      }
+      win = win && o.isMet(this);
+    }
+    if (win) {
+      endGame(true);
+      return;
     }
 
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
     map.clearColour();
     map.clearPath();
-    if (SelectedPiece) {
-      // if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
-      d.detachListener(SelectedPiece.GetComponent<BattleCharacter>());
-    }
 
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    d.attachListener(selectedCharacter, EventHook.postDeath);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
@@ -568,7 +578,18 @@ public class GameManager : MonoBehaviour {
   }
 
   public void endGame(bool win) {
-    Debug.Log(win);
+    dialogue.setOnExit(() => displayPostScreen(win));
+    if (win) {
+      dialogue.loadDialogue(reader.end);
+    } else {
+      displayPostScreen(win);
+    }
+  }
+
+  public void displayPostScreen(bool win) {
+    GameManager.postData.win = win;
+    GameManager.postData.loot = LootGenerator.get.getLoot(SceneManager.GetActiveScene().name);
+    SceneManager.LoadSceneAsync("PostMap");
   }
 
   IEnumerator doHandleAI(int time) {

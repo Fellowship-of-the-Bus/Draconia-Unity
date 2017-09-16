@@ -5,16 +5,21 @@ using System.IO;
 using UnityEngine;
 
 public static class SaveLoad {
+  public static string autoSaveName = "AutoSave.autobro";
   public static string dirPath = Path.Combine(Application.persistentDataPath, "savedGames");
 
   private static DirectoryInfo dir = System.IO.Directory.CreateDirectory(dirPath);
 
-  public static void save(string saveName) {
+  public static void save(string saveName, bool auto = false) {
     BinaryFormatter bf = new BinaryFormatter();
-    if (!saveName.EndsWith(".bro")) saveName += ".bro";
+    if (!saveName.EndsWith(".bro") && !auto) saveName += ".bro";
     FileStream file = File.Create(Path.Combine(dirPath, saveName));
     bf.Serialize(file, GameData.gameData);
     file.Close();
+  }
+
+  public static void saveAuto() {
+    save(SaveLoad.autoSaveName, true);
   }
 
   public static bool load(string saveName) {
@@ -32,6 +37,10 @@ public static class SaveLoad {
       file.Close();
     } else Debug.Log(saveName + " doesn't exist");
     return success;
+  }
+
+  public static void loadAuto() {
+    load(SaveLoad.autoSaveName);
   }
 
   public static IEnumerable<FileInfo> listSaveFiles() {
