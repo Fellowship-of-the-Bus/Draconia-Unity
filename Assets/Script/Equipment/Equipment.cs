@@ -49,5 +49,9 @@ public abstract class Equipment {
     return tier < 5;
   }
 
+  public Equipment clone() {
+    return MemberwiseClone() as Equipment;
+  }
+
   public EquipType type;
 }

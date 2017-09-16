@@ -21,6 +21,9 @@ public class OverWorld: MonoBehaviour {
   }
 
   public void playScenario(string scenario) {
+    //auto save before battle
+    SaveLoad.saveAuto();
+
     SceneManager.LoadSceneAsync (scenario);
   }
   public void manage() {
