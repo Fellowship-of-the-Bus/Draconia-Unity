@@ -11,6 +11,7 @@ public class TimeDialogue : BFTimeEvent{
   }
 
   public override void trigger() {
+    GameSceneController.get.pControl.enabled = false;
     GameManager.get.dialogue.loadDialogue(d);
   }
 }

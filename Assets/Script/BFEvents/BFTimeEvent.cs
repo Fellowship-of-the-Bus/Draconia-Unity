@@ -7,7 +7,7 @@ public abstract class BFTimeEvent : BFEvent{
   int previousTime;
 
   public BFTimeEvent(int t) {
-    previousTime = t;
+    triggerTime = t;
   }
 
   public override void onEvent(Event e) {

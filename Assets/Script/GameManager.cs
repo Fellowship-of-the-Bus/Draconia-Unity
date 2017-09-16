@@ -162,6 +162,7 @@ public class GameManager : MonoBehaviour {
     foreach (BFEvent e in BFevents) {
       e.init();
     }
+    dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {

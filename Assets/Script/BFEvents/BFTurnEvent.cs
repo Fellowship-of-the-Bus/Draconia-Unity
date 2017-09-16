@@ -8,23 +8,20 @@ public abstract class BFTurnEvent : BFEvent {
   BattleCharacter boss;
   int bossTurns = 0;
 
+  //if boss == null, no events get triggered.
   public BFTurnEvent(BattleCharacter c, int t) {
     boss = c;
-    bossTurns = t;
-
-    //use boss to get rid of warning
-    if (boss == null && bossTurns != 0) {
-
-    }
+    triggerTime = t;
   }
 
   public override void onEvent(Event e) {
-  /*  if (e.endTurnChar == boss) {
+    if (boss == null) return;
+    if (e.endTurnChar == boss) {
       bossTurns += 1;
       if (bossTurns == triggerTime) {
+    Debug.Log("BFTurnEvent onEvent" + " Boss = " + boss + " turns = " + bossTurns + " triggerTime = " + triggerTime);
         trigger();
       }
     }
-  */
   }
 }
