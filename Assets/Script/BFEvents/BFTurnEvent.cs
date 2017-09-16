@@ -19,7 +19,6 @@ public abstract class BFTurnEvent : BFEvent {
     if (e.endTurnChar == boss) {
       bossTurns += 1;
       if (bossTurns == triggerTime) {
-    Debug.Log("BFTurnEvent onEvent" + " Boss = " + boss + " turns = " + bossTurns + " triggerTime = " + triggerTime);
         trigger();
       }
     }
