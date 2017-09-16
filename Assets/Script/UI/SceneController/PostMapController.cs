@@ -47,4 +47,8 @@ public class PostMapController: MonoBehaviour {
     //autoSave when returning to overWorld.
     SaveLoad.saveAuto();
   }
+
+  public void exit() {
+    SceneManager.LoadSceneAsync("MainMenu");
+  }
 }
