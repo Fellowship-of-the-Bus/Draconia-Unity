@@ -155,14 +155,12 @@ public class GameManager : MonoBehaviour {
       losingConditions.Add(ObjectiveFactory.makeObjective(s));
     }
 
-
     string mapName = SceneManager.GetActiveScene().name;
     reader = new DialogueReader(mapName);
     BFevents = reader.inBattle;
     foreach (BFEvent e in BFevents) {
       e.init();
     }
-    dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {
@@ -170,6 +168,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public void init() {
+    dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
     foreach (var x in objs) {
       characters[x.Key] = new List<GameObject>(x);

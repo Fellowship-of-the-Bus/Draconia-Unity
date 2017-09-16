@@ -13,12 +13,16 @@ public class GameSceneController: MonoBehaviour {
   public Transform parent;
 
   public List<Tile> pStartLocTiles;
-  public GameObject battleCanvas;
-  public GameObject charSelectCanvas;
-  public GameObject positioningCanvas;
   public PlayerControl pControl;
   public GameObject battleCanvasTooltip;
   public GameObject charSelectTooltip;
+
+  // Canvases
+  public GameObject positioningCanvas;
+  public GameObject charSelectCanvas;
+  public GameObject rotateCanvas;
+  public GameObject battleCanvas;
+
 
   public int numCharInBattle;
 
@@ -45,6 +49,7 @@ public class GameSceneController: MonoBehaviour {
   public void startGame() {
     //switch canvas, then start the game
     battleCanvas.SetActive(true);
+    rotateCanvas.SetActive(true);
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(false);
     //enable player control
@@ -62,7 +67,6 @@ public class GameSceneController: MonoBehaviour {
   }
 
   void Start() {
-
     //playerStartLocations = GameManager.get.map.getStartTiles();
     battleCanvas.SetActive(false);
     charSelectCanvas.SetActive(false);
@@ -88,11 +92,11 @@ public class GameSceneController: MonoBehaviour {
 
   public void lockUI() {
     positioningCanvas.gameObject.transform.Find("Panel").gameObject.SetActive(false);
-    positioningCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(false);
+    rotateCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(false);
   }
   public void unlockUI() {
     positioningCanvas.gameObject.transform.Find("Panel").gameObject.SetActive(true);
-    positioningCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(true);
+    rotateCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(true);
   }
 
   public void placeCharacter (BattleCharacter c) {
