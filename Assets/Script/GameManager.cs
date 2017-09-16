@@ -91,9 +91,10 @@ public class GameManager : MonoBehaviour {
     yield return new WaitForSeconds(s);
   }
 
-  IEnumerator popAtEnd(Coroutine c) {
+  IEnumerator popAtEnd(Coroutine c, Action act) {
     yield return c;
     waitingOn.Remove(c);
+    if (act != null) act();
   }
 
   IEnumerator waitUntilCount(int count) {
@@ -102,13 +103,24 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public void waitFor(float s) {
-    waitFor(StartCoroutine(waitForSeconds(s)));
+  public void waitFor(float s, Action act = null) {
+    waitFor(StartCoroutine(waitForSeconds(s)), act);
   }
 
-  public void waitFor(Coroutine c) {
+  IEnumerator waitForAnimation(Animator animator, String trigger) {
+    animator.SetTrigger(trigger);
+    yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
+                                          //otherwise next line always wait for 0.
+    yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
+  }
+
+  public void waitFor(Animator a, String trigger, Action act = null) {
+    waitFor(StartCoroutine(waitForAnimation(a, trigger)), act);
+  }
+
+  public void waitFor(Coroutine c, Action act = null) {
     waitingOn.Add(c);
-    StartCoroutine(popAtEnd(c));
+    StartCoroutine(popAtEnd(c, act));
   }
 
   public int getWaitingIndex() {
