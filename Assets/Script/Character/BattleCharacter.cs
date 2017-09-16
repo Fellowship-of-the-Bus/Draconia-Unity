@@ -220,12 +220,13 @@ public class BattleCharacter : Effected {
     }
 
     Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
-    if (animator) {
-      animator.SetTrigger("Attack");
-      GameManager.get.waitFor(animator.GetCurrentAnimatorStateInfo(0).length);
-    }
-    face(target.transform.position);
+    if (animator) GameManager.get.waitFor(animator, "Attack", () => finishSkill(skill, target, targets));
+    else finishSkill(skill, target, targets);
+    return true;
+  }
 
+  void finishSkill(ActiveSkill skill, Tile target, List<Effected> targets) {
+    face(target.transform.position);
     int expGained = getExpGained(skill, null);
     List<BattleCharacter> cTargets = new List<BattleCharacter>();
     List<Tile> tTargets = new List<Tile>();
@@ -292,7 +293,6 @@ public class BattleCharacter : Effected {
     onEvent(postSkill);
 
     baseChar.gainExp(expGained);
-    return true;
   }
 
   void floatingText(int val, Color colour) {
