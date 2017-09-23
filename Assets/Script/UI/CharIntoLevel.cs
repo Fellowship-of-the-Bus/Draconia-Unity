@@ -12,7 +12,7 @@ public class CharIntoLevel: MonoBehaviour {
   public Text display;
 
   public List<Character> addedCharacters = new List<Character>();
-  CharPreview curPreview;
+  //CharPreview curPreview;
 
   private int _numCharSelected;
   public int numCharSelected {
@@ -30,17 +30,19 @@ public class CharIntoLevel: MonoBehaviour {
     numCharSelected = 0;
   }
 
-  protected virtual void onButtonClick(CharPreview preview){
-    if (curPreview != null) {
-      curPreview.background.color = Color.white;
-    }
-    preview.background.color = Color.red;
-    curPreview = preview;
+  // protected virtual void onButtonClick(CharPreview preview){
+  //   if (curPreview != null) {
+  //     curPreview.background.color = Color.white;
+  //   }
+  //   preview.background.color = Color.red;
+  //   curPreview = preview;
+  // }
+
+  public bool canAddCharacter(Character c) {
+    return !addedCharacters.Contains(c);
   }
 
-  public void addCharacter() {
-    InvCharSelect inv = InvCharSelect.get;
-    Character c = inv.selectedPanel.c;
+  public void addCharacter(Character c) {
     //check character has not been added
     if (addedCharacters.Contains(c)) {
       return;
@@ -60,16 +62,20 @@ public class CharIntoLevel: MonoBehaviour {
     CharPreview preview = o.GetComponent<CharPreview>();
     preview.init(newBattleChar);
     //add listener
-    o.GetComponent<Button>().onClick.AddListener(() => {
-      onButtonClick(preview);
+    // o.GetComponent<Button>().onClick.AddListener(() => {
+    //   onButtonClick(preview);
+    // });
+    Button unselect = o.transform.Find("Unselect").gameObject.GetComponent<Button>();
+    unselect.onClick.AddListener(() => {
+      removeCharacter(preview);
     });
 
     addedCharacters.Add(c);
     setText(addedCharacters.Count);
   }
 
-  public void removeCharacter() {
-    if (curPreview == null) return;
+  public void removeCharacter(CharPreview curPreview) {
+    //if (curPreview == null) return;
     GameSceneController.get.removeCharacter(curPreview.c);
     curPreview.gameObject.transform.SetParent(null, false);
     addedCharacters.Remove(curPreview.c.baseChar);

@@ -176,14 +176,14 @@ public class GameManager : MonoBehaviour {
 
     string mapName = SceneManager.GetActiveScene().name;
     reader = new DialogueReader(mapName);
-    BFevents = reader.inBattle;
-    foreach (BFEvent e in BFevents) {
-      e.init();
-    }
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {
     //startTurn();
+    BFevents = reader.inBattle;
+    foreach (BFEvent e in BFevents) {
+      e.init();
+    }
   }
 
   public void init() {
