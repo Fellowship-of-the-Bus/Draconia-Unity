@@ -43,7 +43,11 @@ public class PlayerControl : MonoBehaviour {
     if (hoveredObject.transform.parent.tag == "Cube") {
       hoveredObject = hoveredObject.transform.parent.gameObject;
     }
-
+    Transform parent = hoveredObject.transform.parent;
+    while (parent != null && parent.tag != "Unit") {
+      parent = parent.parent;
+    }
+    if (parent) hoveredObject = parent.gameObject;
     bool isTile = hoveredObject.tag == "Cube";
     bool isPiece = hoveredObject.tag == "Unit";
     Tile hoveredTile = map.getTile(hoveredObject.transform.position);

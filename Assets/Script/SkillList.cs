@@ -16,5 +16,8 @@ class SkillList {
         skills.Add(t);
       }
     }
+    skills.Sort((a,b) => {
+      return String.Compare(a.displayName(), b.displayName());
+    });
   }
 }

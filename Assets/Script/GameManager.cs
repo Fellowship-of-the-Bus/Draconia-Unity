@@ -361,6 +361,7 @@ public class GameManager : MonoBehaviour {
     skillTargets = skill.getTargets();
     //change colours of the tiles for attacking
     //check for range skill if not put 1 else put the range
+    Debug.Log("Selected skill " + i);
     changeState(GameState.attacking);
   }
 
