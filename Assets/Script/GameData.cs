@@ -33,4 +33,11 @@ public class GameData {
 	    }
     }
   }
+
+  public Character getCharacterByName(string name) {
+    foreach(Character c in characters) {
+      if (c.name == name) return c;
+    }
+    return null;
+  }
 }

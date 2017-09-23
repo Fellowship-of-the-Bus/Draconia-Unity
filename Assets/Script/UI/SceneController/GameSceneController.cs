@@ -23,6 +23,8 @@ public class GameSceneController: MonoBehaviour {
   public GameObject rotateCanvas;
   public GameObject battleCanvas;
 
+  public string[] mandatoryCharacters;
+
 
   public int numCharInBattle;
 
@@ -88,6 +90,8 @@ public class GameSceneController: MonoBehaviour {
     dialogue.setOnExit(() => unlockUI());
     dialogue.loadDialogue(GameManager.get.reader.start);
     lockUI();
+
+    setMandatoryChars();
   }
 
   public void lockUI() {
@@ -116,6 +120,15 @@ public class GameSceneController: MonoBehaviour {
     c.curTile = null;
     t.occupant = null;
     Destroy(c.gameObject);
+  }
+
+  public void setMandatoryChars() {
+    foreach (string s in mandatoryCharacters) {
+      Character c = GameData.gameData.getCharacterByName(s);
+      if (c != null) {
+        CharIntoLevel.get.addCharacter(c, true);
+      }
+    }
   }
 
   public bool validStartTile(Tile t) {

@@ -42,7 +42,7 @@ public class CharIntoLevel: MonoBehaviour {
     return !addedCharacters.Contains(c);
   }
 
-  public void addCharacter(Character c) {
+  public void addCharacter(Character c, bool mandatory = false) {
     //check character has not been added
     if (addedCharacters.Contains(c)) {
       return;
@@ -69,6 +69,10 @@ public class CharIntoLevel: MonoBehaviour {
     unselect.onClick.AddListener(() => {
       removeCharacter(preview);
     });
+    if (mandatory) {
+      o.transform.Find("Unselect").gameObject.SetActive(false);
+    }
+
 
     addedCharacters.Add(c);
     setText(addedCharacters.Count);
