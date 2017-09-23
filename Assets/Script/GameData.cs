@@ -19,6 +19,8 @@ public class GameData {
   	GameData.gameData.characters.Add(new Character("Sisdric"));
     GameData.gameData.characters.Add(new Character("Brodric"));
 
+    inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
+
     foreach (Character c in  GameData.gameData.characters) {
    		c.attr.strength = 10;
 	    c.attr.intelligence = 10;

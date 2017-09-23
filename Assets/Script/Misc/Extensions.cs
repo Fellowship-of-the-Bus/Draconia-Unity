@@ -86,5 +86,9 @@ public static class Extensions {
     }
     return value;
   }
+
+  public static string displayName(this Type t) {
+    return t.FullName;
+  }
 }
 
