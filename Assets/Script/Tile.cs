@@ -9,7 +9,7 @@ public class Tile : Effected {
   public float additionalHeight = 0f;
   public bool startTile = false;
   public string type;
-  public Color color;
+  public Material color;
 
   public bool occupied() {
     return occupant != null;
@@ -29,7 +29,7 @@ public class Tile : Effected {
 
   public void setup() {
     Transform t = gameObject.transform.Find("Top");
-    color = t.gameObject.GetComponent<Renderer>().material.color;
+    color = t.gameObject.GetComponent<Renderer>().material;
   }
 
   public void setColor(Color c) {

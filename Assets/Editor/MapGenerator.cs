@@ -34,7 +34,12 @@ static class MapGenerator {
     int lineNum = 0;
     if (!string.IsNullOrEmpty(fileName)) {
       Scene scene = EditorSceneManager.GetActiveScene();
-      GameObject parent = scene.GetRootGameObjects()[0];
+      GameObject[] objs = scene.GetRootGameObjects();
+      GameObject parent = objs[0];
+      foreach(GameObject o in objs) {
+        Debug.Log(o.name);
+        if (o.name == "map") parent = o;
+      }
       board = (GameObject)GameObject.Instantiate(Resources.Load("Map/Board"), parent.transform);
       foreach (string s in File.ReadAllLines(fileName)) {
         generateRow(s, lineNum);
