@@ -17,6 +17,7 @@ public class Map {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
+      t.setup();
     }
   }
 
