@@ -168,12 +168,15 @@ public class BattleCharacter : Effected {
     }
   }
 
-  private Transform ui;
-
-  void Update() {
+  void OnValidate() {
+    init();
     if (Options.debugMode) {
       setSkills();
     }
+  }
+
+  private Transform ui;
+  void Update() {
     // rotate overhead UI (health bar) to look at camera
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
