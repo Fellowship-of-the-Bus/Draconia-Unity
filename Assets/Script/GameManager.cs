@@ -386,23 +386,18 @@ public class GameManager : MonoBehaviour {
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
     List<Tile> validTargets = skill.getTargets();
 
-    if (skill is Portal) {
-      if (validTargets.Contains(target)) {
-        targets.Add(target);
-        skill.validate(targets);
-      }
-
-      if (targets.Count() != skill.ntargets) {
-        return;
-      }
-    } else {
-      targets.Clear();
+    if (validTargets.Contains(target)) {
       targets.Add(target);
+      skill.validate(targets);
+    }
+    if (targets.Count() != skill.ntargets) {
+      return;
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {
       StartCoroutine(endTurn());
     }
+    targets.Clear();
   }
 
   public void endTurnWrapper() {
