@@ -26,8 +26,24 @@ public class GameManager : MonoBehaviour {
   public GameObject buffButton;
 
   //variables to handles turns
-  /** stack of (position, remaining move range), where top of stack is previous location */
-  public Stack<Pair<Tile,int>> positionStack = new Stack<Pair<Tile, int>>();
+
+  //TODO: Finish handling of portal skll
+  public class UndoAction {
+    Action act;
+    bool pushedBySkill;
+
+    public UndoAction(Action a, bool skill = false) {
+      act = a;
+      pushedBySkill = skill;
+    }
+
+    public bool undo() {
+      act();
+      return pushedBySkill;
+    }
+
+  }
+  public Stack<UndoAction> cancelStack = new Stack<UndoAction>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
   public List<Tile> skillTargets;
@@ -332,7 +348,7 @@ public class GameManager : MonoBehaviour {
       playerTurn = true;
     }
 
-    positionStack.Clear();
+    cancelStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].interactable = false;
@@ -351,8 +367,8 @@ public class GameManager : MonoBehaviour {
 
   public void selectSkill(int i) {
     //unselect
-    if (gameState == GameState.attacking && SelectedSkill == i) {
-      changeState(GameState.moving);
+    if (gameState == GameState.attacking) {
+      while(!cancelStack.Pop().undo());
       return;
     }
 
@@ -364,6 +380,12 @@ public class GameManager : MonoBehaviour {
     //check for range skill if not put 1 else put the range
     Debug.Log("Selected skill " + i);
     changeState(GameState.attacking);
+
+    cancelStack.Push(new UndoAction(() => {
+
+
+      changeState(GameState.moving);
+    }, true));
   }
 
   public void selectTarget(BattleCharacter target) {
@@ -387,23 +409,22 @@ public class GameManager : MonoBehaviour {
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
     List<Tile> validTargets = skill.getTargets();
 
-    if (skill is Portal) {
-      if (validTargets.Contains(target)) {
-        targets.Add(target);
-        skill.validate(targets);
-      }
-
-      if (targets.Count() != skill.ntargets) {
-        return;
-      }
-    } else {
-      targets.Clear();
+    if (validTargets.Contains(target)) {
       targets.Add(target);
+      cancelStack.Push(new UndoAction(() => {
+        targets.Remove(target);
+        map.setTileColours();
+      }));
+      skill.validate(targets);
+    }
+    if (targets.Count() != skill.ntargets) {
+      return;
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {
       StartCoroutine(endTurn());
     }
+    targets.Clear();
   }
 
   public void endTurnWrapper() {
@@ -536,7 +557,16 @@ public class GameManager : MonoBehaviour {
       // if player chose to move, update position stack with current values,
       // update remaining move range, and recolor the tiles given the new current position
       if (moveCommand) {
-        positionStack.Push(Pair.create(c.curTile, moveRange));
+        int i = moveRange;
+        Tile cur = c.curTile;
+        cancelStack.Push(new UndoAction(() => {
+          Vector3 coord = cur.transform.position;
+          moveRange = i;
+          movePiece(coord, false, false);
+          changeState(GameState.moving);
+          map.djikstra(coord, c);
+          map.setTileColours();
+        }));
         moveRange -= destination.distance;
         map.djikstra(coordToMove, c);
       }
@@ -564,17 +594,10 @@ public class GameManager : MonoBehaviour {
 
   public void cancelAction() {
     BattleCharacter character = SelectedPiece.GetComponent<BattleCharacter>();
-    if (gameState == GameState.attacking) {
-      changeState(GameState.moving);
-    } else if (positionStack.Count() > 0) {
+    if (cancelStack.Count() > 0) {
       // reset character to previous position and remaining move range, then recolor movable tiles
-      Pair<Tile, int> val = positionStack.Pop();
-      Vector3 coordToMove = val.first.transform.position;
-      moveRange = val.second;
-      movePiece(coordToMove, false, false);
-      changeState(GameState.moving);
-      map.djikstra(coordToMove, character);
-      map.setTileColours();
+      UndoAction act = cancelStack.Pop();
+      act.undo();
     }
     eventManager.onEvent(new Event(character, EventHook.cancel));
   }
