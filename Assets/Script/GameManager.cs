@@ -378,7 +378,6 @@ public class GameManager : MonoBehaviour {
     skillTargets = skill.getTargets();
     //change colours of the tiles for attacking
     //check for range skill if not put 1 else put the range
-    Debug.Log("Selected skill " + i);
     changeState(GameState.attacking);
 
     cancelStack.Push(new UndoAction(() => {
@@ -454,16 +453,16 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public void movePiece(BattleCharacter c, Tile t) {
+  public void movePiece(BattleCharacter c, Tile t, bool setWalking = true) {
     map.djikstra(t.transform.position, c);
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
     moving = true;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count)));
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking)));
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -474,7 +473,7 @@ public class GameManager : MonoBehaviour {
     }
 
     Animator animator = piece.GetComponentInChildren<Animator>() as Animator;
-    if (animator) {
+    if (setWalking && animator) {
       animator.SetBool("isWalking", true);
     }
 
@@ -484,8 +483,10 @@ public class GameManager : MonoBehaviour {
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // Set Rotation
-      piece.GetComponent<BattleCharacter>().face(pos);
-
+      if (setWalking) {
+        piece.GetComponent<BattleCharacter>().face(pos);
+      }
+      
       // Move Piece
       Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
       float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
@@ -514,7 +515,7 @@ public class GameManager : MonoBehaviour {
     map.clearPath();
     map.setTileColours();
 
-    if (animator) {
+    if (setWalking && animator) {
       animator.SetBool("isWalking", false);
     }
 
@@ -579,7 +580,7 @@ public class GameManager : MonoBehaviour {
         localPath.RemoveFirst(); // discard current position
         moving = true;
         line.GetComponent<Renderer>().material.color = Color.clear;
-        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count));
+        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, true));
         waitFor(co);
         return co;
       } else {
