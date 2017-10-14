@@ -39,7 +39,7 @@ public abstract class BaseAI {
       }
     } else {
       List<BattleCharacter> chars = new List<BattleCharacter>(targets.Select(x => x.occupant));
-      chars = new List<BattleCharacter>(chars.Filter((character) => character != null && character.team != owner.team));
+      chars = new List<BattleCharacter>(chars.Filter((character) => character != null));
       foreach (BattleCharacter t in chars) {
         TargetSet tSet;
         tSet.tile = t.curTile;

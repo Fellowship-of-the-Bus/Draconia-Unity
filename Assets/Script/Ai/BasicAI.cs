@@ -34,7 +34,7 @@ public class BasicAI : BaseAI {
         int cur = index++;
 
         // Skip unusable skills
-        if (! skill.canUse()) continue;
+        if (!skill.canUse()) continue;
         List<Tile> targets = skill.getTargets(tile);
         if (targets.Count == 0) continue;
 
@@ -43,20 +43,31 @@ public class BasicAI : BaseAI {
         // Calculate net change in team health difference
         foreach (TargetSet tSet in targetCharacters) {
           List<BattleCharacter> c = tSet.affected;
-          List<Effected> e = new List<Effected>();
-          int damage = 0;
+          List<Effected> effected = new List<Effected>();
+          int netChange = 0;
 
           foreach (BattleCharacter ch in c) {
-            if (ch.team != owner.team) {
-              damage += skill.calculateDamage(ch);
+            if (skill is HealingSkill) {
+              int val = Math.Min(skill.calculateHealing(ch), ch.maxHealth - ch.curHealth);
+              if (ch.team != owner.team) {
+                netChange -= val;
+              } else {
+                netChange += val;
+              }
             } else {
-              damage -= skill.calculateDamage(ch);
+              int val = skill.calculateDamage(ch);
+              if (ch.team != owner.team) {
+                netChange += val;
+              } else {
+                netChange -= val;
+              }
             }
-            e.Add(ch);
+            
+            effected.Add(ch);
           }
 
-          if (damage > 0) {
-            db.add(new SkillData(this, cur, damage, e, tile, tSet.tile));
+          if (netChange > 0) {
+            db.add(new SkillData(this, cur, netChange, effected, tile, tSet.tile));
           }
         }
       }
