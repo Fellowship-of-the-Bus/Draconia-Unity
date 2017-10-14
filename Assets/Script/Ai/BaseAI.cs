@@ -16,7 +16,7 @@ public abstract class BaseAI {
     public List<BattleCharacter> affected;
   }
 
-  protected List<TargetSet> getTargetSets(ActiveSkill skill, List<Tile> targets) {
+  protected List<TargetSet> getTargetSets(ActiveSkill skill, List<Tile> targets, Tile userTile) {
     AoeSkill aoe = skill as AoeSkill;
 
     // Determine possible targets
@@ -29,6 +29,11 @@ public abstract class BaseAI {
         List<Tile> affectedTiles = aoe.getTargetsInAoe(t.gameObject.transform.position);
         affectedTiles = new List<Tile>(affectedTiles.Filter((x) => x.occupied()));
         tSet.affected = new List<BattleCharacter>(affectedTiles.Select(x => x.occupant));
+        if (affectedTiles.Contains(userTile)) {
+          tSet.affected.Add(owner);
+        } else {
+          tSet.affected.Remove(owner);
+        }
 
         targetSets.Add(tSet);
       }

@@ -38,7 +38,7 @@ public class BasicAI : BaseAI {
         List<Tile> targets = skill.getTargets(tile);
         if (targets.Count == 0) continue;
 
-        List<TargetSet> targetCharacters = getTargetSets(skill, targets);
+        List<TargetSet> targetCharacters = getTargetSets(skill, targets, tile);
 
         // Calculate net change in team health difference
         foreach (TargetSet tSet in targetCharacters) {

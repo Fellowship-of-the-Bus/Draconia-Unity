@@ -51,7 +51,7 @@ public class SentryAI : BaseAI {
       List<Tile> targets = skill.getTargets();
       if (targets.Count == 0) continue;
 
-      List<TargetSet> targetCharacters = getTargetSets(skill, targets);
+      List<TargetSet> targetCharacters = getTargetSets(skill, targets, owner.curTile);
 
       // Calculate net change in team health difference
       foreach (TargetSet tSet in targetCharacters) {
