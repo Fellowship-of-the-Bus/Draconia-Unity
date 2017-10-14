@@ -15,8 +15,8 @@ public class Grapple: CircleAoE {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
-    List<Tile> targets = base.getTargets();
+  public override List<Tile> getTargets(Tile posn) {
+    List<Tile> targets = base.getTargets(posn);
     return new List<Tile>(targets.Filter(tile => !tile.occupied()));
   }
 

@@ -207,6 +207,7 @@ public class GameManager : MonoBehaviour {
       foreach (var o in l) {
         var bchar = o.GetComponent<BattleCharacter>();
         bchar.init();
+        bchar.ai.init();
         deathListener.attachListener(bchar, EventHook.postDeath);
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
@@ -602,8 +603,10 @@ public class GameManager : MonoBehaviour {
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
+
+    int count = waitingOn.Count;
     movePiece(destination, true);
-    yield return waitUntilCount(waitingOn.Count);
+    yield return waitUntilCount(count);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
     unlockUI();

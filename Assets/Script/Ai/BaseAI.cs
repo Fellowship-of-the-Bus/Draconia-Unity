@@ -7,6 +7,7 @@ using System.Linq;
 
 public abstract class BaseAI {
   public BattleCharacter owner;
+  public virtual void init() {}
   public abstract void target();
   public abstract Vector3 move();
 

@@ -14,7 +14,7 @@ public class BasicAI : BaseAI {
 
       List<Tile> target = new List<Tile>();
       target.Add(best.targetTile);
-      owner.useSkill(best.skill, new List<Tile>(target));
+      owner.useSkill(best.skill, target);
     }
   }
 
@@ -23,19 +23,19 @@ public class BasicAI : BaseAI {
     GameManager game = GameManager.get;
     Map map = game.map;
     List<GameObject> characterObjects = game.players;
+    Vector3 newPosition;
 
     List<Tile> possibilities = map.tilesInMoveRange(owner);
     possibilities.Add(owner.curTile);
 
     foreach (Tile tile in possibilities) {
-      owner.curTile = tile;
       int index = 0;
       foreach (ActiveSkill skill in owner.equippedSkills) {
         int cur = index++;
 
         // Skip unusable skills
         if (! skill.canUse()) continue;
-        List<Tile> targets = skill.getTargets();
+        List<Tile> targets = skill.getTargets(tile);
         if (targets.Count == 0) continue;
 
         List<TargetSet> targetCharacters = getTargetSets(skill, targets);
@@ -63,9 +63,9 @@ public class BasicAI : BaseAI {
     }
     best = db.getMax();
 
-    Vector3 newPosition = owner.curTile.transform.position;
     // Determine movement when there are no valid attacks
     if (best == null) {
+      newPosition = owner.curTile.transform.position;
       int closest = System.Int32.MaxValue;
       LinkedList<Tile> path = null;
 
@@ -89,6 +89,8 @@ public class BasicAI : BaseAI {
           newPosition = t.transform.position;
         }
       }
+    } else {
+      newPosition = best.tile.transform.position;
     }
 
     map.setPath(newPosition);

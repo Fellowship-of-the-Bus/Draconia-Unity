@@ -9,10 +9,6 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
     targetsTiles = true;
   }
 
-  public override List<Tile> getTargets() {
-    return getTargetsInRange();
-  }
-
   public virtual List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);
   }

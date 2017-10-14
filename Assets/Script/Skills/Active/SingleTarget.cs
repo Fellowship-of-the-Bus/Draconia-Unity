@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public abstract class SingleTarget: ActiveSkill {
-  public override List<Tile> getTargets() {
+  public override List<Tile> getTargets(Tile posn) {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.map.getTilesWithinRange(self.curTile, range);
+    List<Tile> tiles = gm.map.getTilesWithinRange(posn, range);
     List<Tile> targets = new List<Tile>();
     float height = self.gameObject.GetComponent<MeshFilter>().mesh.bounds.extents.y;
     Vector3 source = new Vector3(self.transform.position.x, self.transform.position.y + 2*height/3, self.transform.position.z);
@@ -22,7 +22,7 @@ public abstract class SingleTarget: ActiveSkill {
         }
       }
     }
-    if (canTargetSelf) targets.Add(self.curTile);
+    if (canTargetSelf) targets.Add(posn);
     return targets;
   }
 }
