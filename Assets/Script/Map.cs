@@ -32,6 +32,13 @@ public class Map {
     Tile startTile = getTile(unitLocation);
     startTile.distance = 0;
 
+    PortalEffect portal = startTile.getEffect<PortalEffect>();
+    if (portal != null) {
+      Tile sibling = portal.sibling.ownerTile;
+      sibling.distance = 0;
+      sibling.dir = portalDir;
+    }
+
     while (tilesToGo.Count != 0) {
       int minDistance = System.Int32.MaxValue;
       Tile minTile = null;
@@ -53,7 +60,7 @@ public class Map {
             neighbourTile.dir = dir;
           }
           // update portal dest distance to portal src distance
-          PortalEffect portal = neighbourTile.getEffect<PortalEffect>();
+          portal = neighbourTile.getEffect<PortalEffect>();
           if (portal != null) {
             Tile sibling = portal.sibling.ownerTile;
             if (d < sibling.distance) {
