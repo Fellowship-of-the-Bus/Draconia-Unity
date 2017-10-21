@@ -534,9 +534,6 @@ public class GameManager : MonoBehaviour {
     }
 
     moving = false;
-    for (int i = 0; i < skillButtons.Count; i++) {
-      skillButtons[i].enabled = i < piece.GetComponent<BattleCharacter>().equippedSkills.Count;
-    }
     unlockUI();
   }
 
