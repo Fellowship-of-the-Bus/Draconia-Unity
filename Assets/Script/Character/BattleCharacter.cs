@@ -90,6 +90,9 @@ public class BattleCharacter : Effected {
   }
   List<String> prevSkillSet = new List<String>();
 
+
+  public Animator animator;
+
   void Start(){
     init();
   }
@@ -109,6 +112,7 @@ public class BattleCharacter : Effected {
     applyPassives();
 
     ui = transform.Find("UI");
+    animator = gameObject.transform.Find("Model").gameObject.GetComponent<Animator>();
   }
 
   void setSkills() {
@@ -223,7 +227,7 @@ public class BattleCharacter : Effected {
     }
 
     face(target.transform.position);
-    Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
+
     if (animator) GameManager.get.waitFor(animator, "Attack", () => finishSkill(skill, target, targets));
     else finishSkill(skill, target, targets);
     return true;

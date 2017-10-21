@@ -459,8 +459,6 @@ public class GameManager : MonoBehaviour {
       eventManager.onEvent(e);
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
-      // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
       actionQueue.endTurn();
       map.clearColour();
       startTurn();
@@ -486,7 +484,7 @@ public class GameManager : MonoBehaviour {
       yield return new WaitForSeconds(0.5f);
     }
 
-    Animator animator = piece.GetComponentInChildren<Animator>() as Animator;
+    Animator animator = character.animator;
     if (setWalking && animator) {
       animator.SetBool("isWalking", true);
     }
