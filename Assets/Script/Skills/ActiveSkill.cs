@@ -184,20 +184,20 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   // Get the set of tiles that are within targetting range
   protected List<Tile> getTargetsInRange(Tile posn) {
-    return getTargetsInAoe(posn, range);
+    return getTargetsInAoe(posn, range, true);
   }
 
   // Overload of getTargetsInAoe
   // Allowing position instead of tile as argument
-  public List<Tile> getTargetsInAoe(Vector3 position, int aoe) {
+  public List<Tile> getTargetsInAoe(Vector3 position, int aoe, bool heightAdvantage = false) {
     Map map = GameManager.get.map;
-    return getTargetsInAoe(map.getTile(position), aoe);
+    return getTargetsInAoe(map.getTile(position), aoe, heightAdvantage);
   }
 
   // Get the tiles that will be affected by an aoe skill targeting position
-  protected List<Tile> getTargetsInAoe(Tile position, int aoe) {
+  protected List<Tile> getTargetsInAoe(Tile position, int aoe, bool heightAdvantage = false) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinRange(position, aoe);
+    List<Tile> targets = map.getTilesWithinRange(position, aoe, heightAdvantage);
     targets.Add(position);
     //targets.Filter((x) => canTarget(x));
     return targets;

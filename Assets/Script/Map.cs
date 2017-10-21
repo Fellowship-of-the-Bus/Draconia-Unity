@@ -106,15 +106,18 @@ public class Map {
     return null;
   }
 
-  public List<Tile> getTilesWithinRange(Tile t, int range) {
+  public List<Tile> getTilesWithinRange(Tile t, int range, bool heightAdvantage = false) {
     List<Tile> inRangeTiles = new List<Tile>();
     foreach (Tile other in tiles) {
-      int rangeChange = 0;
-      if (range >= 2) {
-        rangeChange = (int)(t.getHeight() - other.getHeight());
-      }
-      if (l1Distance(t, other) - rangeChange <= range && l1Distance(t, other) != 0) {
+      int distance = l1Distance(t, other);
+
+      if (distance <= range && distance != 0) {
         inRangeTiles.Add(other);
+      } else if (heightAdvantage && distance == range + 1) {
+        // Check if the origin is higher
+        if ((int)(t.getHeight() - other.getHeight()) >= 1) {
+          inRangeTiles.Add(other);
+        }
       }
     }
     return inRangeTiles;
