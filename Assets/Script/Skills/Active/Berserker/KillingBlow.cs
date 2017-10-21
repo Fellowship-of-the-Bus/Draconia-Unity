@@ -16,9 +16,9 @@ public class KillingBlow: SingleTarget {
     return (int)(self.strength*(1+level*0.1));
   }
 
-  public override int calculateDamage(BattleCharacter target) {
+  public override int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
     float missingPct = 1 - (float)target.curHealth/target.maxHealth;
-    return (int)(base.calculateDamage(target)*(1 + missingPct * bonusFormula()));
+    return (int)(base.calculateDamage(target, attackOrigin)*(1 + missingPct * bonusFormula()));
   }
 
   private float bonusFormula() {

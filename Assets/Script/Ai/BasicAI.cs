@@ -55,7 +55,7 @@ public class BasicAI : BaseAI {
                 netChange += val;
               }
             } else {
-              int val = skill.calculateDamage(ch);
+              int val = skill.calculateDamage(ch, tile);
               if (ch.team != owner.team) {
                 netChange += val;
               } else {
