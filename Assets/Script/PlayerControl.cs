@@ -51,9 +51,7 @@ public class PlayerControl : MonoBehaviour {
     bool isTile = hoveredObject.tag == "Cube";
     bool isPiece = hoveredObject.tag == "Unit";
     Tile hoveredTile = map.getTile(hoveredObject.transform.position);
-    BattleCharacter hoveredPiece = hoveredObject.GetComponent<BattleCharacter>();
-    gameManager.selectTarget(hoveredPiece);
-
+    gameManager.selectTarget(hoveredObject);
 
     if (preview){
       map.clearColour();

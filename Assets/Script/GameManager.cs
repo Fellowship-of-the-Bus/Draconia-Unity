@@ -387,12 +387,18 @@ public class GameManager : MonoBehaviour {
     }, true));
   }
 
-  public void selectTarget(BattleCharacter target) {
-    previewTarget = target;
+  // Preview of targetting a character
+  public void selectTarget(GameObject target) {
+    BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
+    previewTarget = targetChar;
 
-    if (target == null) return;
+    if (targetChar == null) {
+      actionQueue.highlight(null);
+      return;
+    }
 
-    if (SelectedSkill != -1 && skillTargets.Contains(target.curTile)) {
+    actionQueue.highlight(target);
+    if (SelectedSkill != -1 && skillTargets.Contains(targetChar.curTile)) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
