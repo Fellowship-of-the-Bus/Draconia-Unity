@@ -58,7 +58,7 @@ public class GameSceneController: MonoBehaviour {
     tileInfoCanvas.SetActive(true);
     //enable player control
     //disable positioning control
-    pControl.preview = false;
+    pControl.preGame = false;
     GameManager.get.tooltip = battleCanvasTooltip;
     setStartTileColour(Color.clear);
     //need to reenable battleChars
@@ -76,7 +76,7 @@ public class GameSceneController: MonoBehaviour {
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(true);
     tileInfoCanvas.SetActive(false);
-    pControl.preview = true;
+    pControl.preGame = true;
     GameManager.get.tooltip = charSelectTooltip;
 
     //set colour for start locations for tile variable
