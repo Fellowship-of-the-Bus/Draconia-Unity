@@ -170,6 +170,10 @@ public class GameManager : MonoBehaviour {
       skillButtons.Add(o.GetComponent<Button>());
     }
 
+    skillButtons.Sort((a,b) => {
+      return String.Compare(a.gameObject.name,b.gameObject.name);
+    });
+
     map.awake();
 
     line = gameObject.GetComponent<LineRenderer>();
