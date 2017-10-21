@@ -88,8 +88,8 @@ public class GameSceneController: MonoBehaviour {
     setObjDescriptions();
 
     dialogue.setOnExit(() => unlockUI());
-    dialogue.loadDialogue(GameManager.get.reader.start);
     lockUI();
+    dialogue.loadDialogue(GameManager.get.reader.start);
 
     setMandatoryChars();
   }
