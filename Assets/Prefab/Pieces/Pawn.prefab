@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1268,7 +1268,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &114000014176322290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1302,6 +1302,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseChar:
+    skills:
+      numSkillPoints: 0
     attr:
       strength: 2
       intelligence: 2
@@ -1337,7 +1339,7 @@ MonoBehaviour:
   skillSet: []
   passiveSet: []
   curTile: {fileID: 0}
-  curHealth: 0
+  curHealth: 10
   maxAction: 1000
   curAction: 0
   team: 0
