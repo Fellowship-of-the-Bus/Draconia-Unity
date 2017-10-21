@@ -93,8 +93,12 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
-  public virtual int calculateDamage(BattleCharacter target) {
-    float heightDifference = self.curTile.getHeight() - target.curTile.getHeight();
+  public virtual int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
+    if (attackOrigin == null) {
+      attackOrigin = self.curTile;
+    }
+
+    float heightDifference = attackOrigin.getHeight() - target.curTile.getHeight();
     float multiplier = 1;
     if (range >= 1) {
       //balance here

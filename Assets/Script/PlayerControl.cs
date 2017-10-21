@@ -23,6 +23,8 @@ public class PlayerControl : MonoBehaviour {
   // Detect Mouse Inputs
   void GetMouseInputs() {
     // Don't allow input on AI turn
+    // Debug.Log(gameManager.UILocked());
+    
     if (gameManager.UILocked()) return;
 
     handleHovered(gameManager.getHovered(PlayerCam));
@@ -30,6 +32,7 @@ public class PlayerControl : MonoBehaviour {
   }
 
   void handleHovered(GameObject hoveredObject) {
+    // Debug.Log(hoveredObject);
     gameManager.lineTo(gameManager.SelectedPiece);
     if (hoveredObject == null) return;
     Map map = gameManager.map;

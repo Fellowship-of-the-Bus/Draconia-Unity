@@ -206,6 +206,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public void init() {
+    lockUI();
     dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
     foreach (var x in objs) {
@@ -251,7 +252,7 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
-      if (Options.debugMode) {
+      if (Options.debugMode && selectedCharacter.team == 0) {
         for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
           ActiveSkill s = selectedCharacter.equippedSkills[i];
           Debug.AssertFormat(s.name != "", "Skill Name is empty");
@@ -342,7 +343,7 @@ public class GameManager : MonoBehaviour {
 
     changeState(GameState.moving);
     // enemy
-    if (SelectedPiece.GetComponent<BattleCharacter>().team == 1) {
+    if (selectedCharacter.team == 1) {
       playerTurn = false;
       handleAI();
       return;
@@ -357,7 +358,6 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].interactable = false;
     }
 
-
     for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
       ActiveSkill s = selectedCharacter.equippedSkills[i];
       Debug.AssertFormat(s.name != "", "Skill Name is empty");
@@ -365,6 +365,7 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
       skillButtons[i].interactable = s.canUse();
     }
+    unlockUI();
   }
 
 
@@ -441,6 +442,10 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
+      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) {
+        lockUI();
+      }
+
       changeState(GameState.ending);
       yield return StartCoroutine(waitUntilCount(0));
       waitingOn.Clear();
@@ -625,7 +630,6 @@ public class GameManager : MonoBehaviour {
   }
 
   IEnumerator doHandleAI(int time) {
-    lockUI();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     Vector3 destination = selectedCharacter.ai.move();
     map.setTileColours();
@@ -639,7 +643,6 @@ public class GameManager : MonoBehaviour {
     yield return waitUntilCount(count);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
-    unlockUI();
     StartCoroutine(endTurn());
   }
   public void handleAI() {
@@ -666,6 +669,7 @@ public class GameManager : MonoBehaviour {
   public void unlockUI() {
     lock (UILock) {
       UILock.count--;
+      Debug.Assert(UILock.count >= 0);
       if (UILock.count == 0) {
         mainUI.GetComponent<CanvasGroup>().interactable = true;
       }
