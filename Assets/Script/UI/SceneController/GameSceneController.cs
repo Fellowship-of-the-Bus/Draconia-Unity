@@ -22,6 +22,7 @@ public class GameSceneController: MonoBehaviour {
   public GameObject charSelectCanvas;
   public GameObject rotateCanvas;
   public GameObject battleCanvas;
+  public GameObject tileInfoCanvas;
 
   public string[] mandatoryCharacters;
 
@@ -54,6 +55,7 @@ public class GameSceneController: MonoBehaviour {
     rotateCanvas.SetActive(true);
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(false);
+    tileInfoCanvas.SetActive(true);
     //enable player control
     //disable positioning control
     pControl.preview = false;
@@ -73,6 +75,7 @@ public class GameSceneController: MonoBehaviour {
     battleCanvas.SetActive(false);
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(true);
+    tileInfoCanvas.SetActive(false);
     pControl.preview = true;
     GameManager.get.tooltip = charSelectTooltip;
 
