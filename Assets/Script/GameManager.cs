@@ -493,7 +493,7 @@ public class GameManager : MonoBehaviour {
 
       // Set Rotation
       if (setWalking) {
-        piece.GetComponent<BattleCharacter>().face(pos);
+        character.face(pos);
       }
 
       // Move Piece
@@ -517,6 +517,7 @@ public class GameManager : MonoBehaviour {
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
+      if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
       yield return waitUntilCount(index+1);
       if (animator) animator.enabled = true;
