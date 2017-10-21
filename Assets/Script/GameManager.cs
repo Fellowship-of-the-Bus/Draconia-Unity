@@ -268,7 +268,7 @@ public class GameManager : MonoBehaviour {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
       if (gameState == GameState.moving) displayChangedHealth = false;
-      if (displayChangedHealth && skillTargets.Contains(previewTarget.curTile)) {
+      if (displayChangedHealth) {
         BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
         Vector3 scale = targetHealth.transform.localScale;
         Skill s = selectedCharacter.equippedSkills[SelectedSkill];
@@ -401,7 +401,7 @@ public class GameManager : MonoBehaviour {
     }
 
     actionQueue.highlight(target);
-    if (SelectedSkill != -1 && skillTargets.Contains(targetChar.curTile)) {
+    if (SelectedSkill != -1) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
