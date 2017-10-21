@@ -168,7 +168,6 @@ public class GameManager : MonoBehaviour {
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
       skillButtons.Add(o.GetComponent<Button>());
-      o.AddComponent<Tooltip>();
     }
 
     map.awake();
@@ -492,7 +491,7 @@ public class GameManager : MonoBehaviour {
       if (setWalking) {
         piece.GetComponent<BattleCharacter>().face(pos);
       }
-      
+
       // Move Piece
       Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
       float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
