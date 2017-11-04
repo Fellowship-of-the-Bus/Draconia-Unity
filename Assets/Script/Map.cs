@@ -148,7 +148,7 @@ public class Map {
 
   public void clearColour() {
     foreach (Tile tile in tiles) {
-      tile.setColor(Color.clear);
+      tile.setColor(new Color(0.8f, 0.8f, 0.8f, 0.2f));
     }
   }
 
@@ -197,8 +197,6 @@ public class Map {
       foreach (Tile tile in tiles) {
         if (tile.distance <= GameManager.get.moveRange && !tile.occupied()) {
           tile.setColor(Color.green);
-        } else {
-          tile.setColor(Color.clear);
         }
       }
       // color the path
@@ -206,31 +204,38 @@ public class Map {
         ti.setColor(Color.blue);
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
-      bool aoe = (SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] is AoeSkill);
-      int range = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].range;
+      ActiveSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill];
+      bool aoe = (skill is AoeSkill);
+      int range = skill.range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
-        foreach (Tile tile in inRangeTiles) {
-          tile.setColor(Color.gray);
+        foreach (Tile t in inRangeTiles) {
+          t.setColor(Color.gray);
         }
         foreach (Tile t in GameManager.get.skillTargets) {
           t.setColor(Color.red);
         }
       } else {
-        foreach (Tile t in SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].getTargets()) {
+        foreach (Tile t in skill.getTargets()) {
           t.setColor(Color.gray);
         }
-        AoeSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] as AoeSkill;
-        var targetsInAoe = skill.getTargetsInAoe(src.transform.position);
-        if (skill is Sprint) {
+        AoeSkill areaSkill = skill as AoeSkill;
+        var targetsInAoe = areaSkill.getTargetsInAoe(src.transform.position);
+        if (areaSkill is Sprint) {
           //set path to blue
-          foreach (Tile ti in path) {
-            ti.setColor(Color.yellow);
+          foreach (Tile t in path) {
+            t.setColor(Color.blue);
           }
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
+            t.setColor(Color.yellow);
             if (t.occupied() && SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
-            else t.setColor(Color.yellow);
+            else {
+              foreach (Tile tile in skill.getTargets()) {
+                if (tile == t)
+                  t.setColor(new Color(1, 0.5f, 0, 1));
+              }
+            }
           }
         }
       }
