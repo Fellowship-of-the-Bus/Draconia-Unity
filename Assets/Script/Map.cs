@@ -11,6 +11,9 @@ public class Map {
 
   public List<Tile> startPositions = new List<Tile>();
 
+  //Tile at the center of the current colouring
+  public Tile centerTile;
+
   public void awake() {
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     foreach (GameObject cube in cubes) {
@@ -189,6 +192,7 @@ public class Map {
 
   // GameMap functions
   public void setTileColours(Tile src = null) {
+    centerTile = src;
     GameObject SelectedPiece = GameManager.get.SelectedPiece;
     int SelectedSkill = GameManager.get.SelectedSkill;
     if (src == null) src = getTile(GameManager.get.SelectedPiece.transform.position);

@@ -92,6 +92,8 @@ public class BattleCharacter : Effected {
 
 
   public Animator animator;
+  public GameObject lifebar;
+  GameObject redlifebar;
 
   void Start(){
     init();
@@ -113,6 +115,8 @@ public class BattleCharacter : Effected {
 
     ui = transform.Find("UI");
     animator = gameObject.transform.Find("Model").gameObject.GetComponent<Animator>();
+    lifebar = ui.Find("Health Bar/Health").gameObject;
+    redlifebar = ui.Find("Health Bar/HealthRed").gameObject;
   }
 
   void setSkills() {
@@ -185,8 +189,9 @@ public class BattleCharacter : Effected {
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
     // scale health on health bar to match current HP values
-    GameObject lifebar = ui.Find("Health Bar/Health").gameObject;
+
     updateLifeBar(lifebar);
+    updateLifeBar(redlifebar);
   }
 
 
@@ -387,8 +392,12 @@ public class BattleCharacter : Effected {
   }
 
   public void updateLifeBar(GameObject lifebar) {
+    updateLifeBar(lifebar, curHealth);
+  }
+
+  public void updateLifeBar(GameObject lifebar, int health) {
     Vector3 scale = lifebar.transform.localScale;
-    scale.x = (float)curHealth/maxHealth;
+    scale.x = (float)health/maxHealth;
     lifebar.transform.localScale = scale;
   }
 

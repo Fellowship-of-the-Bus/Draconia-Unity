@@ -199,7 +199,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     Map map = GameManager.get.map;
     List<Tile> targets = map.getTilesWithinRange(position, aoe, heightAdvantage);
     targets.Add(position);
-    //targets.Filter((x) => canTarget(x));
+    targets = new List<Tile>(targets.Filter((x) => canTarget(x)));
     return targets;
   }
 

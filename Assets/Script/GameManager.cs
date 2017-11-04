@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
   //health/mana bars
   public GameObject selectedHealth;
   public GameObject targetHealth;
+  public GameObject targetHealthRedBar;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -248,13 +249,14 @@ public class GameManager : MonoBehaviour {
 
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
-
+    ActiveSkill s;
+    BattleCharacter selectedCharacter;
     if (SelectedPiece) {
-      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+      selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       selectedCharacter.updateLifeBar(selectedHealth);
       if (Options.debugMode && selectedCharacter.team == 0) {
         for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
-          ActiveSkill s = selectedCharacter.equippedSkills[i];
+          s = selectedCharacter.equippedSkills[i];
           Debug.AssertFormat(s.name != "", "Skill Name is empty");
           skillButtons[i].GetComponentInChildren<Text>().text = s.name;
           skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
@@ -263,27 +265,51 @@ public class GameManager : MonoBehaviour {
       }
     }
 
+    selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+    if (SelectedSkill == -1) return;
+    s = selectedCharacter.equippedSkills[SelectedSkill];
+    Tile currTile = map.centerTile;
+    if (currTile != null && skillTargets.Contains(currTile)) {
+      List<Tile> tiles = new List<Tile>();
+      if (s is AoeSkill) {
+        tiles = (s as AoeSkill).getTargetsInAoe(currTile.position);
+      } else {
+        tiles.Add(currTile);
+      }
+
+      foreach(Tile t in tiles) {
+        BattleCharacter c = t.occupant;
+        if (c == null) continue;
+        if (s is HealingSkill) {
+          c.PreviewHealing = s.calculateHealing(c);
+          c.updateLifeBar(c.lifebar,c.curHealth + c.PreviewHealing);
+        } else {
+          c.PreviewDamage = s.calculateDamage(c);
+          c.updateLifeBar(c.lifebar,c.curHealth - c.PreviewDamage);
+        }
+      }
+    }
     if (previewTarget == null) {
       targetPanel.SetActive(false);
     } else {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
-      if (gameState == GameState.moving) displayChangedHealth = false;
-      if (displayChangedHealth) {
-        BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-        Vector3 scale = targetHealth.transform.localScale;
-        Skill s = selectedCharacter.equippedSkills[SelectedSkill];
-        if (s is HealingSkill) scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
-        else scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
-        targetHealth.transform.localScale = scale;
-      } else {
-        Vector3 scale = targetHealth.transform.localScale;
-        scale.x = (float)previewTarget.curHealth/previewTarget.maxHealth;
-        targetHealth.transform.localScale = scale;
-      }
-      blinkFrameNumber = (blinkFrameNumber+1)%30;
-      if (blinkFrameNumber == 0) {
-        displayChangedHealth = !displayChangedHealth;
+      Vector3 scale = targetHealth.transform.localScale;
+      scale.x = (float)previewTarget.curHealth/previewTarget.maxHealth;
+      targetHealth.transform.localScale = scale;
+      targetHealthRedBar.transform.localScale = scale;
+      if (s.canTarget(previewTarget.curTile)) {
+        if (gameState == GameState.moving) displayChangedHealth = false;
+        //if (displayChangedHealth) {
+          scale = targetHealth.transform.localScale;
+          if (s is HealingSkill) scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
+          else scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
+          targetHealth.transform.localScale = scale;
+        //}
+        blinkFrameNumber = (blinkFrameNumber+1)%30;
+        if (blinkFrameNumber == 0) {
+          displayChangedHealth = !displayChangedHealth;
+        }
       }
     }
   }
