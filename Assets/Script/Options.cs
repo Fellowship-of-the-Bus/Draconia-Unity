@@ -62,7 +62,7 @@ public class Options {
   public class OptionType {
     readonly int type;
     public readonly static OptionType disAni = new OptionType(0);
-    public readonly static OptionType gridThickness = new OptionType(1);
+    public readonly static OptionType gridTransparency = new OptionType(1);
 
     public OptionType(int i) {
       type = i;
@@ -77,13 +77,13 @@ public class Options {
 
   public static OpField[] displayedOptions = new OpField[] {
                                                     new OpToggleField(true, "Display Animations"),
-                                                    new OpSliderField(0,0,4, "Grid Thickneess")};
+                                                    new OpSliderField(1,0,4, "Grid Transparency")};
   //Visible fields
   public static bool displayAnimation {
     get { return ((OpToggleField)displayedOptions[OptionType.disAni]).val;}
   }
-  public static int gridThickness {
-    get { return ((OpSliderField)displayedOptions[OptionType.gridThickness]).val;}
+  public static int gridTransparency {
+    get { return ((OpSliderField)displayedOptions[OptionType.gridTransparency]).val;}
   }
 
   //internal use fields
