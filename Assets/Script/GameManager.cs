@@ -132,10 +132,14 @@ public class GameManager : MonoBehaviour {
   }
 
   IEnumerator waitForAnimation(Animator animator, String trigger) {
-    animator.SetTrigger(trigger);
-    yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
-                                          //otherwise next line always wait for 0.
-    yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
+    if (Options.displayAnimation) {
+      animator.SetTrigger(trigger);
+      yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
+                                            //otherwise next line always wait for 0.
+      yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
+      } else {
+        yield return new WaitForEndOfFrame();
+      }
   }
 
   public void waitFor(Animator a, String trigger, Action act = null) {
@@ -496,8 +500,12 @@ public class GameManager : MonoBehaviour {
     updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
-    moving = true;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking)));
+    if (Options.displayAnimation) {
+      moving = true;
+      waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking)));
+    } else {
+      c.transform.position = t.position;
+    }
   }
 
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking) {
@@ -583,12 +591,14 @@ public class GameManager : MonoBehaviour {
   /** remaining move amount */
   public int moveRange = 0;
   public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
+    smooth = smooth && Options.displayAnimation;
     // don't start moving twice
     if (moving) return null;
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
 
     Tile destination = map.getTile(coordToMove);
     BattleCharacter c = SelectedPiece.GetComponent<BattleCharacter>();
+    Coroutine co = null;
 
     if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
       // if player chose to move, update position stack with current values,
@@ -616,14 +626,15 @@ public class GameManager : MonoBehaviour {
         localPath.RemoveFirst(); // discard current position
         moving = true;
         line.GetComponent<Renderer>().material.color = Color.clear;
-        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, true));
+        co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, true));
         waitFor(co);
-        return co;
       } else {
         SelectedPiece.transform.position = coordToMove;
+        map.clearPath();
+        map.setTileColours();
       }
     }
-    return null;
+    return co;
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just
     // go at the end of the coroutine.

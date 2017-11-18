@@ -46,14 +46,10 @@ public class ForceShot: SingleTarget {
 
   public override void additionalEffects(BattleCharacter c) {
     GameManager game = GameManager.get;
-    
+
     Tile t = knockTo(c);
     if (validDestination(c, t)) {
-      game.updateTile(c,t);
-      LinkedList<Tile> tile = new LinkedList<Tile>();
-      tile.AddFirst(t);
-      game.moving = true;
-      game.waitFor(game.StartCoroutine(game.IterateMove(tile, c.gameObject, game.getWaitingIndex(), false)));
+      game.movePiece(c,t,false);
     }
   }
 

@@ -75,9 +75,9 @@ public class Options {
 
 
 
-  public static OpField[] displayedOptions = new OpField[] {
-                                                    new OpToggleField(true, "Display Animations"),
-                                                    new OpSliderField(1,0,4, "Grid Transparency")};
+  public static OpField[] displayedOptions = new OpField[] {//Display Animation should default to true in real game
+                                                    new OpToggleField(false, "Display Animations"),
+                                                    new OpSliderField(1,0,3, "Grid Transparency")};
   //Visible fields
   public static bool displayAnimation {
     get { return ((OpToggleField)displayedOptions[OptionType.disAni]).val;}
