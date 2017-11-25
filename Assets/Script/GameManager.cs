@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour {
 
   //health/mana bars
   public GameObject selectedHealth;
+  public GameObject selectedHealthRedBar;
   public GameObject targetHealth;
   public GameObject targetHealthRedBar;
   public GameObject targetPanel;
@@ -255,21 +256,19 @@ public class GameManager : MonoBehaviour {
     line.enabled = gameState == GameState.attacking;
     ActiveSkill s;
     BattleCharacter selectedCharacter;
-    if (SelectedPiece) {
-      selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-      selectedCharacter.updateLifeBar(selectedHealth);
-      if (Options.debugMode && selectedCharacter.team == 0) {
-        for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
-          s = selectedCharacter.equippedSkills[i];
-          Debug.AssertFormat(s.name != "", "Skill Name is empty");
-          skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-          skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
-          skillButtons[i].interactable = s.canUse();
-        }
+    selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+    selectedCharacter.updateLifeBar(selectedHealth);
+    selectedCharacter.updateLifeBar(selectedHealthRedBar);
+    if (Options.debugMode && selectedCharacter.team == 0) {
+      for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+        s = selectedCharacter.equippedSkills[i];
+        Debug.AssertFormat(s.name != "", "Skill Name is empty");
+        skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+        skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+        skillButtons[i].interactable = s.canUse();
       }
     }
 
-    selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     if (SelectedSkill == -1) return;
     s = selectedCharacter.equippedSkills[SelectedSkill];
     Tile currTile = map.centerTile;
