@@ -66,10 +66,12 @@ public class GameManager : MonoBehaviour {
   public List<Objective> losingConditions = new List<Objective>();
 
   //health/mana bars
-  public GameObject selectedHealth;
-  public GameObject selectedHealthRedBar;
-  public GameObject targetHealth;
-  public GameObject targetHealthRedBar;
+  public GameObject selectedHealthBar;
+  public GameObject selectedDamageBar;
+  public GameObject selectedHealingBar;
+  public GameObject targetHealthBar;
+  public GameObject targetDamageBar;
+  public GameObject targetHealingBar;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -260,8 +262,8 @@ public class GameManager : MonoBehaviour {
     ActiveSkill s;
     BattleCharacter selectedCharacter;
     selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    selectedCharacter.updateLifeBar(selectedHealth);
-    selectedCharacter.updateLifeBar(selectedHealthRedBar);
+    selectedCharacter.updateLifeBar(selectedHealthBar);
+    selectedCharacter.updateLifeBar(selectedDamageBar);
     if (Options.debugMode && selectedCharacter.team == 0) {
       for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
         s = selectedCharacter.equippedSkills[i];
@@ -288,7 +290,7 @@ public class GameManager : MonoBehaviour {
         if (c == null) continue;
         if (s is HealingSkill) {
           c.PreviewHealing = s.calculateHealing(c);
-          c.updateLifeBar(c.lifebar,c.curHealth + c.PreviewHealing);
+          c.updateLifeBar(c.healingbar,c.curHealth + c.PreviewHealing);
         } else {
           c.PreviewDamage = s.calculateDamage(c);
           c.updateLifeBar(c.lifebar,c.curHealth - c.PreviewDamage);
@@ -300,17 +302,22 @@ public class GameManager : MonoBehaviour {
     } else {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
-      Vector3 scale = targetHealth.transform.localScale;
+      Vector3 scale = targetHealthBar.transform.localScale;
       scale.x = (float)previewTarget.curHealth/previewTarget.maxHealth;
-      targetHealth.transform.localScale = scale;
-      targetHealthRedBar.transform.localScale = scale;
+      targetHealthBar.transform.localScale = scale;
+      targetDamageBar.transform.localScale = scale;
       if (s.canTarget(previewTarget.curTile)) {
         if (gameState == GameState.moving) displayChangedHealth = false;
         //if (displayChangedHealth) {
-          scale = targetHealth.transform.localScale;
-          if (s is HealingSkill) scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
-          else scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
-          targetHealth.transform.localScale = scale;
+          scale = targetHealthBar.transform.localScale;
+          if (s is HealingSkill) {
+            scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
+            targetHealingBar.transform.localScale = scale;
+          }
+          else {
+            scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
+            targetHealthBar.transform.localScale = scale;
+          }
         //}
         blinkFrameNumber = (blinkFrameNumber+1)%30;
         if (blinkFrameNumber == 0) {
