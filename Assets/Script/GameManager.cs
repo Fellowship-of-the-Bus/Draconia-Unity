@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;
+  public PlayerControl pControl;
 
   //variables to handles turns
 
@@ -209,6 +210,8 @@ public class GameManager : MonoBehaviour {
     foreach (BFEvent e in BFevents) {
       e.init();
     }
+
+    pControl = GameSceneController.get.pControl;
   }
 
   public void init() {
@@ -271,7 +274,7 @@ public class GameManager : MonoBehaviour {
 
     if (SelectedSkill == -1) return;
     s = selectedCharacter.equippedSkills[SelectedSkill];
-    Tile currTile = map.centerTile;
+    Tile currTile = pControl.currentHoveredTile;
     if (currTile != null && skillTargets.Contains(currTile)) {
       List<Tile> tiles = new List<Tile>();
       if (s is AoeSkill) {
@@ -423,6 +426,11 @@ public class GameManager : MonoBehaviour {
   // Preview of targetting a character
   public void selectTarget(GameObject target) {
     BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
+    if (previewTarget) {
+      previewTarget.PreviewDamage = 0;
+      previewTarget.PreviewHealing = 0;
+    }
+
     previewTarget = targetChar;
 
     if (targetChar == null) {
@@ -438,7 +446,6 @@ public class GameManager : MonoBehaviour {
       if (hskill != null) previewTarget.PreviewHealing = skill.calculateHealing(previewTarget);
       else previewTarget.PreviewDamage = skill.calculateDamage(previewTarget);
     }
-    //todo: aoe health bar hover?
   }
 
   public List<Tile> targets = new List<Tile>();

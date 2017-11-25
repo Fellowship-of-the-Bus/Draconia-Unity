@@ -189,7 +189,6 @@ public class BattleCharacter : Effected {
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
     // scale health on health bar to match current HP values
-
     updateLifeBar(lifebar);
     updateLifeBar(redlifebar);
   }

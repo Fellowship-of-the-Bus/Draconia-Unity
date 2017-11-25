@@ -11,9 +11,6 @@ public class Map {
 
   public List<Tile> startPositions = new List<Tile>();
 
-  //Tile at the center of the current colouring
-  public Tile centerTile;
-
   public void awake() {
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     foreach (GameObject cube in cubes) {
@@ -192,7 +189,6 @@ public class Map {
 
   // GameMap functions
   public void setTileColours(Tile src = null) {
-    centerTile = src;
     GameObject SelectedPiece = GameManager.get.SelectedPiece;
     int SelectedSkill = GameManager.get.SelectedSkill;
     if (src == null) src = getTile(GameManager.get.SelectedPiece.transform.position);
@@ -214,14 +210,14 @@ public class Map {
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
-          t.setColor(Color.gray);
+          t.setColor(Color.white);
         }
         foreach (Tile t in GameManager.get.skillTargets) {
           t.setColor(Color.red);
         }
       } else {
         foreach (Tile t in skill.getTargets()) {
-          t.setColor(Color.gray);
+          t.setColor(Color.white);
         }
         AoeSkill areaSkill = skill as AoeSkill;
         var targetsInAoe = areaSkill.getTargetsInAoe(src.transform.position);

@@ -9,10 +9,12 @@ public class PlayerControl : MonoBehaviour {
 
   public bool preGame = true;
 
+  public Tile currentHoveredTile = null;
+
   // Use this for initialization
   void Start() {
     PlayerCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-    gameManager = gameObject.GetComponent<GameManager>();
+    gameManager = GameManager.get;
   }
 
   // Update is called once per frame
@@ -54,6 +56,7 @@ public class PlayerControl : MonoBehaviour {
     bool isTile = hoveredObject.tag == "Cube";
     bool isPiece = hoveredObject.tag == "Unit";
     Tile hoveredTile = map.getTile(hoveredObject.transform.position);
+    if (hoveredTile) currentHoveredTile = hoveredTile;
 
     if (preGame){
       map.clearColour();
