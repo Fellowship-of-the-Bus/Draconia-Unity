@@ -31609,6 +31609,11 @@ Prefab:
       propertyPath: targetDamageBar
       value: 
       objectReference: {fileID: 618221674}
+    - target: {fileID: 114799550511852994, guid: 27572aee490181e40b4e4114f070474c,
+        type: 2}
+      propertyPath: cancelButton
+      value: 
+      objectReference: {fileID: 1130157840}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27572aee490181e40b4e4114f070474c, type: 2}
   m_IsPrefabParent: 0
@@ -31632,6 +31637,12 @@ GameObject:
   m_PrefabParentObject: {fileID: 1813926440393972, guid: 27572aee490181e40b4e4114f070474c,
     type: 2}
   m_PrefabInternal: {fileID: 1130157835}
+--- !u!114 &1130157840 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114614522557543102, guid: 27572aee490181e40b4e4114f070474c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1130157835}
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1131193827
 GameObject:
   m_ObjectHideFlags: 0

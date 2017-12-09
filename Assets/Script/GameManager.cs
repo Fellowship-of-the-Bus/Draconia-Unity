@@ -119,6 +119,8 @@ public class GameManager : MonoBehaviour {
   }
   public static PostGameData postData = new PostGameData();
 
+  public Button cancelButton;
+
   IEnumerator waitForSeconds(float s) {
     yield return new WaitForSeconds(s);
   }
@@ -260,6 +262,7 @@ public class GameManager : MonoBehaviour {
         endTurnWrapper();
       }
     }
+    cancelButton.interactable = cancelStack.Count != 0;
 
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
