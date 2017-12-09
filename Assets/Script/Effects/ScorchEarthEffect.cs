@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ScorchEarthEffect : DurationEffect {
+public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
   public BattleCharacter caster;
   List<BattleCharacter> effected = new List<BattleCharacter>();
   protected override void onActivate() {
@@ -26,18 +26,23 @@ public class ScorchEarthEffect : DurationEffect {
         occupant = ownerTile.occupant.GetComponent<BattleCharacter>();
       }
       if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !(occupant.levitating)) {
-        occupant.takeDamage((int)(damage(occupant)));
-        GameManager.get.waitFor(0.5f); //TODO
+        GameManager.get.waitFor(0.5f, () => occupant.takeDamage((int)(damage(occupant)))); //TODO: animation time rather than 0.5f
       }
       effected.Clear();
     } else if (e.hook == EventHook.enterTile && e.position == ownerTile.transform.position  && !(e.sender.levitating)) {
       effected.Add(e.sender);
-      e.sender.takeDamage((int)(damage(e.sender)));
-      GameManager.get.waitFor(0.5f); //TODO
+      GameManager.get.waitFor(0.5f, () => e.sender.takeDamage((int)(damage(e.sender)))); //TODO: animation time rather than 0.5f
+      e.interruptMove = true;
     }
   }
 
   public override bool shouldDecrement(Event e) {
     return e.sender == caster;
+  }
+
+  public int healthChange() {
+    Debug.Assert(ownerTile.occupant != null);
+    if (effected.Contains(ownerTile.occupant)) return 0;
+    return -(int)damage(ownerTile.occupant);
   }
 }

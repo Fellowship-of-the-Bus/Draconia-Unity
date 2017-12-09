@@ -7,12 +7,14 @@ public class PlayerControl : MonoBehaviour {
   private GameManager gameManager;
   // GameObject responsible for the management of the game
 
-  public bool preview = true;
+  public bool preGame = true;
+
+  public Tile currentHoveredTile = null;
 
   // Use this for initialization
   void Start() {
     PlayerCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-    gameManager = gameObject.GetComponent<GameManager>();
+    gameManager = GameManager.get;
   }
 
   // Update is called once per frame
@@ -23,6 +25,8 @@ public class PlayerControl : MonoBehaviour {
   // Detect Mouse Inputs
   void GetMouseInputs() {
     // Don't allow input on AI turn
+    // Debug.Log(gameManager.UILocked());
+
     if (gameManager.UILocked()) return;
 
     handleHovered(gameManager.getHovered(PlayerCam));
@@ -30,28 +34,31 @@ public class PlayerControl : MonoBehaviour {
   }
 
   void handleHovered(GameObject hoveredObject) {
+    //Debug.Log(hoveredObject);
     gameManager.lineTo(gameManager.SelectedPiece);
     if (hoveredObject == null) return;
     Map map = gameManager.map;
     BattleCharacter selectedCharacter = null;
-    if (!preview) selectedCharacter = gameManager.SelectedPiece.GetComponent<BattleCharacter>();
+    if (!preGame) selectedCharacter = gameManager.SelectedPiece.GetComponent<BattleCharacter>();
 
     ActiveSkill s = null;
-    if (gameManager.SelectedSkill != -1 && !preview) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];
+    if (gameManager.SelectedSkill != -1 && !preGame) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];
 
     //handle multicubes
     if (hoveredObject.transform.parent.tag == "Cube") {
       hoveredObject = hoveredObject.transform.parent.gameObject;
     }
-
+    Transform parent = hoveredObject.transform.parent;
+    while (parent != null && parent.tag != "Unit") {
+      parent = parent.parent;
+    }
+    if (parent) hoveredObject = parent.gameObject;
     bool isTile = hoveredObject.tag == "Cube";
     bool isPiece = hoveredObject.tag == "Unit";
     Tile hoveredTile = map.getTile(hoveredObject.transform.position);
-    BattleCharacter hoveredPiece = hoveredObject.GetComponent<BattleCharacter>();
-    gameManager.selectTarget(hoveredPiece);
+    if (hoveredTile) currentHoveredTile = hoveredTile;
 
-
-    if (preview){
+    if (preGame){
       map.clearColour();
       GameSceneController.get.resetStartTileColour();
       if (!isTile && !isPiece) return;
@@ -61,6 +68,7 @@ public class PlayerControl : MonoBehaviour {
     } else {
       //if pieces are moving around, skip
       if (gameManager.moving || (!isTile && !isPiece)) return;
+      gameManager.selectTarget(hoveredObject);
 
       //handle movement based tile colouring
       if (isTile) {
@@ -98,7 +106,7 @@ public class PlayerControl : MonoBehaviour {
     bool isPiece = clickedObject.tag == "Unit";
     Tile clickedTile = gameManager.map.getTile(clickedObject.transform.position);
 
-    if (preview) {
+    if (preGame) {
       BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
 
       if (clickedChar != null && clickedChar.team == 0) {

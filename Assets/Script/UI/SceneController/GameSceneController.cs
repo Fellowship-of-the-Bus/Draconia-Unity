@@ -13,12 +13,19 @@ public class GameSceneController: MonoBehaviour {
   public Transform parent;
 
   public List<Tile> pStartLocTiles;
-  public GameObject battleCanvas;
-  public GameObject charSelectCanvas;
-  public GameObject positioningCanvas;
   public PlayerControl pControl;
   public GameObject battleCanvasTooltip;
   public GameObject charSelectTooltip;
+
+  // Canvases
+  public GameObject positioningCanvas;
+  public GameObject charSelectCanvas;
+  public GameObject rotateCanvas;
+  public GameObject battleCanvas;
+  public GameObject tileInfoCanvas;
+
+  public string[] mandatoryCharacters;
+
 
   public int numCharInBattle;
 
@@ -45,11 +52,13 @@ public class GameSceneController: MonoBehaviour {
   public void startGame() {
     //switch canvas, then start the game
     battleCanvas.SetActive(true);
+    rotateCanvas.SetActive(true);
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(false);
+    tileInfoCanvas.SetActive(true);
     //enable player control
     //disable positioning control
-    pControl.preview = false;
+    pControl.preGame = false;
     GameManager.get.tooltip = battleCanvasTooltip;
     setStartTileColour(Color.clear);
     //need to reenable battleChars
@@ -62,12 +71,12 @@ public class GameSceneController: MonoBehaviour {
   }
 
   void Start() {
-
     //playerStartLocations = GameManager.get.map.getStartTiles();
     battleCanvas.SetActive(false);
     charSelectCanvas.SetActive(false);
     positioningCanvas.SetActive(true);
-    pControl.preview = true;
+    tileInfoCanvas.SetActive(false);
+    pControl.preGame = true;
     GameManager.get.tooltip = charSelectTooltip;
 
     //set colour for start locations for tile variable
@@ -82,17 +91,19 @@ public class GameSceneController: MonoBehaviour {
     setObjDescriptions();
 
     dialogue.setOnExit(() => unlockUI());
-    dialogue.loadDialogue(GameManager.get.reader.start);
     lockUI();
+    dialogue.loadDialogue(GameManager.get.reader.start);
+
+    setMandatoryChars();
   }
 
   public void lockUI() {
     positioningCanvas.gameObject.transform.Find("Panel").gameObject.SetActive(false);
-    positioningCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(false);
+    rotateCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(false);
   }
   public void unlockUI() {
     positioningCanvas.gameObject.transform.Find("Panel").gameObject.SetActive(true);
-    positioningCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(true);
+    rotateCanvas.gameObject.transform.Find("Rotate").gameObject.SetActive(true);
   }
 
   public void placeCharacter (BattleCharacter c) {
@@ -112,6 +123,15 @@ public class GameSceneController: MonoBehaviour {
     c.curTile = null;
     t.occupant = null;
     Destroy(c.gameObject);
+  }
+
+  public void setMandatoryChars() {
+    foreach (string s in mandatoryCharacters) {
+      Character c = GameData.gameData.getCharacterByName(s);
+      if (c != null) {
+        CharIntoLevel.get.addCharacter(c, true);
+      }
+    }
   }
 
   public bool validStartTile(Tile t) {

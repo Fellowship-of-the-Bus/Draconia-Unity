@@ -21,7 +21,7 @@ public class Sprint: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
+  public override List<Tile> getTargets(Tile posn) {
     //get tiles within move range,
     //filter by unoccupied
     GameManager gm = GameManager.get;

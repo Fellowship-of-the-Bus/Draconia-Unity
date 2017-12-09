@@ -93,8 +93,12 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
-  public virtual int calculateDamage(BattleCharacter target) {
-    float heightDifference = self.curTile.getHeight() - target.curTile.getHeight();
+  public virtual int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
+    if (attackOrigin == null) {
+      attackOrigin = self.curTile;
+    }
+
+    float heightDifference = attackOrigin.getHeight() - target.curTile.getHeight();
     float multiplier = 1;
     if (range >= 1) {
       //balance here
@@ -167,17 +171,35 @@ public abstract class ActiveSkill : EventListener, Skill {
     base.attachListener(e, hook);
   }
 
-  public abstract List<Tile> getTargets();
-
-  protected List<Tile> getTargetsInRange() {
-    return getTargetsInAoe(self.transform.position, range);
+  // Get the set of tiles that are allowed to be targeted
+  // using the current tile as the origin
+  public List<Tile> getTargets() {
+    return getTargets(self.curTile);
   }
 
-  protected List<Tile> getTargetsInAoe(Vector3 position, int aoe) {
+  // Get the set of tiles that are allowed to be targeted
+  public virtual List<Tile> getTargets(Tile posn) {
+    return getTargetsInRange(posn);
+  }
+
+  // Get the set of tiles that are within targetting range
+  protected List<Tile> getTargetsInRange(Tile posn) {
+    return getTargetsInAoe(posn, range, true);
+  }
+
+  // Overload of getTargetsInAoe
+  // Allowing position instead of tile as argument
+  public List<Tile> getTargetsInAoe(Vector3 position, int aoe, bool heightAdvantage = false) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinRange(map.getTile(position), aoe);
-    targets.Add(map.getTile(position));
-    //targets.Filter((x) => canTarget(x));
+    return getTargetsInAoe(map.getTile(position), aoe, heightAdvantage);
+  }
+
+  // Get the tiles that will be affected by an aoe skill targeting position
+  protected List<Tile> getTargetsInAoe(Tile position, int aoe, bool heightAdvantage = false) {
+    Map map = GameManager.get.map;
+    List<Tile> targets = map.getTilesWithinRange(position, aoe, heightAdvantage);
+    targets.Add(position);
+    targets = new List<Tile>(targets.Filter((x) => canTarget(x)));
     return targets;
   }
 

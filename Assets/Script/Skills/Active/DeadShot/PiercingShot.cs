@@ -14,10 +14,6 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
-    return getTargetsInRange();
-  }
-
   public List<Tile> getTargetsInAoe(Vector3 position) {
     GameManager gm = GameManager.get;
     List<Tile> tiles = gm.map.getCardinalTilesWithinRange(self.curTile, aoe);

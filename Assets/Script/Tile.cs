@@ -9,7 +9,7 @@ public class Tile : Effected {
   public float additionalHeight = 0f;
   public bool startTile = false;
   public string type;
-  public Sprite image;
+  public Material color;
 
   public bool occupied() {
     return occupant != null;
@@ -25,6 +25,11 @@ public class Tile : Effected {
       pos.y = 0.5f + getHeight();
       return pos;
     }
+  }
+
+  public void setup() {
+    Transform t = gameObject.transform.Find("Top");
+    color = t.gameObject.GetComponent<Renderer>().material;
   }
 
   public void setColor(Color c) {

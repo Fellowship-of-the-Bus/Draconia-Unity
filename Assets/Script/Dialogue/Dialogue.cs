@@ -25,12 +25,16 @@ public class Dialogue : MonoBehaviour {
   public void goToNextFrame() {
     if (currentFragment >= dialogues.Count) {
       //end of dialogue, consider closing the dialogue instead of doing nothing.
-      nextButton.interactable = false;
+      skipDialogue();
       return;
     }
     if (dialogues[currentFragment].hasNextFrame) {
       string text = dialogues[currentFragment].getNextFrameText();
       StartCoroutine(displayText(text));
+      // //check last frame in last fragment
+      // if (!dialogues[currentFragment].hasNextFrame && currentFragment == dialogues.Count - 1 ) {
+      //   nextButton.interactable = false;
+      // }
     } else {
       currentFragment += 1;
       goToNextFrame();
@@ -38,6 +42,11 @@ public class Dialogue : MonoBehaviour {
   }
 
   public IEnumerator displayText(string text) {
+    // no next frame
+    if (!dialogues[currentFragment].hasNextFrame && currentFragment == dialogues.Count - 1 ) {
+      nextButton.GetComponentInChildren<Text>().text = "End";
+      gameObject.transform.Find("skipButton").gameObject.SetActive(false);
+    }
     nextButton.interactable = false;
     int curChar = 0;
     while (curChar <= text.Length) {
@@ -58,6 +67,10 @@ public class Dialogue : MonoBehaviour {
     dialogues = d;
     currentFragment = 0;
     gameObject.SetActive(true);
+    nextButton.gameObject.SetActive(true);
+    nextButton.interactable = true;
+    nextButton.GetComponentInChildren<Text>().text = "Next";
+    gameObject.transform.Find("skipButton").gameObject.SetActive(true);
     goToNextFrame();
   }
 

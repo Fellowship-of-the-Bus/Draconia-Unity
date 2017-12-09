@@ -10,6 +10,8 @@ public class SkillTree {
 
   List<Type> equippedSkills = new List<Type>();
 
+  public int numSkillPoints = 0;
+
   public SkillTree() {
     foreach(Type t in SkillList.get.skills) {
       addSkill(t, 0);

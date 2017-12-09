@@ -16,8 +16,10 @@ public class GameData {
   	String[] skills = {"Knockback", "ScorchEarth", "Punch"};
   	SkillTree skillTree;
 
-  	GameData.gameData.characters.Add(new Character("Sisdric"));
     GameData.gameData.characters.Add(new Character("Brodric"));
+    GameData.gameData.characters.Add(new Character("Sisdric"));
+
+    inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
 
     foreach (Character c in  GameData.gameData.characters) {
    		c.attr.strength = 10;
@@ -30,5 +32,12 @@ public class GameData {
 	    	skillTree.equipSkill(t);
 	    }
     }
+  }
+
+  public Character getCharacterByName(string name) {
+    foreach(Character c in characters) {
+      if (c.name == name) return c;
+    }
+    return null;
   }
 }

@@ -18,10 +18,6 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
-    return getTargetsInRange();
-  }
-
   public List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);
   }

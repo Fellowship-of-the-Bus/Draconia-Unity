@@ -144,6 +144,18 @@ public class ActionQueue {
     }
   }
 
+  public void highlight(GameObject piece) {
+    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+      Image buttonImg = n.Value.button.GetComponent<Image>();
+
+      if (piece == null || n.Value.piece.Equals(piece)) {
+        buttonImg.color = Color.white;
+      } else {
+        buttonImg.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+      }
+    }
+  }
+
   public void removeFirst(GameObject piece) {
     int i = 0;
 

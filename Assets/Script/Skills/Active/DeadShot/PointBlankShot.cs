@@ -17,10 +17,10 @@ public class PointBlankShot: SingleTarget {
     return (int)(self.strength*(1+level*0.1));
   }
 
-  public override int calculateDamage(BattleCharacter target) {
+  public override int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
     float distance = (target.transform.position - self.transform.position).magnitude;
     float multiplier = 2.5f / distance;
 
-    return (int)(base.calculateDamage(target) * multiplier);
+    return (int)(base.calculateDamage(target, attackOrigin) * multiplier);
   }
 }

@@ -17,6 +17,7 @@ public class Map {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
+      t.setup();
     }
   }
 
@@ -30,6 +31,13 @@ public class Map {
 
     Tile startTile = getTile(unitLocation);
     startTile.distance = 0;
+
+    PortalEffect portal = startTile.getEffect<PortalEffect>();
+    if (portal != null) {
+      Tile sibling = portal.sibling.ownerTile;
+      sibling.distance = 0;
+      sibling.dir = portalDir;
+    }
 
     while (tilesToGo.Count != 0) {
       int minDistance = System.Int32.MaxValue;
@@ -52,7 +60,7 @@ public class Map {
             neighbourTile.dir = dir;
           }
           // update portal dest distance to portal src distance
-          PortalEffect portal = neighbourTile.getEffect<PortalEffect>();
+          portal = neighbourTile.getEffect<PortalEffect>();
           if (portal != null) {
             Tile sibling = portal.sibling.ownerTile;
             if (d < sibling.distance) {
@@ -98,15 +106,18 @@ public class Map {
     return null;
   }
 
-  public List<Tile> getTilesWithinRange(Tile t, int range) {
+  public List<Tile> getTilesWithinRange(Tile t, int range, bool heightAdvantage = false) {
     List<Tile> inRangeTiles = new List<Tile>();
     foreach (Tile other in tiles) {
-      int rangeChange = 0;
-      if (range >= 2) {
-        rangeChange = (int)(t.getHeight() - other.getHeight());
-      }
-      if (l1Distance(t, other) - rangeChange <= range && l1Distance(t, other) != 0) {
+      int distance = l1Distance(t, other);
+
+      if (distance <= range && distance != 0) {
         inRangeTiles.Add(other);
+      } else if (heightAdvantage && distance == range + 1) {
+        // Check if the origin is higher
+        if ((int)(t.getHeight() - other.getHeight()) >= 1) {
+          inRangeTiles.Add(other);
+        }
       }
     }
     return inRangeTiles;
@@ -137,7 +148,7 @@ public class Map {
 
   public void clearColour() {
     foreach (Tile tile in tiles) {
-      tile.setColor(Color.clear);
+      tile.setColor(new Color(0.8f, 0.8f, 0.8f, 0.25f * Options.gridTransparency));
     }
   }
 
@@ -186,8 +197,6 @@ public class Map {
       foreach (Tile tile in tiles) {
         if (tile.distance <= GameManager.get.moveRange && !tile.occupied()) {
           tile.setColor(Color.green);
-        } else {
-          tile.setColor(Color.clear);
         }
       }
       // color the path
@@ -195,31 +204,38 @@ public class Map {
         ti.setColor(Color.blue);
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
-      bool aoe = (SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] is AoeSkill);
-      int range = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].range;
+      ActiveSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill];
+      bool aoe = (skill is AoeSkill);
+      int range = skill.range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
-        foreach (Tile tile in inRangeTiles) {
-          tile.setColor(Color.gray);
+        foreach (Tile t in inRangeTiles) {
+          t.setColor(Color.white);
         }
         foreach (Tile t in GameManager.get.skillTargets) {
           t.setColor(Color.red);
         }
       } else {
-        foreach (Tile t in SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].getTargets()) {
-          t.setColor(Color.gray);
+        foreach (Tile t in skill.getTargets()) {
+          t.setColor(Color.white);
         }
-        AoeSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill] as AoeSkill;
-        var targetsInAoe = skill.getTargetsInAoe(src.transform.position);
-        if (skill is Sprint) {
+        AoeSkill areaSkill = skill as AoeSkill;
+        var targetsInAoe = areaSkill.getTargetsInAoe(src.transform.position);
+        if (areaSkill is Sprint) {
           //set path to blue
-          foreach (Tile ti in path) {
-            ti.setColor(Color.yellow);
+          foreach (Tile t in path) {
+            t.setColor(Color.blue);
           }
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
+            t.setColor(Color.yellow);
             if (t.occupied() && SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
-            else t.setColor(Color.yellow);
+            else {
+              foreach (Tile tile in skill.getTargets()) {
+                if (tile == t)
+                  t.setColor(new Color(1, 0.5f, 0, 1));
+              }
+            }
           }
         }
       }

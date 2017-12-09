@@ -21,10 +21,6 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
-    return getTargetsInRange();
-  }
-
   public List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);
   }
@@ -32,7 +28,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
   public override void tileEffects(Tile target) {
     ScorchEarthEffect burn = new ScorchEarthEffect();
     burn.level = level;
-    burn.duration = 2;
+    burn.duration = 3;
     burn.caster = self;
     target.applyEffect(burn);
   }

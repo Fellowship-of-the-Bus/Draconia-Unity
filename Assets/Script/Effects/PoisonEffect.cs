@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PoisonEffect : DurationEffect {
+public class PoisonEffect : DurationEffect, HealthChangingEffect {
   public int damage;
   public float multiplier = 1.0f;
 
@@ -22,5 +22,9 @@ public class PoisonEffect : DurationEffect {
       //should only be comparing Poison effects, shouldn't ever get here.
       return base.CompareTo(e);
     }
+  }
+
+  public int healthChange() {
+    return -(int)(damage * multiplier);
   }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 
 public abstract class BaseAI {
   public BattleCharacter owner;
+  public virtual void init() {}
   public abstract void target();
   public abstract Vector3 move();
 
@@ -15,7 +16,7 @@ public abstract class BaseAI {
     public List<BattleCharacter> affected;
   }
 
-  protected List<TargetSet> getTargetSets(ActiveSkill skill, List<Tile> targets) {
+  protected List<TargetSet> getTargetSets(ActiveSkill skill, List<Tile> targets, Tile userTile) {
     AoeSkill aoe = skill as AoeSkill;
 
     // Determine possible targets
@@ -28,12 +29,17 @@ public abstract class BaseAI {
         List<Tile> affectedTiles = aoe.getTargetsInAoe(t.gameObject.transform.position);
         affectedTiles = new List<Tile>(affectedTiles.Filter((x) => x.occupied()));
         tSet.affected = new List<BattleCharacter>(affectedTiles.Select(x => x.occupant));
+        if (affectedTiles.Contains(userTile)) {
+          tSet.affected.Add(owner);
+        } else {
+          tSet.affected.Remove(owner);
+        }
 
         targetSets.Add(tSet);
       }
     } else {
       List<BattleCharacter> chars = new List<BattleCharacter>(targets.Select(x => x.occupant));
-      chars = new List<BattleCharacter>(chars.Filter((character) => character != null && character.team != owner.team));
+      chars = new List<BattleCharacter>(chars.Filter((character) => character != null));
       foreach (BattleCharacter t in chars) {
         TargetSet tSet;
         tSet.tile = t.curTile;

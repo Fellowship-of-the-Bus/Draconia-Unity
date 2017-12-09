@@ -24,14 +24,31 @@ public class GameManager : MonoBehaviour {
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;
+  public PlayerControl pControl;
 
   //variables to handles turns
-  /** stack of (position, remaining move range), where top of stack is previous location */
-  public Stack<Pair<Tile,int>> positionStack = new Stack<Pair<Tile, int>>();
+
+  //TODO: Finish handling of portal skll
+  public class UndoAction {
+    Action act;
+    bool pushedBySkill;
+
+    public UndoAction(Action a, bool skill = false) {
+      act = a;
+      pushedBySkill = skill;
+    }
+
+    public bool undo() {
+      act();
+      return pushedBySkill;
+    }
+
+  }
+  public Stack<UndoAction> cancelStack = new Stack<UndoAction>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
   public List<Tile> skillTargets;
-  BattleCharacter previewTarget;
+  public BattleCharacter previewTarget;
 
   public GameState gameState = GameState.moving;
   public bool playerTurn = true;
@@ -49,8 +66,12 @@ public class GameManager : MonoBehaviour {
   public List<Objective> losingConditions = new List<Objective>();
 
   //health/mana bars
-  public GameObject selectedHealth;
-  public GameObject targetHealth;
+  public GameObject selectedHealthBar;
+  public GameObject selectedDamageBar;
+  public GameObject selectedHealingBar;
+  public GameObject targetHealthBar;
+  public GameObject targetDamageBar;
+  public GameObject targetHealingBar;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -77,23 +98,37 @@ public class GameManager : MonoBehaviour {
 
   private List<BFEvent> BFevents = new List<BFEvent>();
 
-  private class DeathListener : EventListener {
+  private class CharacterListener : EventListener {
     public override void onEvent(Event e) {
-      GameManager g = GameManager.get;
-      g.characters[g.SelectedPiece.GetComponent<BattleCharacter>().team].Remove(g.SelectedPiece);
-      g.endTurnWrapper();
+      if (e.hook == EventHook.postDeath) {
+        GameManager g = GameManager.get;
+        g.characters[e.sender.team].Remove(e.sender.gameObject);
+        if (e.sender == g.SelectedPiece.GetComponent<BattleCharacter>()) {
+          g.endTurnWrapper();
+        }
+      }
     }
   }
 
-  private DeathListener d = new DeathListener();
+  private CharacterListener characterListener = new CharacterListener();
+
+  public class PostGameData {
+    public bool win;
+    public List<Character> inBattle;
+    public List<Equipment> loot;
+  }
+  public static PostGameData postData = new PostGameData();
+
+  public Button cancelButton;
 
   IEnumerator waitForSeconds(float s) {
     yield return new WaitForSeconds(s);
   }
 
-  IEnumerator popAtEnd(Coroutine c) {
+  IEnumerator popAtEnd(Coroutine c, Action act) {
     yield return c;
     waitingOn.Remove(c);
+    if (act != null) act();
   }
 
   IEnumerator waitUntilCount(int count) {
@@ -102,13 +137,28 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public void waitFor(float s) {
-    waitFor(StartCoroutine(waitForSeconds(s)));
+  public void waitFor(float s, Action act = null) {
+    waitFor(StartCoroutine(waitForSeconds(s)), act);
   }
 
-  public void waitFor(Coroutine c) {
+  IEnumerator waitForAnimation(Animator animator, String trigger) {
+    if (Options.displayAnimation) {
+      animator.SetTrigger(trigger);
+      yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
+                                            //otherwise next line always wait for 0.
+      yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
+      } else {
+        yield return new WaitForEndOfFrame();
+      }
+  }
+
+  public void waitFor(Animator a, String trigger, Action act = null) {
+    waitFor(StartCoroutine(waitForAnimation(a, trigger)), act);
+  }
+
+  public void waitFor(Coroutine c, Action act = null) {
     waitingOn.Add(c);
-    StartCoroutine(popAtEnd(c));
+    StartCoroutine(popAtEnd(c, act));
   }
 
   public int getWaitingIndex() {
@@ -133,8 +183,11 @@ public class GameManager : MonoBehaviour {
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
       skillButtons.Add(o.GetComponent<Button>());
-      o.AddComponent<Tooltip>();
     }
+
+    skillButtons.Sort((a,b) => {
+      return String.Compare(a.gameObject.name,b.gameObject.name);
+    });
 
     map.awake();
 
@@ -155,21 +208,23 @@ public class GameManager : MonoBehaviour {
       losingConditions.Add(ObjectiveFactory.makeObjective(s));
     }
 
-
     string mapName = SceneManager.GetActiveScene().name;
     reader = new DialogueReader(mapName);
-    BFevents = reader.inBattle;
-    foreach (BFEvent e in BFevents) {
-      e.init();
-    }
-    dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {
     //startTurn();
+    BFevents = reader.inBattle;
+    foreach (BFEvent e in BFevents) {
+      e.init();
+    }
+
+    pControl = GameSceneController.get.pControl;
   }
 
   public void init() {
+    lockUI();
+    dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
     var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
     foreach (var x in objs) {
       characters[x.Key] = new List<GameObject>(x);
@@ -187,59 +242,95 @@ public class GameManager : MonoBehaviour {
 
     foreach (var l in characters.Values) {
       foreach (var o in l) {
-        o.GetComponent<BattleCharacter>().init();
+        var bchar = o.GetComponent<BattleCharacter>();
+        bchar.init();
+        bchar.ai.init();
+        characterListener.attachListener(bchar, EventHook.postDeath);
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
+
+    List<Character> charInBattle = new List<Character>(players.Map(x => x.GetComponent<BattleCharacter>().baseChar));
+    GameManager.postData.inBattle = charInBattle;
   }
 
-  int blinkFrameNumber = 0;
-  bool displayChangedHealth = false;
   void Update() {
     if (!UILocked()) {
       if (Input.GetKeyDown(KeyCode.Return)) {
         endTurnWrapper();
       }
     }
+    cancelButton.interactable = cancelStack.Count != 0;
 
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
+    ActiveSkill s;
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+    int netChange = 0;
+    List<Effect> effects = new List<Effect>(selectedCharacter.getEffects());
+    effects.AddRange(new List<Effect>(selectedCharacter.curTile.getEffects()));
 
-    if (SelectedPiece) {
-      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-      selectedCharacter.updateLifeBar(selectedHealth);
-      if (Options.debugMode) {
-        for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
-          ActiveSkill s = selectedCharacter.equippedSkills[i];
-          Debug.AssertFormat(s.name != "", "Skill Name is empty");
-          skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-          skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
-          skillButtons[i].interactable = s.canUse();
+    foreach(Effect e in effects) {
+      if (e is HealthChangingEffect) {
+        netChange += (e as HealthChangingEffect).healthChange();
+      }
+    }
+    selectedCharacter.updateLifeBar(selectedHealthBar);
+    selectedCharacter.updateLifeBar(selectedDamageBar);
+    selectedCharacter.updateLifeBar(selectedHealingBar);
+    if (netChange < 0) {
+      selectedCharacter.updateLifeBar(selectedHealthBar,selectedCharacter.curHealth + netChange);
+    } else if (netChange > 0) {
+      selectedCharacter.updateLifeBar(selectedHealingBar,selectedCharacter.curHealth + netChange);
+    }
+    if (Options.debugMode && selectedCharacter.team == 0) {
+      for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+        s = selectedCharacter.equippedSkills[i];
+        Debug.AssertFormat(s.name != "", "Skill Name is empty");
+        skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+        skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+        skillButtons[i].interactable = s.canUse();
+      }
+    }
+    if (previewTarget == null) {
+      targetPanel.SetActive(false);
+    }
+    if (SelectedSkill == -1)  return;
+    s = selectedCharacter.equippedSkills[SelectedSkill];
+    Tile currTile = pControl.currentHoveredTile;
+    if (currTile != null && skillTargets.Contains(currTile)) {
+      List<Tile> tiles = new List<Tile>();
+      if (s is AoeSkill) {
+        tiles = (s as AoeSkill).getTargetsInAoe(currTile.position);
+      } else {
+        tiles.Add(currTile);
+      }
+
+      foreach(Tile t in tiles) {
+        BattleCharacter c = t.occupant;
+        if (c == null) continue;
+        if (s is HealingSkill) {
+          c.PreviewHealing = s.calculateHealing(c);
+          c.updateLifeBar(c.healingbar,c.curHealth + c.PreviewHealing);
+        } else {
+          c.PreviewDamage = s.calculateDamage(c);
+          c.updateLifeBar(c.lifebar,c.curHealth - c.PreviewDamage);
         }
       }
     }
-
-    if (previewTarget == null) {
-      targetPanel.SetActive(false);
-    } else {
+    if (previewTarget) {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
-      if (gameState == GameState.moving) displayChangedHealth = false;
-      if (displayChangedHealth && skillTargets.Contains(previewTarget.curTile)) {
-        BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-        Vector3 scale = targetHealth.transform.localScale;
-        Skill s = selectedCharacter.equippedSkills[SelectedSkill];
-        if (s is HealingSkill) scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
-        else scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
-        targetHealth.transform.localScale = scale;
-      } else {
-        Vector3 scale = targetHealth.transform.localScale;
-        scale.x = (float)previewTarget.curHealth/previewTarget.maxHealth;
-        targetHealth.transform.localScale = scale;
-      }
-      blinkFrameNumber = (blinkFrameNumber+1)%30;
-      if (blinkFrameNumber == 0) {
-        displayChangedHealth = !displayChangedHealth;
+      previewTarget.updateLifeBar(targetHealingBar);
+      previewTarget.updateLifeBar(targetHealthBar);
+      previewTarget.updateLifeBar(targetDamageBar);
+      if (s.canTarget(previewTarget.curTile)) {
+          if (s is HealingSkill) {
+            previewTarget.updateLifeBar(targetHealingBar,previewTarget.curHealth + previewTarget.PreviewHealing);
+          }
+          else {
+            previewTarget.updateLifeBar(targetHealthBar,previewTarget.curHealth - previewTarget.PreviewDamage);
+          }
       }
     }
   }
@@ -264,29 +355,27 @@ public class GameManager : MonoBehaviour {
     foreach(Objective o in losingConditions) {
       if (o.isMet(this)) {
         endGame(false);
+        return;
       }
     }
+    bool win = true;
     foreach(Objective o in winningConditions) {
-      if (o.isMet(this)) {
-        endGame(true);
-      }
+      win = win && o.isMet(this);
+    }
+    if (win) {
+      endGame(true);
+      return;
     }
 
     // Change color of the selected piece to make it apparent. Put it back to white when the piece is unselected
     // change color of the board squares that it can move to.
     map.clearColour();
     map.clearPath();
-    if (SelectedPiece) {
-      // if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
-      d.detachListener(SelectedPiece.GetComponent<BattleCharacter>());
-    }
 
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    d.attachListener(selectedCharacter, EventHook.postDeath);
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
@@ -301,7 +390,7 @@ public class GameManager : MonoBehaviour {
 
     changeState(GameState.moving);
     // enemy
-    if (SelectedPiece.GetComponent<BattleCharacter>().team == 1) {
+    if (selectedCharacter.team == 1) {
       playerTurn = false;
       handleAI();
       return;
@@ -310,12 +399,11 @@ public class GameManager : MonoBehaviour {
       playerTurn = true;
     }
 
-    positionStack.Clear();
+    cancelStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
       skillButtons[i].interactable = false;
     }
-
 
     for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
       ActiveSkill s = selectedCharacter.equippedSkills[i];
@@ -324,13 +412,14 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
       skillButtons[i].interactable = s.canUse();
     }
+    unlockUI();
   }
 
 
   public void selectSkill(int i) {
     //unselect
-    if (gameState == GameState.attacking && SelectedSkill == i) {
-      changeState(GameState.moving);
+    if (gameState == GameState.attacking) {
+      while(!cancelStack.Pop().undo());
       return;
     }
 
@@ -341,21 +430,37 @@ public class GameManager : MonoBehaviour {
     //change colours of the tiles for attacking
     //check for range skill if not put 1 else put the range
     changeState(GameState.attacking);
+
+    cancelStack.Push(new UndoAction(() => {
+
+
+      changeState(GameState.moving);
+    }, true));
   }
 
-  public void selectTarget(BattleCharacter target) {
-    previewTarget = target;
+  // Preview of targetting a character
+  public void selectTarget(GameObject target) {
+    BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
+    if (previewTarget) {
+      previewTarget.PreviewDamage = 0;
+      previewTarget.PreviewHealing = 0;
+    }
 
-    if (target == null) return;
+    previewTarget = targetChar;
 
-    if (SelectedSkill != -1 && skillTargets.Contains(target.curTile)) {
+    if (targetChar == null) {
+      actionQueue.highlight(null);
+      return;
+    }
+
+    actionQueue.highlight(target);
+    if (SelectedSkill != -1) {
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
       HealingSkill hskill = skill as HealingSkill;
       if (hskill != null) previewTarget.PreviewHealing = skill.calculateHealing(previewTarget);
       else previewTarget.PreviewDamage = skill.calculateDamage(previewTarget);
     }
-    //todo: aoe health bar hover?
   }
 
   public List<Tile> targets = new List<Tile>();
@@ -364,23 +469,22 @@ public class GameManager : MonoBehaviour {
     ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
     List<Tile> validTargets = skill.getTargets();
 
-    if (skill is Portal) {
-      if (validTargets.Contains(target)) {
-        targets.Add(target);
-        skill.validate(targets);
-      }
-
-      if (targets.Count() != skill.ntargets) {
-        return;
-      }
-    } else {
-      targets.Clear();
+    if (validTargets.Contains(target)) {
       targets.Add(target);
+      cancelStack.Push(new UndoAction(() => {
+        targets.Remove(target);
+        map.setTileColours();
+      }));
+      skill.validate(targets);
+    }
+    if (targets.Count() != skill.ntargets) {
+      return;
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {
       StartCoroutine(endTurn());
     }
+    targets.Clear();
   }
 
   public void endTurnWrapper() {
@@ -389,6 +493,10 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
+      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) {
+        lockUI();
+      }
+
       changeState(GameState.ending);
       yield return StartCoroutine(waitUntilCount(0));
       waitingOn.Clear();
@@ -402,87 +510,91 @@ public class GameManager : MonoBehaviour {
       eventManager.onEvent(e);
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
-      // if (selectedCharacter.team == 0) SelectedPiece.GetComponent<Renderer>().material.color = Color.white;
-      // else SelectedPiece.GetComponent<Renderer>().material.color = Color.yellow;
       actionQueue.endTurn();
       map.clearColour();
       startTurn();
     }
   }
 
-  public void movePiece(BattleCharacter c, Tile t) {
-    map.djikstra(t.transform.position, c);
-    updateTile(c,t);
+  public void movePiece(BattleCharacter c, Tile t, bool setWalking = true) {
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
-    moving = true;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count)));
+    moving = Options.displayAnimation;
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation)));
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
 
-    if (gameState == GameState.moving) {
+    if (gameState == GameState.moving && setWalking) {
       cam.follow(SelectedPiece);
       yield return new WaitForSeconds(0.5f);
     }
 
-    Animator animator = piece.GetComponentInChildren<Animator>() as Animator;
-    if (animator) {
+    Animator animator = character.animator;
+    if (setWalking && animator) {
       animator.SetBool("isWalking", true);
     }
-
+    Tile endpoint = path.Last.Value;
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // Set Rotation
-      piece.GetComponent<BattleCharacter>().face(pos);
-
-      // Move Piece
-      Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
-      float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
-      float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;
-      float dDown = speed*2*(pos.y - hopHeight)/Options.FPS;
-      for (int i = 0; i < Options.FPS/speed; i++) {
-        if (d.y != 0) {
-          if (i < Options.FPS/(speed*2)) {
-            d.y = dUp;
-          } else {
-            d.y = dDown;
+      if (setWalking) {
+        character.face(pos);
+        // Move Piece
+        Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
+        float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
+        float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;
+        float dDown = speed*2*(pos.y - hopHeight)/Options.FPS;
+        for (int i = 0; i < Options.FPS/speed; i++) {
+          if (d.y != 0) {
+            if (i < Options.FPS/(speed*2)) {
+              d.y = dUp;
+            } else {
+              d.y = dDown;
+            }
           }
+          piece.transform.Translate(d);
+          yield return new WaitForSeconds(1/Options.FPS);
         }
-        piece.transform.Translate(d);
-        yield return new WaitForSeconds(1/Options.FPS);
+        piece.transform.Translate(pos-piece.transform.position);
       }
-      piece.transform.Translate(pos-piece.transform.position);
       // tell listeners that this character moved
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
+      if (enterEvent.interruptMove) {
+        cancelStack.Clear();
+        endpoint = destination;
+        break;
+      }
+      if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
       yield return waitUntilCount(index+1);
       if (animator) animator.enabled = true;
     }
+    piece.transform.position = endpoint.position;
+    moveRange -= endpoint.distance;
+    updateTile(character,endpoint);
     map.clearPath();
+    map.djikstra(endpoint.position, character);
     map.setTileColours();
 
-    if (animator) {
+    if (setWalking && animator) {
       animator.SetBool("isWalking", false);
     }
 
-    if (gameState == GameState.moving) {
+    if (gameState == GameState.moving && setWalking) {
       yield return new WaitForSeconds(0.25f);
       cam.unfollow();
     }
 
     moving = false;
-    for (int i = 0; i < skillButtons.Count; i++) {
-      skillButtons[i].enabled = i < piece.GetComponent<BattleCharacter>().equippedSkills.Count;
-    }
     unlockUI();
   }
 
@@ -502,38 +614,43 @@ public class GameManager : MonoBehaviour {
   /** remaining move amount */
   public int moveRange = 0;
   public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
+    smooth = smooth && Options.displayAnimation;
     // don't start moving twice
     if (moving) return null;
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
 
     Tile destination = map.getTile(coordToMove);
     BattleCharacter c = SelectedPiece.GetComponent<BattleCharacter>();
+    Coroutine co = null;
 
     if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
       // if player chose to move, update position stack with current values,
       // update remaining move range, and recolor the tiles given the new current position
       if (moveCommand) {
-        positionStack.Push(Pair.create(c.curTile, moveRange));
-        moveRange -= destination.distance;
-        map.djikstra(coordToMove, c);
+        int i = moveRange;
+        Tile cur = c.curTile;
+        cancelStack.Push(new UndoAction(() => {
+          Vector3 coord = cur.transform.position;
+          moveRange = i;
+          SelectedPiece.transform.position = cur.position;
+          updateTile(c,cur);
+          changeState(GameState.moving);
+          map.djikstra(coord, c);
+          map.setTileColours();
+        }));
+
       }
       //after moving, remove from origin tile,
       //add to new tile
-      updateTile(c,destination);
 
       coordToMove.y = destination.transform.position.y + map.getHeight(destination);
-      if (smooth) {
-        localPath.RemoveFirst(); // discard current position
-        moving = true;
-        line.GetComponent<Renderer>().material.color = Color.clear;
-        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count));
-        waitFor(co);
-        return co;
-      } else {
-        SelectedPiece.transform.position = coordToMove;
-      }
+      localPath.RemoveFirst(); // discard current position
+      line.GetComponent<Renderer>().material.color = Color.clear;
+      moving = smooth;
+      co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, smooth));
+      waitFor(co);
     }
-    return null;
+    return co;
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just
     // go at the end of the coroutine.
@@ -541,27 +658,30 @@ public class GameManager : MonoBehaviour {
 
   public void cancelAction() {
     BattleCharacter character = SelectedPiece.GetComponent<BattleCharacter>();
-    if (gameState == GameState.attacking) {
-      changeState(GameState.moving);
-    } else if (positionStack.Count() > 0) {
+    if (cancelStack.Count() > 0) {
       // reset character to previous position and remaining move range, then recolor movable tiles
-      Pair<Tile, int> val = positionStack.Pop();
-      Vector3 coordToMove = val.first.transform.position;
-      moveRange = val.second;
-      movePiece(coordToMove, false, false);
-      changeState(GameState.moving);
-      map.djikstra(coordToMove, character);
-      map.setTileColours();
+      UndoAction act = cancelStack.Pop();
+      act.undo();
     }
     eventManager.onEvent(new Event(character, EventHook.cancel));
   }
 
   public void endGame(bool win) {
-    Debug.Log(win);
+    dialogue.setOnExit(() => displayPostScreen(win));
+    if (win) {
+      dialogue.loadDialogue(reader.end);
+    } else {
+      displayPostScreen(win);
+    }
+  }
+
+  public void displayPostScreen(bool win) {
+    GameManager.postData.win = win;
+    GameManager.postData.loot = LootGenerator.get.getLoot(SceneManager.GetActiveScene().name);
+    SceneManager.LoadSceneAsync("PostMap");
   }
 
   IEnumerator doHandleAI(int time) {
-    lockUI();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     Vector3 destination = selectedCharacter.ai.move();
     map.setTileColours();
@@ -569,11 +689,12 @@ public class GameManager : MonoBehaviour {
     while(t != map.path.Last.Value) {
       map.path.RemoveLast();
     }
+
+    int count = waitingOn.Count;
     movePiece(destination, true);
-    yield return waitUntilCount(waitingOn.Count);
+    yield return waitUntilCount(count);
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
-    unlockUI();
     StartCoroutine(endTurn());
   }
   public void handleAI() {
@@ -600,6 +721,7 @@ public class GameManager : MonoBehaviour {
   public void unlockUI() {
     lock (UILock) {
       UILock.count--;
+      Debug.Assert(UILock.count >= 0);
       if (UILock.count == 0) {
         mainUI.GetComponent<CanvasGroup>().interactable = true;
       }

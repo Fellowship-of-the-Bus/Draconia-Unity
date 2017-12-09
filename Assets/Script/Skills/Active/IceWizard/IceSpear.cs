@@ -14,9 +14,6 @@ public class IceSpear: SingleTarget {
     targetAlly(false);
     targetEnemy(true);
   }
-  public override List<Tile> getTargets() {
-    return getTargetsInRange();
-  }
 
   public override int damageFormula() {
     return (int)(self.intelligence*(1+level*0.1));

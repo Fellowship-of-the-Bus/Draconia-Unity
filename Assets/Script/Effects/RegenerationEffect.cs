@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RegenerationEffect : DurationEffect {
+public class RegenerationEffect : DurationEffect, HealthChangingEffect {
   public int healing;
 
   protected override void onActivate() {
@@ -20,5 +20,9 @@ public class RegenerationEffect : DurationEffect {
       //should only be comparing regeneration effects, shouldn't ever get here.
       return base.CompareTo(e);
     }
+  }
+
+  public int healthChange() {
+    return healing;
   }
 }

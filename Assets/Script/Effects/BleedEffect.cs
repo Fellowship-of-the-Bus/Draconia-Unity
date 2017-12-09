@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BleedEffect : DurationEffect {
+public class BleedEffect : DurationEffect, HealthChangingEffect {
   public int damage;
 
   protected override void onActivate() {
@@ -20,5 +20,9 @@ public class BleedEffect : DurationEffect {
       //should only be comparing bleed effects, shouldn't ever get here.
       return base.CompareTo(e);
     }
+  }
+
+  public int healthChange() {
+    return -damage;
   }
 }

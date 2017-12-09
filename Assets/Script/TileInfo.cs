@@ -17,6 +17,6 @@ public class TileInfo : MonoBehaviour {
     type.text = tile.type + "Tile";
     height.text = "Height: " + tile.getHeight();
     cost.text = "MvCost: " + tile.movePointSpent;
-    background.sprite = tile.image;
+    background.material = tile.color;
   }
 }

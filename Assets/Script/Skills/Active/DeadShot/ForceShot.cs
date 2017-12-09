@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class ForceShot: SingleTarget {
+public class ForceShot: TargetMover {
 
   public ForceShot() {
     requireWeapon(Weapon.Kinds.Ranged);
@@ -12,31 +12,7 @@ public class ForceShot: SingleTarget {
     maxCooldown = 2;
     targetAlly(false);
     targetEnemy(true);
-  }
-
-  float upThreshold = 0.5f;
-
-  Tile knockTo(BattleCharacter c) {
-    Vector3 heading = c.transform.position - self.transform.position;
-    Vector3 direction = heading / heading.magnitude;
-    direction.x = Mathf.Round(direction.x);
-    direction.z = Mathf.Round(direction.z);
-
-    Tile t = GameManager.get.map.getTile(c.transform.position + direction);
-    return t;
-  }
-
-  public override void additionalEffects(BattleCharacter c) {
-    Tile t = knockTo(c);
-    GameManager game = GameManager.get;
-    Map map = game.map;
-    if (t != null && !t.occupied() && ((map.getHeight(t) + upThreshold) > map.getHeight(t))) {
-      game.updateTile(c,t);
-      LinkedList<Tile> tile = new LinkedList<Tile>();
-      tile.AddFirst(t);
-      game.moving = true;
-      game.waitFor(game.StartCoroutine(game.IterateMove(tile, c.gameObject, game.getWaitingIndex())));
-    }
+    setDirection(TargetMover.Direction.away);
   }
 
   public override int damageFormula() {

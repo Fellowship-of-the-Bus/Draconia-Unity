@@ -15,8 +15,8 @@ public class Grapple: CircleAoE {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
-    List<Tile> targets = base.getTargets();
+  public override List<Tile> getTargets(Tile posn) {
+    List<Tile> targets = base.getTargets(posn);
     return new List<Tile>(targets.Filter(tile => !tile.occupied()));
   }
 
@@ -26,7 +26,7 @@ public class Grapple: CircleAoE {
       LinkedList<Tile> path = new LinkedList<Tile>();
       path.AddFirst(t);
       GameManager.get.moving = true;
-      GameManager.get.waitFor(GameManager.get.StartCoroutine(GameManager.get.IterateMove(path, self.gameObject, GameManager.get.getWaitingIndex())));
+      GameManager.get.waitFor(GameManager.get.StartCoroutine(GameManager.get.IterateMove(path, self.gameObject, GameManager.get.getWaitingIndex(), false)));
     }
   }
 }

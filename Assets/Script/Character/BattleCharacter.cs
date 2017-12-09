@@ -90,6 +90,12 @@ public class BattleCharacter : Effected {
   }
   List<String> prevSkillSet = new List<String>();
 
+
+  public Animator animator;
+  public GameObject lifebar;
+  GameObject damagebar;
+  public GameObject healingbar;
+
   void Start(){
     init();
   }
@@ -109,6 +115,10 @@ public class BattleCharacter : Effected {
     applyPassives();
 
     ui = transform.Find("UI");
+    animator = gameObject.transform.Find("Model").gameObject.GetComponent<Animator>();
+    lifebar = ui.Find("Health Bar/Health").gameObject;
+    damagebar = ui.Find("Health Bar/Damage").gameObject;
+    healingbar = ui.Find("Health Bar/Healing").gameObject;
   }
 
   void setSkills() {
@@ -168,18 +178,20 @@ public class BattleCharacter : Effected {
     }
   }
 
-  private Transform ui;
-
-  void Update() {
+  void OnValidate() {
+    init();
     if (Options.debugMode) {
       setSkills();
     }
+  }
+
+  private Transform ui;
+  void Update() {
     // rotate overhead UI (health bar) to look at camera
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
     // scale health on health bar to match current HP values
-    GameObject lifebar = ui.Find("Health Bar/Health").gameObject;
-    updateLifeBar(lifebar);
+    updateLifeBars();
   }
 
 
@@ -219,13 +231,14 @@ public class BattleCharacter : Effected {
       }
     }
 
-    Animator animator = gameObject.GetComponentInChildren<Animator>() as Animator;
-    if (animator) {
-      animator.SetTrigger("Attack");
-      GameManager.get.waitFor(animator.GetCurrentAnimatorStateInfo(0).length);
-    }
     face(target.transform.position);
 
+    if (animator) GameManager.get.waitFor(animator, "Attack", () => finishSkill(skill, target, targets));
+    else finishSkill(skill, target, targets);
+    return true;
+  }
+
+  void finishSkill(ActiveSkill skill, Tile target, List<Effected> targets) {
     int expGained = getExpGained(skill, null);
     List<BattleCharacter> cTargets = new List<BattleCharacter>();
     List<Tile> tTargets = new List<Tile>();
@@ -292,7 +305,6 @@ public class BattleCharacter : Effected {
     onEvent(postSkill);
 
     baseChar.gainExp(expGained);
-    return true;
   }
 
   void floatingText(int val, Color colour) {
@@ -379,9 +391,19 @@ public class BattleCharacter : Effected {
     return curHealth > 0;
   }
 
+  public void updateLifeBars() {
+    updateLifeBar(lifebar);
+    updateLifeBar(damagebar);
+    updateLifeBar(healingbar);
+  }
+
   public void updateLifeBar(GameObject lifebar) {
+    updateLifeBar(lifebar, curHealth);
+  }
+
+  public void updateLifeBar(GameObject lifebar, int health) {
     Vector3 scale = lifebar.transform.localScale;
-    scale.x = (float)curHealth/maxHealth;
+    scale.x = Math.Max(Math.Min((float)health/maxHealth,1),0);
     lifebar.transform.localScale = scale;
   }
 

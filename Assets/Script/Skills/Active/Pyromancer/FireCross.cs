@@ -21,10 +21,6 @@ public class FireCross: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override List<Tile> getTargets() {
-    return getTargetsInRange();
-  }
-
   public List<Tile> getTargetsInAoe(Vector3 position) {
     Map map = GameManager.get.map;
     List<Tile> tiles = map.getCardinalTilesWithinRange(map.getTile(position), aoe);
