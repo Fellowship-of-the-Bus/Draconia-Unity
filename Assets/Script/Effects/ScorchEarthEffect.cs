@@ -32,6 +32,7 @@ public class ScorchEarthEffect : DurationEffect {
     } else if (e.hook == EventHook.enterTile && e.position == ownerTile.transform.position  && !(e.sender.levitating)) {
       effected.Add(e.sender);
       GameManager.get.waitFor(0.5f, () => e.sender.takeDamage((int)(damage(e.sender)))); //TODO
+      e.interruptMove = true;
     }
   }
 
