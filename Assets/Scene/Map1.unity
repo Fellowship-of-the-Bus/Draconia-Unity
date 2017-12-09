@@ -34382,6 +34382,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 522785512}
     m_Modifications:
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -34432,6 +34437,16 @@ Prefab:
     - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].level
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -52896,6 +52911,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 522785512}
     m_Modifications:
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -52945,6 +52965,21 @@ Prefab:
     - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
         type: 2}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: curHealth
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: skillSet.Array.data[0].level
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

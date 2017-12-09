@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ScorchEarthEffect : DurationEffect {
+public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
   public BattleCharacter caster;
   List<BattleCharacter> effected = new List<BattleCharacter>();
   protected override void onActivate() {
@@ -38,5 +38,11 @@ public class ScorchEarthEffect : DurationEffect {
 
   public override bool shouldDecrement(Event e) {
     return e.sender == caster;
+  }
+
+  public int healthChange() {
+    Debug.Assert(ownerTile.occupant != null);
+    if (effected.Contains(ownerTile.occupant)) return 0;
+    return -(int)damage(ownerTile.occupant);
   }
 }

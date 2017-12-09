@@ -403,7 +403,7 @@ public class BattleCharacter : Effected {
 
   public void updateLifeBar(GameObject lifebar, int health) {
     Vector3 scale = lifebar.transform.localScale;
-    scale.x = (float)health/maxHealth;
+    scale.x = Math.Max(Math.Min((float)health/maxHealth,1),0);
     lifebar.transform.localScale = scale;
   }
 
