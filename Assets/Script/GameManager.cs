@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour {
       animator.SetTrigger(trigger);
       yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
                                             //otherwise next line always wait for 0.
+      Debug.Log(animator.GetNextAnimatorStateInfo(0).length);
       yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
       } else {
         yield return new WaitForEndOfFrame();
