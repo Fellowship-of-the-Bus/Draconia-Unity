@@ -16,6 +16,9 @@ public class Blizzard: CircleAoE {
     targetEnemy(true);
   }
 
+  public override string tooltip { get { return tooltipHeader
+    + "Deal " + tooltipDamage + " damage to all characters in the affected area"; }}
+
   public override int damageFormula() {
     return (int)(self.intelligence*(1+level*0.1));
   }

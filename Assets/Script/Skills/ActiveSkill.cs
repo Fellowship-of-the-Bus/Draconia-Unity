@@ -38,10 +38,27 @@ public abstract class ActiveSkill : EventListener, Skill {
   //number of turns before usable
   public int curCooldown = 0;
   public bool targetsTiles = false;
-  public virtual string tooltip { get { return "Skill Missing Tooltip!"; }}
 
   public DamageType dType = DamageType.physical;
   public DamageElement dEle = DamageElement.none;
+
+  // Tooltip variables
+  public virtual string tooltip { get { return "Skill Missing Tooltip!"; }}
+  protected string tooltipRange { get { return "Range: " + range.ToString() + "\n"; }}
+  protected string tooltipDamageColor { get {
+    if (dEle ==  DamageElement.ice) {
+      return "cyan";
+    }
+    if (dEle ==  DamageElement.fire) {
+      return "#ff7000ff";
+    }
+    return "red";
+  }}
+  protected string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + damageFormula().ToString() + "</color>"; }}
+  protected string tooltipHealing { get {
+    HealingSkill heal = this as HealingSkill;
+    return "<color=lime>" + heal.healingFormula().ToString() + "</color>";
+  }}
 
   public bool canTargetSelf = false;
 

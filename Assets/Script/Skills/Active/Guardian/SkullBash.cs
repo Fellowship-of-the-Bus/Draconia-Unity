@@ -13,6 +13,10 @@ public class SkullBash: SingleTarget {
     targetEnemy(true);
   }
 
+  public override string tooltip { get { return "Range: Melee\n"
+    + "Unleash a dizzying blow dealing " + tooltipDamage + " damage to the target, "
+    + "decreasing their speed for 3 turns and delaying their next turn"; }}
+
   public override int damageFormula() {
     return (int)(self.strength*(0.5+level*0.05));
   }

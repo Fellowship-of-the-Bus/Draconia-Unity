@@ -14,6 +14,9 @@ public class HealingCircle: CircleAoE, HealingSkill {
     targetEnemy(false);
   }
 
+  public override string tooltip { get { return tooltipHeader
+    + "Heal allies in the affected area by " + tooltipHealing; }}
+
   public int healingFormula() {
     return (int)(self.intelligence*(1+level*0.1));
   }

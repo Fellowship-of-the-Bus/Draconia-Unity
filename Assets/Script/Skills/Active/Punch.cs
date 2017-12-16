@@ -12,6 +12,8 @@ public class Punch: SingleTarget {
     targetEnemy(true);
   }
 
+  public override string tooltip { get { return "Range: Melee\n"
+    + "Deal " + tooltipDamage + " damage to the target"; }}
 
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));

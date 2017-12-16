@@ -13,7 +13,7 @@ public class Knockback: SingleTarget {
     targetEnemy(true);
   }
 
-  public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}
+  public override string tooltip { get { return "Deal " + tooltipDamage + " damage and knock the target back by 2 tiles"; }}
   float upThreshold = 0.5f;
 
   bool validDestination(BattleCharacter c, Tile t) {

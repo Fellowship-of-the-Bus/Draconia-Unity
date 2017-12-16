@@ -13,6 +13,9 @@ public class HealingTouch: SingleTarget, HealingSkill {
     targetEnemy(false);
   }
 
+  public override string tooltip { get { return tooltipRange
+    + "Heal the target by" + tooltipHealing; }}
+
   public int healingFormula() {
     return (int)(self.intelligence*(1+level*0.5));
   }
