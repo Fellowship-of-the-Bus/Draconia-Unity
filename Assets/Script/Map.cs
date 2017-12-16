@@ -148,7 +148,7 @@ public class Map {
 
   public void clearColour() {
     foreach (Tile tile in tiles) {
-      tile.setColor(new Color(0.8f, 0.8f, 0.8f, 0.2f));
+      tile.setColor(new Color(0.8f, 0.8f, 0.8f, 0.25f * Options.gridTransparency));
     }
   }
 
@@ -210,14 +210,14 @@ public class Map {
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
-          t.setColor(Color.gray);
+          t.setColor(Color.white);
         }
         foreach (Tile t in GameManager.get.skillTargets) {
           t.setColor(Color.red);
         }
       } else {
         foreach (Tile t in skill.getTargets()) {
-          t.setColor(Color.gray);
+          t.setColor(Color.white);
         }
         AoeSkill areaSkill = skill as AoeSkill;
         var targetsInAoe = areaSkill.getTargetsInAoe(src.transform.position);

@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;
+  public PlayerControl pControl;
 
   //variables to handles turns
 
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour {
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
   public List<Tile> skillTargets;
-  BattleCharacter previewTarget;
+  public BattleCharacter previewTarget;
 
   public GameState gameState = GameState.moving;
   public bool playerTurn = true;
@@ -65,8 +66,12 @@ public class GameManager : MonoBehaviour {
   public List<Objective> losingConditions = new List<Objective>();
 
   //health/mana bars
-  public GameObject selectedHealth;
-  public GameObject targetHealth;
+  public GameObject selectedHealthBar;
+  public GameObject selectedDamageBar;
+  public GameObject selectedHealingBar;
+  public GameObject targetHealthBar;
+  public GameObject targetDamageBar;
+  public GameObject targetHealingBar;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -93,15 +98,19 @@ public class GameManager : MonoBehaviour {
 
   private List<BFEvent> BFevents = new List<BFEvent>();
 
-  private class DeathListener : EventListener {
+  private class CharacterListener : EventListener {
     public override void onEvent(Event e) {
-      GameManager g = GameManager.get;
-      g.characters[e.sender.team].Remove(e.sender.gameObject);
-      if (e.sender == g.SelectedPiece.GetComponent<BattleCharacter>()) g.endTurnWrapper();
+      if (e.hook == EventHook.postDeath) {
+        GameManager g = GameManager.get;
+        g.characters[e.sender.team].Remove(e.sender.gameObject);
+        if (e.sender == g.SelectedPiece.GetComponent<BattleCharacter>()) {
+          g.endTurnWrapper();
+        }
+      }
     }
   }
 
-  private DeathListener deathListener = new DeathListener();
+  private CharacterListener characterListener = new CharacterListener();
 
   public class PostGameData {
     public bool win;
@@ -109,6 +118,8 @@ public class GameManager : MonoBehaviour {
     public List<Equipment> loot;
   }
   public static PostGameData postData = new PostGameData();
+
+  public Button cancelButton;
 
   IEnumerator waitForSeconds(float s) {
     yield return new WaitForSeconds(s);
@@ -131,10 +142,15 @@ public class GameManager : MonoBehaviour {
   }
 
   IEnumerator waitForAnimation(Animator animator, String trigger) {
-    animator.SetTrigger(trigger);
-    yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
-                                          //otherwise next line always wait for 0.
-    yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
+    if (Options.displayAnimation) {
+      animator.SetTrigger(trigger);
+      yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
+                                            //otherwise next line always wait for 0.
+      Debug.Log(animator.GetNextAnimatorStateInfo(0).length);
+      yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
+      } else {
+        yield return new WaitForEndOfFrame();
+      }
   }
 
   public void waitFor(Animator a, String trigger, Action act = null) {
@@ -203,6 +219,8 @@ public class GameManager : MonoBehaviour {
     foreach (BFEvent e in BFevents) {
       e.init();
     }
+
+    pControl = GameSceneController.get.pControl;
   }
 
   public void init() {
@@ -228,7 +246,7 @@ public class GameManager : MonoBehaviour {
         var bchar = o.GetComponent<BattleCharacter>();
         bchar.init();
         bchar.ai.init();
-        deathListener.attachListener(bchar, EventHook.postDeath);
+        characterListener.attachListener(bchar, EventHook.postDeath);
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
@@ -237,53 +255,83 @@ public class GameManager : MonoBehaviour {
     GameManager.postData.inBattle = charInBattle;
   }
 
-  int blinkFrameNumber = 0;
-  bool displayChangedHealth = false;
   void Update() {
     if (!UILocked()) {
       if (Input.GetKeyDown(KeyCode.Return)) {
         endTurnWrapper();
       }
     }
+    cancelButton.interactable = cancelStack.Count != 0;
 
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
+    ActiveSkill s;
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+    int netChange = 0;
+    List<Effect> effects = new List<Effect>(selectedCharacter.getEffects());
+    effects.AddRange(new List<Effect>(selectedCharacter.curTile.getEffects()));
 
-    if (SelectedPiece) {
-      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-      selectedCharacter.updateLifeBar(selectedHealth);
-      if (Options.debugMode && selectedCharacter.team == 0) {
-        for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
-          ActiveSkill s = selectedCharacter.equippedSkills[i];
-          Debug.AssertFormat(s.name != "", "Skill Name is empty");
-          skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-          skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
-          skillButtons[i].interactable = s.canUse();
+    foreach(Effect e in effects) {
+      if (e is HealthChangingEffect) {
+        netChange += (e as HealthChangingEffect).healthChange();
+      }
+    }
+    selectedCharacter.updateLifeBar(selectedHealthBar);
+    selectedCharacter.updateLifeBar(selectedDamageBar);
+    selectedCharacter.updateLifeBar(selectedHealingBar);
+    if (netChange < 0) {
+      selectedCharacter.updateLifeBar(selectedHealthBar,selectedCharacter.curHealth + netChange);
+    } else if (netChange > 0) {
+      selectedCharacter.updateLifeBar(selectedHealingBar,selectedCharacter.curHealth + netChange);
+    }
+    if (Options.debugMode && selectedCharacter.team == 0) {
+      for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+        s = selectedCharacter.equippedSkills[i];
+        Debug.AssertFormat(s.name != "", "Skill Name is empty");
+        skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+        skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+        skillButtons[i].interactable = s.canUse();
+      }
+    }
+    if (previewTarget == null) {
+      targetPanel.SetActive(false);
+    }
+    if (SelectedSkill == -1)  return;
+    s = selectedCharacter.equippedSkills[SelectedSkill];
+    Tile currTile = pControl.currentHoveredTile;
+    if (currTile != null && skillTargets.Contains(currTile)) {
+      List<Tile> tiles = new List<Tile>();
+      if (s is AoeSkill) {
+        tiles = (s as AoeSkill).getTargetsInAoe(currTile.position);
+      } else {
+        tiles.Add(currTile);
+      }
+
+      foreach(Tile t in tiles) {
+        BattleCharacter c = t.occupant;
+        if (c == null) continue;
+        if (s is HealingSkill) {
+          c.PreviewHealing = s.calculateHealing(c);
+          c.updateLifeBar(c.healingbar,c.curHealth + c.PreviewHealing);
+        } else {
+          c.PreviewDamage = s.calculateDamage(c);
+          c.updateLifeBar(c.lifebar,c.curHealth - c.PreviewDamage);
         }
       }
     }
-
-    if (previewTarget == null) {
-      targetPanel.SetActive(false);
-    } else {
+    if (previewTarget) {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
-      if (gameState == GameState.moving) displayChangedHealth = false;
-      if (displayChangedHealth) {
-        BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-        Vector3 scale = targetHealth.transform.localScale;
-        Skill s = selectedCharacter.equippedSkills[SelectedSkill];
-        if (s is HealingSkill) scale.x = (float)(previewTarget.curHealth + previewTarget.PreviewHealing)/previewTarget.maxHealth;
-        else scale.x = (float)(previewTarget.curHealth - previewTarget.PreviewDamage)/previewTarget.maxHealth;
-        targetHealth.transform.localScale = scale;
-      } else {
-        Vector3 scale = targetHealth.transform.localScale;
-        scale.x = (float)previewTarget.curHealth/previewTarget.maxHealth;
-        targetHealth.transform.localScale = scale;
-      }
-      blinkFrameNumber = (blinkFrameNumber+1)%30;
-      if (blinkFrameNumber == 0) {
-        displayChangedHealth = !displayChangedHealth;
+      previewTarget.updateLifeBar(targetHealingBar);
+      previewTarget.updateLifeBar(targetHealthBar);
+      previewTarget.updateLifeBar(targetDamageBar);
+      if (s.canTarget(previewTarget.curTile)) {
+          if (s is HealingSkill) {
+            previewTarget.updateLifeBar(targetHealingBar,previewTarget.curHealth + previewTarget.PreviewHealing);
+          }
+          else {
+            previewTarget.updateLifeBar(targetHealthBar,previewTarget.curHealth - previewTarget.PreviewDamage);
+          }
       }
     }
   }
@@ -394,6 +442,11 @@ public class GameManager : MonoBehaviour {
   // Preview of targetting a character
   public void selectTarget(GameObject target) {
     BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
+    if (previewTarget) {
+      previewTarget.PreviewDamage = 0;
+      previewTarget.PreviewHealing = 0;
+    }
+
     previewTarget = targetChar;
 
     if (targetChar == null) {
@@ -409,7 +462,6 @@ public class GameManager : MonoBehaviour {
       if (hskill != null) previewTarget.PreviewHealing = skill.calculateHealing(previewTarget);
       else previewTarget.PreviewDamage = skill.calculateDamage(previewTarget);
     }
-    //todo: aoe health bar hover?
   }
 
   public List<Tile> targets = new List<Tile>();
@@ -466,12 +518,10 @@ public class GameManager : MonoBehaviour {
   }
 
   public void movePiece(BattleCharacter c, Tile t, bool setWalking = true) {
-    map.djikstra(t.transform.position, c);
-    updateTile(c,t);
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
-    moving = true;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking)));
+    moving = Options.displayAnimation;
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation)));
   }
 
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking) {
@@ -479,7 +529,7 @@ public class GameManager : MonoBehaviour {
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
 
-    if (gameState == GameState.moving) {
+    if (gameState == GameState.moving && setWalking) {
       cam.follow(SelectedPiece);
       yield return new WaitForSeconds(0.5f);
     }
@@ -488,7 +538,7 @@ public class GameManager : MonoBehaviour {
     if (setWalking && animator) {
       animator.SetBool("isWalking", true);
     }
-
+    Tile endpoint = path.Last.Value;
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
@@ -497,42 +547,50 @@ public class GameManager : MonoBehaviour {
       // Set Rotation
       if (setWalking) {
         character.face(pos);
-      }
-
-      // Move Piece
-      Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
-      float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
-      float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;
-      float dDown = speed*2*(pos.y - hopHeight)/Options.FPS;
-      for (int i = 0; i < Options.FPS/speed; i++) {
-        if (d.y != 0) {
-          if (i < Options.FPS/(speed*2)) {
-            d.y = dUp;
-          } else {
-            d.y = dDown;
+        // Move Piece
+        Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
+        float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
+        float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;
+        float dDown = speed*2*(pos.y - hopHeight)/Options.FPS;
+        for (int i = 0; i < Options.FPS/speed; i++) {
+          if (d.y != 0) {
+            if (i < Options.FPS/(speed*2)) {
+              d.y = dUp;
+            } else {
+              d.y = dDown;
+            }
           }
+          piece.transform.Translate(d);
+          yield return new WaitForSeconds(1/Options.FPS);
         }
-        piece.transform.Translate(d);
-        yield return new WaitForSeconds(1/Options.FPS);
+        piece.transform.Translate(pos-piece.transform.position);
       }
-      piece.transform.Translate(pos-piece.transform.position);
       // tell listeners that this character moved
       Event enterEvent = new Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
+      if (enterEvent.interruptMove) {
+        cancelStack.Clear();
+        endpoint = destination;
+        break;
+      }
       if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
       yield return waitUntilCount(index+1);
       if (animator) animator.enabled = true;
     }
+    piece.transform.position = endpoint.position;
+    moveRange -= endpoint.distance;
+    updateTile(character,endpoint);
     map.clearPath();
+    map.djikstra(endpoint.position, character);
     map.setTileColours();
 
     if (setWalking && animator) {
       animator.SetBool("isWalking", false);
     }
 
-    if (gameState == GameState.moving) {
+    if (gameState == GameState.moving && setWalking) {
       yield return new WaitForSeconds(0.25f);
       cam.unfollow();
     }
@@ -557,12 +615,14 @@ public class GameManager : MonoBehaviour {
   /** remaining move amount */
   public int moveRange = 0;
   public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
+    smooth = smooth && Options.displayAnimation;
     // don't start moving twice
     if (moving) return null;
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
 
     Tile destination = map.getTile(coordToMove);
     BattleCharacter c = SelectedPiece.GetComponent<BattleCharacter>();
+    Coroutine co = null;
 
     if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
       // if player chose to move, update position stack with current values,
@@ -573,31 +633,25 @@ public class GameManager : MonoBehaviour {
         cancelStack.Push(new UndoAction(() => {
           Vector3 coord = cur.transform.position;
           moveRange = i;
-          movePiece(coord, false, false);
+          SelectedPiece.transform.position = cur.position;
+          updateTile(c,cur);
           changeState(GameState.moving);
           map.djikstra(coord, c);
           map.setTileColours();
         }));
-        moveRange -= destination.distance;
-        map.djikstra(coordToMove, c);
+
       }
       //after moving, remove from origin tile,
       //add to new tile
-      updateTile(c,destination);
 
       coordToMove.y = destination.transform.position.y + map.getHeight(destination);
-      if (smooth) {
-        localPath.RemoveFirst(); // discard current position
-        moving = true;
-        line.GetComponent<Renderer>().material.color = Color.clear;
-        Coroutine co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, true));
-        waitFor(co);
-        return co;
-      } else {
-        SelectedPiece.transform.position = coordToMove;
-      }
+      localPath.RemoveFirst(); // discard current position
+      line.GetComponent<Renderer>().material.color = Color.clear;
+      moving = smooth;
+      co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, smooth));
+      waitFor(co);
     }
-    return null;
+    return co;
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just
     // go at the end of the coroutine.

@@ -25,6 +25,8 @@ public class Event {
 
   public List<Effected> targets;
 
+  public bool interruptMove = false;
+
 
   public Event(Effected sender, EventHook hook) {
     this.sender = sender as BattleCharacter;

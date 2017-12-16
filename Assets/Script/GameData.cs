@@ -16,8 +16,8 @@ public class GameData {
   	String[] skills = {"Knockback", "ScorchEarth", "Punch"};
   	SkillTree skillTree;
 
-  	GameData.gameData.characters.Add(new Character("Sisdric"));
     GameData.gameData.characters.Add(new Character("Brodric"));
+    GameData.gameData.characters.Add(new Character("Sisdric"));
 
     inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
 

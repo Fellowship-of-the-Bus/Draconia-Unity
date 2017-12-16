@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-public class Knockback: SingleTarget {
+public class Knockback: TargetMover {
   public Knockback() {
     requireMelee();
     useWepRange = true;
@@ -11,9 +11,10 @@ public class Knockback: SingleTarget {
     maxCooldown = 2;
     targetAlly(false);
     targetEnemy(true);
+    setDirection(TargetMover.Direction.away);
   }
 
-  public override string tooltip { get { return "Deal " + tooltipDamage + " damage and knock the target back by 2 tiles"; }}
+  public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}
   float upThreshold = 0.5f;
 
   bool validDestination(BattleCharacter c, Tile t) {

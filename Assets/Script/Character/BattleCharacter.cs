@@ -92,6 +92,9 @@ public class BattleCharacter : Effected {
 
 
   public Animator animator;
+  public GameObject lifebar;
+  GameObject damagebar;
+  public GameObject healingbar;
 
   void Start(){
     init();
@@ -113,6 +116,9 @@ public class BattleCharacter : Effected {
 
     ui = transform.Find("UI");
     animator = gameObject.transform.Find("Model").gameObject.GetComponent<Animator>();
+    lifebar = ui.Find("Health Bar/Health").gameObject;
+    damagebar = ui.Find("Health Bar/Damage").gameObject;
+    healingbar = ui.Find("Health Bar/Healing").gameObject;
   }
 
   void setSkills() {
@@ -185,8 +191,7 @@ public class BattleCharacter : Effected {
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
     // scale health on health bar to match current HP values
-    GameObject lifebar = ui.Find("Health Bar/Health").gameObject;
-    updateLifeBar(lifebar);
+    updateLifeBars();
   }
 
 
@@ -386,9 +391,19 @@ public class BattleCharacter : Effected {
     return curHealth > 0;
   }
 
+  public void updateLifeBars() {
+    updateLifeBar(lifebar);
+    updateLifeBar(damagebar);
+    updateLifeBar(healingbar);
+  }
+
   public void updateLifeBar(GameObject lifebar) {
+    updateLifeBar(lifebar, curHealth);
+  }
+
+  public void updateLifeBar(GameObject lifebar, int health) {
     Vector3 scale = lifebar.transform.localScale;
-    scale.x = (float)curHealth/maxHealth;
+    scale.x = Math.Max(Math.Min((float)health/maxHealth,1),0);
     lifebar.transform.localScale = scale;
   }
 
@@ -403,7 +418,8 @@ public class BattleCharacter : Effected {
     dir = new Vector3(dir.x, 0, dir.z);
 
     // Set facing
-    Quaternion angle = Quaternion.FromToRotation(new Vector3(-1, 0, 0), dir);
+    // The from vector needs the 0.01f in the x in order to make the 180 degree rotation unambiguous
+    Quaternion angle = Quaternion.FromToRotation(new Vector3(0.01f, 0, 1), dir);
     gameObject.transform.Find("Model").rotation = angle;
   }
 

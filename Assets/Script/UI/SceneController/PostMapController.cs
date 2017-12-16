@@ -12,6 +12,13 @@ public class PostMapController: MonoBehaviour {
   public Transform charParent;
   public GameObject charPreview;
 
+  public Transform equipParent;
+  public GameObject equipPreview;
+  public Text equipName;
+  public Text equippedTo;
+  public AttrView attrView;
+  public GameObject tipbox;
+
   void Start() {
     winCanvas.SetActive(false);
     loseCanvas.SetActive(false);
@@ -19,6 +26,9 @@ public class PostMapController: MonoBehaviour {
     if (data.win) {
       winCanvas.SetActive(true);
       displayLoot();
+      foreach (Equipment e in data.loot) {
+        GameData.gameData.inv.addEquipment(e);
+      }
     } else {
       loseCanvas.SetActive(true);
     }
@@ -31,6 +41,15 @@ public class PostMapController: MonoBehaviour {
       string display = c.name;
       if (c.skills.numSkillPoints != 0) display += "**";
       o.GetComponentsInChildren<Text>()[0].text = display;
+    }
+    foreach (Equipment e in data.loot) {
+      GameObject eq = Instantiate(equipPreview, equipParent);
+      ItemTooltipSimple tooltip = eq.GetComponent<ItemTooltipSimple>();
+      tooltip.equipName = equipName;
+      tooltip.equippedTo = equippedTo;
+      tooltip.attrView = attrView;
+      tooltip.tipbox = tipbox;
+      tooltip.setItem(e);
     }
   }
   public void loadGame() {
