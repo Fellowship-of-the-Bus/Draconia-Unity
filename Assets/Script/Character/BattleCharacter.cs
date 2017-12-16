@@ -418,7 +418,8 @@ public class BattleCharacter : Effected {
     dir = new Vector3(dir.x, 0, dir.z);
 
     // Set facing
-    Quaternion angle = Quaternion.FromToRotation(new Vector3(-1, 0, 0), dir);
+    // The from vector needs the 0.01f in the x in order to make the 180 degree rotation unambiguous
+    Quaternion angle = Quaternion.FromToRotation(new Vector3(0.01f, 0, 1), dir);
     gameObject.transform.Find("Model").rotation = angle;
   }
 
