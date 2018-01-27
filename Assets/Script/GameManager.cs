@@ -421,8 +421,11 @@ public class GameManager : MonoBehaviour {
   public void selectSkill(int i) {
     //unselect
     if (gameState == GameState.attacking) {
+      int currentSkill = SelectedSkill;
       while(!cancelStack.Pop().undo());
-      return;
+      if (currentSkill == i) {
+        return;
+      }
     }
 
     SelectedSkill = i;
