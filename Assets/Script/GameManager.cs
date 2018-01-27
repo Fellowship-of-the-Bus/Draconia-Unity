@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour {
   private CharacterListener characterListener = new CharacterListener();
 
   public class PostGameData {
+    public string mapName;
     public bool win;
     public List<Character> inBattle;
     public List<Equipment> loot;
@@ -679,6 +680,7 @@ public class GameManager : MonoBehaviour {
   public void displayPostScreen(bool win) {
     GameManager.postData.win = win;
     GameManager.postData.loot = LootGenerator.get.getLoot(SceneManager.GetActiveScene().name);
+    GameManager.postData.mapName = SceneManager.GetActiveScene().name;
     SceneManager.LoadSceneAsync("PostMap");
   }
 
