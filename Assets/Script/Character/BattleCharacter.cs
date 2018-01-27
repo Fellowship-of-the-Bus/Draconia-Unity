@@ -99,10 +99,10 @@ public class BattleCharacter : Effected {
   void Start(){
     init();
   }
-  bool called = false;
+  bool initCalled = false;
   public void init() {
-    if (called) return;
-    called = true;
+    if (initCalled) return;
+    initCalled = true;
     equippedSkills = skills.getActives(this);
     if (Options.debugMode && equippedSkills.IsEmpty()) {
       setSkills();
@@ -180,7 +180,7 @@ public class BattleCharacter : Effected {
 
   void OnValidate() {
     init();
-    if (Options.debugMode) {
+    if (Options.debugMode && equippedSkills.Count != 0) {
       setSkills();
     }
   }
