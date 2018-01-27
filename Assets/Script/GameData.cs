@@ -11,6 +11,7 @@ public class GameData {
 
   public List<Character> characters = new List<Character>();
   public Inventory inv = new Inventory();
+  public Dictionary<string,string> mapProgression = new Dictionary<string,string>();
 
   public void newGame() {
   	String[] skills = {"Knockback", "ScorchEarth", "Punch"};

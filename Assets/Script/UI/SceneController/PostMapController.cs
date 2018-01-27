@@ -29,6 +29,7 @@ public class PostMapController: MonoBehaviour {
       foreach (Equipment e in data.loot) {
         GameData.gameData.inv.addEquipment(e);
       }
+      GameData.gameData.mapProgression.Add(data.mapName, "");
     } else {
       loseCanvas.SetActive(true);
     }

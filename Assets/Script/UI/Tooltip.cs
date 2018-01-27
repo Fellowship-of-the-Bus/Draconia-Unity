@@ -7,6 +7,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
   protected float hoverTime = 0f;
   protected bool mouseOver = false;
   protected bool tooltipShown = false;
+  [TextArea]
   public string tiptext = "Missing tooltip!";
   public GameObject tipbox;
   protected float hoverThreshold = 0.25f;

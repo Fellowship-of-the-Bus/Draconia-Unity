@@ -7,16 +7,37 @@ using System.Collections.Generic;
 public class OverWorld: MonoBehaviour {
   public FileBrowser saveBrowser;
   public GameObject levelParent;
+  //When adding maps, key is the new map name, the value is the set of prereq maps that needs to be
+  //completed already
+  private Dictionary<string, HashSet<string>> mapPrereq = new Dictionary<string, HashSet<string>>() {
+    {"Map1", new HashSet<string>()},
+    {"Map2", new HashSet<string>(){"Map1"}}
+  };
 
   public void Start() {
     // Hide buttons for locked levels
-    int levelsUnlocked = 0; // Set this in the save
-    int i = 0;
     foreach(Transform child in levelParent.transform) {
-      if (i > levelsUnlocked) {
-        child.gameObject.SetActive(false);
+      string mapName = child.gameObject.name;
+      // Already complete Maps
+      if (GameData.gameData.mapProgression.ContainsKey(mapName)) {
+        if (child.gameObject.GetComponent<Tooltip>().tiptext.Contains("Campaign")) {
+          child.gameObject.GetComponent<Image>().color = Color.green;
+        }
+      } else {
+        // Check for maps that meet all prereqs
+        bool prereqMet = true;
+        foreach( string s in mapPrereq[mapName] ) {
+          if (! GameData.gameData.mapProgression.ContainsKey(s)) {
+            prereqMet = false;
+            break;
+          }
+        }
+        if (prereqMet) {
+          child.gameObject.GetComponent<Image>().color = Color.yellow;
+        } else {
+          child.gameObject.SetActive(false);
+        }
       }
-      i++;
     }
   }
 
