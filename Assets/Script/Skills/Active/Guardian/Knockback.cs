@@ -47,9 +47,9 @@ public class Knockback: TargetMover {
 
   public override void additionalEffects(BattleCharacter c) {
     GameManager game = GameManager.get;
-    
+
     Tile t = knockTo(c);
-    if (validDestination(c, t)) {
+    if (validDestination(c, t) && c.isAlive()) {
       game.updateTile(c,t);
       LinkedList<Tile> tile = new LinkedList<Tile>();
       tile.AddFirst(t);
