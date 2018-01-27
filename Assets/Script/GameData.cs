@@ -24,7 +24,7 @@ public class GameData {
 
     foreach (Character c in  GameData.gameData.characters) {
    		c.attr.strength = 10;
-	    c.attr.intelligence = 100;
+	    c.attr.intelligence = 125;
 	    c.attr.speed = 10;
 	    skillTree = c.skills;
 	    foreach (String skill in skills) {

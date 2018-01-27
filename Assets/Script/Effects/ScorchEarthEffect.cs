@@ -41,7 +41,7 @@ public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
   }
 
   public int healthChange() {
-    Debug.Assert(ownerTile.occupant != null);
+    if (ownerTile.occupant == null) return 0;
     if (effected.Contains(ownerTile.occupant)) return 0;
     return -(int)damage(ownerTile.occupant);
   }
