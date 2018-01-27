@@ -180,7 +180,7 @@ public class BattleCharacter : Effected {
 
   void OnValidate() {
     init();
-    if (Options.debugMode) {
+    if (Options.debugMode && equippedSkills.Count != 0) {
       setSkills();
     }
   }
