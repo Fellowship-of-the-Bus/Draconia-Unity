@@ -54,7 +54,7 @@ public class Map {
         Vector3 neighbour = minTile.transform.position + dir;
         Tile neighbourTile = getTile(neighbour, tilesToGo);
         if (neighbourTile != null) {
-          int d = minTile.distance + distance(neighbourTile, minTile, charToMove.moveTolerance);
+          int d = minTile.distance + distance(minTile, neighbourTile, charToMove.moveTolerance);
           if (d < neighbourTile.distance) {
             neighbourTile.distance = d;
             neighbourTile.dir = dir;
