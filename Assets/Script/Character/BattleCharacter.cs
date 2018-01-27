@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Collections;
 
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
@@ -353,6 +354,8 @@ public class BattleCharacter : Effected {
       } else {
         onDeath();
       }
+    } else {
+      if (animator) GameManager.get.waitFor(animator,"TakeDamage");
     }
   }
 
@@ -361,11 +364,24 @@ public class BattleCharacter : Effected {
     curHealth = Math.Min(maxHealth, curHealth + amount);
   }
 
+  IEnumerator fadeOut() {
+    SkinnedMeshRenderer r = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+    for(int i = 0; i < 10; i++) {
+      foreach(Material m in r.materials) {
+        Color c = m.color;
+        c.a -= 0.1f;
+        m.color = c;
+      }
+      yield return new WaitForSeconds(0.1f);
+    }
+    gameObject.SetActive(false);
+  }
+
   public void onDeath() {
     ActionQueue.get.remove(gameObject);
 
     onEvent(new Event(this, EventHook.postDeath));
-    gameObject.SetActive(false);
+    if (animator) GameManager.get.waitFor(animator,"Death",() => StartCoroutine(fadeOut()));
     curTile.occupant = null;
 
     // remove all effects on death
