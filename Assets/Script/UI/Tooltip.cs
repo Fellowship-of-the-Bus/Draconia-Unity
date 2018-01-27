@@ -28,6 +28,8 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
       tipbox = GameManager.get.tooltip;
     }
     rectTrans = tipbox.GetComponent<RectTransform>();
+    setTipbox();
+    //tipbox.SetActive(false);
   }
 
   void Update() {
@@ -69,10 +71,8 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
   }
 
   public Vector3 tipPosition(Vector3 mousePosition) {
-    Rect tipDimensions = tipbox.GetComponent<RectTransform>().rect;
     Vector3 mouseRelative = mousePosition;
-
-    return new Vector3(mouseRelative.x - tipDimensions.width / 2, mouseRelative.y + tipDimensions.height / 2, 0);
+    return new Vector3(mouseRelative.x - width / 2, mouseRelative.y + height / 2, 0);
   }
 
   protected virtual void setTipbox() {
