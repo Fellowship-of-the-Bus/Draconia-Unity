@@ -7,6 +7,8 @@ using System.Collections.Generic;
 public class OverWorld: MonoBehaviour {
   public FileBrowser saveBrowser;
   public GameObject levelParent;
+  public GameObject UI;
+
   //When adding maps, key is the new map name, the value is the set of prereq maps that needs to be
   //completed already
   private Dictionary<string, HashSet<string>> mapPrereq = new Dictionary<string, HashSet<string>>() {
@@ -15,6 +17,8 @@ public class OverWorld: MonoBehaviour {
   };
 
   public void Start() {
+    UI.GetComponent<CanvasGroup>().interactable = true;
+
     // Hide buttons for locked levels
     foreach(Transform child in levelParent.transform) {
       string mapName = child.gameObject.name;
@@ -45,13 +49,13 @@ public class OverWorld: MonoBehaviour {
     //auto save before battle
     SaveLoad.saveAuto();
 
-    SceneManager.LoadSceneAsync (scenario);
+    open(scenario);
   }
   public void manage() {
-    SceneManager.LoadSceneAsync ("CharacterManagement");
+    open("CharacterManagement");
   }
   public void back() {
-    SceneManager.LoadSceneAsync ("MainMenu");
+    open("MainMenu");
   }
 
   public void save() {
@@ -59,15 +63,19 @@ public class OverWorld: MonoBehaviour {
   }
 
   public void inventory() {
-    SceneManager.LoadSceneAsync ("Inventory");
+    open("Inventory");
   }
 
   public void option() {
-    SceneManager.LoadSceneAsync("Option");
+    open("Option");
   }
 
   public void skills() {
-    SceneManager.LoadSceneAsync ("SkillSelect");
+    open("SkillSelect");
   }
 
+  private void open(string scene) {
+    UI.GetComponent<CanvasGroup>().interactable = false;
+    SceneManager.LoadSceneAsync(scene);
+  }
 }
