@@ -42,10 +42,17 @@ static class MapGenerator {
         if (o.name == "map") parent = o;
       }
       board = (GameObject)GameObject.Instantiate(Resources.Load("Map/Board"), parent.transform);
-      foreach (string s in File.ReadAllLines(fileName)) {
+      //foreach (string s in File.ReadAllLines(fileName)) {
+        //generateRow(s, lineNum);
+      //  lineNum++;
+      //}
+      var lines = File.ReadAllLines(fileName);
+      lineNum = lines.Length;
+      foreach (string s in lines) {
+        lineNum--;
         generateRow(s, lineNum);
-        lineNum++;
       }
+
     }
   }
 
@@ -70,7 +77,7 @@ static class MapGenerator {
       //set startTile
       o.GetComponent<Tile>().startTile = startTile;
       //set height
-      o.transform.localScale = new Vector3(1,height,1);
+      o.transform.localScale = new Vector3(1,2*height-1,1);
 
       index++;
     }
