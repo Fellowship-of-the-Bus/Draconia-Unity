@@ -47,7 +47,6 @@ public class TargetMover : SingleTarget {
 
   public override void additionalEffects(BattleCharacter c) {
     GameManager game = GameManager.get;
-
     Tile t = moveTo(c);
     if (validTile(c, t) && c.isAlive()) {
       game.movePiece(c,t,false);
