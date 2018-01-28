@@ -365,12 +365,18 @@ public class BattleCharacter : Effected {
   }
 
   IEnumerator fadeOut() {
+
+    int c = GameManager.get.getWaitingIndex();
+    GameManager.get.waitFor(animator,"Death");
+    yield return StartCoroutine(GameManager.get.waitUntilCount(c));
     SkinnedMeshRenderer r = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+    List<Pair<Material,Color>> matcolors = new List<Pair<Material,Color>>();
+    foreach(Material m in r.materials) {
+      matcolors.Add(new Pair<Material,Color>(m,m.color));
+    }
     for(int i = 0; i < 10; i++) {
-      foreach(Material m in r.materials) {
-        Color c = m.color;
-        c.a -= 0.1f;
-        m.color = c;
+      foreach(Pair<Material,Color> mc in matcolors) {
+        mc.first.color = Color.Lerp(mc.second,Color.black,i*0.1f);
       }
       yield return new WaitForSeconds(0.1f);
     }
@@ -381,7 +387,8 @@ public class BattleCharacter : Effected {
     ActionQueue.get.remove(gameObject);
 
     onEvent(new Event(this, EventHook.postDeath));
-    if (animator) GameManager.get.waitFor(animator,"Death",() => StartCoroutine(fadeOut()));
+
+    if (animator) GameManager.get.waitFor(StartCoroutine(fadeOut()));
     curTile.occupant = null;
 
     // remove all effects on death

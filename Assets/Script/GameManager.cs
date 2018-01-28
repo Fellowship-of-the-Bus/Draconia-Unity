@@ -132,10 +132,12 @@ public class GameManager : MonoBehaviour {
     if (act != null) act();
   }
 
-  IEnumerator waitUntilCount(int count) {
+  public IEnumerator waitUntilCount(int count) {
     while (waitingOn.Count > count) {
+      Debug.Log(waitingOn.Count + "," + count);
       yield return null;
     }
+    Debug.Log("Done waiting:" + waitingOn.Count + "," + count);
   }
 
   public void waitFor(float s, Action act = null) {
@@ -503,8 +505,6 @@ public class GameManager : MonoBehaviour {
       }
 
       changeState(GameState.ending);
-      yield return StartCoroutine(waitUntilCount(0));
-      waitingOn.Clear();
       targets.Clear();
 
       //send endTurn event to the current piece
@@ -514,6 +514,11 @@ public class GameManager : MonoBehaviour {
       e.nextCharTime = actionQueue.peekNext();
       eventManager.onEvent(e);
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
+
+      Debug.Log("Before: " + waitingOn.Count);
+      yield return StartCoroutine(waitUntilCount(0));
+      Debug.Log("After: " + waitingOn.Count);
+      waitingOn.Clear();
 
       actionQueue.endTurn();
       map.clearColour();
