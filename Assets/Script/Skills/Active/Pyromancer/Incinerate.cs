@@ -15,6 +15,11 @@ public class Incinerate: SingleTarget {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Envelop the target in fire dealing " + tooltipDamage + " damage."
+    + " Does not require line of sight.";
+  }}
+
   public override int damageFormula() {
     return (int)(self.intelligence*(1.5f+level*0.1));
   }

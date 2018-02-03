@@ -21,6 +21,11 @@ public class FireCross: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage to all characters in a cross"
+    + " extending 2 tiles in each direction from the target tile";
+  }}
+
   public List<Tile> getTargetsInAoe(Vector3 position) {
     Map map = GameManager.get.map;
     List<Tile> tiles = map.getCardinalTilesWithinRange(map.getTile(position), aoe);

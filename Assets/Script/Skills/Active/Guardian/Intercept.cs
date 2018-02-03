@@ -16,6 +16,10 @@ public class Intercept: SelfTarget {
     targetEnemy(false);
   }
 
+  protected override string tooltipDescription { get {
+    return "Intercept attacks aimed at adjacent allies, taking the hit in their place.";
+  }}
+
   public override void additionalEffects (BattleCharacter target) {
     Func<InterceptEffect> f = () => {
       InterceptEffect eff = new InterceptEffect();

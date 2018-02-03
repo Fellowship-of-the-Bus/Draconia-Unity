@@ -43,8 +43,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   public DamageElement dEle = DamageElement.none;
 
   // Tooltip variables
-  public virtual string tooltip { get { return "Skill Missing Tooltip!"; }}
-  protected string tooltipRange { get { return "Range: " + range.ToString() + "\n"; }}
+  protected string tooltipRange { get {
+    string displayRange = range == 0 ? "Self" : range.ToString();
+    return "Range: " + displayRange + "\n";
+  }}
   protected string tooltipDamageColor { get {
     if (dEle ==  DamageElement.ice) {
       return "cyan";
@@ -59,6 +61,11 @@ public abstract class ActiveSkill : EventListener, Skill {
     HealingSkill heal = this as HealingSkill;
     return "<color=lime>" + heal.healingFormula().ToString() + "</color>";
   }}
+  public virtual string tooltipHeader { get { return "<b>" + name + "</b>\n" + tooltipRange; }}
+  protected virtual string tooltipDescription { get { return "Skill Missing Tooltip!"; }}
+  public virtual string tooltip { get { return tooltipHeader + tooltipDescription; }}
+
+
 
   public bool canTargetSelf = false;
 

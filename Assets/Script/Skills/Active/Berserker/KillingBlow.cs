@@ -12,8 +12,8 @@ public class KillingBlow: SingleTarget {
     targetEnemy(true);
   }
 
-  public override string tooltip { get { return "Range: Melee\n"
-    + "Attempt a finishing blow, dealing " + tooltipDamage
+  protected override string tooltipDescription { get { return
+    "Attempt a finishing blow, dealing " + tooltipDamage
     + " to <color=" + tooltipDamageColor + ">" + (damageFormula() * 2)
     + "</color> damage based on the target's missing health"; }}
 

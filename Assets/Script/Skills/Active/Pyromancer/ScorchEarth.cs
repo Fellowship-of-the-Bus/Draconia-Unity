@@ -22,6 +22,11 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Set the ground ablaze dealing " + tooltipDamage + " damage"
+    + " and leaving fire on the ground that deals";
+  }}
+
   public List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);
   }
