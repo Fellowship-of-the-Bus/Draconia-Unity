@@ -14,7 +14,10 @@ public class Knockback: TargetMover {
     setDirection(TargetMover.Direction.away);
   }
 
-  public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage and knock the target back 2 spaces";
+  }}
+  
   float upThreshold = 0.5f;
 
   bool validDestination(BattleCharacter c, Tile t) {

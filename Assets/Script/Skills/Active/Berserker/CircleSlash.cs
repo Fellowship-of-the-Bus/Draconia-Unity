@@ -19,8 +19,9 @@ public class CircleSlash: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override string tooltip { get { return "Range: Melee\n"
-    + "Deal " + tooltipDamage + " damage to all characters in range"; }}
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage to all characters in range";
+  }}
 
   public List<Tile> getTargetsInAoe(Vector3 position) {
     Map map = GameManager.get.map;

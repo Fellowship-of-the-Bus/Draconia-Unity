@@ -13,6 +13,10 @@ public class Purge: SingleTarget {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Purge the target of all temporary buffs and debuffs";
+  }}
+
   public override void additionalEffects (BattleCharacter target) {
     foreach (LinkedListNode<Effect> n in new NodeIterator<Effect>(target.allEffects)) {
       if (n.Value is DurationEffect) target.removeEffect(n.Value);

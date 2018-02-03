@@ -40,6 +40,10 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     }
   }
 
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage to all targets in a straight line";
+  }}
+
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }

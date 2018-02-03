@@ -5,7 +5,6 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
-
   public ScorchEarth() {
     range = 3;
     aoe = 0;
@@ -20,6 +19,11 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     targetAlly(false);
     targetEnemy(true);
   }
+
+  protected override string tooltipDescription { get {
+    return "Set the ground ablaze dealing " + tooltipDamage + " damage"
+    + " and leaving fire on the ground that deals";
+  }}
 
   public List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);

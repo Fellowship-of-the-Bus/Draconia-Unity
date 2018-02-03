@@ -14,6 +14,10 @@ public class HealWhenHit : CircleAoE {
     targetEnemy(false);
   }
 
+  protected override string tooltipDescription { get {
+    return "Heal the target by " + tooltipHealing + " each time they take damage";
+  }}
+
   public override void additionalEffects(BattleCharacter target) {
     HealWhenHitEffect e = new HealWhenHitEffect();
     e.duration = 5;
