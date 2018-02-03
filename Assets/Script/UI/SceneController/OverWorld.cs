@@ -10,7 +10,7 @@ public class OverWorld: MonoBehaviour {
   public GameObject UI;
 
   //When adding maps, key is the new map name, the value is the set of prereq maps that needs to be
-  //completed already
+  //completed already. No key => no prereqs.s
   private Dictionary<string, HashSet<string>> mapPrereq = new Dictionary<string, HashSet<string>>() {
     {"Map1", new HashSet<string>()},
     {"Map2", new HashSet<string>()}
@@ -30,10 +30,12 @@ public class OverWorld: MonoBehaviour {
       } else {
         // Check for maps that meet all prereqs
         bool prereqMet = true;
-        foreach( string s in mapPrereq[mapName] ) {
-          if (! GameData.gameData.mapProgression.ContainsKey(s)) {
-            prereqMet = false;
-            break;
+        if (mapPrereq.ContainsKey(mapName)) {
+          foreach( string s in mapPrereq[mapName] ) {
+            if (! GameData.gameData.mapProgression.ContainsKey(s)) {
+              prereqMet = false;
+              break;
+            }
           }
         }
         if (prereqMet) {
