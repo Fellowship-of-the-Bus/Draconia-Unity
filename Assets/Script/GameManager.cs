@@ -150,8 +150,10 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public void waitFor(float s, Action act = null) {
-    waitFor(StartCoroutine(waitForSeconds(s)), act);
+  public Coroutine waitFor(float s, Action act = null) {
+    Coroutine c = StartCoroutine(waitForSeconds(s));
+    waitFor(c, act);
+    return c;
   }
 
   IEnumerator waitForAnimation(Animator animator, String trigger) {
@@ -165,13 +167,16 @@ public class GameManager : MonoBehaviour {
       }
   }
 
-  public void waitFor(Animator a, String trigger, Action act = null) {
-    waitFor(StartCoroutine(waitForAnimation(a, trigger)), act);
+  public Coroutine waitFor(Animator a, String trigger, Action act = null) {
+    Coroutine c = StartCoroutine(waitForAnimation(a, trigger));
+    waitFor(c, act);
+    return c;
   }
 
-  public void waitFor(Coroutine c, Action act = null) {
+  public Coroutine waitFor(Coroutine c, Action act = null) {
     waitingOn.Add(c);
     StartCoroutine(popAtEnd(c, act));
+    return c;
   }
 
   public int getWaitingIndex() {
@@ -592,7 +597,7 @@ public class GameManager : MonoBehaviour {
       }
       if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
-      yield return waitUntilCount(index+1);
+      //yield return waitUntilCount(index+1); //Not needed anymore since the move is interrupted?
       if (animator) animator.enabled = true;
     }
     piece.transform.position = endpoint.position;
