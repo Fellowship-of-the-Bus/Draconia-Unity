@@ -132,7 +132,19 @@ public class GameManager : MonoBehaviour {
     if (act != null) act();
   }
 
-  IEnumerator waitUntilCount(int count) {
+  public IEnumerator waitUntilPopped(Coroutine c) {
+    while (waitingOn.Contains(c)) {
+      yield return null;
+    }
+  }
+
+  public IEnumerator waitUntilEmpty() {
+    while (waitingOn.Count > 0) {
+      yield return null;
+    }
+  }
+
+  public IEnumerator waitUntilCount(int count) {
     while (waitingOn.Count > count) {
       yield return null;
     }
@@ -147,7 +159,6 @@ public class GameManager : MonoBehaviour {
       animator.SetTrigger(trigger);
       yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
                                             //otherwise next line always wait for 0.
-      Debug.Log(animator.GetNextAnimatorStateInfo(0).length);
       yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
       } else {
         yield return new WaitForEndOfFrame();
@@ -503,8 +514,6 @@ public class GameManager : MonoBehaviour {
       }
 
       changeState(GameState.ending);
-      yield return StartCoroutine(waitUntilCount(0));
-      waitingOn.Clear();
       targets.Clear();
 
       //send endTurn event to the current piece
@@ -514,6 +523,9 @@ public class GameManager : MonoBehaviour {
       e.nextCharTime = actionQueue.peekNext();
       eventManager.onEvent(e);
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
+
+      yield return StartCoroutine(waitUntilEmpty());
+      waitingOn.Clear();
 
       actionQueue.endTurn();
       map.clearColour();
@@ -696,9 +708,8 @@ public class GameManager : MonoBehaviour {
       map.path.RemoveLast();
     }
 
-    int count = waitingOn.Count;
     movePiece(destination, true);
-    yield return waitUntilCount(count);
+    yield return waitUntilEmpty();
 
     yield return StartCoroutine(AIperformAttack(selectedCharacter));
     StartCoroutine(endTurn());
