@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class HealingTouch: SingleTarget, HealingSkill {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public HealingTouch() {
     range = 1;
     useWepRange = false;

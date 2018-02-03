@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class DarkPower: CircleAoE {
   public new bool targetsTiles = true;
 
+  public override string animation { get { return "Cast"; }}
+
   public DarkPower() {
     range = 3;
     useWepRange = false;

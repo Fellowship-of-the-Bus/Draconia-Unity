@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Reflect: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public Reflect() {
     range = 5;
     useLos = false;

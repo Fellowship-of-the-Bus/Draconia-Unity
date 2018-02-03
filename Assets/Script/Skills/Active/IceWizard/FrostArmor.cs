@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System;
 
 public class FrostArmor: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public FrostArmor() {
     range = 3;
     useWepRange = false;

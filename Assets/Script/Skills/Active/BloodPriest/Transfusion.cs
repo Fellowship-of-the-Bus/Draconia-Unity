@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 public class Transfusion: SingleTarget, HealingSkill {
+
+  public override string animation { get { return "Cast"; }}
+
   public Transfusion() {
     range = 3;
     useWepRange = false;

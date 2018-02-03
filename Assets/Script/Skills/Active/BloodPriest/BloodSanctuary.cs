@@ -5,6 +5,7 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "Cast"; }}
 
   public BloodSanctuary() {
     range = 3;

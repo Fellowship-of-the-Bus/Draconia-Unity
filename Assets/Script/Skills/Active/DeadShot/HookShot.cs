@@ -4,6 +4,8 @@ using System.Collections;
 
 public class HookShot: TargetMover {
 
+  public override string animation { get { return "Shoot"; }}
+
   public HookShot() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

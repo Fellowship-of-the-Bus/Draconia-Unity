@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class DivineShield: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public DivineShield() {
     range = 5;
     useLos = false;

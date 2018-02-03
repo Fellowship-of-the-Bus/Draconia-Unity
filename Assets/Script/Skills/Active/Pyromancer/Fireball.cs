@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Fireball: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public Fireball() {
     range = 3;
     useWepRange = false;

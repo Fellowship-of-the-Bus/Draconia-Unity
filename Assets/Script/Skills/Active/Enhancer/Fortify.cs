@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Fortify: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Fortify() {
     range = 5;
     useLos = false;

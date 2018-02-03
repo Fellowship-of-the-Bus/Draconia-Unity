@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Purge: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Purge() {
     useWepRange = false;
     range = 3;

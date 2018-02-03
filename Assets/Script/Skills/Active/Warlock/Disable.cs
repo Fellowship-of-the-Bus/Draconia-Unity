@@ -3,6 +3,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Disable : SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public Disable() {
     useWepRange = true;
     useLos = false;

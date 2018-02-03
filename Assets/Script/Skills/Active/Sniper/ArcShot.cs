@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 public class ArcShot: SingleTarget {
+
+  public override string animation { get { return "Shoot"; }}
+
   public ArcShot() {
     useWepRange = true;
     requireWeapon(Weapon.Kinds.Ranged);

@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class HealingCircle: CircleAoE, HealingSkill {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public HealingCircle() {
     range = 3;
     useWepRange = false;

@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class HealWhenHit : CircleAoE {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public HealWhenHit() {
     range = 3;
     useWepRange = false;

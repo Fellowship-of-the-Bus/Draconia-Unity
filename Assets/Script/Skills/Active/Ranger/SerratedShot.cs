@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 public class SerratedShot: SingleTarget {
+
+  public override string animation { get { return "Shoot"; }}
+
   public SerratedShot() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

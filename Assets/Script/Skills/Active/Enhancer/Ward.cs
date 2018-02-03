@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Ward: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Ward() {
     range = 5;
     useLos = false;

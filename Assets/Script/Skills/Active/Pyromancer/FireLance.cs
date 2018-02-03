@@ -5,6 +5,8 @@ public class FireLance: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "Cast"; }}
+
   public FireLance() {
     range = 4;
     useWepRange = false;

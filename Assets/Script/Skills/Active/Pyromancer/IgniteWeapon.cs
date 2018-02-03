@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class IgniteWeapon: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public IgniteWeapon() {
     range = 1;
     useLos = false;

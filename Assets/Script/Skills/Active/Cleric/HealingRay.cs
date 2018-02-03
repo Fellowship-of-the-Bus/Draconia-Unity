@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class HealingRay: SingleTarget, HealingSkill {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public HealingRay() {
     range = 3;
     useWepRange = false;

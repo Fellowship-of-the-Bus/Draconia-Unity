@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 public class Volley: CircleAoE {
+
+  public override string animation { get { return "Shoot"; }}
+
   public Volley() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

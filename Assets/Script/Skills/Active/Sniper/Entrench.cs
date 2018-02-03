@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Entrench: SelfTarget {
   public int aoe {get; set;}
 
+  public override string animation { get { return "ClericCast"; }}
+
   public Entrench() {
     range = 0;
     useWepRange = false;
