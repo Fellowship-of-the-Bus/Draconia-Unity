@@ -10,9 +10,14 @@ public class TargetMover : SingleTarget {
   };
 
   Direction direction = Direction.away;
+  int distance = 1;
 
   protected void setDirection(Direction dir) {
     direction = dir;
+  }
+
+  protected void setDistance(int dist) {
+    distance = dist;
   }
 
   float upThreshold = 0.5f;
@@ -33,16 +38,14 @@ public class TargetMover : SingleTarget {
     Vector3 direction = heading / heading.magnitude;
     direction.x = Mathf.Round(direction.x);
     direction.z = Mathf.Round(direction.z);
-
-    Tile t = GameManager.get.map.getTile(c.transform.position + direction);
-    Tile t2 = GameManager.get.map.getTile(c.transform.position + (direction * 2));
-    if (validTile(c, t)) {
+    Tile t = null;
+    for(int i = 1; i <= distance; i++) {
+      Tile t2 = GameManager.get.map.getTile(c.transform.position + (direction * i));
       if (validTile(c, t2)) {
-        return t2;
-      }
-      return t;
+        t = t2;
+      } else break; //Don't try to push through invalid tile to find a valid one
     }
-    return null;
+    return t;
   }
 
   public override void additionalEffects(BattleCharacter c) {

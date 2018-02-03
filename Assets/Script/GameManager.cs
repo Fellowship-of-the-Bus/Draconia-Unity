@@ -535,10 +535,10 @@ public class GameManager : MonoBehaviour {
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
     moving = Options.displayAnimation;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation)));
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation, true)));
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking, bool smoothMovement = false) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -559,8 +559,8 @@ public class GameManager : MonoBehaviour {
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // Set Rotation
-      if (setWalking) {
-        character.face(pos);
+      if (setWalking || smoothMovement) {
+        if (setWalking) character.face(pos);
         // Move Piece
         Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
         float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
