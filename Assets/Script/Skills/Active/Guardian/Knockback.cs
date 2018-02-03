@@ -15,9 +15,10 @@ public class Knockback: TargetMover {
     setDistance(2);
   }
 
-  public override string tooltip { get { return "Deal " + damageFormula().ToString() + " damage and knock the target back"; }}
-  float upThreshold = 0.5f;
-
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage and knock the target back 2 spaces";
+  }}
+  
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }

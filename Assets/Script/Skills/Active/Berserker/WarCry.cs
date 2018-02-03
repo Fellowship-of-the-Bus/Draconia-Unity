@@ -13,7 +13,9 @@ public class WarCry: CircleAoE {
     targetEnemy(false);
   }
 
-  public override string tooltip { get { return "Let loose an inspiring cry, increasing the speed of all allies within 3 tiles by 1"; }}
+  protected override string tooltipDescription { get {
+    return "Let loose an inspiring cry, increasing the speed of all allies within range by 1";
+  }}
 
   public override void additionalEffects (BattleCharacter target) {
     WarCryEffect e = new WarCryEffect();

@@ -15,6 +15,10 @@ public class Fireball: SingleTarget {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage";
+  }}
+
   public override int damageFormula(){
     return (int)(self.intelligence*(1+level*0.1));
   }

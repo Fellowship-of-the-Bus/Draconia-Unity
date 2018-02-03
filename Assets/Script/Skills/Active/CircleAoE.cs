@@ -6,7 +6,7 @@ public abstract class CircleAoE: ActiveSkill, AoeSkill {
   public bool effectsTiles {get; set;}
 
   public string tooltipAoE { get { return "Area of Effect: " + aoe.ToString() + "\n"; }}
-  public string tooltipHeader { get { return tooltipRange + tooltipAoE; }}
+  public override string tooltipHeader { get { return base.tooltipHeader + tooltipAoE; }}
 
   public CircleAoE() {
     targetsTiles = true;

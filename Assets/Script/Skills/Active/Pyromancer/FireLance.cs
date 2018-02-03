@@ -21,7 +21,9 @@ public class FireLance: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  public override string tooltip { get { return tooltipRange + "Deal " + tooltipDamage + " damage to all targets in a line"; }}
+  protected override string tooltipDescription { get {
+    return "Deal " + tooltipDamage + " damage to all targets in a straight line";
+  }}
 
   public List<Tile> getTargetsInAoe(Vector3 position) {
     Map map = GameManager.get.map;
