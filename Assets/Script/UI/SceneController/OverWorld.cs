@@ -13,7 +13,8 @@ public class OverWorld: MonoBehaviour {
   //completed already. No key => no prereqs.s
   private Dictionary<string, HashSet<string>> mapPrereq = new Dictionary<string, HashSet<string>>() {
     {"Map1", new HashSet<string>()},
-    {"Map2", new HashSet<string>()}
+    {"Map2", new HashSet<string>()},
+    {"Harbour", new HashSet<string>(){"Prologue"}}
   };
 
   public void Start() {

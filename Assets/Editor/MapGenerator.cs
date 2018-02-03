@@ -25,6 +25,7 @@ static class MapGenerator {
     cubes.Add('D', Resources.Load("Map/Dirt"));
     cubes.Add('S', Resources.Load("Map/Stone"));
     cubes.Add('W', Resources.Load("Map/Wall"));
+    cubes.Add('O', Resources.Load("Map/Water"));
   }
 
 
