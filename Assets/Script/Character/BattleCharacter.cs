@@ -234,7 +234,7 @@ public class BattleCharacter : Effected {
 
     face(target.transform.position);
 
-    if (animator) GameManager.get.waitFor(animator, "Attack", () => finishSkill(skill, target, targets));
+    if (animator) GameManager.get.waitFor(animator, skill.animation, () => finishSkill(skill, target, targets));
     else finishSkill(skill, target, targets);
     return true;
   }

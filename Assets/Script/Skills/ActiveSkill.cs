@@ -65,6 +65,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   bool listenOnEndturn = false;
   public int ntargets { get; set; }
 
+  public virtual string animation { get { return "Attack"; }}
+
   public ActiveSkill() {
     ntargets = 1;
   }

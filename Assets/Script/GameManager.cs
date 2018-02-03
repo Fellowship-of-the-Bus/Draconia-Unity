@@ -153,12 +153,16 @@ public class GameManager : MonoBehaviour {
   IEnumerator waitForAnimation(Animator animator, String trigger) {
     if (Options.displayAnimation) {
       animator.SetTrigger(trigger);
-      yield return new WaitForEndOfFrame(); //Necessary to wait for animator state info to be updated
-                                            //otherwise next line always wait for 0.
-      yield return new WaitForSeconds(animator.GetNextAnimatorStateInfo(0).length);
-      } else {
-        yield return new WaitForEndOfFrame();
+      AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+      float time = 0f;
+      foreach(AnimationClip c in clips) {
+        string s = c.name.Substring(c.name.IndexOf("|")+1);
+        if (s == trigger) time = c.length;
       }
+      yield return new WaitForSeconds(time);
+    } else {
+      yield return new WaitForEndOfFrame();
+    }
   }
 
   public Coroutine waitFor(Animator a, String trigger, Action act = null) {
