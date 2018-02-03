@@ -145,15 +145,12 @@ public class PlayerControl : MonoBehaviour {
     }
   }
 
-  BattleCharacter selectedCharacter = null;
-  //TODO: update colouring of selected characters .....
+  public BattleCharacter selectedCharacter = null;
   void deselect() {
-    //selectedCharacter.GetComponent<Renderer>().material.color = Color.white;
     selectedCharacter = null;
   }
   void selChar(BattleCharacter c) {
     selectedCharacter = c;
-    //selectedCharacter.GetComponent<Renderer>().material.color = Color.red;
   }
 
   //swaps locations of clicked and selected chars
