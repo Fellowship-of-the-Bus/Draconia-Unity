@@ -128,8 +128,8 @@ public class GameManager : MonoBehaviour {
 
   IEnumerator popAtEnd(Coroutine c, Action act) {
     yield return c;
-    waitingOn.Remove(c);
     if (act != null) act();
+    waitingOn.Remove(c);
   }
 
   public IEnumerator waitUntilPopped(Coroutine c) {
@@ -144,14 +144,10 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public IEnumerator waitUntilCount(int count) {
-    while (waitingOn.Count > count) {
-      yield return null;
-    }
-  }
-
-  public void waitFor(float s, Action act = null) {
-    waitFor(StartCoroutine(waitForSeconds(s)), act);
+  public Coroutine waitFor(float s, Action act = null) {
+    Coroutine c = StartCoroutine(waitForSeconds(s));
+    waitFor(c, act);
+    return c;
   }
 
   IEnumerator waitForAnimation(Animator animator, String trigger) {
@@ -165,13 +161,16 @@ public class GameManager : MonoBehaviour {
       }
   }
 
-  public void waitFor(Animator a, String trigger, Action act = null) {
-    waitFor(StartCoroutine(waitForAnimation(a, trigger)), act);
+  public Coroutine waitFor(Animator a, String trigger, Action act = null) {
+    Coroutine c = StartCoroutine(waitForAnimation(a, trigger));
+    waitFor(c, act);
+    return c;
   }
 
-  public void waitFor(Coroutine c, Action act = null) {
+  public Coroutine waitFor(Coroutine c, Action act = null) {
     waitingOn.Add(c);
     StartCoroutine(popAtEnd(c, act));
+    return c;
   }
 
   public int getWaitingIndex() {
@@ -498,7 +497,7 @@ public class GameManager : MonoBehaviour {
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {
-      StartCoroutine(endTurn());
+      endTurnWrapper();
     }
     targets.Clear();
   }
@@ -525,7 +524,6 @@ public class GameManager : MonoBehaviour {
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
       yield return StartCoroutine(waitUntilEmpty());
-      waitingOn.Clear();
 
       actionQueue.endTurn();
       map.clearColour();
@@ -537,10 +535,10 @@ public class GameManager : MonoBehaviour {
     LinkedList<Tile> tile = new LinkedList<Tile>();
     tile.AddFirst(t);
     moving = Options.displayAnimation;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation)));
+    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation, true)));
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking, bool smoothMovement = false) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -561,8 +559,8 @@ public class GameManager : MonoBehaviour {
       pos.y = destination.transform.position.y + map.getHeight(destination);
 
       // Set Rotation
-      if (setWalking) {
-        character.face(pos);
+      if (setWalking || smoothMovement) {
+        if (setWalking) character.face(pos);
         // Move Piece
         Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
         float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
@@ -592,7 +590,7 @@ public class GameManager : MonoBehaviour {
       }
       if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
-      yield return waitUntilCount(index+1);
+      //yield return waitUntilCount(index+1); //Not needed anymore since the move is interrupted?
       if (animator) animator.enabled = true;
     }
     piece.transform.position = endpoint.position;
@@ -708,14 +706,14 @@ public class GameManager : MonoBehaviour {
       map.path.RemoveLast();
     }
 
-    movePiece(destination, true);
-    yield return waitUntilEmpty();
+    yield return waitUntilPopped(movePiece(destination, true));
+    yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
 
-    yield return StartCoroutine(AIperformAttack(selectedCharacter));
     StartCoroutine(endTurn());
   }
+
   public void handleAI() {
-    StartCoroutine(doHandleAI(1));
+    waitFor(StartCoroutine(doHandleAI(1)));
   }
 
   public IEnumerator AIperformAttack(BattleCharacter selectedCharacter) {
