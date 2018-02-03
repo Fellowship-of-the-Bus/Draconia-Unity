@@ -128,8 +128,8 @@ public class GameManager : MonoBehaviour {
 
   IEnumerator popAtEnd(Coroutine c, Action act) {
     yield return c;
-    waitingOn.Remove(c);
     if (act != null) act();
+    waitingOn.Remove(c);
   }
 
   public IEnumerator waitUntilPopped(Coroutine c) {
@@ -140,12 +140,6 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator waitUntilEmpty() {
     while (waitingOn.Count > 0) {
-      yield return null;
-    }
-  }
-
-  public IEnumerator waitUntilCount(int count) {
-    while (waitingOn.Count > count) {
       yield return null;
     }
   }
@@ -503,7 +497,7 @@ public class GameManager : MonoBehaviour {
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {
-      StartCoroutine(endTurn());
+      endTurnWrapper();
     }
     targets.Clear();
   }
@@ -530,7 +524,6 @@ public class GameManager : MonoBehaviour {
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
       yield return StartCoroutine(waitUntilEmpty());
-      waitingOn.Clear();
 
       actionQueue.endTurn();
       map.clearColour();
@@ -713,14 +706,14 @@ public class GameManager : MonoBehaviour {
       map.path.RemoveLast();
     }
 
-    movePiece(destination, true);
-    yield return waitUntilEmpty();
+    yield return waitUntilPopped(movePiece(destination, true));
+    yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
 
-    yield return StartCoroutine(AIperformAttack(selectedCharacter));
     StartCoroutine(endTurn());
   }
+
   public void handleAI() {
-    StartCoroutine(doHandleAI(1));
+    waitFor(StartCoroutine(doHandleAI(1)));
   }
 
   public IEnumerator AIperformAttack(BattleCharacter selectedCharacter) {
