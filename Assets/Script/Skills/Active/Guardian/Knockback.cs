@@ -19,8 +19,6 @@ public class Knockback: TargetMover {
     return "Deal " + tooltipDamage + " damage and knock the target back 2 spaces";
   }}
   
-  float upThreshold = 0.5f;
-
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }
