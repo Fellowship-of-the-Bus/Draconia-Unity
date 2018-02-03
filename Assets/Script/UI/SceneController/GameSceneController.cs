@@ -151,6 +151,9 @@ public class GameSceneController: MonoBehaviour {
 
   public void resetStartTileColour() {
     setStartTileColour(Color.red);
+    if (pControl.selectedCharacter != null) {
+      pControl.selectedCharacter.curTile.setColor(Color.yellow);
+    }
   }
   public void setStartTileColour(Color c) {
     List<Tile> tileStartLocs = GameManager.get.map.getStartTiles();
