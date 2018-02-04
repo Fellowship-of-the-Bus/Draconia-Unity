@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System;
 
 public class Levitate: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Levitate() {
     range = 3;
     useWepRange = false;

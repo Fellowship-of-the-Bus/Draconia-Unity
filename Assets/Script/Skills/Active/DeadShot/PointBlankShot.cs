@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections;
 
 public class PointBlankShot: SingleTarget {
-    float rangeMultiplier = 2.5f;
+  float rangeMultiplier = 2.5f;
+
+  public override string animation { get { return "Shoot"; }}
 
   public PointBlankShot() {
     requireWeapon(Weapon.Kinds.Ranged);

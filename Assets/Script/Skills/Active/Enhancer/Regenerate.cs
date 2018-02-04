@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 public class Regenerate: SingleTarget, HealingSkill {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Regenerate() {
     range = 3;
     useWepRange = false;

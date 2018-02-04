@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class RegenerateAura: SelfTarget {
   public int aoe {get; set;}
 
+  public override string animation { get { return "ClericCast"; }}
+
   public RegenerateAura() {
     range = 0;
     useWepRange = false;

@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class IceSpear: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public IceSpear() {
     range = 3;
     useWepRange = false;

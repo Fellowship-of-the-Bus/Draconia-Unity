@@ -7,6 +7,8 @@ public class Portal : ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "Cast"; }}
+
   public Portal() {
     ntargets = 2;
     range = 5;

@@ -5,6 +5,8 @@ public class FireCross: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "Cast"; }}
+
   public FireCross() {
     range = 4;
     useWepRange = false;

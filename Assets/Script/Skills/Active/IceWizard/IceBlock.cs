@@ -5,6 +5,8 @@ public class IceBlock: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "Cast"; }}
+
   public IceBlock() {
     range = 3;
     aoe = 0;

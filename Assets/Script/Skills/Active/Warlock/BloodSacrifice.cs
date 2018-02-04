@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System;
 
 public class BloodSacrifice : SelfTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public BloodSacrifice() {
     range = 0;
     useWepRange = false;

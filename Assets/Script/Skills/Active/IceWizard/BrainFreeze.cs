@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class BrainFreeze: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public BrainFreeze() {
     useWepRange = false;
     useLos = false;

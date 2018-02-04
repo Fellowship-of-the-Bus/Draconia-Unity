@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class EmpowerAura: SelfTarget {
   public int aoe {get; set;}
 
+  public override string animation { get { return "ClericCast"; }}
+
   public EmpowerAura() {
     range = 0;
     useWepRange = false;
