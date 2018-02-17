@@ -93,8 +93,9 @@ static class MapGenerator {
       if (hasTree) {
         var tree = (GameObject)GameObject.Instantiate(treeModel, o.transform);
         float rand = 0.05f - UnityEngine.Random.value/10.0f;
-        tree.transform.localScale = new Vector3(tree.transform.localScale.x, tree.transform.localScale.y + rand, tree.transform.localScale.z);
-        tree.transform.localPosition = new Vector3(0,tree.transform.position.y + newTile.getHeight() - 0.1f,0);
+        tree.transform.localScale = new Vector3(tree.transform.localScale.x,
+                                        (tree.transform.localScale.y + rand) / o.transform.localScale.y, tree.transform.localScale.z);
+        tree.transform.localPosition = new Vector3(0,0.5f,0);
         //make impassable?
         newTile.movePointSpent = 1000;
       }
