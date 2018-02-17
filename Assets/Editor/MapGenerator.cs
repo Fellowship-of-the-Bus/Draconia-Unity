@@ -13,8 +13,10 @@ static class MapGenerator {
   /* File Format for tiles !symbolheight
    * height default = 1
    * start default false (! at front of string)
+   * should have a tree (t at front of string)
    * example !D2.5 for start tile dirt height 2.5
    * example D for non-startTile height 1
+   * example !tD2.5 for start tile dirt height 2.5 that contains a tree.
   */
 
   static Dictionary<char, Object> cubes = new Dictionary<char, Object>();
@@ -28,18 +30,20 @@ static class MapGenerator {
     cubes.Add('O', Resources.Load("Map/Water"));
   }
 
+  static Object treeModel = Resources.Load("Map/Tree");
+
 
 
   [MenuItem("Generate Map/Generate...")]
   private static void selectFile() {
     string fileName = EditorUtility.OpenFilePanel("Select Map File", Application.dataPath, "csv");
+    UnityEngine.Random.InitState(0);
     int lineNum = 0;
     if (!string.IsNullOrEmpty(fileName)) {
       Scene scene = EditorSceneManager.GetActiveScene();
       GameObject[] objs = scene.GetRootGameObjects();
       GameObject parent = objs[0];
       foreach(GameObject o in objs) {
-        Debug.Log(o.name);
         if (o.name == "map") parent = o;
       }
       board = (GameObject)GameObject.Instantiate(Resources.Load("Map/Board"), parent.transform);
@@ -64,9 +68,15 @@ static class MapGenerator {
     foreach (string tile in tiles) {
       string t = tile;
       bool startTile = false;
-      if (t[0] == '!') {
-        startTile = true;
-        t = t.Substring(1);
+      bool hasTree = false;
+      while (t[0] == '!' || t[0] == 't') {
+        if (t[0] == '!') {
+          startTile = true;
+          t = t.Substring(1);
+        } else if (t[0] == 't') {
+          hasTree = true;
+          t = t.Substring(1);
+        }
       }
       char tileSymbol = t[0];
       Debug.AssertFormat(cubes.ContainsKey(tileSymbol), "bad tile string " + tileSymbol);
@@ -76,9 +86,18 @@ static class MapGenerator {
       var o = (GameObject)GameObject.Instantiate(cubes[tileSymbol], row.transform);
       o.transform.position = new Vector3(0,0,index);
       //set startTile
-      o.GetComponent<Tile>().startTile = startTile;
+      Tile newTile = o.GetComponent<Tile>();
+      newTile.startTile = startTile;
       //set height
       o.transform.localScale = new Vector3(1,2*height-1,1);
+      if (hasTree) {
+        var tree = (GameObject)GameObject.Instantiate(treeModel, o.transform);
+        float rand = 0.05f - UnityEngine.Random.value/10.0f;
+        tree.transform.localScale = new Vector3(tree.transform.localScale.x, tree.transform.localScale.y + rand, tree.transform.localScale.z);
+        tree.transform.localPosition = new Vector3(0,tree.transform.position.y + newTile.getHeight() - 0.1f,0);
+        //make impassable?
+        newTile.movePointSpent = 1000;
+      }
 
       index++;
     }
