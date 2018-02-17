@@ -5,6 +5,8 @@ public class PiercingShot: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "Shoot"; }}
+
   public PiercingShot() {
     useLos = false;
     name = "Piercing Shot";

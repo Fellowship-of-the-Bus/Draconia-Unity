@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Enlighten: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Enlighten() {
     range = 5;
     useLos = false;

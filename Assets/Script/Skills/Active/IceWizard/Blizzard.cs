@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Blizzard: CircleAoE {
+
+  public override string animation { get { return "Cast"; }}
+
   public Blizzard() {
     range = 3;
     useWepRange = false;

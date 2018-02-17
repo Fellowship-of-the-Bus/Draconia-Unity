@@ -1,6 +1,9 @@
 ﻿using System;
 
 public class RealityDistortion : SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public RealityDistortion() {
     useWepRange = true;
     useLos = false;

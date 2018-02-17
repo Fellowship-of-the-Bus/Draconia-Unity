@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class ShareLife: CircleAoE, HealingSkill {
+
+  public override string animation { get { return "Cast"; }}
+
   public ShareLife() {
     range = 3;
     useWepRange = false;

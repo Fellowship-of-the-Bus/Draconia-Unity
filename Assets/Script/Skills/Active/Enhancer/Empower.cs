@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Empower: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Empower() {
     range = 5;
     useLos = false;

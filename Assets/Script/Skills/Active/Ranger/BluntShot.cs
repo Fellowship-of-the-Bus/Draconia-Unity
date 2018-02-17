@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System;
 
 public class BluntShot: SingleTarget {
+
+  public override string animation { get { return "Shoot"; }}
+
   public BluntShot() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

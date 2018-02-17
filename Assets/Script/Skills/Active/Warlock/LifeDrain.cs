@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class LifeDrain: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public LifeDrain() {
     range = 3;
     useWepRange = false;

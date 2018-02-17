@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 
 public class LegShot: SingleTarget {
+
+  public override string animation { get { return "Shoot"; }}
+
   public LegShot() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class PoisonShot: SingleTarget {
+
+  public override string animation { get { return "Shoot"; }}
+
   public PoisonShot() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

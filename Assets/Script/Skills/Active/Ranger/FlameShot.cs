@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class FlameShot: SingleTarget {
+
+  public override string animation { get { return "Shoot"; }}
+
   public FlameShot() {
     requireWeapon(Weapon.Kinds.Ranged);
     useWepRange = true;

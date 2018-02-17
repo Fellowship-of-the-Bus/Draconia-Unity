@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Agility: SingleTarget {
+
+  public override string animation { get { return "ClericCast"; }}
+
   public Agility() {
     range = 5;
     useLos = false;

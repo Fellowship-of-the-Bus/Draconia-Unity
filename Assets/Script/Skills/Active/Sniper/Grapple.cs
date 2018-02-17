@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Grapple: CircleAoE {
 
+  public override string animation { get { return "Shoot"; }}
+
   public Grapple() {
     targetsTiles = true;
     range = 1;

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class BloodJudgement: CircleAoE {
   int cost = 0;
 
+  public override string animation { get { return "Cast"; }}
+
   public BloodJudgement() {
     range = 3;
     useWepRange = false;

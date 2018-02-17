@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Incinerate: SingleTarget {
+
+  public override string animation { get { return "Cast"; }}
+
   public Incinerate() {
     range = 3;
     useWepRange = false;
