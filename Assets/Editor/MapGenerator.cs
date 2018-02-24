@@ -28,6 +28,7 @@ static class MapGenerator {
     cubes.Add('S', Resources.Load("Map/Stone"));
     cubes.Add('W', Resources.Load("Map/Wall"));
     cubes.Add('O', Resources.Load("Map/Water"));
+    cubes.Add('M', Resources.Load("Map/Mud"));
   }
 
   static Object treeModel = Resources.Load("Map/Tree");
