@@ -20,7 +20,6 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     dEle = DamageElement.fire;
     targetAlly(false);
     targetEnemy(true);
-    projectileType = ProjectileType.Arrow;//TEMP
   }
 
   protected override string tooltipDescription { get {

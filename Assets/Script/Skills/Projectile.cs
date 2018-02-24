@@ -31,10 +31,6 @@ public class Projectile {
     if (Projectiles[projType]) {
       projectile = GameObject.Instantiate(Projectiles[projType], source.leftHand) as GameObject;
       direction = (target.transform.position - source.transform.position).normalized;
-      Debug.Log(Vector3.up);
-      Quaternion angle = Quaternion.LookRotation(direction);
-      projectile.transform.Find("Projectile").rotation = angle;
-      Debug.Log(projectile.transform.Find("Projectile").rotation);
     }
     else projectile = null;
     this.callback = callback;

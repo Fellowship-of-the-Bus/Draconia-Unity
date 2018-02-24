@@ -9,7 +9,7 @@ public class Weapon : Equipment {
   public Kinds kind = Kinds.Default;
 
   public static Weapon defaultWeapon {
-    get { return new Weapon(EquipmentClass.Bow, 1, 1); }
+    get { return new Weapon(EquipmentClass.Unarmed, 1, 1); }
   }
 
   public override Equipment getDefault() { return defaultWeapon; }
