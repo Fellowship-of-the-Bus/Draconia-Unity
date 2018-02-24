@@ -90,5 +90,14 @@ public static class Extensions {
   public static string displayName(this Type t) {
     return t.FullName;
   }
+
+  public static Transform findRecursive(this Transform t, string child) {
+    if (t.name == child) return t;
+    foreach(Transform c in t) {
+      Transform ret = c.findRecursive(child);
+      if (ret) return ret;
+    }
+    return null;
+  }
 }
 
