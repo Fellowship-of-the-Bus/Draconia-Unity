@@ -37,12 +37,14 @@ public class PlayerControl : MonoBehaviour {
     //Debug.Log(hoveredObject);
     gameManager.lineTo(gameManager.SelectedPiece);
     if (hoveredObject == null) return;
+    if (hoveredObject.transform.parent == null) return;
     Map map = gameManager.map;
     BattleCharacter selectedCharacter = null;
     if (!preGame) selectedCharacter = gameManager.SelectedPiece.GetComponent<BattleCharacter>();
 
     ActiveSkill s = null;
     if (gameManager.SelectedSkill != -1 && !preGame) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];
+
 
     //handle multicubes
     if (hoveredObject.transform.parent.tag == "Cube") {
