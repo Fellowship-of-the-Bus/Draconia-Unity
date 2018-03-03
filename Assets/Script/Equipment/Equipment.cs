@@ -29,8 +29,13 @@ public abstract class Equipment {
   string[] tierName = new string[]{"Crude", "Simple", "Sturdy", "Quality", "Flawless", "Enchanted"};
   public Attributes attr = new Attributes();
   public int tier;
+
   //could be null if not equipped.
-  public Character equippedTo;
+  public Character equippedTo {
+    get {
+      return GameData.gameData.getCharacterWithItem(this);
+    }
+  }
 
   public EquipmentClass equipmentClass;
 
