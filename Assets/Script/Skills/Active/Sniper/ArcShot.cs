@@ -13,6 +13,8 @@ public class ArcShot: SingleTarget {
     maxCooldown = 2;
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Parabolic;
   }
 
   public override int damageFormula() {

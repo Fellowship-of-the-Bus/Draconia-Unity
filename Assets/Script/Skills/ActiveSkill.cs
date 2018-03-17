@@ -43,6 +43,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public DamageElement dEle = DamageElement.none;
 
   public ProjectileType projectileType = ProjectileType.None;
+  public ProjectileMovementType projectileMoveType = ProjectileMovementType.Straight;
 
   // Tooltip variables
   protected string tooltipRange { get {
