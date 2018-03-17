@@ -124,8 +124,8 @@ public class BattleCharacter : Effected {
     damagebar = ui.Find("Health Bar/Damage").gameObject;
     healingbar = ui.Find("Health Bar/Healing").gameObject;
 
-    leftHand = transform.findRecursive("DEF-hand.L_end");
-    rightHand = transform.findRecursive("DEF-hand.R_end");
+    leftHand = transform.findRecursive("Hand.L");
+    rightHand = transform.findRecursive("Hand.R");
   }
 
   void setSkills() {
