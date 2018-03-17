@@ -542,6 +542,29 @@ public class GameManager : MonoBehaviour {
     waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation, true)));
   }
 
+  public IEnumerator moveObject(GameObject obj, float speed, Vector3 start, Vector3 end, float heightChange = 0.5f, Func<Vector3, Vector3> transformDist = null, bool movingPiece = true, bool arcing = false) {
+    if (transformDist == null) transformDist = (v) => v; //Lambda isn't a valid default value, so have to use null and set here
+    float hopHeight = Math.Max(end.y, start.y) + heightChange;
+    float dUp = speed*2*(hopHeight - start.y)/Options.FPS;
+    float dDown = speed*2*(end.y - hopHeight)/Options.FPS;
+    for (int i = 0; i < Options.FPS/speed; i++) {
+      Vector3 d = speed*transformDist(end-start)/Options.FPS;
+      if ((d.y != 0 && movingPiece) || (!movingPiece && arcing)) {
+        if (i < Options.FPS/(speed*2)) {
+          d = obj.transform.TransformDirection(d);
+          d.y = dUp;
+          d = obj.transform.InverseTransformDirection(d);
+        } else {
+          d = obj.transform.TransformDirection(d);
+          d.y = dDown;
+          d = obj.transform.InverseTransformDirection(d);
+        }
+      }
+      obj.transform.Translate(d);
+      yield return new WaitForSeconds(1/Options.FPS);
+    }
+  }
+
   public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking, bool smoothMovement = false) {
     const float speed = 3f;
     lockUI();
@@ -566,21 +589,7 @@ public class GameManager : MonoBehaviour {
       if (setWalking || smoothMovement) {
         if (setWalking) character.face(pos);
         // Move Piece
-        Vector3 d = speed*(pos-piece.transform.position)/Options.FPS;
-        float hopHeight = Math.Max(pos.y, piece.transform.position.y) + 0.5f;
-        float dUp = speed*2*(hopHeight - piece.transform.position.y)/Options.FPS;
-        float dDown = speed*2*(pos.y - hopHeight)/Options.FPS;
-        for (int i = 0; i < Options.FPS/speed; i++) {
-          if (d.y != 0) {
-            if (i < Options.FPS/(speed*2)) {
-              d.y = dUp;
-            } else {
-              d.y = dDown;
-            }
-          }
-          piece.transform.Translate(d);
-          yield return new WaitForSeconds(1/Options.FPS);
-        }
+        yield return moveObject(piece, speed, piece.transform.position, pos);
         piece.transform.Translate(pos-piece.transform.position);
       }
       // tell listeners that this character moved

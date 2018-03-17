@@ -21,7 +21,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     targetAlly(false);
     targetEnemy(true);
     projectileType = ProjectileType.Fireball;
-    projectileMoveType = ProjectileMovementType.Straight;
+    projectileMoveType = ProjectileMovementType.Parabolic;
   }
 
   protected override string tooltipDescription { get {
