@@ -240,7 +240,7 @@ public class BattleCharacter : Effected {
 
     face(target.transform.position);
 
-    if (animator) GameManager.get.waitFor(animator, skill.animation, () => new Projectile(this, skill.targetsTiles ? (target as Effected) : target.occupant, skill.projectileType, () => finishSkill(skill, target, targets)));
+    if (animator) GameManager.get.waitFor(animator, skill.animation, () => new Projectile(this, skill.targetsTiles ? (target as Effected) : target.occupant, skill.projectileType, skill.projectileMoveType, () => finishSkill(skill, target, targets)));
     else finishSkill(skill, target, targets);
     return true;
   }
