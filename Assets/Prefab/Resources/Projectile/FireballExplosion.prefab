@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198801596533279016}
   - component: {fileID: 199730557081635556}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1981807825031692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.96, y: 0.957, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
   - {fileID: 4626694158641816}
@@ -193,7 +193,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1802558882
+  randomSeed: 1769733455
   InitialModule:
     serializedVersion: 3
     enabled: 1
