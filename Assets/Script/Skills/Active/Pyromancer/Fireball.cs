@@ -16,6 +16,8 @@ public class Fireball: SingleTarget {
     dEle = DamageElement.fire;
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Fireball;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   protected override string tooltipDescription { get {

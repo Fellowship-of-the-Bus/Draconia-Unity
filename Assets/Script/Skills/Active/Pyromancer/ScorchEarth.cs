@@ -20,6 +20,8 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     dEle = DamageElement.fire;
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Fireball;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   protected override string tooltipDescription { get {
