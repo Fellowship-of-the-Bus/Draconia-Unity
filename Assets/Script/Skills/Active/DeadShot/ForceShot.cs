@@ -8,13 +8,15 @@ public class ForceShot: TargetMover {
 
   public ForceShot() {
     requireWeapon(Weapon.Kinds.Ranged);
-    useWepRange = true;
+    useWepRange = false;
+    range = 2;
     useLos = true;
     name = "Force Shot";
     maxCooldown = 2;
     targetAlly(false);
     targetEnemy(true);
     setDirection(TargetMover.Direction.away);
+    projectileType = ProjectileType.Arrow;
   }
 
   protected override string tooltipDescription { get {

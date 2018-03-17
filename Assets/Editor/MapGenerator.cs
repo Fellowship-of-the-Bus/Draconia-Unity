@@ -14,6 +14,7 @@ static class MapGenerator {
    * height default = 1
    * start default false (! at front of string)
    * should have a tree (t at front of string)
+   * ^ For floating block, with next character base block
    * example !D2.5 for start tile dirt height 2.5
    * example D for non-startTile height 1
    * example !tD2.5 for start tile dirt height 2.5 that contains a tree.
@@ -28,6 +29,7 @@ static class MapGenerator {
     cubes.Add('S', Resources.Load("Map/Stone"));
     cubes.Add('W', Resources.Load("Map/Wall"));
     cubes.Add('O', Resources.Load("Map/Water"));
+    cubes.Add('M', Resources.Load("Map/Mud"));
   }
 
   static Object treeModel = Resources.Load("Map/Tree");
@@ -69,13 +71,19 @@ static class MapGenerator {
       string t = tile;
       bool startTile = false;
       bool hasTree = false;
-      while (t[0] == '!' || t[0] == 't') {
+      bool floating = false;
+      char baseBlockSymbol = ' ';
+      while (t[0] == '!' || t[0] == 't' || t[0] == '^') {
         if (t[0] == '!') {
           startTile = true;
           t = t.Substring(1);
         } else if (t[0] == 't') {
           hasTree = true;
           t = t.Substring(1);
+        } else if (t[0] == '^') {
+          floating = true;
+          baseBlockSymbol = t[1];
+          t = t.Substring(2);
         }
       }
       char tileSymbol = t[0];
@@ -89,7 +97,15 @@ static class MapGenerator {
       Tile newTile = o.GetComponent<Tile>();
       newTile.startTile = startTile;
       //set height
-      o.transform.localScale = new Vector3(1,2*height-1,1);
+      if (floating) {
+        newTile.additionalHeight = height-1;
+        o.transform.position = new Vector3(0, height-1, index);
+        var baseBlock = (GameObject)GameObject.Instantiate(cubes[baseBlockSymbol], row.transform);
+        baseBlock.transform.position = new Vector3(0,0,index);
+        baseBlock.tag = "Untagged";
+      } else {
+        o.transform.localScale = new Vector3(1,2*height-1,1);
+      }
       if (hasTree) {
         var tree = (GameObject)GameObject.Instantiate(treeModel, o.transform);
         float rand = 0.05f - UnityEngine.Random.value/10.0f;

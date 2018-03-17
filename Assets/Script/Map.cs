@@ -10,14 +10,32 @@ public class Map {
   List<GameObject> cubes;
 
   public List<Tile> startPositions = new List<Tile>();
+  Tile[,] map = null;
 
   public void awake() {
+    float xMax = 0f;
+    float zMax = 0f;
+
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     foreach (GameObject cube in cubes) {
       cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
       t.setup();
+
+      if (t.transform.position.x > xMax) {
+        xMax = t.transform.position.x;
+      }
+      if (t.transform.position.z > zMax) {
+        zMax = t.transform.position.z;
+      }
+    }
+
+    map = new Tile[Mathf.RoundToInt(xMax) + 1, Mathf.RoundToInt(zMax) + 1];
+    foreach (GameObject cube in cubes) {
+      Tile t = cube.GetComponent<Tile>();
+      Vector3 p = t.transform.position;
+      map[Mathf.RoundToInt(p.x),Mathf.RoundToInt(p.z)] = t;
     }
   }
 
@@ -93,7 +111,17 @@ public class Map {
 
 
   public Tile getTile(Vector3 location) {
-    return getTile(location, tiles);
+    int x = Mathf.RoundToInt(location.x);
+    int z = Mathf.RoundToInt(location.z);
+
+    return getTile(x, z);
+  }
+
+  public Tile getTile(int x, int z) {
+    if (0 <= x && x <= map.GetUpperBound(0) && 0 <= z && z <= map.GetUpperBound(1)) {
+      return map[x, z];
+    }
+    return null;
   }
 
   public Tile getTile(Vector3 location, IEnumerable<Tile> list) {
@@ -106,20 +134,57 @@ public class Map {
     return null;
   }
 
+  List<Tile> getAdjacentTiles(Tile t) {
+    List<Tile> adjacentTiles = new List<Tile>();
+
+    int x = Mathf.RoundToInt(t.position.x);
+    int z = Mathf.RoundToInt(t.position.z);
+
+    Tile adjacent = getTile(x - 1, z);
+    if (adjacent != null) {
+      adjacentTiles.Add(adjacent);
+    }
+
+    adjacent = getTile(x + 1, z);
+    if (adjacent != null) {
+      adjacentTiles.Add(adjacent);
+    }
+
+    adjacent = getTile(x, z - 1);
+    if (adjacent != null) {
+      adjacentTiles.Add(adjacent);
+    }
+
+    adjacent = getTile(x, z + 1);
+    if (adjacent != null) {
+      adjacentTiles.Add(adjacent);
+    }
+
+    return adjacentTiles;
+  }
+
   public List<Tile> getTilesWithinRange(Tile t, int range, bool heightAdvantage = false) {
     List<Tile> inRangeTiles = new List<Tile>();
-    foreach (Tile other in tiles) {
-      int distance = l1Distance(t, other);
+    List<Tile> edgeTiles = new List<Tile>();
+    List<Tile> outerTiles = new List<Tile>();
+    inRangeTiles.Add(t);
+    edgeTiles.Add(t);
 
-      if (distance <= range && distance != 0) {
-        inRangeTiles.Add(other);
-      } else if (heightAdvantage && distance == range + 1) {
-        // Check if the origin is higher
-        if ((int)(t.getHeight() - other.getHeight()) >= 1) {
-          inRangeTiles.Add(other);
+    for (int dist = 1; dist < range + 1; dist++) {
+      foreach (Tile e in edgeTiles) {
+        foreach (Tile a in getAdjacentTiles(e)) {
+          if (!inRangeTiles.Contains(a) && !outerTiles.Contains(a) && a.movePointSpent < 10) {
+            outerTiles.Add(a);
+          }
         }
       }
+      
+      inRangeTiles.AddRange(outerTiles);
+      edgeTiles = outerTiles;
+      outerTiles = new List<Tile>();
     }
+
+    inRangeTiles.Remove(t);
     return inRangeTiles;
   }
 
@@ -141,6 +206,7 @@ public class Map {
     return inRangeTiles;
   }
 
+  // Manhattan distance
   public int l1Distance(Tile t1, Tile t2) {
     return (int)Math.Floor(Math.Abs(t1.transform.position.x - t2.transform.position.x) + 0.5f)  +
           (int)Math.Floor(Math.Abs(t1.transform.position.z - t2.transform.position.z) + 0.5f) ;

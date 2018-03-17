@@ -97,6 +97,9 @@ public class BattleCharacter : Effected {
   GameObject damagebar;
   public GameObject healingbar;
 
+  public Transform leftHand;
+  public Transform rightHand;
+
   void Start(){
     init();
   }
@@ -120,6 +123,9 @@ public class BattleCharacter : Effected {
     lifebar = ui.Find("Health Bar/Health").gameObject;
     damagebar = ui.Find("Health Bar/Damage").gameObject;
     healingbar = ui.Find("Health Bar/Healing").gameObject;
+
+    leftHand = transform.findRecursive("DEF-hand.L_end");
+    rightHand = transform.findRecursive("DEF-hand.R_end");
   }
 
   void setSkills() {
@@ -234,7 +240,7 @@ public class BattleCharacter : Effected {
 
     face(target.transform.position);
 
-    if (animator) GameManager.get.waitFor(animator, skill.animation, () => finishSkill(skill, target, targets));
+    if (animator) GameManager.get.waitFor(animator, skill.animation, () => new Projectile(this, skill.targetsTiles ? (target as Effected) : target.occupant, skill.projectileType, skill.projectileMoveType, () => finishSkill(skill, target, targets)));
     else finishSkill(skill, target, targets);
     return true;
   }

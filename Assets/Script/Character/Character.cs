@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Character {
@@ -7,7 +8,38 @@ public class Character {
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";
-  public Equipment[] gear = new Equipment[]{null,null};
+
+  [System.Serializable]
+  public class Gear {
+    public Weapon weapon;
+    public Armour armour;
+
+    public Equipment this[int i] {
+      get {
+        if (i == EquipType.weapon) return weapon;
+        if (i == EquipType.armour) return armour;
+        return null;
+      }
+      set {
+        if (i == EquipType.weapon) weapon = value as Weapon;
+        if (i == EquipType.armour) armour = value as Armour;
+      }
+    }
+
+    public Gear(Weapon w, Armour a) {
+      weapon = w;
+      armour = a;
+    }
+
+    public IEnumerator<Equipment> GetEnumerator()
+    { //Needs to return in same order as EquipType orders the corresponding values
+        yield return weapon;
+        yield return armour;
+    }
+
+  }
+
+  public Gear gear = new Gear(null,null);
 
   //gain experience when using a skill and when killing enemy.
   public int curLevel = 1;
@@ -35,14 +67,12 @@ public class Character {
 
   public void unEquip(Equipment e) {
     if (e == null) return;
-    e.equippedTo = null;
     gear[e.type] = null;
   }
 
   public void equip(Equipment e) {
     unEquip(gear[e.type]);
     gear[e.type] = e;
-    e.equippedTo = this;
   }
   public Attributes gearAttr() {
     Attributes attr = new Attributes();
