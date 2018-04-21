@@ -226,6 +226,7 @@ public class GameManager : MonoBehaviour {
 
     string mapName = SceneManager.GetActiveScene().name;
     reader = new DialogueReader(mapName);
+    SkillList.get.createDict();
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {
@@ -303,9 +304,31 @@ public class GameManager : MonoBehaviour {
       for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
         s = selectedCharacter.equippedSkills[i];
         Debug.AssertFormat(s.name != "", "Skill Name is empty");
+
+        // Set the text on the button TODO: Remove this when every skill has an icon
         skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+
+        // Set the button image
+        Sprite skillImage = SkillList.get.skillImages[s.GetType()];
+        Image skillDisplay = skillButtons[i].transform.Find("Image").gameObject.GetComponent<Image>();
+        if (skillImage == null) {
+          skillDisplay.enabled = false;
+        } else {
+          skillDisplay.sprite = skillImage;
+          skillDisplay.enabled = true;
+        }
+
+        // Set the tooltip
         skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
-        skillButtons[i].interactable = s.canUse();
+
+        // Disable the button if necessary
+        bool buttonEnabled = s.canUse();
+        skillButtons[i].interactable = buttonEnabled;
+        if (buttonEnabled) {
+          skillDisplay.color = Color.white;
+        } else {
+          skillDisplay.color = Color.grey;
+        }
       }
     }
     if (previewTarget == null) {
