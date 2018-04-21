@@ -20,7 +20,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     dEle = DamageElement.fire;
     targetAlly(false);
     targetEnemy(true);
-    projectileType = ProjectileType.Fireball;
+    projectileType = ProjectileType.Arrow;
     projectileMoveType = ProjectileMovementType.Parabolic;
   }
 
