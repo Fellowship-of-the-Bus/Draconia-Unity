@@ -47,17 +47,24 @@ public class Projectile {
   }
 
   IEnumerator move(ProjectileMovementType moveType) {
-    const float speed = 1.5f;
+    const float speed = 0.5f;
+    const float height = 2f;
     if (projectile) {
+      Transform proj = projectile.transform.Find("Projectile");
       projectile.transform.SetParent(null);
-      Quaternion angle = Quaternion.LookRotation(direction);
-      projectile.transform.Find("Projectile").rotation = angle;
+      Quaternion angle = Quaternion.LookRotation(direction + new Vector3(0,height,0));
+      proj.rotation = angle;
       yield return GameManager.get.moveObject(projectile,
                                                 speed,
                                                 projectile.transform.position,
                                                 target.transform.position,
-                                                2f,
+                                                height,
                                                 (f) => projectile.transform.InverseTransformDirection(f),
+                                                (t) => {
+                                                  const float totalRotation = 90f;
+                                                  proj.rotation = angle;
+                                                  proj.Rotate(Vector3.right,totalRotation*t);
+                                                },
                                                 false,
                                                 moveType == ProjectileMovementType.Parabolic);
     }

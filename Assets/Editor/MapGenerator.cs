@@ -73,17 +73,23 @@ static class MapGenerator {
       bool hasTree = false;
       bool floating = false;
       char baseBlockSymbol = ' ';
-      while (t[0] == '!' || t[0] == 't' || t[0] == '^') {
+      bool unpathable = false;
+      //should replace all these ors with a set contains eventually.
+      while (t[0] == '!' || t[0] == 't' || t[0] == '^' || t[0] == '-') {
         if (t[0] == '!') {
           startTile = true;
           t = t.Substring(1);
         } else if (t[0] == 't') {
           hasTree = true;
+          unpathable = true;
           t = t.Substring(1);
         } else if (t[0] == '^') {
           floating = true;
           baseBlockSymbol = t[1];
           t = t.Substring(2);
+        } else if (t[0] == '-') {
+          unpathable = true;
+          t = t.Substring(1);
         }
       }
       char tileSymbol = t[0];
@@ -112,7 +118,8 @@ static class MapGenerator {
         tree.transform.localScale = new Vector3(tree.transform.localScale.x,
                                         (tree.transform.localScale.y + rand) / o.transform.localScale.y, tree.transform.localScale.z);
         tree.transform.localPosition = new Vector3(0,0.5f,0);
-        //make impassable?
+      }
+      if (unpathable) {
         newTile.movePointSpent = 1000;
       }
 
