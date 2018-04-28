@@ -310,7 +310,9 @@ public class GameManager : MonoBehaviour {
 
         // Set the button image
         Sprite skillImage = SkillList.get.skillImages[s.GetType()];
-        Image skillDisplay = skillButtons[i].transform.Find("Image").gameObject.GetComponent<Image>();
+        GameObject imageObject = skillButtons[i].transform.Find("SkillImage").gameObject;
+        Image skillDisplay = imageObject.GetComponent<Image>();
+        Image cooldownDisplay = imageObject.transform.Find("CooldownOverlay").gameObject.GetComponent<Image>();
         if (skillImage == null) {
           skillDisplay.enabled = false;
         } else {
@@ -321,13 +323,13 @@ public class GameManager : MonoBehaviour {
         // Set the tooltip
         skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
 
-        // Disable the button if necessary
+        // Cooldown indication
         bool buttonEnabled = s.canUse();
         skillButtons[i].interactable = buttonEnabled;
         if (buttonEnabled) {
-          skillDisplay.color = Color.white;
+          cooldownDisplay.fillAmount = 0f;
         } else {
-          skillDisplay.color = Color.grey;
+          cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
         }
       }
     }
