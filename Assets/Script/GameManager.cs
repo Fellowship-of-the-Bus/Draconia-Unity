@@ -156,7 +156,8 @@ public class GameManager : MonoBehaviour {
       AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
       float time = 0f;
       foreach(AnimationClip c in clips) {
-        string s = c.name.Substring(c.name.IndexOf("|")+1);
+        string s = c.name;
+        Debug.Log(s + ", " + trigger);
         if (s == trigger) time = c.length;
       }
       yield return new WaitForSeconds(time);

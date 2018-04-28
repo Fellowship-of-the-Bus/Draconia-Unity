@@ -5,6 +5,8 @@ public class CircleSlash: ActiveSkill, AoeSkill {
   public int aoe {get; set;}
   public bool effectsTiles {get; set;}
 
+  public override string animation { get { return "CircleSlash"; }}
+
   public CircleSlash() {
     range = 0;
     useWepRange = false;
