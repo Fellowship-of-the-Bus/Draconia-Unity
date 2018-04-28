@@ -4,15 +4,26 @@ using System.Collections.Generic;
 public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
   public BattleCharacter caster;
   List<BattleCharacter> effected = new List<BattleCharacter>();
+  GameObject particleEff;
+
   protected override void onActivate() {
     attachListener(GameManager.get.eventManager, EventHook.endTurn);
     attachListener(GameManager.get.eventManager, EventHook.enterTile);
     attachListener(caster, EventHook.endTurn);
+
+    particleEff = (GameObject) GameObject.Instantiate(Resources.Load("ParticleEffects/Scorched Earth"),
+      new Vector3(ownerTile.transform.position.x,
+        ownerTile.transform.position.y + ownerTile.getHeight(),
+        ownerTile.transform.position.z), Quaternion.identity);
   }
 
   protected override void onDeactivateListeners() {
     detachListener(GameManager.get.eventManager);
     detachListener(caster);
+  }
+
+  protected override void onDeactivateEffects() {
+    Object.Destroy(particleEff);
   }
 
   float damage(BattleCharacter c) {
