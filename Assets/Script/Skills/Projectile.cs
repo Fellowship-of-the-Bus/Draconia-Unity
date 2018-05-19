@@ -58,6 +58,9 @@ public class Projectile {
                                                 speed,
                                                 projectile.transform.position,
                                                 target.transform.position,
+                                                0,
+                                                1,
+                                                null,
                                                 height,
                                                 (f) => projectile.transform.InverseTransformDirection(f),
                                                 (t) => {

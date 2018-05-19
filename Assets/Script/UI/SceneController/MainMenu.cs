@@ -6,6 +6,7 @@ public class MainMenu: MonoBehaviour {
   public FileBrowser loadBrowser;
 
   void Start() {
+    SkillList.get.createDict();
     LootGenerator.init();
   }
   public void test() {
