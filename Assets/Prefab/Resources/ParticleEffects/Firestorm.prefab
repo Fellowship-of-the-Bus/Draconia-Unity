@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4547141309516652}
   - component: {fileID: 198105185942018580}
   - component: {fileID: 199431842176766472}
+  - component: {fileID: 114426895730665586}
   m_Layer: 0
   m_Name: Firestorm
   m_TagString: Untagged
@@ -128,7 +129,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1473910143498980}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.57, y: 4.91, z: -2.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4730821188012118}
@@ -200,6 +201,19 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114426895730665586
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1473910143498980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815e36deda846fe4098af2228beb74b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: adcb8cbcef100ba4eaf7a6dc4e5ebda2, type: 3}
+  part: {fileID: 198105185942018580}
 --- !u!198 &198105185942018580
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -257,7 +271,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 100991597
+  randomSeed: -947594026
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2534,7 +2548,7 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -3389,7 +3403,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1369555719
+  randomSeed: -144723247
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6520,7 +6534,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1310952732
+  randomSeed: -1575399175
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -9646,7 +9660,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -803954265
+  randomSeed: 1822331659
   InitialModule:
     serializedVersion: 3
     enabled: 1
