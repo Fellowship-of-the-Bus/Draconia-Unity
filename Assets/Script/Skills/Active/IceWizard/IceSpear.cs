@@ -18,6 +18,10 @@ public class IceSpear: SingleTarget {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Hurl a spear of ice dealing " + tooltipDamage + " damage to the target";
+  }}
+
   public override int damageFormula() {
     return (int)(self.intelligence*(1+level*0.1));
   }

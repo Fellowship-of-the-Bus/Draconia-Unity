@@ -17,6 +17,10 @@ public class FrostArmor: SingleTarget {
     targetEnemy(false);
   }
 
+  protected override string tooltipDescription { get {
+    return "Shield the target with armor of magical ice";
+  }}
+
   public override void additionalEffects (BattleCharacter target) {
     FrostArmorEffect debuff = new FrostArmorEffect();
     debuff.level = level;

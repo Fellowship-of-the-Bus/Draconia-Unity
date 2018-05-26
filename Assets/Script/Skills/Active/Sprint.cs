@@ -15,8 +15,6 @@ public class Sprint: ActiveSkill, AoeSkill {
     maxCooldown = 3;
     targetsTiles = true;
 
-    dType = DamageType.magical;
-    dEle = DamageElement.ice;
     targetAlly(true);
     targetEnemy(true);
   }
