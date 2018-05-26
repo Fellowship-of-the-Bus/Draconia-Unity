@@ -607,6 +607,7 @@ public class GameManager : MonoBehaviour {
     Animator animator = character.animator;
     if (setWalking && animator) {
       animator.SetBool("isWalking", true);
+      animator.SetBool("isNinja", character.isNinja);
     }
     Tile endpoint = path.Last.Value;
     int moveFrames = (int)(path.Count * Options.FPS/speed);

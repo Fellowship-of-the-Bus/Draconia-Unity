@@ -19,6 +19,10 @@ public class BattleCharacter : Effected {
     get { return baseChar.skills; }
   }
 
+  public bool isNinja {
+    get { return skills.getSkillLevel(typeof(Dodge)) > 0; }
+  }
+
   //base stats + permanent stat passives
   public Attributes attr {
     get { return baseChar.attr; }
