@@ -131,7 +131,7 @@ public class BattleCharacter : Effected {
     leftHand = transform.findRecursive("Hand.L");
     rightHand = transform.findRecursive("Hand.R");
     GameObject weaponModel = weapon.getModel();
-    Debug.Log(weaponModel);
+    // Debug.Log(weaponModel);
     if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
   }
 
