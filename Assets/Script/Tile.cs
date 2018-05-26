@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Tile : Effected {
+  public static int unpathableCost = 1000;
   public int distance = 0;
   public int movePointSpent = 1;
   public Vector3 dir = Vector3.zero;
@@ -32,9 +33,16 @@ public class Tile : Effected {
     color = t.gameObject.GetComponent<Renderer>().material;
   }
 
+  public bool unpathable() {
+    return movePointSpent >= Tile.unpathableCost;
+  }
+
   public void setColor(Color c) {
     Renderer r = this.gameObject.GetComponent<Renderer>();
     if (r == null) {
+      if (unpathable()) {
+        return;
+      }
       // Only this part is needed for multitexture tiles
       this.transform.Find("LeftBorder").gameObject.GetComponent<Renderer>().material.color = c;
       this.transform.Find("RightBorder").gameObject.GetComponent<Renderer>().material.color = c;
