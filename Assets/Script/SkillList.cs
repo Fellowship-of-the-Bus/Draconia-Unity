@@ -24,7 +24,10 @@ class SkillList {
     });
   }
 
+  bool dictCreated = false;
   public void createDict() {
+    if (dictCreated) return;
+    dictCreated = true;
     Type skill = Type.GetType("Skill");
     foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
       if (skill.IsAssignableFrom(t) && !t.IsAbstract) {

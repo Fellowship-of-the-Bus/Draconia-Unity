@@ -19,6 +19,10 @@ public class BattleCharacter : Effected {
     get { return baseChar.skills; }
   }
 
+  public bool isNinja {
+    get { return skills.getSkillLevel(typeof(Dodge)) > 0; }
+  }
+
   //base stats + permanent stat passives
   public Attributes attr {
     get { return baseChar.attr; }
@@ -126,6 +130,9 @@ public class BattleCharacter : Effected {
 
     leftHand = transform.findRecursive("Hand.L");
     rightHand = transform.findRecursive("Hand.R");
+    GameObject weaponModel = weapon.getModel();
+    Debug.Log(weaponModel);
+    if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
   }
 
   void setSkills() {

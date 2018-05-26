@@ -18,6 +18,7 @@ class FBXPostprocessor : AssetPostprocessor {
   }
 
   void OnPostprocessModel(GameObject g) {
+
     if (models.Contains(g.name)) {
       Animator animator = g.GetComponent<Animator>();
 
@@ -38,11 +39,22 @@ class FBXPostprocessor : AssetPostprocessor {
       }
 
       AnimatorController controller = Resources.Load("Human", typeof(AnimatorController)) as AnimatorController;
+      Debug.Log(controller.layers.Length);
       AnimatorControllerLayer layer = controller.layers[0]; //Our controller only has one layer
       AnimatorStateMachine machine = layer.stateMachine;
       foreach(ChildAnimatorState cstate in machine.states) {
         AnimatorState state = cstate.state;
-        state.motion = Resources.Load("Animations/" + state.name, typeof(AnimationClip)) as AnimationClip;
+        if (state.motion is BlendTree) {
+          BlendTree bt = state.motion as BlendTree;
+          while (bt.children.Length > 0) bt.RemoveChild(0);
+          foreach(string s in state.name.Split('_')) {
+            AnimationClip btmotion = Resources.Load("Animations/" + s, typeof(AnimationClip)) as AnimationClip;
+            if (btmotion) bt.AddChild(btmotion);
+          }
+          continue;
+        }
+        AnimationClip motion = Resources.Load("Animations/" + state.name, typeof(AnimationClip)) as AnimationClip;
+        if (motion) state.motion = motion;
       }
 
       animator.runtimeAnimatorController = controller;

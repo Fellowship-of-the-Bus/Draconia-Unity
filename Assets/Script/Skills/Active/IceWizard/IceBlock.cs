@@ -22,6 +22,10 @@ public class IceBlock: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
+  protected override string tooltipDescription { get {
+    return "Coalesce a block of ice at the target location, raising the terrain height by 1";
+  }}
+
   public List<Tile> getTargetsInAoe(Vector3 position) {
     return getTargetsInAoe(position, aoe);
   }

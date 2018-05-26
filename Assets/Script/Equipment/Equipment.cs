@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 public enum EquipmentClass {
-  Sword, Bow, Axe, // Weapon
+  Sword, Bow, Axe, Staff, // Weapon
   Shield, Metal, Robe, Leather, // Armor
   Unarmed // Unarmed works for either, so keep it last
 } // MUST keep getWeaponKind consistent with this enum

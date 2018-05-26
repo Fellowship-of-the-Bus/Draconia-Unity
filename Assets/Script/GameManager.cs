@@ -227,7 +227,6 @@ public class GameManager : MonoBehaviour {
 
     string mapName = SceneManager.GetActiveScene().name;
     reader = new DialogueReader(mapName);
-    SkillList.get.createDict();
   }
   //should begin in character select phase, probably using a different camera...
   void Start() {
@@ -568,12 +567,16 @@ public class GameManager : MonoBehaviour {
     waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation, true)));
   }
 
-  public IEnumerator moveObject(GameObject obj, float speed, Vector3 start, Vector3 end, float heightChange = 0.5f, Func<Vector3, Vector3> transformDist = null, Action<float> extra = null, bool movingPiece = true, bool arcing = false) {
+  public IEnumerator moveObject(GameObject obj, float speed, Vector3 start, Vector3 end, int startFrame, int totalFrames, Animator animator, float heightChange = 0.5f, Func<Vector3, Vector3> transformDist = null, Action<float> extra = null, bool movingPiece = true, bool arcing = false) {
     if (transformDist == null) transformDist = (v) => v; //Lambda isn't a valid default value, so have to use null and set here
     float hopHeight = Math.Max(end.y, start.y) + heightChange;
     float dUp = speed*2*(hopHeight - start.y)/Options.FPS;
     float dDown = speed*2*(end.y - hopHeight)/Options.FPS;
+    int curFrame = startFrame;
     for (int i = 0; i < Options.FPS/speed; i++) {
+      float pct = curFrame * 1.0f / totalFrames;
+      if (movingPiece) animator.SetFloat("Blend", (pct < 0.1) ? pct*10 : ((pct > 0.90) ? (1-pct)*10 : 1));
+      Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Blend Tree"));
       Vector3 d = speed*transformDist(end-start)/Options.FPS;
       if ((d.y != 0 && movingPiece) || (!movingPiece && arcing)) {
         d = obj.transform.TransformDirection(d);
@@ -586,6 +589,7 @@ public class GameManager : MonoBehaviour {
         d = obj.transform.InverseTransformDirection(d);
       }
       obj.transform.Translate(d);
+      curFrame++;
       yield return new WaitForSeconds(1/Options.FPS);
     }
   }
@@ -603,8 +607,11 @@ public class GameManager : MonoBehaviour {
     Animator animator = character.animator;
     if (setWalking && animator) {
       animator.SetBool("isWalking", true);
+      animator.SetBool("isNinja", character.isNinja);
     }
     Tile endpoint = path.Last.Value;
+    int moveFrames = (int)(path.Count * Options.FPS/speed);
+    int curFrame = 0;
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
@@ -614,7 +621,8 @@ public class GameManager : MonoBehaviour {
       if (setWalking || smoothMovement) {
         if (setWalking) character.face(pos);
         // Move Piece
-        yield return moveObject(piece, speed, piece.transform.position, pos);
+        yield return moveObject(piece, speed, piece.transform.position, pos, curFrame, moveFrames, animator);
+        curFrame += (int)(Options.FPS/speed);
         piece.transform.Translate(pos-piece.transform.position);
       }
       // tell listeners that this character moved
