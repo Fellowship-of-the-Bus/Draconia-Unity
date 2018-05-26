@@ -15,6 +15,7 @@ static class MapGenerator {
    * start default false (! at front of string)
    * should have a tree (t at front of string)
    * ^ For floating block, with next character base block
+   * - for unpathable
    * example !D2.5 for start tile dirt height 2.5
    * example D for non-startTile height 1
    * example !tD2.5 for start tile dirt height 2.5 that contains a tree.
