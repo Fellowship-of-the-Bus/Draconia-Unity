@@ -121,7 +121,7 @@ static class MapGenerator {
         tree.transform.localPosition = new Vector3(0,0.5f,0);
       }
       if (unpathable) {
-        newTile.movePointSpent = 1000;
+        newTile.movePointSpent = 2*Tile.unpathableCost;
       }
 
       index++;
