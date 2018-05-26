@@ -18,6 +18,7 @@ class FBXPostprocessor : AssetPostprocessor {
   }
 
   void OnPostprocessModel(GameObject g) {
+
     if (models.Contains(g.name)) {
       Animator animator = g.GetComponent<Animator>();
 
