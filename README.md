@@ -41,8 +41,8 @@ Coming soon!
 [video]: https://www.youtube.com/watch?v=
 [video image]: images/video.png
 
-[game logo]: src/main/resources/img/GameLogo.png
-[logo]: src/main/resources/img/FotB-Logo.png
+[game logo]: images/GameLogo.png
+[logo]: images/FotB-Logo.png
 [releases]: ../../releases
 [sbt]: http://www.scala-sbt.org/
 
