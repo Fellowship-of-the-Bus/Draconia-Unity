@@ -587,7 +587,7 @@ public class GameManager : MonoBehaviour {
         if (extra != null) extra(i/(Options.FPS/(speed)));
         d = obj.transform.InverseTransformDirection(d);
       }
-      obj.transform.Translate(d);
+      obj.transform.Translate(d, Space.World);
       curFrame++;
       yield return new WaitForSeconds(1/Options.FPS);
     }
