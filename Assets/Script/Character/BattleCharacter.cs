@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Collections;
 
 public enum AIType {
-  Aggressive,Basic,Buff,Sentry
+  Aggressive,Basic,Buff,Sentry,None
 }
 
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
-  public AIType aiType = AIType.Aggressive;
+  public AIType aiType = AIType.None;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }
@@ -125,6 +125,7 @@ public class BattleCharacter : Effected {
     curHealth = maxHealth;
     switch (aiType) {
       case AIType.Aggressive:
+      case AIType.None:
         ai = new AggressiveAI();
         break;
       case AIType.Basic:

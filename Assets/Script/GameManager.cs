@@ -93,7 +93,6 @@ public class GameManager : MonoBehaviour {
   public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
-
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   private List<BFEvent> BFevents = new List<BFEvent>();
@@ -431,7 +430,7 @@ public class GameManager : MonoBehaviour {
 
     changeState(GameState.moving);
     // enemy
-    if (selectedCharacter.team == 1) {
+    if (selectedCharacter.team != 0 || selectedCharacter.aiType != AIType.None) {
       playerTurn = false;
       handleAI();
       return;
