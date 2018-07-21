@@ -2,14 +2,14 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
-	public float mouseSensitivity = 0.01f;
+  public float mouseSensitivity = 0.01f;
   public float scrollSensitivity = 10f;
-	private Vector3 lastPosition;
-	private Vector3 rotationDirection = Vector3.up;
-	private float rotationTime;
-	private Transform preTransform;
-	private Vector3 rotateAbout;
-	private bool rotating;
+  private Vector3 lastPosition;
+  private Vector3 rotationDirection = Vector3.up;
+  private float rotationTime;
+  private Transform preTransform;
+  private Vector3 rotateAbout;
+  private bool rotating;
 
   Ray ray;
   float distance = 0;
@@ -22,26 +22,30 @@ public class CameraController : MonoBehaviour {
   bool animatingPan = false;
   const float maxPanTime = 0.25f;
 
+  private bool shaking = false;
+  private float shakeDuration;
+  private float shakeIntensity = 0.3f;
+
   Quaternion rot;
 
-	// Use this for initialization
-	void Start () {
+  // Use this for initialization
+  void Start () {
     GameObject o = new GameObject("Previous transform");
     o.transform.SetParent(transform);
-		preTransform =  o.transform;
-	}
+    preTransform =  o.transform;
+  }
 
-	// Update is called once per frame
-	void Update () {
-		ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+  // Update is called once per frame
+  void Update () {
+    ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
     Plane hPlane;
     // create a plane at 0,0,0 whose normal points to +Y:
     hPlane = new Plane(Vector3.up, Vector3.zero);
-		// Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
-		distance = 0;
-		// if the ray hits the plane...
-		hPlane.Raycast(ray, out distance);
-		rotateAbout = ray.GetPoint(distance);
+    // Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
+    distance = 0;
+    // if the ray hits the plane...
+    hPlane.Raycast(ray, out distance);
+    rotateAbout = ray.GetPoint(distance);
 
     float scroll = Input.GetAxis("Mouse ScrollWheel");
     if ((scroll > 0 && transform.position.y > 5f) || (scroll < 0 && transform.position.y < 15f)) {
@@ -68,20 +72,27 @@ public class CameraController : MonoBehaviour {
     } else if (animatingPan) {
       transform.position = relativePosn + savedPosn;
       animatingPan = false;
+    } else if (shakeDuration > 0f) {
+      shakeDuration -= Time.deltaTime;
+      transform.position = Vector3.Lerp(savedPosn,
+        savedPosn + (Random.insideUnitSphere * shakeIntensity), shakeDuration);
+    } else if (shaking) {
+      shaking = false;
+      transform.position = savedPosn;
     } else {
       float dx = 0;
       float dy = 0;
 
-			if (Input.GetMouseButtonDown (0)) {
-				lastPosition = Input.mousePosition;
-			}
+      if (Input.GetMouseButtonDown (0)) {
+        lastPosition = Input.mousePosition;
+      }
 
-			if (Input.GetMouseButton (0)) {
-				Vector3 delta = Input.mousePosition - lastPosition;
-				lastPosition = Input.mousePosition;
+      if (Input.GetMouseButton (0)) {
+        Vector3 delta = Input.mousePosition - lastPosition;
+        lastPosition = Input.mousePosition;
         dx = delta.x;
         dy = delta.y;
-			}
+      }
 
       if (Input.GetKey(KeyCode.UpArrow))
         dy = -5;
@@ -95,33 +106,33 @@ public class CameraController : MonoBehaviour {
       if (dx != 0 || dy != 0) {
         pan(dx, dy);
       }
-		}
-	}
+    }
+  }
 
   void LateUpdate() {
     preTransform.rotation = rot;
   }
 
-	public void rotateLeft () {
-		setupRotation (Vector3.down);
-	}
+  public void rotateLeft () {
+    setupRotation (Vector3.down);
+  }
 
-	public void rotateRight () {
-		setupRotation (Vector3.up);
-	}
+  public void rotateRight () {
+    setupRotation (Vector3.up);
+  }
 
-	private void setupRotation (Vector3 direction) {
-		if (rotationTime <= 0) {
-			preTransform.rotation = transform.localRotation;
-			preTransform.position = transform.localPosition;
-			preTransform.localScale = transform.localScale;
-			rotating = true;
-			rotationDirection = direction;
-			rotationTime = 1.0f;
-			preTransform.RotateAround(rotateAbout, rotationDirection, 90);
+  private void setupRotation (Vector3 direction) {
+    if (rotationTime <= 0) {
+      preTransform.rotation = transform.localRotation;
+      preTransform.position = transform.localPosition;
+      preTransform.localScale = transform.localScale;
+      rotating = true;
+      rotationDirection = direction;
+      rotationTime = 1.0f;
+      preTransform.RotateAround(rotateAbout, rotationDirection, 90);
       rot = preTransform.rotation;
-		}
-	}
+    }
+  }
 
   private void pan(float x, float y) {
     Quaternion rotation = transform.rotation;
@@ -168,5 +179,14 @@ public class CameraController : MonoBehaviour {
     panOrigin = transform.position - relativePosn;
     panTime = maxPanTime;
     animatingPan = true;
+  }
+
+  public void screenShake() {
+    // TODO: make it work while panning, make additional shaking add to it.
+    if (!shaking && !animatingPan && !rotating) {
+      shaking = true;
+      shakeDuration = 1.0f;
+      savedPosn = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+    }
   }
 }
