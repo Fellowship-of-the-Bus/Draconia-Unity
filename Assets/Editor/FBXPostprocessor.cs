@@ -42,7 +42,6 @@ class FBXPostprocessor : AssetPostprocessor {
       }
 
       AnimatorController controller = Resources.Load("Human", typeof(AnimatorController)) as AnimatorController;
-      Debug.Log(controller.layers.Length);
       AnimatorControllerLayer layer = controller.layers[0]; //Our controller only has one layer
       AnimatorStateMachine machine = layer.stateMachine;
       foreach(ChildAnimatorState cstate in machine.states) {
