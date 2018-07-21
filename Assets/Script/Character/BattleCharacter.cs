@@ -113,7 +113,7 @@ public class BattleCharacter : Effected {
     init();
   }
   bool initCalled = false;
-  public void init() {
+  public void init(bool inGame = true) {
     if (initCalled) return;
     initCalled = true;
     equippedSkills = skills.getActives(this);
@@ -150,9 +150,11 @@ public class BattleCharacter : Effected {
 
     leftHand = transform.findRecursive("Hand.L");
     rightHand = transform.findRecursive("Hand.R");
-    GameObject weaponModel = weapon.getModel();
-    // Debug.Log(weaponModel);
-    if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
+
+    if (inGame) {
+      GameObject weaponModel = weapon.getModel();
+      if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
+    }
   }
 
   void setSkills() {
@@ -213,7 +215,7 @@ public class BattleCharacter : Effected {
   }
 
   void OnValidate() {
-    init();
+    init(false);
     if (Options.debugMode && equippedSkills.Count != 0) {
       setSkills();
     }
