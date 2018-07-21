@@ -26,6 +26,9 @@ class FBXPostprocessor : AssetPostprocessor {
 
       // or get animation Clip
       Object[] objects = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+      if (!AssetDatabase.IsValidFolder("Assets/Models")) AssetDatabase.CreateFolder("Assets", "Models");
+      if (!AssetDatabase.IsValidFolder("Assets/Models/Resources")) AssetDatabase.CreateFolder("Assets/Models", "Resources");
+      if (!AssetDatabase.IsValidFolder("Assets/Models/Resources/Animations")) AssetDatabase.CreateFolder("Assets/Models/Resources", "Animations");
       foreach (Object obj in objects) {
         AnimationClip clip = obj as AnimationClip;
         if (clip != null) {
