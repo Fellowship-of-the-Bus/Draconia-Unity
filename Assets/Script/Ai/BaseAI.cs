@@ -89,7 +89,7 @@ public abstract class BaseAI {
               netChange -= val;
             }
           }
-          
+
           effected.Add(ch);
         }
 

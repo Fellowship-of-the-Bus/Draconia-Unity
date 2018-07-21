@@ -6,8 +6,13 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 
+public enum AIType {
+  Aggressive,Basic,Buff,Sentry
+}
+
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
+  public AIType aiType = AIType.Aggressive;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }
@@ -118,6 +123,20 @@ public class BattleCharacter : Effected {
     }
 
     curHealth = maxHealth;
+    switch (aiType) {
+      case AIType.Aggressive:
+        ai = new AggressiveAI();
+        break;
+      case AIType.Basic:
+        ai = new BasicAI();
+        break;
+      case AIType.Buff:
+        ai = new BuffAI();
+        break;
+      case AIType.Sentry:
+        ai = new SentryAI();
+        break;
+    }
     ai.owner = this;
 
     applyPassives();
