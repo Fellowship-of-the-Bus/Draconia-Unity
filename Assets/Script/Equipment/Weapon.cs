@@ -28,9 +28,7 @@ public class Weapon : Equipment {
   }
 
   public GameObject getModel() {
-    return null;
-    // Disabled because a "Leather" weapon of unknown origin is crashing the game
-    // return WeaponModels.weaponModels[equipmentClass];
+    return WeaponModels.weaponModels[equipmentClass];
   }
 
   public override Equipment getDefault() { return defaultWeapon; }
