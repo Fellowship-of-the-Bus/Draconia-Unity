@@ -2,6 +2,21 @@
 using System;
 using System.Collections.Generic;
 
+public static class WeaponModels {
+  static GameObject Sword = Resources.Load("Sword") as GameObject;
+  // static GameObject Jumonji = Resources.Load("jumonji") as GameObject;
+  // static GameObject Yari = Resources.Load("yari") as GameObject;
+  static GameObject Bow = Resources.Load("Bow") as GameObject;
+  static GameObject Staff = Resources.Load("Staff") as GameObject;
+
+  public static Dictionary<EquipmentClass,GameObject> weaponModels = new Dictionary<EquipmentClass,GameObject>() {
+    {EquipmentClass.Unarmed, null},
+    {EquipmentClass.Sword, Sword},
+    {EquipmentClass.Bow, Bow},
+    {EquipmentClass.Staff, Staff},
+  };
+}
+
 [System.Serializable]
 public class Weapon : Equipment {
   public int range = 1;
@@ -10,6 +25,12 @@ public class Weapon : Equipment {
 
   public static Weapon defaultWeapon {
     get { return new Weapon(EquipmentClass.Unarmed, 1, 1); }
+  }
+
+  public GameObject getModel() {
+    return null;
+    // Disabled because a "Leather" weapon of unknown origin is crashing the game
+    // return WeaponModels.weaponModels[equipmentClass];
   }
 
   public override Equipment getDefault() { return defaultWeapon; }

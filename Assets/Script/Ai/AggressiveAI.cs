@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-public class BasicAI : BaseAI {
+public class AggressiveAI : BaseAI {
   SkillData best;
 
   public override void target() {
@@ -39,6 +39,29 @@ public class BasicAI : BaseAI {
     // Determine movement when there are no valid attacks
     if (best == null) {
       newPosition = owner.curTile.transform.position;
+      int closest = System.Int32.MaxValue;
+      LinkedList<Tile> path = null;
+
+      // Find closest enemy
+      foreach (GameObject c in characterObjects) {
+        BattleCharacter bc = c.GetComponent<BattleCharacter>();
+        if (bc.team != owner.team) {
+          if (bc.curTile.distance < closest) {
+            closest = bc.curTile.distance;
+            path = map.getPath(bc.curTile.transform.position);
+          }
+        }
+      }
+
+      // Find reachable tile closest to chosen enemy
+      if (closest != System.Int32.MaxValue) {
+        foreach (Tile t in path) {
+          if (t.distance > owner.moveRange) {
+            break;
+          }
+          newPosition = t.transform.position;
+        }
+      }
     } else {
       newPosition = best.tile.transform.position;
     }

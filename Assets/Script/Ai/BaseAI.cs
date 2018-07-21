@@ -54,4 +54,51 @@ public abstract class BaseAI {
 
     return targetSets;
   }
+
+  protected SkillData evaluateSkillOptions(Tile tile) {
+    Heap<SkillData> db = new Heap<SkillData>();
+    int index = 0;
+    foreach (ActiveSkill skill in owner.equippedSkills) {
+      index++;
+      // Skip unusable skills
+      if (!skill.canUse()) continue;
+      List<Tile> targets = skill.getTargets(tile);
+      if (targets.Count == 0) continue;
+
+      List<TargetSet> targetCharacters = getTargetSets(skill, targets, tile);
+
+      // Calculate net change in team health difference
+      foreach (TargetSet tSet in targetCharacters) {
+        List<BattleCharacter> c = tSet.affected;
+        List<Effected> effected = new List<Effected>();
+        int netChange = 0;
+
+        foreach (BattleCharacter ch in c) {
+          if (skill is HealingSkill) {
+            int val = Math.Min(skill.calculateHealing(ch), ch.maxHealth - ch.curHealth);
+            if (ch.team != owner.team) {
+              netChange -= val;
+            } else {
+              netChange += val;
+            }
+          } else {
+            int val = skill.calculateDamage(ch, tile);
+            if (ch.team != owner.team) {
+              netChange += val;
+            } else {
+              netChange -= val;
+            }
+          }
+          
+          effected.Add(ch);
+        }
+
+        if (netChange > 0) {
+          db.add(new SkillData(this, index - 1, netChange, effected, tile, tSet.tile));
+        }
+      }
+    }
+
+    return db.getMax();
+  }
 }

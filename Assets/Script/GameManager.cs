@@ -576,7 +576,6 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < Options.FPS/speed; i++) {
       float pct = curFrame * 1.0f / totalFrames;
       if (movingPiece) animator.SetFloat("Blend", (pct < 0.1) ? pct*10 : ((pct > 0.90) ? (1-pct)*10 : 1));
-      Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Blend Tree"));
       Vector3 d = speed*transformDist(end-start)/Options.FPS;
       if ((d.y != 0 && movingPiece) || (!movingPiece && arcing)) {
         d = obj.transform.TransformDirection(d);

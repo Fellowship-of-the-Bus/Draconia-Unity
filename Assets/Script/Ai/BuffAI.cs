@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-public class BasicAI : BaseAI {
+public class BuffAI : BaseAI {
   SkillData best;
 
   public override void target() {
