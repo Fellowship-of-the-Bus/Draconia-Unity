@@ -26,7 +26,6 @@ public class PlayerControl : MonoBehaviour {
   void GetMouseInputs() {
     // Don't allow input on AI turn
     if (gameManager.UILocked()) return;
-    Debug.Log()
 
     handleHovered(gameManager.getHovered(PlayerCam));
     handleClicked(gameManager.getClicked(PlayerCam));
