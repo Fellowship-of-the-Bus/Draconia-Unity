@@ -429,15 +429,15 @@ public class GameManager : MonoBehaviour {
     map.djikstra(position, SelectedPiece.GetComponent<BattleCharacter>());
 
     changeState(GameState.moving);
-    // enemy
+    // AI's
     if (selectedCharacter.team != 0 || selectedCharacter.aiType != AIType.None) {
       playerTurn = false;
       handleAI();
       return;
-    } else {
-      cam.panTo(SelectedPiece.transform.position);
-      playerTurn = true;
     }
+
+    cam.panTo(SelectedPiece.transform.position);
+    playerTurn = true;
 
     cancelStack.Clear();
 
@@ -536,7 +536,7 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
-      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) {
+      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0 && SelectedPiece.GetComponent<BattleCharacter>().aiType == AIType.None) {
         lockUI();
       }
 
