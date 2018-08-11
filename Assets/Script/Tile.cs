@@ -12,7 +12,7 @@ public class Tile : Effected {
   public bool startTile = false;
   public string type;
   public Material color;
-  public Renderer[] borders = new Renderer[4];
+  private Renderer border;
   private bool isClear = false;
 
   public bool occupied() {
@@ -34,10 +34,7 @@ public class Tile : Effected {
   public void setup() {
     Transform t = gameObject.transform.Find("Top");
     color = t.gameObject.GetComponent<Renderer>().material;
-    borders[0] = this.transform.Find("LeftBorder").gameObject.GetComponent<Renderer>();
-    borders[1] = this.transform.Find("RightBorder").gameObject.GetComponent<Renderer>();
-    borders[2] = this.transform.Find("BackBorder").gameObject.GetComponent<Renderer>();
-    borders[3] = this.transform.Find("FrontBorder").gameObject.GetComponent<Renderer>();
+    border = this.transform.Find("Border").gameObject.GetComponent<Renderer>();
   }
 
   public bool unpathable() {
@@ -50,9 +47,7 @@ public class Tile : Effected {
       return;
     }
 
-    foreach (Renderer b in borders) {
-      b.material.color = c;
-    }
+    border.material.color = c;
   }
 
   public void clearColour() {
