@@ -8,6 +8,7 @@ class FBXPostprocessor : AssetPostprocessor {
   const float y_val = -0.78f;
 
   List<string> models = new List<string>(new string[] {"Human", "Lizard"});
+  List<string> toResize = new List<string>(new string[] {"Sword", "Bow", "Hammer", "jumonji", "Staff", "yari"});
 
   void getAllChildren(GameObject g) {
     for(int i = 0; i < g.transform.childCount; i++) {
@@ -19,6 +20,10 @@ class FBXPostprocessor : AssetPostprocessor {
 
   void OnPostprocessModel(GameObject g) {
 
+    if (toResize.Contains(g.name)) {
+      g.transform.localScale = new Vector3(1,1,1);
+    }
+
     if (models.Contains(g.name)) {
       Animator animator = g.GetComponent<Animator>();
 
@@ -26,6 +31,9 @@ class FBXPostprocessor : AssetPostprocessor {
 
       // or get animation Clip
       Object[] objects = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+      if (!AssetDatabase.IsValidFolder("Assets/Models")) AssetDatabase.CreateFolder("Assets", "Models");
+      if (!AssetDatabase.IsValidFolder("Assets/Models/Resources")) AssetDatabase.CreateFolder("Assets/Models", "Resources");
+      if (!AssetDatabase.IsValidFolder("Assets/Models/Resources/Animations")) AssetDatabase.CreateFolder("Assets/Models/Resources", "Animations");
       foreach (Object obj in objects) {
         AnimationClip clip = obj as AnimationClip;
         if (clip != null) {
@@ -39,7 +47,6 @@ class FBXPostprocessor : AssetPostprocessor {
       }
 
       AnimatorController controller = Resources.Load("Human", typeof(AnimatorController)) as AnimatorController;
-      Debug.Log(controller.layers.Length);
       AnimatorControllerLayer layer = controller.layers[0]; //Our controller only has one layer
       AnimatorStateMachine machine = layer.stateMachine;
       foreach(ChildAnimatorState cstate in machine.states) {

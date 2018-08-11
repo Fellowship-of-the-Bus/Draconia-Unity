@@ -93,7 +93,6 @@ public class GameManager : MonoBehaviour {
   public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
-
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   private List<BFEvent> BFevents = new List<BFEvent>();
@@ -430,15 +429,15 @@ public class GameManager : MonoBehaviour {
     map.djikstra(position, SelectedPiece.GetComponent<BattleCharacter>());
 
     changeState(GameState.moving);
-    // enemy
-    if (selectedCharacter.team == 1) {
+    // AI's
+    if (selectedCharacter.team != 0 || selectedCharacter.aiType != AIType.None) {
       playerTurn = false;
       handleAI();
       return;
-    } else {
-      cam.panTo(SelectedPiece.transform.position);
-      playerTurn = true;
     }
+
+    cam.panTo(SelectedPiece.transform.position);
+    playerTurn = true;
 
     cancelStack.Clear();
 
@@ -537,7 +536,7 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
-      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) {
+      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0 && SelectedPiece.GetComponent<BattleCharacter>().aiType == AIType.None) {
         lockUI();
       }
 
@@ -576,7 +575,6 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < Options.FPS/speed; i++) {
       float pct = curFrame * 1.0f / totalFrames;
       if (movingPiece) animator.SetFloat("Blend", (pct < 0.1) ? pct*10 : ((pct > 0.90) ? (1-pct)*10 : 1));
-      Debug.Log(animator.GetCurrentAnimatorStateInfo(0).IsName("Blend Tree"));
       Vector3 d = speed*transformDist(end-start)/Options.FPS;
       if ((d.y != 0 && movingPiece) || (!movingPiece && arcing)) {
         d = obj.transform.TransformDirection(d);
@@ -588,7 +586,7 @@ public class GameManager : MonoBehaviour {
         if (extra != null) extra(i/(Options.FPS/(speed)));
         d = obj.transform.InverseTransformDirection(d);
       }
-      obj.transform.Translate(d);
+      obj.transform.Translate(d, Space.World);
       curFrame++;
       yield return new WaitForSeconds(1/Options.FPS);
     }

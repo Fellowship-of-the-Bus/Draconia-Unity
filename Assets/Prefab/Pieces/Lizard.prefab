@@ -1791,7 +1791,7 @@ MonoBehaviour:
           iceResistance: 0
           lightningResistance: 0
         tier: 1
-        equipmentClass: 7
+        equipmentClass: 8
         range: 1
         kind: 0
       armour:
@@ -1815,6 +1815,7 @@ MonoBehaviour:
     curExp: 0
     maxExp: 100
     expGiven: 30
+  aiType: 0
   attrChange:
     strength: 0
     intelligence: 0
@@ -1829,7 +1830,13 @@ MonoBehaviour:
     iceResistance: 0
     lightningResistance: 0
   skillSet:
-  - name: ForceShot
+  - name: Punch
+    level: 1
+  - name: Punch
+    level: 1
+  - name: Punch
+    level: 1
+  - name: Punch
     level: 1
   passiveSet: []
   curTile: {fileID: 0}

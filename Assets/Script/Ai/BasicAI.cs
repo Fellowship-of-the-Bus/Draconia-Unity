@@ -29,47 +29,9 @@ public class BasicAI : BaseAI {
     possibilities.Add(owner.curTile);
 
     foreach (Tile tile in possibilities) {
-      int index = 0;
-      foreach (ActiveSkill skill in owner.equippedSkills) {
-        int cur = index++;
-
-        // Skip unusable skills
-        if (!skill.canUse()) continue;
-        List<Tile> targets = skill.getTargets(tile);
-        if (targets.Count == 0) continue;
-
-        List<TargetSet> targetCharacters = getTargetSets(skill, targets, tile);
-
-        // Calculate net change in team health difference
-        foreach (TargetSet tSet in targetCharacters) {
-          List<BattleCharacter> c = tSet.affected;
-          List<Effected> effected = new List<Effected>();
-          int netChange = 0;
-
-          foreach (BattleCharacter ch in c) {
-            if (skill is HealingSkill) {
-              int val = Math.Min(skill.calculateHealing(ch), ch.maxHealth - ch.curHealth);
-              if (ch.team != owner.team) {
-                netChange -= val;
-              } else {
-                netChange += val;
-              }
-            } else {
-              int val = skill.calculateDamage(ch, tile);
-              if (ch.team != owner.team) {
-                netChange += val;
-              } else {
-                netChange -= val;
-              }
-            }
-            
-            effected.Add(ch);
-          }
-
-          if (netChange > 0) {
-            db.add(new SkillData(this, cur, netChange, effected, tile, tSet.tile));
-          }
-        }
+      SkillData bestForTile = evaluateSkillOptions(tile);
+      if (bestForTile != null) {
+        db.add(bestForTile);
       }
     }
     best = db.getMax();
@@ -77,29 +39,6 @@ public class BasicAI : BaseAI {
     // Determine movement when there are no valid attacks
     if (best == null) {
       newPosition = owner.curTile.transform.position;
-      int closest = System.Int32.MaxValue;
-      LinkedList<Tile> path = null;
-
-      // Find closest enemy
-      foreach (GameObject c in characterObjects) {
-        BattleCharacter bc = c.GetComponent<BattleCharacter>();
-        if (bc.team != owner.team) {
-          if (bc.curTile.distance < closest) {
-            closest = bc.curTile.distance;
-            path = map.getPath(bc.curTile.transform.position);
-          }
-        }
-      }
-
-      // Find reachable tile closest to chosen enemy
-      if (closest != System.Int32.MaxValue) {
-        foreach (Tile t in path) {
-          if (t.distance > owner.moveRange) {
-            break;
-          }
-          newPosition = t.transform.position;
-        }
-      }
     } else {
       newPosition = best.tile.transform.position;
     }
