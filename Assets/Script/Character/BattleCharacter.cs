@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Collections;
 
 public enum AIType {
-  Aggressive,Basic,Buff,Sentry
+  Aggressive,Basic,Buff,Sentry,None
 }
 
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
-  public AIType aiType = AIType.Aggressive;
+  public AIType aiType = AIType.None;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }
@@ -113,7 +113,7 @@ public class BattleCharacter : Effected {
     init();
   }
   bool initCalled = false;
-  public void init() {
+  public void init(bool inGame = true) {
     if (initCalled) return;
     initCalled = true;
     equippedSkills = skills.getActives(this);
@@ -125,6 +125,7 @@ public class BattleCharacter : Effected {
     curHealth = maxHealth;
     switch (aiType) {
       case AIType.Aggressive:
+      case AIType.None:
         ai = new AggressiveAI();
         break;
       case AIType.Basic:
@@ -149,9 +150,11 @@ public class BattleCharacter : Effected {
 
     leftHand = transform.findRecursive("Hand.L");
     rightHand = transform.findRecursive("Hand.R");
-    GameObject weaponModel = weapon.getModel();
-    // Debug.Log(weaponModel);
-    if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
+
+    if (inGame) {
+      GameObject weaponModel = weapon.getModel();
+      if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
+    }
   }
 
   void setSkills() {
@@ -212,7 +215,7 @@ public class BattleCharacter : Effected {
   }
 
   void OnValidate() {
-    init();
+    init(false);
     if (Options.debugMode && equippedSkills.Count != 0) {
       setSkills();
     }

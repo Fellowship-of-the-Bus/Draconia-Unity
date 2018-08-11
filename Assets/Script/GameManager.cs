@@ -93,7 +93,6 @@ public class GameManager : MonoBehaviour {
   public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
   public List<GameObject> players { get{ return characters[0]; } }
   public List<GameObject> enemies { get{ return characters[1]; } }
-
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   private List<BFEvent> BFevents = new List<BFEvent>();
@@ -430,15 +429,15 @@ public class GameManager : MonoBehaviour {
     map.djikstra(position, SelectedPiece.GetComponent<BattleCharacter>());
 
     changeState(GameState.moving);
-    // enemy
-    if (selectedCharacter.team == 1) {
+    // AI's
+    if (selectedCharacter.team != 0 || selectedCharacter.aiType != AIType.None) {
       playerTurn = false;
       handleAI();
       return;
-    } else {
-      cam.panTo(SelectedPiece.transform.position);
-      playerTurn = true;
     }
+
+    cam.panTo(SelectedPiece.transform.position);
+    playerTurn = true;
 
     cancelStack.Clear();
 
@@ -537,7 +536,7 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
-      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0) {
+      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0 && SelectedPiece.GetComponent<BattleCharacter>().aiType == AIType.None) {
         lockUI();
       }
 
