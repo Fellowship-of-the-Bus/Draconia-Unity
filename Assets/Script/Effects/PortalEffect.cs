@@ -9,7 +9,7 @@ public class PortalEffect : DurationEffect {
   public List<BattleCharacter> effected = new List<BattleCharacter>();
   protected override void onActivate() {
     attachListener(caster, EventHook.endTurn);
-    block = (GameObject) GameObject.Instantiate(Resources.Load("Map/Portal"),
+    block = (GameObject) GameObject.Instantiate(Resources.Load("Map/Doodads/Portal"),
       new Vector3(ownerTile.transform.position.x,
         ownerTile.transform.position.y + ownerTile.getHeight() + 0.5f,
         ownerTile.transform.position.z), Quaternion.identity);
