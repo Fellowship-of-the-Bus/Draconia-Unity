@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 114622824004391372}
   - component: {fileID: 136635056445230264}
   m_Layer: 0
-  m_Name: Pawn
+  m_Name: Human
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 0.75, y: 0.65, z: 0.75}
   m_Children:
   - {fileID: 224000013299858602}
@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 4069621377621750}
   - component: {fileID: 95691032446339058}
   m_Layer: 0
-  m_Name: Human
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1717,7 +1717,7 @@ Animator:
   m_GameObject: {fileID: 1602323918507392}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2083377860b003a4e99e35fed01b8254, type: 3}
-  m_Controller: {fileID: 9100000, guid: 59347cd634043e440a291fbf75c93bd4, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
