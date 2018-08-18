@@ -156,7 +156,6 @@ public class GameManager : MonoBehaviour {
       float time = 0f;
       foreach(AnimationClip c in clips) {
         string s = c.name;
-        Debug.Log(s + ", " + trigger);
         if (s == trigger) time = c.length;
       }
       yield return new WaitForSeconds(time);
@@ -291,13 +290,12 @@ public class GameManager : MonoBehaviour {
         netChange += (e as HealthChangingEffect).healthChange();
       }
     }
-    selectedCharacter.updateLifeBar(selectedHealthBar);
-    selectedCharacter.updateLifeBar(selectedDamageBar);
-    selectedCharacter.updateLifeBar(selectedHealingBar);
+
+    selectedCharacter.updateLifeBars();
     if (netChange < 0) {
-      selectedCharacter.updateLifeBar(selectedHealthBar,selectedCharacter.curHealth + netChange);
+      selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth + netChange);
     } else if (netChange > 0) {
-      selectedCharacter.updateLifeBar(selectedHealingBar,selectedCharacter.curHealth + netChange);
+      selectedCharacter.updateLifeBar(selectedHealingBar, selectedCharacter.curHealth + netChange);
     }
     if (Options.debugMode && selectedCharacter.team == 0) {
       for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
@@ -332,10 +330,14 @@ public class GameManager : MonoBehaviour {
         }
       }
     }
+
     if (previewTarget == null) {
       targetPanel.SetActive(false);
     }
+
     if (SelectedSkill == -1)  return;
+
+    // Preview damage and healing for the selected skill
     s = selectedCharacter.equippedSkills[SelectedSkill];
     Tile currTile = pControl.currentHoveredTile;
     if (currTile != null && skillTargets.Contains(currTile)) {
@@ -358,19 +360,18 @@ public class GameManager : MonoBehaviour {
         }
       }
     }
+
     if (previewTarget) {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
-      previewTarget.updateLifeBar(targetHealingBar);
-      previewTarget.updateLifeBar(targetHealthBar);
-      previewTarget.updateLifeBar(targetDamageBar);
+      previewTarget.updateLifeBars();
       if (s.canTarget(previewTarget.curTile)) {
-          if (s is HealingSkill) {
-            previewTarget.updateLifeBar(targetHealingBar,previewTarget.curHealth + previewTarget.PreviewHealing);
-          }
-          else {
-            previewTarget.updateLifeBar(targetHealthBar,previewTarget.curHealth - previewTarget.PreviewDamage);
-          }
+        if (s is HealingSkill) {
+          previewTarget.updateLifeBar(targetHealingBar, previewTarget.curHealth + previewTarget.PreviewHealing);
+        }
+        else {
+          previewTarget.updateLifeBar(targetHealthBar, previewTarget.curHealth - previewTarget.PreviewDamage);
+        }
       }
     }
   }
@@ -525,6 +526,7 @@ public class GameManager : MonoBehaviour {
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {
+      SelectedSkill = -1;
       endTurnWrapper();
     }
     targets.Clear();
@@ -629,8 +631,7 @@ public class GameManager : MonoBehaviour {
       EventManager.get.onEvent(enterEvent);
       if (enterEvent.interruptMove) {
         cancelStack.Clear();
-        endpoint = destination;
-        break;
+        yield return new WaitForSeconds(0.5f);
       }
       if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
@@ -751,7 +752,9 @@ public class GameManager : MonoBehaviour {
     }
 
     yield return waitUntilPopped(movePiece(destination, true));
-    yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+    if (selectedCharacter.isAlive()) {
+      yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+    }
 
     StartCoroutine(endTurn());
   }

@@ -178,7 +178,7 @@ public class Map {
           }
         }
       }
-      
+
       inRangeTiles.AddRange(outerTiles);
       edgeTiles = outerTiles;
       outerTiles = new List<Tile>();
@@ -214,7 +214,7 @@ public class Map {
 
   public void clearColour() {
     foreach (Tile tile in tiles) {
-      tile.setColor(new Color(0.8f, 0.8f, 0.8f, 0.25f * Options.gridTransparency));
+      tile.clearColour();
     }
   }
 

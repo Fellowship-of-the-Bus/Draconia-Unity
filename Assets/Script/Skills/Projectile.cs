@@ -25,8 +25,8 @@ public class Projectile {
   GameObject projectile;
   Vector3 direction;
 
-  static GameObject Arrow = Resources.Load("ArrowProjectile") as GameObject; //Must be a prefab containing an instance of the desired model named "Projectile"
-  static GameObject Fireball = Resources.Load("FireballProjectile") as GameObject;
+  static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; //Must be a prefab containing an instance of the desired model named "Projectile"
+  static GameObject Fireball = Resources.Load("Projectiles/Fireball") as GameObject;
 
   static Dictionary<ProjectileType,GameObject> Projectiles = new Dictionary<ProjectileType,GameObject>() {
     {ProjectileType.None, null},

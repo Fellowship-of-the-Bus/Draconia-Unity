@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Tile : Effected {
+  private static Color transparent = new Color(0.8f, 0.8f, 0.8f, 0.25f); // TODO: update transparency on change
   public static int unpathableCost = 1000;
   public int distance = 0;
   public int movePointSpent = 1;
@@ -11,6 +12,8 @@ public class Tile : Effected {
   public bool startTile = false;
   public string type;
   public Material color;
+  private Renderer border;
+  private bool isClear = false;
 
   public bool occupied() {
     return occupant != null;
@@ -31,6 +34,7 @@ public class Tile : Effected {
   public void setup() {
     Transform t = gameObject.transform.Find("Top");
     color = t.gameObject.GetComponent<Renderer>().material;
+    border = this.transform.Find("Border").gameObject.GetComponent<Renderer>();
   }
 
   public bool unpathable() {
@@ -38,18 +42,18 @@ public class Tile : Effected {
   }
 
   public void setColor(Color c) {
-    Renderer r = this.gameObject.GetComponent<Renderer>();
-    if (r == null) {
-      if (unpathable()) {
-        return;
-      }
-      // Only this part is needed for multitexture tiles
-      this.transform.Find("LeftBorder").gameObject.GetComponent<Renderer>().material.color = c;
-      this.transform.Find("RightBorder").gameObject.GetComponent<Renderer>().material.color = c;
-      this.transform.Find("BackBorder").gameObject.GetComponent<Renderer>().material.color = c;
-      this.transform.Find("FrontBorder").gameObject.GetComponent<Renderer>().material.color = c;
-    } else {
-      r.material.color = c == Color.clear ? Color.white : c;
+    isClear = false;
+    if (unpathable()) {
+      return;
     }
+
+    border.material.color = c;
+  }
+
+  public void clearColour() {
+    if (!isClear) {
+      setColor(transparent);
+    }
+    isClear = true;
   }
 }
