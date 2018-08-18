@@ -10,7 +10,25 @@ public enum AIType {
   Aggressive,Basic,Buff,Sentry,None
 }
 
+public enum CharacterType {
+  Human,
+  Lizard
+}
+
+public class BattleCharacterModels {
+  public static GameObject HumanModel = Resources.Load("Human", typeof(GameObject)) as GameObject;
+  public static GameObject LizardModel = Resources.Load("Lizard", typeof(GameObject)) as GameObject;
+
+  public static Dictionary<CharacterType,GameObject> models = new Dictionary<CharacterType,GameObject>() {
+    {CharacterType.Human, BattleCharacterModels.HumanModel},
+    {CharacterType.Lizard, BattleCharacterModels.LizardModel}
+  };
+}
+
 public class BattleCharacter : Effected {
+
+  public CharacterType characterType;
+
   public Character baseChar = new Character();
   public AIType aiType = AIType.None;
   public new string name {
@@ -143,7 +161,15 @@ public class BattleCharacter : Effected {
     applyPassives();
 
     ui = transform.Find("UI");
-    animator = gameObject.transform.Find("Model").gameObject.GetComponent<Animator>();
+    GameObject model = gameObject.transform.Find("Model").gameObject;
+    model.name = "old";
+    model.SetActive(false);
+
+    model = Instantiate(BattleCharacterModels.models[characterType],this.transform);
+    model.name = "Model";
+
+
+    animator = model.GetComponent<Animator>();
     lifebar = ui.Find("Health Bar/Health").gameObject;
     damagebar = ui.Find("Health Bar/Damage").gameObject;
     healingbar = ui.Find("Health Bar/Healing").gameObject;

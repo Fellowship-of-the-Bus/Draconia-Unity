@@ -36,6 +36,8 @@ class FBXPostprocessor : AssetPostprocessor {
 
 
     if (models.Contains(g.name)) {
+      Transform armature = g.transform.findRecursive("Armature");
+      armature.position = new Vector3(0,0,0);
       Animator animator = g.GetComponent<Animator>();
 
       g.transform.position =  new Vector3(0,y_val,0);
