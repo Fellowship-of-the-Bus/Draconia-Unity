@@ -165,6 +165,7 @@ public class BattleCharacter : Effected {
     model.name = "old";
     model.SetActive(false);
 
+
     model = Instantiate(BattleCharacterModels.models[characterType],this.transform);
     model.name = "Model";
 
