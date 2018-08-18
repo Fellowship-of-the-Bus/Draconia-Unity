@@ -631,8 +631,7 @@ public class GameManager : MonoBehaviour {
       EventManager.get.onEvent(enterEvent);
       if (enterEvent.interruptMove) {
         cancelStack.Clear();
-        endpoint = destination;
-        break;
+        yield return new WaitForSeconds(0.5f);
       }
       if (!character.isAlive()) break;
       if (animator) animator.enabled = false;
