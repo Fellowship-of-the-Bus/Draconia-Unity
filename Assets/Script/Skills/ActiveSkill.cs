@@ -131,7 +131,10 @@ public abstract class ActiveSkill : EventListener, Skill {
     float multiplier = 1;
     if (range >= 1) {
       //balance here
-      multiplier += heightDifference * 1f;
+      multiplier += heightDifference * 0.2f;
+      if (multiplier < 0.5f) {
+        multiplier = 0.5f;
+      }
     }
     multiplier = Math.Max(0, multiplier);
     return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier);
