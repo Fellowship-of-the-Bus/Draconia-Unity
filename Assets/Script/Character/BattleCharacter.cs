@@ -161,24 +161,25 @@ public class BattleCharacter : Effected {
     applyPassives();
 
     ui = transform.Find("UI");
-    GameObject model = gameObject.transform.Find("Model").gameObject;
-    model.name = "old";
-    model.SetActive(false);
 
-
-    model = Instantiate(BattleCharacterModels.models[characterType],this.transform);
-    model.name = "Model";
-
-
-    animator = model.GetComponent<Animator>();
     lifebar = ui.Find("Health Bar/Health").gameObject;
     damagebar = ui.Find("Health Bar/Damage").gameObject;
     healingbar = ui.Find("Health Bar/Healing").gameObject;
 
-    leftHand = transform.findRecursive("Hand.L");
-    rightHand = transform.findRecursive("Hand.R");
 
     if (inGame) {
+      GameObject model = gameObject.transform.Find("Model").gameObject;
+      model.name = "old";
+      model.SetActive(false);
+
+
+      model = Instantiate(BattleCharacterModels.models[characterType],this.transform);
+      model.name = "Model";
+
+      animator = model.GetComponent<Animator>();
+
+      leftHand = transform.findRecursive("Hand.L");
+      rightHand = transform.findRecursive("Hand.R");
       GameObject weaponModel = weapon.getModel();
       if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
     }
