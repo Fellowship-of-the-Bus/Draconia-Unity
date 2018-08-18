@@ -25,16 +25,16 @@ static class MapGenerator {
   static GameObject board;
 
   static MapGenerator() {
-    cubes.Add('G', Resources.Load("Map/Grass"));
-    cubes.Add('D', Resources.Load("Map/Dirt"));
-    cubes.Add('S', Resources.Load("Map/Stone"));
-    cubes.Add('W', Resources.Load("Map/Wall"));
-    cubes.Add('O', Resources.Load("Map/Water"));
-    cubes.Add('M', Resources.Load("Map/Mud"));
-    cubes.Add('P', Resources.Load("Map/Wood"));
+    cubes.Add('G', Resources.Load("Map/Tiles/Grass"));
+    cubes.Add('D', Resources.Load("Map/Tiles/Dirt"));
+    cubes.Add('S', Resources.Load("Map/Tiles/Stone"));
+    cubes.Add('W', Resources.Load("Map/Tiles/Wall"));
+    cubes.Add('O', Resources.Load("Map/Tiles/Water"));
+    cubes.Add('M', Resources.Load("Map/Tiles/Mud"));
+    cubes.Add('P', Resources.Load("Map/Tiles/Wood"));
   }
 
-  static Object treeModel = Resources.Load("Map/Tree");
+  static Object treeModel = Resources.Load("Map/Doodads/Tree");
 
 
 
