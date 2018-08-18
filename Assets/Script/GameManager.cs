@@ -752,7 +752,9 @@ public class GameManager : MonoBehaviour {
     }
 
     yield return waitUntilPopped(movePiece(destination, true));
-    yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+    if (selectedCharacter.isAlive()) {
+      yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+    }
 
     StartCoroutine(endTurn());
   }
