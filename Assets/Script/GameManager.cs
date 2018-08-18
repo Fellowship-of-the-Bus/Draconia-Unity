@@ -156,7 +156,6 @@ public class GameManager : MonoBehaviour {
       float time = 0f;
       foreach(AnimationClip c in clips) {
         string s = c.name;
-        Debug.Log(s + ", " + trigger);
         if (s == trigger) time = c.length;
       }
       yield return new WaitForSeconds(time);
