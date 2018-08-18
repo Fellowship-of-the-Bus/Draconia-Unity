@@ -94,14 +94,15 @@ public class CameraController : MonoBehaviour {
         dy = delta.y;
       }
 
+      float moveFactor = transform.position.y * 2;
       if (Input.GetKey(KeyCode.UpArrow))
-        dy = -5;
+        dy = -1 * moveFactor;
       if (Input.GetKey(KeyCode.DownArrow))
-        dy = 5;
+        dy = moveFactor;
       if (Input.GetKey(KeyCode.LeftArrow))
-        dx = 5;
+        dx = moveFactor;
       if (Input.GetKey(KeyCode.RightArrow))
-        dx = -5;
+        dx = -1 * moveFactor;
 
       if (dx != 0 || dy != 0) {
         pan(dx, dy);
