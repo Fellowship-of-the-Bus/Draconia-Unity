@@ -29,9 +29,11 @@ public class AggressiveAI : BaseAI {
     possibilities.Add(owner.curTile);
 
     foreach (Tile tile in possibilities) {
-      SkillData bestForTile = evaluateSkillOptions(tile);
-      if (bestForTile != null) {
-        db.add(bestForTile);
+      if (!tile.occupied()) {
+        SkillData bestForTile = evaluateSkillOptions(tile);
+        if (bestForTile != null) {
+          db.add(bestForTile);
+        }
       }
     }
     best = db.getMax();
@@ -58,8 +60,9 @@ public class AggressiveAI : BaseAI {
         foreach (Tile t in path) {
           if (t.distance > owner.moveRange) {
             break;
+          } else if (!t.occupied()) {
+            newPosition = t.transform.position;
           }
-          newPosition = t.transform.position;
         }
       }
     } else {
