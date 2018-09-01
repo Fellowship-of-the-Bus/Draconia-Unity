@@ -3,12 +3,17 @@ using UnityEngine;
 public class PoisonEffect : DurationEffect, HealthChangingEffect {
   public int damage;
   public float multiplier = 1.0f;
+  private GameObject particle;
 
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
+
+    // TODO: See about loading this once for the game
+    particle = owner.applyParticle((GameObject)Resources.Load("ParticleEffects/Poison"));
   }
   protected override void onDeactivateListeners() {
     detachListener(owner);
+    owner.removeParticle(particle);
   }
   protected override void additionalEffect(Event e) {
     owner.takeDamage((int)(damage * multiplier));
