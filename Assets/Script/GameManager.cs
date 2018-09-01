@@ -545,6 +545,9 @@ public class GameManager : MonoBehaviour {
       changeState(GameState.ending);
       targets.Clear();
 
+      // Wait for turn events to finish
+      yield return StartCoroutine(waitUntilEmpty());
+
       //send endTurn event to the current piece
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       Event e = new Event(null, EventHook.endTurn);
@@ -553,6 +556,7 @@ public class GameManager : MonoBehaviour {
       eventManager.onEvent(e);
       selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
 
+      // Wait for end turn events to complete
       yield return StartCoroutine(waitUntilEmpty());
 
       actionQueue.endTurn();
