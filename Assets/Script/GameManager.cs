@@ -798,7 +798,6 @@ public class GameManager : MonoBehaviour {
     return UILock.count != 0;
   }
 
-
   public bool checkLine(Vector3 source, Vector3 target, float offset = 0.25f) {
     RaycastHit info;
     return checkLine(source, target, out info, offset);
