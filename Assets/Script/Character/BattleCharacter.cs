@@ -104,6 +104,7 @@ public class BattleCharacter : Effected {
   public BaseAI ai = new BasicAI();
 
   public LinkedList<Effect> allEffects = new LinkedList<Effect>();
+  public List<GameObject> particleEffects = new List<GameObject>();
 
   public bool levitating = false;
 
@@ -116,8 +117,23 @@ public class BattleCharacter : Effected {
     base.removeEffect(effect);
     allEffects.Remove(effect);
   }
-  List<String> prevSkillSet = new List<String>();
 
+  // Take a particle effects prefab and create an instance on the character
+  // Returns the instance of the prefab
+  public GameObject applyParticle(GameObject effect) {
+    GameObject particleEffect = Instantiate(effect, this.transform);
+    particleEffects.Add(particleEffect);
+    return particleEffect;
+  }
+
+  // Takes an instance of a particle effect which has been applied to the character
+  // Removed the given effect
+  public void removeParticle(GameObject effect) {
+    particleEffects.Remove(effect);
+    Destroy(effect);
+  }
+
+  List<String> prevSkillSet = new List<String>();
 
   public Animator animator;
   public GameObject lifebar;
