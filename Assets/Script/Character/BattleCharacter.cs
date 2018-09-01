@@ -177,7 +177,7 @@ public class BattleCharacter : Effected {
       model.name = "Model";
 
       animator = model.GetComponent<Animator>();
-
+      Debug.Log(animator);
       leftHand = transform.findRecursive("Hand.L");
       rightHand = transform.findRecursive("Hand.R");
       GameObject weaponModel = weapon.getModel();

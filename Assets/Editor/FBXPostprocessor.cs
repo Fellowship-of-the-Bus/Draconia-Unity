@@ -112,6 +112,7 @@ class FBXPostprocessor : AssetPostprocessor {
           transition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, anim.name);
         }
       }
+      idleState.AddTransition(idleState,true);
 
       animator.runtimeAnimatorController = controller;
     }

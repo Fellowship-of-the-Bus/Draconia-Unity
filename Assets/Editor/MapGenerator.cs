@@ -58,7 +58,8 @@ static class MapGenerator {
       foreach(GameObject o in objs) {
         if (o.name == "map") parent = o;
       }
-      board = (GameObject)GameObject.Instantiate(Resources.Load("Map/Board"), parent.transform);
+      board = (GameObject)PrefabUtility.InstantiatePrefab(Resources.Load("Map/Board"));
+      board.transform.SetParent(parent.transform);
       //foreach (string s in File.ReadAllLines(fileName)) {
         //generateRow(s, lineNum);
       //  lineNum++;
@@ -107,7 +108,8 @@ static class MapGenerator {
       t = t.Substring(1);
       float height = 1;
       if (t.Length != 0) height = float.Parse(t);
-      var o = (GameObject)GameObject.Instantiate(cubes[tileSymbol], row.transform);
+      var o = (GameObject)PrefabUtility.InstantiatePrefab(cubes[tileSymbol]);
+      o.transform.SetParent(row.transform);
       o.transform.position = new Vector3(0,0,index);
       //set startTile
       Tile newTile = o.GetComponent<Tile>();
@@ -116,14 +118,16 @@ static class MapGenerator {
       if (floating) {
         newTile.additionalHeight = height-1;
         o.transform.position = new Vector3(0, height-1, index);
-        var baseBlock = (GameObject)GameObject.Instantiate(cubes[baseBlockSymbol], row.transform);
+        var baseBlock = (GameObject)PrefabUtility.InstantiatePrefab(cubes[baseBlockSymbol]);
+        baseBlock.transform.SetParent(row.transform);
         baseBlock.transform.position = new Vector3(0,0,index);
         baseBlock.tag = "Untagged";
       } else {
         o.transform.localScale = new Vector3(1,2*height-1,1);
       }
       if (hasTree) {
-        var tree = (GameObject)GameObject.Instantiate(treeModel, o.transform);
+        var tree = (GameObject)PrefabUtility.InstantiatePrefab(treeModel);
+        tree.transform.SetParent(o.transform);
         float rand = 0.05f - UnityEngine.Random.value/10.0f;
         tree.transform.localScale = new Vector3(tree.transform.localScale.x,
                                         (tree.transform.localScale.y + rand) / o.transform.localScale.y, tree.transform.localScale.z);
