@@ -630,7 +630,7 @@ public class GameManager : MonoBehaviour {
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
-      pos.y = destination.transform.position.y + map.getHeight(destination);
+      pos.y = map.getHeight(destination);
 
       // Set Rotation
       if (setWalking || smoothMovement) {
