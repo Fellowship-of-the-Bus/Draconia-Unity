@@ -6,6 +6,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
   public bool effectsTiles {get; set;}
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return  new Color(1, 0.25f, 0 , 1); }}
 
   public ScorchEarth() {
     range = 3;

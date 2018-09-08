@@ -76,6 +76,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int ntargets { get; set; }
 
   public virtual string animation { get { return "Attack"; }}
+  public virtual Color castColor { get { return Color.clear; }}
 
   public ActiveSkill() {
     ntargets = 1;

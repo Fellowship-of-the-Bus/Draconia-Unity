@@ -108,6 +108,7 @@ public class BattleCharacter : Effected {
 
   public LinkedList<Effect> allEffects = new LinkedList<Effect>();
   public List<GameObject> particleEffects = new List<GameObject>();
+  private ParticleSystem castingCircle;
 
   public bool levitating = false;
 
@@ -154,6 +155,10 @@ public class BattleCharacter : Effected {
   public void init(bool inGame = true) {
     if (initCalled) return;
     initCalled = true;
+    castingCircle = Instantiate(
+      (GameObject)Resources.Load("ParticleEffects/Casting Circle"),
+      this.transform
+    ).GetComponent<ParticleSystem>();
     equippedSkills = skills.getActives(this);
     if (Options.debugMode && equippedSkills.IsEmpty()) {
       setSkills();
@@ -315,7 +320,28 @@ public class BattleCharacter : Effected {
 
     face(target.transform.position);
 
-    if (animator) GameManager.get.waitFor(animator, skill.animation, () => new Projectile(this, skill.targetsTiles ? (target as Effected) : target.occupant, skill.projectileType, skill.projectileMoveType, () => finishSkill(skill, target, targets)));
+
+    if (animator) {
+      if (skill.castColor != Color.clear) {
+        var castMain = castingCircle.main;
+        castMain.startColor = skill.castColor;
+        castingCircle.Play();
+      }
+
+      GameManager.get.waitFor(animator, skill.animation,
+        () => {
+          castingCircle.Stop();
+          new Projectile(this,
+            skill.targetsTiles ? (target as Effected) : target.occupant,
+            skill.projectileType,
+            skill.projectileMoveType,
+            () => {
+              finishSkill(skill, target, targets);
+            }
+          );
+        }
+      );
+    }
     else finishSkill(skill, target, targets);
     return true;
   }
