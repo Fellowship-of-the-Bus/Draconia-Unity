@@ -37,6 +37,7 @@ class FBXPostprocessor : AssetPostprocessor {
 
     if (models.Contains(g.name)) {
 
+      g.transform.position =  new Vector3(0,y_val,0);
       if (g.name != "Human") {
         AnimatorController controller = Resources.Load("Animations/Controller", typeof(AnimatorController)) as AnimatorController;
         Animator animator = g.GetComponent<Animator>();
@@ -48,7 +49,6 @@ class FBXPostprocessor : AssetPostprocessor {
         armature.position = new Vector3(0,0,0);
         Animator animator = g.GetComponent<Animator>();
 
-        g.transform.position =  new Vector3(0,y_val,0);
 
         List<AnimationClip> animations = new List<AnimationClip>();
 
@@ -81,9 +81,12 @@ class FBXPostprocessor : AssetPostprocessor {
         var idleState = machine.AddState("Idle");
         machine.defaultState = idleState;
 
+        BlendTree bt;
+        var btstate = controller.CreateBlendTreeInController("Idle_NinjaMove", out bt);
         foreach(AnimationClip anim in animations) {
           if (anim.name == "Idle") {
             idleState.motion = anim;
+            bt.AddChild(anim,0);
           } else if (anim.name == "Move") {
             var state = machine.AddState(anim.name);
             state.motion = anim;
@@ -91,9 +94,17 @@ class FBXPostprocessor : AssetPostprocessor {
             transition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.IfNot, 0, "isWalking");
             transition = idleState.AddTransition(state);
             transition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "isWalking");
-          }
-
-           else {
+          } else if (anim.name == "NinjaMove") {
+            bt.AddChild(anim,1);
+            var bttransition = btstate.AddTransition(idleState);
+            bttransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.IfNot, 0, "isWalking");
+            bttransition = btstate.AddTransition(btstate);
+            bttransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "isWalking");
+            bttransition = idleState.AddTransition(btstate);
+            bttransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "isWalking");
+            bttransition.AddCondition(UnityEditor.Animations.AnimatorConditionMode.If, 0, "isNinja");
+            bt.blendParameter = "Blend";
+          } else {
             controller.AddParameter(anim.name, AnimatorControllerParameterType.Trigger);
             var state = machine.AddState(anim.name);
             state.motion = anim;
