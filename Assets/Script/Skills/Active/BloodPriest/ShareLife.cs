@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class ShareLife: CircleAoE, HealingSkill {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorBloodPriest; }}
 
   public ShareLife() {
     range = 3;

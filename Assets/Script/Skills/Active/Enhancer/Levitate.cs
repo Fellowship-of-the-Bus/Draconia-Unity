@@ -5,6 +5,7 @@ using System;
 public class Levitate: SingleTarget {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public Levitate() {
     range = 3;

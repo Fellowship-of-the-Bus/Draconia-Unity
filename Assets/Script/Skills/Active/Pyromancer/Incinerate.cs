@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Incinerate: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorPyromancer; }}
 
   public Incinerate() {
     range = 3;

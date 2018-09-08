@@ -6,6 +6,7 @@ public class EnlightenAura: SelfTarget {
   public int aoe {get; set;}
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public EnlightenAura() {
     range = 0;

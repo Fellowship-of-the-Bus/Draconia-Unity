@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour {
   LineRenderer line;
   public ActionQueue actionQueue;
   public GameObject turnButton;
-  public GameObject iceBlock;
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;

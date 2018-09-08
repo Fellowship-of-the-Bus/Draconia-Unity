@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class LifeDrain: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorWarlock; }}
 
   public LifeDrain() {
     range = 3;

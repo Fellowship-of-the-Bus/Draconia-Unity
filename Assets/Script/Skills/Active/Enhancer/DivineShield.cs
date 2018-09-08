@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class DivineShield: SingleTarget {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public DivineShield() {
     range = 5;

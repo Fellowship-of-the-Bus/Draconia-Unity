@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Purge: SingleTarget {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorCleric; }}
 
   public Purge() {
     useWepRange = false;

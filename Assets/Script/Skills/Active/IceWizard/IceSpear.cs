@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class IceSpear: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorIceWizard; }}
 
   public IceSpear() {
     range = 3;
