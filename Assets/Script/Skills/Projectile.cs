@@ -54,22 +54,24 @@ public class Projectile {
       projectile.transform.SetParent(null);
       Quaternion angle = Quaternion.LookRotation(direction + new Vector3(0,height,0));
       proj.rotation = angle;
-      yield return GameManager.get.moveObject(projectile,
-                                                speed,
-                                                projectile.transform.position,
-                                                target.transform.position,
-                                                0,
-                                                1,
-                                                null,
-                                                height,
-                                                (f) => projectile.transform.InverseTransformDirection(f),
-                                                (t) => {
-                                                  const float totalRotation = 90f;
-                                                  proj.rotation = angle;
-                                                  proj.Rotate(Vector3.right,totalRotation*t);
-                                                },
-                                                false,
-                                                moveType == ProjectileMovementType.Parabolic);
+
+      yield return GameManager.get.moveObject(
+        projectile,
+        speed,
+        projectile.transform.position,
+        target.transform.position,
+        0,
+        1,
+        null,
+        height,
+        (t) => {
+          const float totalRotation = 90f;
+          proj.rotation = angle;
+          proj.Rotate(Vector3.right,totalRotation*t);
+        },
+        false,
+        moveType == ProjectileMovementType.Parabolic
+      );
     }
     GameObject.Destroy(projectile);
     callback();

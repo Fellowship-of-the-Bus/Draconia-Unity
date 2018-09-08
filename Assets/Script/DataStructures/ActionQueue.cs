@@ -58,6 +58,7 @@ public class ActionQueue {
   }
 
   public void endTurn() {
+  	// TODO: Fix crash here when everyone dies
     GameObject SelectedPiece = queue.First.Value.piece;
     removeFirst(SelectedPiece);
 

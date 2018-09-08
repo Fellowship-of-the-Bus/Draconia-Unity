@@ -572,8 +572,19 @@ public class GameManager : MonoBehaviour {
     waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation, true)));
   }
 
-  public IEnumerator moveObject(GameObject obj, float speed, Vector3 start, Vector3 end, int startFrame, int totalFrames, Animator animator, float heightChange = 0.5f, Func<Vector3, Vector3> transformDist = null, Action<float> extra = null, bool movingPiece = true, bool arcing = false) {
-    if (transformDist == null) transformDist = (v) => v; //Lambda isn't a valid default value, so have to use null and set here
+  public IEnumerator moveObject(
+    GameObject obj,
+    float speed,
+    Vector3 start,
+    Vector3 end,
+    int startFrame,
+    int totalFrames,
+    Animator animator,
+    float heightChange = 0.5f,
+    Action<float> extra = null,
+    bool movingPiece = true,
+    bool arcing = false
+    ) {
     float hopHeight = Math.Max(end.y, start.y) + heightChange;
     float dUp = speed*2*(hopHeight - start.y)/Options.FPS;
     float dDown = speed*2*(end.y - hopHeight)/Options.FPS;
@@ -581,17 +592,18 @@ public class GameManager : MonoBehaviour {
     for (int i = 0; i < Options.FPS/speed; i++) {
       float pct = curFrame * 1.0f / totalFrames;
       if (movingPiece) animator.SetFloat("Blend", (pct < 0.1) ? pct*10 : ((pct > 0.90) ? (1-pct)*10 : 1));
-      Vector3 d = speed*transformDist(end-start)/Options.FPS;
+      Vector3 d = speed*(end-start)/Options.FPS;
+
+      // Arcing or hopping
       if ((d.y != 0 && movingPiece) || (!movingPiece && arcing)) {
-        d = obj.transform.TransformDirection(d);
         if (i < Options.FPS/(speed*2)) {
           d.y = dUp * Mathf.Lerp(1,0,i/(Options.FPS/(speed*2)));
         } else {
           d.y = dDown * Mathf.Lerp(0,1,(i - Options.FPS/(speed*2))/(Options.FPS/(speed*2)));
         }
         if (extra != null) extra(i/(Options.FPS/(speed)));
-        d = obj.transform.InverseTransformDirection(d);
       }
+
       obj.transform.Translate(d, Space.World);
       curFrame++;
       yield return new WaitForSeconds(1/Options.FPS);
