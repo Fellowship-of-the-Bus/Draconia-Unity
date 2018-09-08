@@ -6,6 +6,7 @@ public class FortifyAura: SelfTarget {
   public int aoe {get; set;}
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public FortifyAura() {
     range = 0;

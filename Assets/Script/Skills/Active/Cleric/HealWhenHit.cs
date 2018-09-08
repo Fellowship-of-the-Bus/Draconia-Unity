@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class HealWhenHit : CircleAoE {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorCleric; }}
 
   public HealWhenHit() {
     range = 3;

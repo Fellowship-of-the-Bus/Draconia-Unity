@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class BrainFreeze: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorIceWizard; }}
 
   public BrainFreeze() {
     useWepRange = false;

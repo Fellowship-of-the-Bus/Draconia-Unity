@@ -12,16 +12,19 @@ public enum AIType {
 
 public enum CharacterType {
   Human,
-  Lizard
+  Lizard,
+  Snake
 }
 
 public class BattleCharacterModels {
   public static GameObject HumanModel = Resources.Load("Human", typeof(GameObject)) as GameObject;
   public static GameObject LizardModel = Resources.Load("Lizard", typeof(GameObject)) as GameObject;
+  public static GameObject SnakeModel = Resources.Load("Snake", typeof(GameObject)) as GameObject;
 
   public static Dictionary<CharacterType,GameObject> models = new Dictionary<CharacterType,GameObject>() {
     {CharacterType.Human, BattleCharacterModels.HumanModel},
-    {CharacterType.Lizard, BattleCharacterModels.LizardModel}
+    {CharacterType.Lizard, BattleCharacterModels.LizardModel},
+    {CharacterType.Snake, BattleCharacterModels.SnakeModel}
   };
 }
 

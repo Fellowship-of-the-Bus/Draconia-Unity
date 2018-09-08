@@ -76,7 +76,14 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int ntargets { get; set; }
 
   public virtual string animation { get { return "Attack"; }}
-  public virtual Color castColor { get { return Color.clear; }}
+  public virtual Color castColor { get { return castColorNone; }}
+  protected Color castColorBloodPriest = Color.magenta;
+  protected Color castColorCleric = Color.white;
+  protected Color castColorEnhancer = Color.green;
+  protected Color castColorIceWizard = Color.blue;
+  protected Color castColorPyromancer = Color.red;
+  protected Color castColorWarlock = Color.black;
+  protected Color castColorNone = Color.clear;
 
   public ActiveSkill() {
     ntargets = 1;

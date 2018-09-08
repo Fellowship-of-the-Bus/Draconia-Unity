@@ -1,8 +1,10 @@
 ﻿using System;
+using UnityEngine;
 
 public class RealityDistortion : SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorWarlock; }}
 
   public RealityDistortion() {
     useWepRange = true;

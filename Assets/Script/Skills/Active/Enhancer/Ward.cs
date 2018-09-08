@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Ward: SingleTarget {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public Ward() {
     range = 5;
