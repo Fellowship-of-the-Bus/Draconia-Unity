@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Fireball: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return Color.red; }}
 
   public Fireball() {
     range = 3;
