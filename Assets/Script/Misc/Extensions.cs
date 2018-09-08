@@ -92,7 +92,7 @@ public static class Extensions {
   }
 
   public static Transform findRecursive(this Transform t, string child) {
-    if (t.name == child) return t;
+    if (t.name.StartsWith(child)) return t;
     foreach(Transform c in t) {
       Transform ret = c.findRecursive(child);
       if (ret) return ret;
