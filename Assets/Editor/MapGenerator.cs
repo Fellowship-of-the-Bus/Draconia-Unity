@@ -14,11 +14,13 @@ static class MapGenerator {
    * height default = 1
    * start default false (! at front of string)
    * should have a tree (t at front of string)
-   * ^ For floating block, with next character base block
+   * ^ For floating block, with next character base block, optional height next !! optional height ends with space.
    * - for unpathable
    * example !D2.5 for start tile dirt height 2.5
    * example D for non-startTile height 1
    * example !tD2.5 for start tile dirt height 2.5 that contains a tree.
+   * example ^OD3 for a 1 tile dirt block at height 3 with a water block at base height
+   * example ^O2 D3 for a 2 tile dirt block at height 3 with a water block at base height. Note the space
   */
 
   static Dictionary<char, Object> cubes = new Dictionary<char, Object>();
@@ -84,6 +86,7 @@ static class MapGenerator {
       bool hasTree = false;
       bool floating = false;
       char baseBlockSymbol = ' ';
+      float floatScale = 0;
       bool unpathable = false;
       //should replace all these ors with a set contains eventually.
       while (t[0] == '!' || t[0] == 't' || t[0] == '^' || t[0] == '-') {
@@ -98,6 +101,11 @@ static class MapGenerator {
           floating = true;
           baseBlockSymbol = t[1];
           t = t.Substring(2);
+          int split = t.IndexOf(' ');
+          if (split != -1) {
+            floatScale = float.Parse(t.Substring(0,split));
+            t = t.Substring(split+1);
+          }
         } else if (t[0] == '-') {
           unpathable = true;
           t = t.Substring(1);
@@ -116,8 +124,14 @@ static class MapGenerator {
       newTile.startTile = startTile;
       //set height
       if (floating) {
-        newTile.additionalHeight = height-1;
-        o.transform.position = new Vector3(0, height-1, index);
+        if (floatScale == 0){
+          newTile.additionalHeight = height-1;
+          o.transform.position = new Vector3(0, height-1, index);
+        } else {
+          o.transform.position = new Vector3(0, height-0.5f-floatScale/2, index);
+          o.transform.localScale = new Vector3(1,floatScale,1);
+          newTile.additionalHeight = height-0.5f-floatScale/2;
+        }
         var baseBlock = (GameObject)PrefabUtility.InstantiatePrefab(cubes[baseBlockSymbol]);
         baseBlock.transform.SetParent(row.transform);
         baseBlock.transform.position = new Vector3(0,0,index);
