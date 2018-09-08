@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Disable : SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorWarlock; }}
 
   public Disable() {
     useWepRange = true;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class HealingTouch: SingleTarget, HealingSkill {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorCleric; }}
 
   public HealingTouch() {
     range = 1;

@@ -5,6 +5,7 @@ public class DarkPower: CircleAoE {
   public new bool targetsTiles = true;
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorBloodPriest; }}
 
   public DarkPower() {
     range = 3;

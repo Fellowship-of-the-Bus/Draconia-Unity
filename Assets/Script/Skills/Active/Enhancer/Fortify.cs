@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Fortify: SingleTarget {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public Fortify() {
     range = 5;

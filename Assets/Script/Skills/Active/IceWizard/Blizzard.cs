@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Blizzard: CircleAoE {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorIceWizard; }}
 
   public Blizzard() {
     range = 3;

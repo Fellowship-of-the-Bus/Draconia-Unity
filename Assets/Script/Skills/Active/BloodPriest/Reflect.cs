@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Reflect: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorBloodPriest; }}
 
   public Reflect() {
     range = 5;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Enlighten: SingleTarget {
 
   public override string animation { get { return "ClericCast"; }}
+  public override Color castColor { get { return castColorEnhancer; }}
 
   public Enlighten() {
     range = 5;

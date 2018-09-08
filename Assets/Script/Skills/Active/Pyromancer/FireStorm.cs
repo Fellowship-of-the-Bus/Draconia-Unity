@@ -5,6 +5,7 @@ public class FireStorm: CircleAoE {
   public new bool targetsTiles = true;
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorPyromancer; }}
 
   public FireStorm() {
     range = 3;

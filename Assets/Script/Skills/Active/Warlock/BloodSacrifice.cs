@@ -5,6 +5,7 @@ using System;
 public class BloodSacrifice : SelfTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorWarlock; }}
 
   public BloodSacrifice() {
     range = 0;

@@ -5,6 +5,7 @@ using System;
 public class FrostArmor: SingleTarget {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorIceWizard; }}
 
   public FrostArmor() {
     range = 3;

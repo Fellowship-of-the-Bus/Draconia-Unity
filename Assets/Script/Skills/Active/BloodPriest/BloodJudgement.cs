@@ -5,6 +5,7 @@ public class BloodJudgement: CircleAoE {
   int cost = 0;
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorBloodPriest; }}
 
   public BloodJudgement() {
     range = 3;

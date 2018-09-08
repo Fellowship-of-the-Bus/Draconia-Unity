@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class Transfusion: SingleTarget, HealingSkill {
 
   public override string animation { get { return "Cast"; }}
+  public override Color castColor { get { return castColorBloodPriest; }}
 
   public Transfusion() {
     range = 3;
