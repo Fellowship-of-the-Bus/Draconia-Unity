@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140344, g: 0.5008933, b: 0.57231456, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -607,6 +607,11 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 0.1520608
       objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: characterType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
   m_IsPrefabParent: 0
@@ -812,6 +817,11 @@ Prefab:
     - target: {fileID: 4143313077944314, guid: 5956345972927424eba3db6f03f82542, type: 2}
       propertyPath: m_LocalRotation.w
       value: 0.1520608
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622824004391372, guid: 5956345972927424eba3db6f03f82542,
+        type: 2}
+      propertyPath: characterType
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 2}
@@ -2360,7 +2370,7 @@ Prefab:
     - target: {fileID: 224793470809223992, guid: 27572aee490181e40b4e4114f070474c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224697157619429524, guid: 27572aee490181e40b4e4114f070474c,
         type: 2}
@@ -2370,12 +2380,12 @@ Prefab:
     - target: {fileID: 224697157619429524, guid: 27572aee490181e40b4e4114f070474c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224744133375252714, guid: 27572aee490181e40b4e4114f070474c,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224064404625861328, guid: 27572aee490181e40b4e4114f070474c,
         type: 2}
