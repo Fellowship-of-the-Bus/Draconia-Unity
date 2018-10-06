@@ -65,12 +65,8 @@ public class GameManager : MonoBehaviour {
   public List<Objective> losingConditions = new List<Objective>();
 
   //health/mana bars
-  public GameObject selectedHealthBar;
-  public GameObject selectedDamageBar;
-  public GameObject selectedHealingBar;
-  public GameObject targetHealthBar;
-  public GameObject targetDamageBar;
-  public GameObject targetHealingBar;
+  public HealthBarManager selectedHealth;
+  public HealthBarManager targetHealth;
   public GameObject targetPanel;
   public GameObject mainUI;
 
@@ -291,11 +287,16 @@ public class GameManager : MonoBehaviour {
     }
 
     selectedCharacter.updateLifeBars();
-    if (netChange < 0) {
+/*    if (netChange < 0) {
       selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth + netChange);
     } else if (netChange > 0) {
       selectedCharacter.updateLifeBar(selectedHealingBar, selectedCharacter.curHealth + netChange);
+    } else {
+      selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth);
     }
+    */
+    selectedHealth.update(netChange);
+
     if (Options.debugMode && selectedCharacter.team == 0) {
       for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
         s = selectedCharacter.equippedSkills[i];
@@ -351,26 +352,20 @@ public class GameManager : MonoBehaviour {
         BattleCharacter c = t.occupant;
         if (c == null) continue;
         if (s is HealingSkill) {
-          c.PreviewHealing = s.calculateHealing(c);
-          c.updateLifeBar(c.healingbar,c.curHealth + c.PreviewHealing);
+          c.PreviewChange = s.calculateHealing(c);
         } else {
-          c.PreviewDamage = s.calculateDamage(c);
-          c.updateLifeBar(c.lifebar,c.curHealth - c.PreviewDamage);
+          c.PreviewChange = -1 * s.calculateDamage(c);
         }
+        c.updateLifeBars(c.PreviewChange);
       }
     }
 
     if (previewTarget) {
       targetBuffBar.update(previewTarget);
       targetPanel.SetActive(true);
-      previewTarget.updateLifeBars();
+      previewTarget.updateLifeBars(previewTarget.PreviewChange);
       if (s.canTarget(previewTarget.curTile)) {
-        if (s is HealingSkill) {
-          previewTarget.updateLifeBar(targetHealingBar, previewTarget.curHealth + previewTarget.PreviewHealing);
-        }
-        else {
-          previewTarget.updateLifeBar(targetHealthBar, previewTarget.curHealth - previewTarget.PreviewDamage);
-        }
+        targetHealth.update(previewTarget.PreviewChange);
       }
     }
   }
@@ -419,6 +414,7 @@ public class GameManager : MonoBehaviour {
     selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
+    selectedHealth.setCharacter(selectedCharacter);
 
     // SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -487,9 +483,11 @@ public class GameManager : MonoBehaviour {
     if (previewTarget) {
       previewTarget.PreviewDamage = 0;
       previewTarget.PreviewHealing = 0;
+      previewTarget.PreviewChange = 0;
     }
 
     previewTarget = targetChar;
+    targetHealth.setCharacter(previewTarget);
 
     if (targetChar == null) {
       actionQueue.highlight(null);

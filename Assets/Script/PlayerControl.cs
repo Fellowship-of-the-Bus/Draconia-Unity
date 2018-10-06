@@ -72,9 +72,9 @@ public class PlayerControl : MonoBehaviour {
         hoveredTile.setColor(Color.blue);
       }
     } else {
+      gameManager.selectTarget(hoveredObject);
       //if pieces are moving around, skip
       if (gameManager.moving || (!isTile && !isPiece)) return;
-      gameManager.selectTarget(hoveredObject);
 
       //handle movement based tile colouring
       if (isTile) {

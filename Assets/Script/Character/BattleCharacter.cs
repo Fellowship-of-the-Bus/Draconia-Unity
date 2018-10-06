@@ -104,6 +104,12 @@ public class BattleCharacter : Effected {
     set { previewHealing = value; }
   }
 
+  private int previewChange;
+  public int PreviewChange{
+    get { return Math.Min(previewChange, curHealth); }
+    set { previewChange = value; }
+  }
+
   public BaseAI ai = new BasicAI();
 
   public LinkedList<Effect> allEffects = new LinkedList<Effect>();
@@ -140,6 +146,7 @@ public class BattleCharacter : Effected {
   List<String> prevSkillSet = new List<String>();
 
   public Animator animator;
+  public HealthBarManager healthBars;
   public GameObject lifebar;
   GameObject damagebar;
   public GameObject healingbar;
@@ -523,10 +530,8 @@ public class BattleCharacter : Effected {
     return curHealth > 0;
   }
 
-  public void updateLifeBars() {
-    updateLifeBar(lifebar);
-    updateLifeBar(damagebar);
-    updateLifeBar(healingbar);
+  public void updateLifeBars(int change = 0) {
+    healthBars.update(change);
   }
 
   public void updateLifeBar(GameObject lifebar) {

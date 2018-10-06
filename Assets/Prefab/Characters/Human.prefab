@@ -1306,7 +1306,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1360207165350264}
-  m_LocalRotation: {x: 0.6911626, y: 0.14866525, z: 0.690703, w: 0.15206082}
+  m_LocalRotation: {x: 0.6911625, y: 0.14866523, z: 0.6907029, w: 0.1520608}
   m_LocalPosition: {x: -0.0015661286, y: -0.0004685487, z: -0.00016790326}
   m_LocalScale: {x: 0.9999998, y: 1, z: 1}
   m_Children:
@@ -1717,7 +1717,7 @@ Animator:
   m_GameObject: {fileID: 1370885306831418}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2083377860b003a4e99e35fed01b8254, type: 3}
-  m_Controller: {fileID: 9100000, guid: 59347cd634043e440a291fbf75c93bd4, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1938,6 +1938,11 @@ MonoBehaviour:
   particleEffects: []
   levitating: 0
   animator: {fileID: 0}
+  healthBars:
+    healthBar: {fileID: 1204337109700166}
+    damageBar: {fileID: 1342297439521702}
+    healingBar: {fileID: 1000011360998856}
+    character: {fileID: 114622824004391372}
   lifebar: {fileID: 1204337109700166}
   healingbar: {fileID: 1000011360998856}
   leftHand: {fileID: 4051991646907432}
