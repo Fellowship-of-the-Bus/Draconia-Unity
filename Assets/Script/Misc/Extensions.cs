@@ -91,13 +91,21 @@ public static class Extensions {
     return t.FullName;
   }
 
-  public static Transform findRecursive(this Transform t, string child) {
+  private static Transform findRecursiveHelper(Transform t, string child, bool onlyEnabled) {
+    Debug.Log(t.name);
+    if (onlyEnabled && !(t.gameObject.activeSelf)) return null;
     if (t.name.StartsWith(child)) return t;
     foreach(Transform c in t) {
-      Transform ret = c.findRecursive(child);
+      Transform ret = findRecursiveHelper(c, child, onlyEnabled);
       if (ret) return ret;
     }
     return null;
+  }
+
+  public static Transform findRecursive(this Transform t, string child) {
+    Transform ret = findRecursiveHelper(t, child, true);
+    if (ret) return ret;
+    return findRecursiveHelper(t, child, false);
   }
 }
 

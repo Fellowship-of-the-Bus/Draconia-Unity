@@ -30,9 +30,8 @@ class FBXPostprocessor : AssetPostprocessor {
       Object.DestroyImmediate(go);
     }
 
-    if (toResize.Contains(g.name)) {
-      g.transform.localScale = new Vector3(1,1,1);
-    }
+    g.transform.localScale = new Vector3(1,1,1);
+    g.transform.localEulerAngles = new Vector3(0,0,0);
 
 
     if (models.Contains(g.name)) {
@@ -106,7 +105,7 @@ class FBXPostprocessor : AssetPostprocessor {
             bt.blendParameter = "Blend";
           } else {
             controller.AddParameter(anim.name, AnimatorControllerParameterType.Trigger);
-            var state = machine.AddState(anim.name);
+            var state = machine.AddState(anim.name.Replace(".",""));
             state.motion = anim;
             state.AddTransition(idleState,true);
             var transition = idleState.AddTransition(state);
