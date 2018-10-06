@@ -31,9 +31,16 @@ public class PlayerControl : MonoBehaviour {
     handleClicked(gameManager.getClicked(PlayerCam));
   }
 
+  bool overUI() {
+    //Decides whether the pointer is over a ui element or gameobject.
+    //Despite what the name implies, it returns true if the pointer is over a ui element
+    //and false if it is over a game object.
+    return EventSystem.current.IsPointerOverGameObject();
+  }
+
   void handleHovered(GameObject hoveredObject) {
     gameManager.lineTo(gameManager.SelectedPiece);
-    if (hoveredObject == null) return;
+    if (overUI() || hoveredObject == null) return;
     if (hoveredObject.transform.parent == null) return;
     Map map = gameManager.map;
     BattleCharacter selectedCharacter = null;
@@ -95,7 +102,8 @@ public class PlayerControl : MonoBehaviour {
   }
 
   void handleClicked(GameObject clickedObject) {
-    if (clickedObject == null || gameManager.moving) return;
+    if (overUI() || clickedObject == null || gameManager.moving) return;
+    Debug.Log(clickedObject);
     //handle multicubes
     if (clickedObject.transform.parent.tag == "Cube") {
       clickedObject = clickedObject.transform.parent.gameObject;
