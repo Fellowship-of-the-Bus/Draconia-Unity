@@ -18,7 +18,7 @@ public class Knockback: TargetMover {
   protected override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage and knock the target back 2 spaces";
   }}
-  
+
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }

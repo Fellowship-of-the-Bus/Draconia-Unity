@@ -168,6 +168,7 @@ public class BattleCharacter : Effected {
   }
 
   bool initCalled = false;
+  private GameObject model;
   public void init(bool inGame = true) {
     if (initCalled) return;
     initCalled = true;
@@ -209,14 +210,15 @@ public class BattleCharacter : Effected {
 
 
     if (inGame) {
-      GameObject model = gameObject.transform.Find("Model").gameObject;
+      model = transform.findRecursive("Model").gameObject;
+/*
       model.name = "old";
       model.SetActive(false);
 
 
       model = Instantiate(BattleCharacterModels.models[characterType],this.transform);
       model.name = "Model";
-
+*/
       animator = model.GetComponent<Animator>();
       leftHand = transform.findRecursive("Hand.L");
       rightHand = transform.findRecursive("Hand.R");
@@ -566,7 +568,7 @@ public class BattleCharacter : Effected {
     // Set facing
     // The from vector needs the 0.01f in the x in order to make the 180 degree rotation unambiguous
     Quaternion angle = Quaternion.FromToRotation(new Vector3(0.01f, 0, 1), dir);
-    gameObject.transform.Find("Model").rotation = angle;
+    model.transform.rotation = angle;
   }
 
   private Attributes totalAttr { get { return attr + attrChange + attrEquip; } }
