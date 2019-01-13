@@ -54,6 +54,7 @@ public class BattleCharacter : Effected {
     get { return baseChar.attr; }
   }
   //change in stats due to buffs/debuffs
+  [HideInInspector]
   public Attributes attrChange = new Attributes();
   //Sum of stats from equipments
   public Attributes attrEquip {
@@ -83,10 +84,13 @@ public class BattleCharacter : Effected {
 
   public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
 
+  [HideInInspector]
   public Tile curTile = null;
 
+  [HideInInspector]
   public int curHealth;
-  public float maxAction = 1000f;
+  public const float maxAction = 1000f;
+  [HideInInspector]
   public float curAction = 0;
 
   //0 = player, 1 = enemy, 2 = ally
@@ -113,9 +117,11 @@ public class BattleCharacter : Effected {
   public BaseAI ai = new BasicAI();
 
   public LinkedList<Effect> allEffects = new LinkedList<Effect>();
+  [HideInInspector]
   public List<GameObject> particleEffects = new List<GameObject>();
   private ParticleSystem castingCircle;
 
+  [HideInInspector]
   public bool levitating = false;
 
   public override void applyEffect(Effect effect) {
@@ -145,13 +151,16 @@ public class BattleCharacter : Effected {
 
   List<String> prevSkillSet = new List<String>();
 
+  [HideInInspector]
   public Animator animator;
   public HealthBarManager healthBars;
   public GameObject lifebar;
   GameObject damagebar;
   public GameObject healingbar;
 
+  [HideInInspector]
   public Transform leftHand;
+  [HideInInspector]
   public Transform rightHand;
 
   void Start(){

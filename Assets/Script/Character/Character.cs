@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public class Character {
@@ -43,8 +44,10 @@ public class Character {
 
   //gain experience when using a skill and when killing enemy.
   public int curLevel = 1;
-  public int maxLevel = 100;
+  public const int maxLevel = 100;
+  [HideInInspector]
   public int curExp = 0;
+  [HideInInspector]
   public int maxExp = 100;
 
   //exp given to killer on death
