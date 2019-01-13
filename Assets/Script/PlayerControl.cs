@@ -103,7 +103,6 @@ public class PlayerControl : MonoBehaviour {
 
   void handleClicked(GameObject clickedObject) {
     if (overUI() || clickedObject == null || gameManager.moving) return;
-    Debug.Log(clickedObject);
     //handle multicubes
     if (clickedObject.transform.parent.tag == "Cube") {
       clickedObject = clickedObject.transform.parent.gameObject;
