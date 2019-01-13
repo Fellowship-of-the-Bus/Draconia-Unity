@@ -24,7 +24,7 @@ class FBXPostprocessor : AssetPostprocessor {
     return ret;
   }
 
-  void OnPostprocessModel(GameObject g) {
+    void OnPostprocessModel(GameObject g) {
 
     foreach (GameObject go in getUnwantedParts(g)) {
       Object.DestroyImmediate(go);
@@ -35,8 +35,14 @@ class FBXPostprocessor : AssetPostprocessor {
 
 
     if (models.Contains(g.name)) {
-
+      AnimatorController controller = Resources.Load("Animations/Controller", typeof(AnimatorController)) as AnimatorController;
+      Animator animator = g.GetComponent<Animator>();
+      animator.runtimeAnimatorController = controller;
       g.transform.position =  new Vector3(0,y_val,0);
+      if (g.name != "Human") {
+        g.transform.findRecursive("Armature_L_Lib.001").gameObject.name = "Armature";
+      }
+      /*
       if (g.name != "Human") {
         AnimatorController controller = Resources.Load("Animations/Controller", typeof(AnimatorController)) as AnimatorController;
         Animator animator = g.GetComponent<Animator>();
@@ -116,7 +122,9 @@ class FBXPostprocessor : AssetPostprocessor {
 
         animator.runtimeAnimatorController = controller;
       }
+      */
     }
+
   }
 
 }
