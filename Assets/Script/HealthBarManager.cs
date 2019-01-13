@@ -7,7 +7,7 @@ public class HealthBarManager {
   public GameObject healthBar;
   public GameObject damageBar;
   public GameObject healingBar;
-
+  [HideInInspector]
   public BattleCharacter character;
 
   private void updateBar(GameObject bar, int health) {

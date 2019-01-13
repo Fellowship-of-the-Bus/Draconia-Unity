@@ -46,11 +46,13 @@ public class GameManager : MonoBehaviour {
   public Stack<UndoAction> cancelStack = new Stack<UndoAction>();
   public GameObject SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
+  [HideInInspector]
   public List<Tile> skillTargets;
-  public BattleCharacter previewTarget;
+  [HideInInspector]
+  private BattleCharacter previewTarget;
 
+  [HideInInspector]
   public GameState gameState = GameState.moving;
-  public bool playerTurn = true;
 
   //EventManager
   public EventManager eventManager;
@@ -427,13 +429,11 @@ public class GameManager : MonoBehaviour {
     changeState(GameState.moving);
     // AI's
     if (selectedCharacter.team != 0 || selectedCharacter.aiType != AIType.None) {
-      playerTurn = false;
       handleAI();
       return;
     }
 
     cam.panTo(SelectedPiece.transform.position);
-    playerTurn = true;
 
     cancelStack.Clear();
 
@@ -504,6 +504,7 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  [HideInInspector]
   public List<Tile> targets = new List<Tile>();
   public void attackTarget(Tile target) {
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
@@ -685,6 +686,7 @@ public class GameManager : MonoBehaviour {
   }
 
   /** remaining move amount */
+  [HideInInspector]
   public int moveRange = 0;
   public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
     smooth = smooth && Options.displayAnimation;

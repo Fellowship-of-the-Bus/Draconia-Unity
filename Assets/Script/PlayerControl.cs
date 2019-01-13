@@ -7,8 +7,10 @@ public class PlayerControl : MonoBehaviour {
   private GameManager gameManager;
   // GameObject responsible for the management of the game
 
+  [HideInInspector]
   public bool preGame = true;
 
+  [HideInInspector]
   public Tile currentHoveredTile = null;
 
   // Use this for initialization
@@ -151,6 +153,7 @@ public class PlayerControl : MonoBehaviour {
     }
   }
 
+  [HideInInspector]
   public BattleCharacter selectedCharacter = null;
   void deselect() {
     selectedCharacter = null;
