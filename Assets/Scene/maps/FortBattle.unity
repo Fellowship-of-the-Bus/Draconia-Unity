@@ -10998,6 +10998,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adfd8997fb716794b94ad7abcdc0eeee, type: 3}
+--- !u!114 &508287704 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7307841808279511596, guid: adfd8997fb716794b94ad7abcdc0eeee,
+    type: 3}
+  m_PrefabInstance: {fileID: 508287703}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 492e74dd2e979c74c84cf581b959ce25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &508827093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23391,6 +23403,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224544409490246378, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224589189039358824, guid: 27572aee490181e40b4e4114f070474c,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -23454,7 +23471,7 @@ PrefabInstance:
     - target: {fileID: 224064404625861328, guid: 27572aee490181e40b4e4114f070474c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 224469944685054918, guid: 27572aee490181e40b4e4114f070474c,
         type: 3}
@@ -23464,7 +23481,7 @@ PrefabInstance:
     - target: {fileID: 224469944685054918, guid: 27572aee490181e40b4e4114f070474c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 224008159080772092, guid: 27572aee490181e40b4e4114f070474c,
         type: 3}
@@ -23850,7 +23867,7 @@ PrefabInstance:
         type: 3}
       propertyPath: boss
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 508287704}
     - target: {fileID: 114799550511852994, guid: 27572aee490181e40b4e4114f070474c,
         type: 3}
       propertyPath: piece
