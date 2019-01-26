@@ -18,13 +18,11 @@ public class Options {
     public OpToggleField(bool val, string name) : base(name) {
       this.val = val;
       panel = (GameObject)Resources.Load("UI/OpToggle");
-      Debug.Log(panel);
     }
     public override void init(GameObject o) {
       label = o.transform.Find("Label").gameObject.GetComponent<Text>();
       label.text = name;
       o.GetComponent<Toggle>().isOn = val;
-
     }
   }
   [System.Serializable]
@@ -39,7 +37,6 @@ public class Options {
       this.min = min;
       this.max = max;
       panel = (GameObject)Resources.Load("UI/OpSlider");
-      Debug.Log(panel);
     }
     public override void init(GameObject o) {
       label = o.transform.Find("Label").gameObject.GetComponent<Text>();
