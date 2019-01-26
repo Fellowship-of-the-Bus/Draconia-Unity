@@ -11,7 +11,8 @@ public enum ProjectileType {
   None,
   Arrow,
   Fireball,
-  FireLance
+  FireLance,
+  HealingRay,
 }
 
 public enum ProjectileMovementType {
@@ -29,12 +30,14 @@ public class Projectile {
   static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; //Must be a prefab containing an instance of the desired model named "Projectile"
   static GameObject Fireball = Resources.Load("Projectiles/Fireball") as GameObject;
   static GameObject FireLance = Resources.Load("Projectiles/FireLance") as GameObject;
+  static GameObject HealingRay = Resources.Load("Projectiles/HealingRay") as GameObject;
 
   static Dictionary<ProjectileType,GameObject> Projectiles = new Dictionary<ProjectileType,GameObject>() {
     {ProjectileType.None, null},
     {ProjectileType.Arrow, Projectile.Arrow},
     {ProjectileType.Fireball, Projectile.Fireball},
-    {ProjectileType.FireLance, Projectile.FireLance}
+    {ProjectileType.FireLance, Projectile.FireLance},
+    {ProjectileType.HealingRay, Projectile.HealingRay}
   };
 
   public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback) {
@@ -49,10 +52,10 @@ public class Projectile {
     }
 
     direction = (target.transform.position - source.transform.position).normalized;
-    GameManager.get.waitFor(GameManager.get.StartCoroutine(move(moveType, speed)));
+    GameManager.get.waitFor(GameManager.get.StartCoroutine(move(projType, moveType, speed)));
   }
 
-  IEnumerator move(ProjectileMovementType moveType, float speed) {
+  IEnumerator move(ProjectileType projType, ProjectileMovementType moveType, float speed) {
     const float height = 2f;
     if (projectile) {
       projectile.transform.SetParent(null);
@@ -65,8 +68,6 @@ public class Projectile {
       Quaternion angle = Quaternion.LookRotation(direction + new Vector3(0,height,0));
       proj.rotation = angle;
 
-      Debug.Log("target");
-      Debug.Log(target.transform.position);
       yield return GameManager.get.moveObject(
         projectile,
         speed,
@@ -84,10 +85,20 @@ public class Projectile {
         false,
         moveType == ProjectileMovementType.Parabolic
       );
-      Debug.Log("final position");
-      Debug.Log(proj.position);
     }
-    GameObject.Destroy(projectile);
     callback();
+
+    if (projectile) {
+      // Post collision effects
+      switch (projType) {
+        case ProjectileType.Fireball:
+        case ProjectileType.FireLance:
+        case ProjectileType.HealingRay:
+          projectile.GetComponent<ParticleSystem>().Stop();
+          yield return new WaitForSeconds(1);
+          break;
+      }
+      GameObject.Destroy(projectile);
+    }
   }
 }
