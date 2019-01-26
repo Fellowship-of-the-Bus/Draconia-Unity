@@ -15,6 +15,10 @@ public class HealingRay: SingleTarget, HealingSkill {
     canTargetSelf = true;
     targetAlly(true);
     targetEnemy(false);
+
+    projectileType = ProjectileType.HealingRay;
+    projectileMoveType = ProjectileMovementType.Straight;
+    projectileSpeed = 3f;
   }
 
   protected override string tooltipDescription { get {
