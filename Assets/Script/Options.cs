@@ -17,7 +17,8 @@ public class Options {
     public bool val;
     public OpToggleField(bool val, string name) : base(name) {
       this.val = val;
-      panel = (GameObject)Resources.Load("OpToggle");
+      panel = (GameObject)Resources.Load("UI/OpToggle");
+      Debug.Log(panel);
     }
     public override void init(GameObject o) {
       label = o.transform.Find("Label").gameObject.GetComponent<Text>();
@@ -37,7 +38,8 @@ public class Options {
       this.val = val;
       this.min = min;
       this.max = max;
-      panel = (GameObject)Resources.Load("OpSlider");
+      panel = (GameObject)Resources.Load("UI/OpSlider");
+      Debug.Log(panel);
     }
     public override void init(GameObject o) {
       label = o.transform.Find("Label").gameObject.GetComponent<Text>();
