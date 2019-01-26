@@ -21,7 +21,7 @@ static class SceneAutoLoader
     // [InitializeOnLoad] above makes sure this gets executed.
     static SceneAutoLoader()
     {
-        EditorApplication.playmodeStateChanged += OnPlayModeChanged;
+        EditorApplication.playModeStateChanged += OnPlayModeChanged;
     }
 
     // Menu items to select the "master" scene and control whether or not to load it.
@@ -59,14 +59,14 @@ static class SceneAutoLoader
     }
 
     // Play mode change callback handles the scene load/reload.
-    private static void OnPlayModeChanged()
+    private static void OnPlayModeChanged(PlayModeStateChange state)
     {
         if (!LoadMasterOnPlay)
         {
             return;
         }
 
-        if (!EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode)
+        if (state == PlayModeStateChange.ExitingEditMode)
         {
             // User pressed play -- autoload master scene.
             PreviousScene = EditorSceneManager.GetActiveScene().path;
@@ -87,7 +87,7 @@ static class SceneAutoLoader
         }
 
         // isPlaying check required because cannot OpenScene while playing
-        if (!EditorApplication.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode)
+        if (state == PlayModeStateChange.EnteredEditMode)
         {
             // User pressed stop -- reload previous scene.
             if (!EditorSceneManager.OpenScene(PreviousScene).IsValid())
