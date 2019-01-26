@@ -34,7 +34,7 @@ public class Projectile {
     {ProjectileType.Fireball, Projectile.Fireball}
   };
 
-  public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, Action callback) {
+  public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback) {
     this.source = source;
     this.target = target;
     this.callback = callback;
@@ -43,11 +43,10 @@ public class Projectile {
     }
     else projectile = null;
     direction = (target.transform.position - source.transform.position).normalized;
-    GameManager.get.waitFor(GameManager.get.StartCoroutine(move(moveType)));
+    GameManager.get.waitFor(GameManager.get.StartCoroutine(move(moveType, speed)));
   }
 
-  IEnumerator move(ProjectileMovementType moveType) {
-    const float speed = 0.5f;
+  IEnumerator move(ProjectileMovementType moveType, float speed) {
     const float height = 2f;
     if (projectile) {
       Transform proj = projectile.transform.Find("Projectile");

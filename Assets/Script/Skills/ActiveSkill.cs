@@ -42,8 +42,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   public DamageType dType = DamageType.physical;
   public DamageElement dEle = DamageElement.none;
 
+  // Projectile Parameters
   public ProjectileType projectileType = ProjectileType.None;
   public ProjectileMovementType projectileMoveType = ProjectileMovementType.Straight;
+  public float projectileSpeed = 0.5f;
 
   // Tooltip variables
   protected string tooltipRange { get {
@@ -77,11 +79,11 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public virtual string animation { get { return "Attack"; }}
   public virtual Color castColor { get { return castColorNone; }}
-  protected Color castColorBloodPriest = Color.magenta;
+  protected Color castColorBloodPriest = Color.red;
   protected Color castColorCleric = Color.white;
   protected Color castColorEnhancer = Color.green;
   protected Color castColorIceWizard = Color.blue;
-  protected Color castColorPyromancer = Color.red;
+  protected Color castColorPyromancer = new Color(1, 0.4f, 0);
   protected Color castColorWarlock = Color.black;
   protected Color castColorNone = Color.clear;
 
