@@ -19,6 +19,7 @@ public class Fireball: SingleTarget {
     targetEnemy(true);
     projectileType = ProjectileType.Fireball;
     projectileMoveType = ProjectileMovementType.Straight;
+    projectileSpeed = 1.5f;
   }
 
   protected override string tooltipDescription { get {

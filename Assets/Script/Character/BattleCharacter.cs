@@ -353,6 +353,7 @@ public class BattleCharacter : Effected {
             skill.targetsTiles ? (target as Effected) : target.occupant,
             skill.projectileType,
             skill.projectileMoveType,
+            skill.projectileSpeed,
             () => {
               finishSkill(skill, target, targets);
             }
