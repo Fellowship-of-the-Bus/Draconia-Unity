@@ -22,6 +22,10 @@ public class FireLance: ActiveSkill, AoeSkill {
     dEle = DamageElement.fire;
     targetAlly(false);
     targetEnemy(true);
+
+    projectileType = ProjectileType.FireLance;
+    projectileMoveType = ProjectileMovementType.Straight;
+    projectileSpeed = 3f;
   }
 
   protected override string tooltipDescription { get {
@@ -50,7 +54,7 @@ public class FireLance: ActiveSkill, AoeSkill {
     } else if (right.Contains(t)) {
       return right;
     } else {
-      return null;
+      return new List<Tile>();
     }
   }
 
