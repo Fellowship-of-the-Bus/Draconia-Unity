@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour {
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
-  public GameObject turnButton;
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;
@@ -188,8 +187,6 @@ public class GameManager : MonoBehaviour {
     moving = false;
     UILock = new lockUICount();
     UILock.count = 0;
-
-    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
 
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
