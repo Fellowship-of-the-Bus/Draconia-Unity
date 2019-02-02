@@ -25,7 +25,7 @@ static class MapModifier {
     string prevScene = EditorSceneManager.GetActiveScene().path;
     foreach (FileInfo f in info) {
       string name = f.Name.Remove(f.Name.Length-4);
-      Debug.Log("Changing char heights in : " + name);
+      Debug.Log("Operating in Scene : " + name);
       fun("Assets/Scene/maps/"+name+".unity");
     }
     EditorSceneManager.OpenScene(prevScene);
@@ -49,6 +49,23 @@ static class MapModifier {
   [MenuItem("Modify Map/Move to Top/All Maps")]
   private static void allMapMoveToTop() {
     modifyAllMaps(moveToTop);
+  }
+
+  [MenuItem("Modify Map/Add Object/Current Map")]
+  private static void currentMapAddObject() {
+    addObject(EditorSceneManager.GetActiveScene().path);
+  }
+
+  [MenuItem("Modify Map/Add Object/All Maps")]
+  private static void allMapAddObject() {
+    modifyAllMaps(addObject);
+  }
+
+  private static void addObject(string name) {
+    Scene currentScene = EditorSceneManager.OpenScene(name);
+    GameObject o = new GameObject();
+    o.name = "Allies";
+    EditorSceneManager.SaveScene(currentScene);
   }
 
   private static void moveToTop(string name) {
