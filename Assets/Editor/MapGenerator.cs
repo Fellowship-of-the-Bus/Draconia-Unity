@@ -54,18 +54,7 @@ static class MapGenerator {
     UnityEngine.Random.InitState(0);
     int lineNum = 0;
     if (!string.IsNullOrEmpty(fileName)) {
-      Scene scene = EditorSceneManager.GetActiveScene();
-      GameObject[] objs = scene.GetRootGameObjects();
-      GameObject parent = objs[0];
-      foreach(GameObject o in objs) {
-        if (o.name == "map") parent = o;
-      }
       board = (GameObject)PrefabUtility.InstantiatePrefab(Resources.Load("Map/Board"));
-      board.transform.SetParent(parent.transform);
-      //foreach (string s in File.ReadAllLines(fileName)) {
-        //generateRow(s, lineNum);
-      //  lineNum++;
-      //}
       var lines = File.ReadAllLines(fileName);
       lineNum = lines.Length;
       foreach (string s in lines) {
