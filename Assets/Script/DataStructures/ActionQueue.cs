@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 
-public class ActionQueue {
-  GameObject turnButton;
-  GameObject actionBar;
-  LinkedList<actionTime> queue;
-  List<GameObject> pieces;
-  private GameManager gameManager;
-  float curTime = 0;
+public class ActionQueue : MonoBehaviour {
+  public GameObject turnButton;
 
-  float buttonWidth = 0;
-  float buttonHeight = 0;
+  private LinkedList<actionTime> queue = new LinkedList<actionTime>();
+  private List<GameObject> pieces = new List<GameObject>();
+  private float curTime = 0;
+
+  private float buttonWidth = 0;
+  private float buttonHeight = 0;
 
   struct actionTime {
     public GameObject piece;
     public GameObject button;
+
     public float time;
 
     public actionTime(GameObject p, GameObject b, float t) {
@@ -27,15 +27,14 @@ public class ActionQueue {
     }
   }
 
-  public ActionQueue(GameObject bar, GameObject buttonPrefab, GameManager game) {
+  void Awake() {
     get = this;
-    pieces = new List<GameObject>();
-    queue = new LinkedList<actionTime>();
-    turnButton = buttonPrefab;
-    actionBar = bar;
-    gameManager = game;
-    buttonWidth = turnButton.GetComponent<RectTransform>().rect.width;
-    buttonHeight = turnButton.GetComponent<RectTransform>().rect.height;
+  }
+
+  void Start() {
+    RectTransform trans = turnButton.GetComponent<RectTransform>();
+    buttonWidth = trans.rect.width;
+    buttonHeight = trans.rect.height;
   }
 
   public float peekNext() {
@@ -133,7 +132,7 @@ public class ActionQueue {
     pieces.Remove(piece);
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece.Equals(piece)) {
-        gameManager.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
+        GameManager.get.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
         toRemove.Add(n);
         moveUp(i - 1);
       }
@@ -162,7 +161,7 @@ public class ActionQueue {
 
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece.Equals(piece)) {
-        gameManager.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
+        GameManager.get.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
         queue.Remove(n);
         moveUp(i - 1);
         break;
@@ -215,7 +214,7 @@ public class ActionQueue {
 
   GameObject makeButton(GameObject piece) {
     GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
-    buttonObject.transform.SetParent(actionBar.transform, false);
+    buttonObject.transform.SetParent(gameObject.transform, false);
     Button button = buttonObject.GetComponent<Button>();
     button.onClick.AddListener(delegate {
       GameManager.get.cam.panTo(piece.transform.position);
@@ -233,7 +232,7 @@ public class ActionQueue {
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (index > i) {
         GameObject o = n.Value.button;
-        gameManager.StartCoroutine(SlideButton(o, 0, -buttonHeight));
+        GameManager.get.StartCoroutine(SlideButton(o, 0, -buttonHeight));
       }
       index++;
     }
@@ -244,7 +243,7 @@ public class ActionQueue {
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (index > i) {
         GameObject o = n.Value.button;
-        gameManager.StartCoroutine(SlideButton(o, 0, buttonHeight));
+        GameManager.get.StartCoroutine(SlideButton(o, 0, buttonHeight));
       }
       index++;
     }
@@ -254,7 +253,7 @@ public class ActionQueue {
     const float time = 0.25f;
 
 
-    gameManager.lockUI();
+    GameManager.get.lockUI();
 
     Vector3 d = new Vector3(x, y, 0) / (Options.FPS * time);
     for (int i = 0; i < Options.FPS * time; i++) {
@@ -265,7 +264,7 @@ public class ActionQueue {
     if (deleteAfter) {
       GameObject.Destroy(button);
     }
-    gameManager.unlockUI();
+    GameManager.get.unlockUI();
   }
   public static ActionQueue get { get; private set; }
 }
