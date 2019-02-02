@@ -349,15 +349,9 @@ public class BattleCharacter : Effected {
       GameManager.get.waitFor(animator, skill.animation,
         () => {
           castingCircle.Stop();
-          new Projectile(this,
-            skill.targetsTiles ? (target as Effected) : target.occupant,
-            skill.projectileType,
-            skill.projectileMoveType,
-            skill.projectileSpeed,
-            () => {
-              finishSkill(skill, target, targets);
-            }
-          );
+          skill.playAVEffects(() => {
+            finishSkill(skill, target, targets);
+          }, target);
         }
       );
     }
