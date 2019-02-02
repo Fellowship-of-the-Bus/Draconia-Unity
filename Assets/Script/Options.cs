@@ -27,15 +27,17 @@ public class Options {
   }
   [System.Serializable]
   public class OpSliderField : OpField {
-    public int val;
+    public float val;
     public int min;
     public int max;
+    public bool wholeValue;
     public Text slideVal;
     public Slider slider;
-    public OpSliderField(int val, int min, int max, string name) : base(name) {
+    public OpSliderField(float val, int min, int max, string name, bool wholeValue = true) : base(name) {
       this.val = val;
       this.min = min;
       this.max = max;
+      this.wholeValue = wholeValue;
       panel = (GameObject)Resources.Load("UI/OpSlider");
     }
     public override void init(GameObject o) {
@@ -45,6 +47,7 @@ public class Options {
       slider = o.transform.Find("Slider").gameObject.GetComponent<Slider>();
       slider.maxValue = max;
       slider.minValue = min;
+      slider.wholeNumbers = wholeValue;
       slider.value = val;
       slideVal.text = val.ToString();
     }
@@ -76,12 +79,12 @@ public class Options {
 
   public static OpField[] displayedOptions = new OpField[] {//Display Animation should default to true in real game
                                                     new OpToggleField(true, "Display Animations"),
-                                                    new OpSliderField(1,0,3, "Grid Transparency")};
+                                                    new OpSliderField(1f,0,1, "Grid Transparency",false)};
   //Visible fields
   public static bool displayAnimation {
     get { return ((OpToggleField)displayedOptions[OptionType.disAni]).val;}
   }
-  public static int gridTransparency {
+  public static float gridTransparency {
     get { return ((OpSliderField)displayedOptions[OptionType.gridTransparency]).val;}
   }
 

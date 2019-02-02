@@ -2,7 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Tile : Effected {
-  private static Color transparent = new Color(0.8f, 0.8f, 0.8f, 0.25f); // TODO: update transparency on change
+  private static Color transparent {
+    get {
+      return new Color(0.8f, 0.8f, 0.8f, 0.25f * Options.gridTransparency);
+    }
+  } // TODO: update transparency on change
   public static int unpathableCost = 1000;
   public int distance = 0;
   public int movePointSpent = 1;
@@ -46,7 +50,6 @@ public class Tile : Effected {
     if (unpathable()) {
       return;
     }
-
     border.material.color = c;
   }
 
