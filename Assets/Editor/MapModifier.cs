@@ -6,45 +6,49 @@ using UnityEngine.SceneManagement;
 using System.IO;
 
 using System.Collections.Generic;
+using System;
 
 [InitializeOnLoad]
-static class CharacterModifier {
+static class MapModifier {
 
-  static Dictionary<CharacterType, Object> replacements = new Dictionary<CharacterType, Object>();
+  static Dictionary<CharacterType, UnityEngine.Object> replacements = new Dictionary<CharacterType, UnityEngine.Object>();
 
-  static CharacterModifier() {
+  static MapModifier() {
     replacements.Add(CharacterType.Human, Resources.Load("Characters/Human"));
     replacements.Add(CharacterType.Lizard, Resources.Load("Characters/Lizard"));
     replacements.Add(CharacterType.Snake, Resources.Load("Characters/Snake"));
   }
 
-  [MenuItem("Modify Map/Modify Character/change height - All")]
-  private static void modifyAllMaps() {
+  private static void modifyAllMaps(Action<string> fun) {
     DirectoryInfo dir = new DirectoryInfo("Assets/maps");
     FileInfo[] info = dir.GetFiles("*.csv");
     string prevScene = EditorSceneManager.GetActiveScene().path;
     foreach (FileInfo f in info) {
       string name = f.Name.Remove(f.Name.Length-4);
       Debug.Log("Changing char heights in : " + name);
-      moveToTop("Assets/Scene/maps/"+name+".unity");
+      fun("Assets/Scene/maps/"+name+".unity");
     }
     EditorSceneManager.OpenScene(prevScene);
   }
 
-  // [MenuItem("Modify Map/Modify Character/change Height - Select Map...")]
-  // private static void selectMap() {
-  //   string fileName = EditorUtility.OpenFilePanel("Select Map File", Application.dataPath, "csv");
-  //   modifyMap(fileName);
-  // }
-
-  [MenuItem("Modify Map/Modify Character/change Height - current Map")]
-  private static void currentMap() {
+  [MenuItem("Modify Map/Change Height/Current Map")]
+  private static void currentMapChangeHeight() {
     changeHeight(EditorSceneManager.GetActiveScene().path);
   }
 
-  [MenuItem("Modify Map/Modify Character/moveToTop - current Map")]
+  [MenuItem("Modify Map/Change Height/All Maps")]
+  private static void allMapChangeHeight() {
+    modifyAllMaps(changeHeight);
+  }
+
+  [MenuItem("Modify Map/Move to Top/Current Map")]
   private static void currentMapMoveToTop() {
     moveToTop(EditorSceneManager.GetActiveScene().path);
+  }
+
+  [MenuItem("Modify Map/Move to Top/All Maps")]
+  private static void allMapMoveToTop() {
+    modifyAllMaps(moveToTop);
   }
 
   private static void moveToTop(string name) {
