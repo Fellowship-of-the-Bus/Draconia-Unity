@@ -562,13 +562,6 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public void movePiece(BattleCharacter c, Tile t, bool setWalking = true) {
-    LinkedList<Tile> tile = new LinkedList<Tile>();
-    tile.AddFirst(t);
-    moving = Options.displayAnimation;
-    waitFor(StartCoroutine(IterateMove(tile, c.gameObject, waitingOn.Count, setWalking && Options.displayAnimation, true)));
-  }
-
   public IEnumerator moveObject(
     GameObject obj,
     float speed,
@@ -607,7 +600,7 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking, bool smoothMovement = false) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking, bool teleport) {
     const float speed = 3f;
     lockUI();
     BattleCharacter character = piece.GetComponent<BattleCharacter>();
@@ -631,7 +624,7 @@ public class GameManager : MonoBehaviour {
       pos.y = map.getHeight(destination);
 
       // Set Rotation
-      if (setWalking || smoothMovement) {
+      if (setWalking || !teleport) {
         if (setWalking) character.face(pos);
         // Move Piece
         yield return moveObject(piece, speed, piece.transform.position, pos, curFrame, moveFrames, animator);
@@ -689,8 +682,8 @@ public class GameManager : MonoBehaviour {
   /** remaining move amount */
   [HideInInspector]
   public int moveRange = 0;
-  public Coroutine movePiece(Vector3 coordToMove, bool smooth = true, bool moveCommand = true) {
-    smooth = smooth && Options.displayAnimation;
+  // Walk the selected character to a destination
+  public Coroutine movePiece(Vector3 coordToMove) {
     // don't start moving twice
     if (moving) return null;
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
@@ -699,37 +692,47 @@ public class GameManager : MonoBehaviour {
     BattleCharacter c = SelectedPiece.GetComponent<BattleCharacter>();
     Coroutine co = null;
 
-    if ((destination.distance <= moveRange && !destination.occupied()) || !moveCommand) {
-      // if player chose to move, update position stack with current values,
+    if (destination.distance <= moveRange && !destination.occupied()) {
+      // update position stack with current values,
       // update remaining move range, and recolor the tiles given the new current position
-      if (moveCommand) {
-        int i = moveRange;
-        Tile cur = c.curTile;
-        cancelStack.Push(new UndoAction(() => {
-          Vector3 coord = cur.transform.position;
-          moveRange = i;
-          SelectedPiece.transform.position = cur.position;
-          updateTile(c,cur);
-          changeState(GameState.moving);
-          map.djikstra(coord, c);
-          map.setTileColours();
-        }));
+      int i = moveRange;
+      Tile cur = c.curTile;
+      cancelStack.Push(new UndoAction(() => {
+        Vector3 coord = cur.transform.position;
+        moveRange = i;
+        SelectedPiece.transform.position = cur.position;
+        updateTile(c,cur);
+        changeState(GameState.moving);
+        map.djikstra(coord, c);
+        map.setTileColours();
+      }));
 
-      }
       //after moving, remove from origin tile,
       //add to new tile
 
       coordToMove.y = destination.transform.position.y + map.getHeight(destination);
       localPath.RemoveFirst(); // discard current position
       line.GetComponent<Renderer>().material.color = Color.clear;
-      moving = smooth;
-      co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, smooth));
+      moving = Options.displayAnimation;
+      co = StartCoroutine(IterateMove(localPath, SelectedPiece, waitingOn.Count, true, !Options.displayAnimation));
       waitFor(co);
     }
     return co;
     // To avoid concurrency problems, avoid putting any code after StartCoroutine.
     // Any code that should be executed when the coroutine finishes should just
     // go at the end of the coroutine.
+  }
+
+  // Move a character along a path of tiles
+  public void movePiece(BattleCharacter c, LinkedList<Tile> path, bool setWalking = true) {
+    moving = Options.displayAnimation;
+    waitFor(StartCoroutine(IterateMove(
+      path,
+      c.gameObject,
+      waitingOn.Count,
+      setWalking && Options.displayAnimation,
+      !Options.displayAnimation
+    )));
   }
 
   public void cancelAction() {
@@ -767,7 +770,7 @@ public class GameManager : MonoBehaviour {
       map.path.RemoveLast();
     }
 
-    yield return waitUntilPopped(movePiece(destination, true));
+    yield return waitUntilPopped(movePiece(destination));
     if (selectedCharacter.isAlive()) {
       yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
     }

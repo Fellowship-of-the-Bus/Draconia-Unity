@@ -36,8 +36,10 @@ public class Sprint: ActiveSkill, AoeSkill {
   }
 
   public override void tileEffects(Tile target) {
+    LinkedList<Tile> path = new LinkedList<Tile>();
+    path.AddFirst(target);
     //move to target
-    GameManager.get.movePiece(self, target);
+    GameManager.get.movePiece(self, path);
   }
 
   public override int damageFormula() {

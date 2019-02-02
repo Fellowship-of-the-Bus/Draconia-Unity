@@ -28,7 +28,8 @@ public class TargetMover : SingleTarget {
     return t != null && ((map.getHeight(c.curTile) + upThreshold) > map.getHeight(t)) && !t.occupied();
   }
 
-  Tile moveTo(BattleCharacter c) {
+  LinkedList<Tile> movePath(BattleCharacter c) {
+    LinkedList<Tile> path = new LinkedList<Tile>();
     Vector3 heading;
     if (this.direction == Direction.towards) {
       heading =  self.transform.position - c.transform.position;
@@ -43,16 +44,18 @@ public class TargetMover : SingleTarget {
       Tile t2 = GameManager.get.map.getTile(c.transform.position + (direction * i));
       if (validTile(c, t2)) {
         t = t2;
+        path.AddLast(t);
       } else break; //Don't try to push through invalid tile to find a valid one
     }
-    return t;
+    return path;
   }
 
   public override void additionalEffects(BattleCharacter c) {
     GameManager game = GameManager.get;
-    Tile t = moveTo(c);
-    if (validTile(c, t) && c.isAlive()) {
-      game.movePiece(c,t,false);
+    LinkedList<Tile> path = movePath(c);
+    Tile destination = path.Last.Value;
+    if (validTile(c, destination) && c.isAlive()) {
+      game.movePiece(c, path, false);
     }
   }
 
