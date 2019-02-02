@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Map {
-  readonly Vector3 portalDir = Vector3.one;
+  public static Vector3 portalDir = Vector3.one;
 
   public LinkedList<Tile> path = new LinkedList<Tile>();
   public List<Tile> tiles = new List<Tile>();

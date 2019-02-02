@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour {
   List<Button> skillButtons = null;
   LineRenderer line;
   public ActionQueue actionQueue;
-  public GameObject turnButton;
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;
@@ -188,8 +187,6 @@ public class GameManager : MonoBehaviour {
     moving = false;
     UILock = new lockUICount();
     UILock.count = 0;
-
-    actionQueue = new ActionQueue(GameObject.FindGameObjectsWithTag("ActionBar")[0], turnButton, this);
 
     skillButtons = new List<Button>();
     foreach (GameObject o in GameObject.FindGameObjectsWithTag("SkillButton")) {
@@ -618,13 +615,16 @@ public class GameManager : MonoBehaviour {
     Tile endpoint = path.Last.Value;
     int moveFrames = (int)(path.Count * Options.FPS/speed);
     int curFrame = 0;
+
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
       pos.y = map.getHeight(destination);
 
-      // Set Rotation
-      if (setWalking || !teleport) {
+      bool usingPortal = destination.dir == Map.portalDir;
+
+      if (!usingPortal && !teleport) {
+        // Set Rotation
         if (setWalking) character.face(pos);
         // Move Piece
         yield return moveObject(piece, speed, piece.transform.position, pos, curFrame, moveFrames, animator);
@@ -874,7 +874,7 @@ public class GameManager : MonoBehaviour {
   public GameObject piece;
   // Test function that instantiates a character
   public BattleCharacter createPiece() {
-    GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.FindGameObjectWithTag("ChessModels").transform) as GameObject;
+    GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.Find("Players").transform) as GameObject;
     var c = newCharObj.GetComponent<BattleCharacter>();
     return c;
   }

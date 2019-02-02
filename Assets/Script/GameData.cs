@@ -14,25 +14,29 @@ public class GameData {
   public Dictionary<string,string> mapProgression = new Dictionary<string,string>();
 
   public void newGame() {
-  	String[] skills = {"Knockback", "ScorchEarth", "FireStorm"};
+  	String[] skills = {"Knockback", "ScorchEarth", "FireStorm", "Blizzard"};
   	SkillTree skillTree;
 
     GameData.gameData.characters.Add(new Character("Brodric"));
     GameData.gameData.characters.Add(new Character("Sisdric"));
 
+
     inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
     inv.addEquipment(new Weapon(EquipmentClass.Sword, 2, 1));
 
     foreach (Character c in  GameData.gameData.characters) {
-   		c.attr.strength = 10;
-	    c.attr.intelligence = 125;
-	    c.attr.speed = 10;
-	    skillTree = c.skills;
-	    foreach (String skill in skills) {
-	    	Type t = Type.GetType(skill);
-	    	skillTree.setSkillLevel(t, 1);
-	    	skillTree.equipSkill(t);
-	    }
+      c.attr.strength = 10;
+      c.attr.intelligence = 125;
+      c.attr.speed = 10;
+      skillTree = c.skills;
+      foreach (String skill in skills) {
+        Type t = Type.GetType(skill);
+        skillTree.setSkillLevel(t, 1);
+        skillTree.equipSkill(t);
+      }
+    }
+    for(int i = 0; i < 5; i++) {
+      GameData.gameData.characters.Add(CharacterGenerator.generateCharacter(1));
     }
   }
 
