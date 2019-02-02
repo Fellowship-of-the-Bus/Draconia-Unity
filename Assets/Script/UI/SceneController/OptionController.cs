@@ -24,7 +24,7 @@ public class OptionController: MonoBehaviour {
         Slider s = ((Options.OpSliderField)field).slider;
         int j = i;
         s.onValueChanged.AddListener((x) => {
-          onSliderChange((int)x, j);
+          onSliderChange(x, j);
         });
       }
       i++;
@@ -35,8 +35,13 @@ public class OptionController: MonoBehaviour {
     ((Options.OpToggleField)Options.displayedOptions[location]).val = val;
   }
 
-  public void onSliderChange(int val, int location) {
-    ((Options.OpSliderField)Options.displayedOptions[location]).val = val;
-    ((Options.OpSliderField)Options.displayedOptions[location]).slideVal.text = val.ToString();
+  public void onSliderChange(float val, int location) {
+    Options.OpSliderField op = (Options.OpSliderField)Options.displayedOptions[location];
+    op.val = val;
+    if (op.wholeValue) {
+      op.slideVal.text = ((int)val).ToString();
+    } else {
+      op.slideVal.text = val.ToString();
+    }
   }
 }
