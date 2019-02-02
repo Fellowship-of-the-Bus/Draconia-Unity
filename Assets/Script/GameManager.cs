@@ -651,9 +651,11 @@ public class GameManager : MonoBehaviour {
       //yield return waitUntilCount(index+1); //Not needed anymore since the move is interrupted?
       if (animator) animator.enabled = true;
     }
-    piece.transform.position = endpoint.position;
-    moveRange -= endpoint.distance;
-    updateTile(character,endpoint);
+    if (character.isAlive()) {
+      piece.transform.position = endpoint.position;
+      moveRange -= endpoint.distance;
+      updateTile(character,endpoint);
+    }
     map.clearPath();
     map.djikstra(endpoint.position, character);
     map.setTileColours();

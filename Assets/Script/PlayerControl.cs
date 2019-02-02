@@ -84,7 +84,7 @@ public class PlayerControl : MonoBehaviour {
           int rangeToMove = gameManager.moveRange;
           if (s is Sprint) rangeToMove += s.range;
 
-          if (hoveredTile.distance <= rangeToMove) {
+          if (hoveredTile.distance <= rangeToMove && !hoveredTile.occupied()) {
             map.setPath(hoveredTile.position);
           } else {
             map.clearPath();
@@ -107,6 +107,8 @@ public class PlayerControl : MonoBehaviour {
     if (overUI() || clickedObject == null || gameManager.moving) return;
     //handle multicubes
     if (clickedObject.transform.parent.tag == "Cube") {
+      clickedObject = clickedObject.transform.parent.gameObject;
+    } else if (clickedObject.transform.parent.tag == "Unit") {
       clickedObject = clickedObject.transform.parent.gameObject;
     }
 
