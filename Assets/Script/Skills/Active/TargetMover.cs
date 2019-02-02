@@ -53,10 +53,11 @@ public class TargetMover : SingleTarget {
   public override void additionalEffects(BattleCharacter c) {
     GameManager game = GameManager.get;
     LinkedList<Tile> path = movePath(c);
-    Tile destination = path.Last.Value;
-    if (validTile(c, destination) && c.isAlive()) {
-      game.movePiece(c, path, false);
+    if (path.Last != null) {
+      Tile destination = path.Last.Value;
+      if (validTile(c, destination) && c.isAlive()) {
+        game.movePiece(c, path, false);
+      }
     }
   }
-
 }
