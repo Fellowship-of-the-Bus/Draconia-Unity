@@ -40,7 +40,7 @@ static class MapGenerator {
 
 
 
-  [MenuItem("Generate Map/Generate...")]
+  [MenuItem("Modify Map/Generate Terrain...")]
   private static void selectFileWrapper() {
     selectFile();
   }
@@ -158,7 +158,7 @@ static class MapGenerator {
   }
 
 
-  [MenuItem("Generate Map/GenerateAll...")]
+  [MenuItem("Modify Map/Generate Terrain All...")]
   private static void generateAllMaps() {
     DirectoryInfo dir = new DirectoryInfo("Assets/maps");
     FileInfo[] info = dir.GetFiles("*.csv");
