@@ -26,8 +26,9 @@ public class SkillSelectController: MonoBehaviour {
       GameObject o = Instantiate(skillInfo, skillView);
       SkillInfo s = o.GetComponent<SkillInfo>();
       s.init();
-      s.info.GetComponent<Text>().text = t.FullName;
       s.skillType = t;
+      s.info.GetComponent<Text>().text = t.FullName;
+      s.displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[t];
       skills.Add(s);
     }
 

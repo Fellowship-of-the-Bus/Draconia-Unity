@@ -8,6 +8,7 @@ public class SkillInfo: MonoBehaviour {
   public Text info;
   public Button levelUpButton;
   public Button equipButton;
+  public Image displayImage;
 
   public Type skillType;
   public int skillLevel {
