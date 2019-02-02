@@ -33,18 +33,22 @@ public class FireStorm: CircleAoE {
     return (int)(self.intelligence*(1+level*0.1));
   }
 
-  static GameObject Firestorm = Resources.Load("ParticleEffects/FireStorm") as GameObject;
+  static GameObject effectObject = Resources.Load("ParticleEffects/FireStorm") as GameObject;
   public override void playAVEffects(Action callback, Tile target) {
     GameManager.get.waitFor(GameManager.get.StartCoroutine(AVTiming(callback, target)));
   }
 
+  // Same as Blizzard TODO: share code
   IEnumerator AVTiming(Action callback, Tile target) {
     Vector3 stormLocation = target.position;
     stormLocation.y = stormLocation.y + 5f;
-    GameObject storm = GameObject.Instantiate(Firestorm, stormLocation, Quaternion.identity) as GameObject;
+    GameObject storm = GameObject.Instantiate(effectObject, stormLocation, Quaternion.identity) as GameObject;
+    ParticleSystem particleEffect = storm.GetComponent<ParticleSystem>();
+    var shape = particleEffect.shape;
+    shape.radius = aoe;
     yield return new WaitForSeconds(3f);
     callback();
-    storm.GetComponent<ParticleSystem>().Stop();
+    particleEffect.Stop();
     yield return new WaitForSeconds(3f);
     GameObject.Destroy(storm);
   }

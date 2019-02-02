@@ -14,7 +14,7 @@ public class GameData {
   public Dictionary<string,string> mapProgression = new Dictionary<string,string>();
 
   public void newGame() {
-  	String[] skills = {"Knockback", "ScorchEarth", "Portal"};
+  	String[] skills = {"Knockback", "ScorchEarth", "FireStorm", "Blizzard"};
   	SkillTree skillTree;
 
     GameData.gameData.characters.Add(new Character("Brodric"));
