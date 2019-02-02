@@ -254,4 +254,19 @@ public abstract class ActiveSkill : EventListener, Skill {
     return !other.occupied() || ((other.occupant.team == self.team && targets[0]) || (other.occupant.team != self.team && targets[1]));
   }
 
+  // Play the audiovisual effects for the skill
+  // callback - Function that performs the gameplay elements of the skill
+  public virtual void playAVEffects(Action callback, Tile target) {
+    if (this.projectileType != ProjectileType.None) {
+      new Projectile(self,
+        this.targetsTiles ? (target as Effected) : target.occupant,
+        this.projectileType,
+        this.projectileMoveType,
+        this.projectileSpeed,
+        callback
+      );
+    } else {
+      callback();
+    }
+  }
 }

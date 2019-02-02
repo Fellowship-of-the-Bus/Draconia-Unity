@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using System.Collections;
 
 public class FireStorm: CircleAoE {
   public new bool targetsTiles = true;
@@ -29,5 +31,21 @@ public class FireStorm: CircleAoE {
 
   public override int damageFormula() {
     return (int)(self.intelligence*(1+level*0.1));
+  }
+
+  static GameObject Firestorm = Resources.Load("ParticleEffects/FireStorm") as GameObject;
+  public override void playAVEffects(Action callback, Tile target) {
+    GameManager.get.waitFor(GameManager.get.StartCoroutine(AVTiming(callback, target)));
+  }
+
+  IEnumerator AVTiming(Action callback, Tile target) {
+    Vector3 stormLocation = target.position;
+    stormLocation.y = stormLocation.y + 5f;
+    GameObject storm = GameObject.Instantiate(Firestorm, stormLocation, Quaternion.identity) as GameObject;
+    yield return new WaitForSeconds(3f);
+    callback();
+    storm.GetComponent<ParticleSystem>().Stop();
+    yield return new WaitForSeconds(3f);
+    GameObject.Destroy(storm);
   }
 }
