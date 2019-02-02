@@ -26,7 +26,7 @@ static class CharacterModifier {
     foreach (FileInfo f in info) {
       string name = f.Name.Remove(f.Name.Length-4);
       Debug.Log("Changing char heights in : " + name);
-      modifyMap("Assets/Scene/maps/"+name+".unity");
+      moveToTop("Assets/Scene/maps/"+name+".unity");
     }
     EditorSceneManager.OpenScene(prevScene);
   }
@@ -39,10 +39,42 @@ static class CharacterModifier {
 
   [MenuItem("Modify Map/Modify Character/change Height - current Map")]
   private static void currentMap() {
-    modifyMap(EditorSceneManager.GetActiveScene().path);
+    changeHeight(EditorSceneManager.GetActiveScene().path);
   }
 
-  private static void modifyMap(string name){
+  [MenuItem("Modify Map/Modify Character/moveToTop - current Map")]
+  private static void currentMapMoveToTop() {
+    moveToTop(EditorSceneManager.GetActiveScene().path);
+  }
+
+  private static void moveToTop(string name) {
+    Scene currentScene = EditorSceneManager.OpenScene(name);
+    GameObject pieces = GameObject.Find("Pieces");
+    List<GameObject> toMove = new List<GameObject>();
+    GameObject enemies = new GameObject();
+    enemies.name = "Enemies";
+    foreach (Transform child in pieces.transform) {
+      toMove.Add(child.gameObject);
+    }
+    foreach (GameObject piece in toMove) {
+      piece.transform.SetParent(enemies.transform);
+    }
+    toMove.Clear();
+    GameObject Doodads = GameObject.Find("Doodads");
+    GameObject newDoodads = new GameObject();
+    newDoodads.name = "Doodads";
+    foreach (Transform child in Doodads.transform) {
+      toMove.Add(child.gameObject);
+    }
+    foreach (GameObject doodad in toMove) {
+      doodad.transform.SetParent(newDoodads.transform);
+    }
+    GameObject board = GameObject.Find("Board");
+    board.transform.SetParent(null);
+    EditorSceneManager.SaveScene(currentScene);
+  }
+
+  private static void changeHeight(string name){
     Scene currentScene = EditorSceneManager.OpenScene(name);
     GameObject pieces = GameObject.Find("Pieces");
     Transform pTransform = pieces.transform;

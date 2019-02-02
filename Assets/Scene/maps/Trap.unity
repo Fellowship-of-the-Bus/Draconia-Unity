@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140344, g: 0.5008933, b: 0.57231456, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2118,7 +2118,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 307931808}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1477404048691300, guid: dd07ecfb558d8fb49adf4c3720b2c885, type: 3}
       propertyPath: m_Name
@@ -2154,7 +2154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4064054827307830, guid: dd07ecfb558d8fb49adf4c3720b2c885, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4064054827307830, guid: dd07ecfb558d8fb49adf4c3720b2c885, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7534,18 +7534,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27572aee490181e40b4e4114f070474c, type: 3}
---- !u!4 &307931808 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4548942432237162, guid: 27572aee490181e40b4e4114f070474c,
-    type: 3}
-  m_PrefabInstance: {fileID: 307931807}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &307931809 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3344109466314543072, guid: 27572aee490181e40b4e4114f070474c,
-    type: 3}
-  m_PrefabInstance: {fileID: 307931807}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &316879385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17326,6 +17314,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 909019992}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &912648658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 912648659}
+  m_Layer: 0
+  m_Name: Doodads
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &912648659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912648658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1939844791}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &915302251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21886,6 +21905,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1134381586}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1135980912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1135980913}
+  m_Layer: 0
+  m_Name: Enemies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1135980913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135980912}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1139048481
 GameObject:
   m_ObjectHideFlags: 0
@@ -38668,7 +38717,7 @@ Transform:
   - {fileID: 1965479563}
   - {fileID: 2012162242}
   - {fileID: 114655433}
-  m_Father: {fileID: 307931809}
+  m_Father: {fileID: 912648659}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1942045438
