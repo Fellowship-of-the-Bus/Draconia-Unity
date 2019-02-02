@@ -225,6 +225,7 @@ public class BattleCharacter : Effected {
       GameObject weaponModel = weapon.getModel();
       if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
     }
+    gameObject.name = name;
   }
 
   void setSkills() {
