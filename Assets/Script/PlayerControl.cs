@@ -115,7 +115,6 @@ public class PlayerControl : MonoBehaviour {
     bool isTile = clickedObject.tag == "Cube";
     bool isPiece = clickedObject.tag == "Unit";
     Tile clickedTile = gameManager.map.getTile(clickedObject.transform.position);
-    Debug.Log(clickedObject);
 
     if (preGame) {
       BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
