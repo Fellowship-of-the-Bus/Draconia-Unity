@@ -615,13 +615,16 @@ public class GameManager : MonoBehaviour {
     Tile endpoint = path.Last.Value;
     int moveFrames = (int)(path.Count * Options.FPS/speed);
     int curFrame = 0;
+
     foreach (Tile destination in path) {
       // fix height
       Vector3 pos = destination.transform.position;
       pos.y = map.getHeight(destination);
 
-      // Set Rotation
-      if (setWalking || !teleport) {
+      bool usingPortal = destination.dir == Map.portalDir;
+
+      if (!usingPortal && !teleport) {
+        // Set Rotation
         if (setWalking) character.face(pos);
         // Move Piece
         yield return moveObject(piece, speed, piece.transform.position, pos, curFrame, moveFrames, animator);
