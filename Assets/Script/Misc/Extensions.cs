@@ -106,5 +106,13 @@ public static class Extensions {
     if (ret) return ret;
     return findRecursiveHelper(t, child, false);
   }
+
+  public static string replaceAll(this string str, string oldChars, char newChar) {
+    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+    for (int i = 0; i < str.Length; ++i)  {
+      sb.Append(oldChars.Contains(str[i]) ? newChar : str[i]);
+    }
+    return sb.ToString();
+  }
 }
 
