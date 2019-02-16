@@ -97,13 +97,15 @@ static class MapModifier {
 
   private static void changeHeight(string name){
     Scene currentScene = EditorSceneManager.OpenScene(name);
-    GameObject pieces = GameObject.Find("Pieces");
-    Transform pTransform = pieces.transform;
-    List<Transform> toAdd = new List<Transform>();
-    List<GameObject> toDelete = new List<GameObject>();
+    GameObject[] pieces = GameObject.FindGameObjectsWithTag("Unit");
+    //GameObject pieces = GameObject.Find("Enemies");
+    //Transform pTransform = pieces.transform;
+    // List<Transform> toAdd = new List<Transform>();
+    // List<GameObject> toDelete = new List<GameObject>();
     GameManager gameManager = GameObject.Find("__GameManager").GetComponent<GameManager>();
-    foreach (Transform child in pTransform) {
-      GameObject childObject = child.gameObject;
+    // foreach (Transform child in pTransform) {
+      // GameObject childObject = child.gameObject;
+    foreach (GameObject childObject in pieces) {
       // toDelete.Add(childObject);
       // BattleCharacter character = childObject.GetComponent<BattleCharacter>();
       // GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(replacements[character.characterType]);
@@ -127,6 +129,10 @@ static class MapModifier {
           foreach(Transform cube in row.transform) {
             if (cube.position.z == childObject.transform.position.z) {
               childObject.transform.position = new Vector3(childObject.transform.position.x, cube.gameObject.GetComponent<Tile>().position.y, childObject.transform.position.z);
+              SerializedObject sObject = new SerializedObject(childObject.GetComponent<BattleCharacter>());
+              SerializedProperty team = sObject.FindProperty("team");
+              team.intValue = 1;
+              sObject.ApplyModifiedProperties();
               break;
             }
           }
@@ -135,13 +141,13 @@ static class MapModifier {
 
     }
 
-    foreach(Transform t in toAdd) {
-      t.SetParent(pTransform);
-    }
+    // foreach(Transform t in toAdd) {
+    //   t.SetParent(pTransform);
+    // }
 
-    foreach(GameObject o in toDelete) {
-      GameObject.DestroyImmediate(o);
-    }
+    // foreach(GameObject o in toDelete) {
+    //   GameObject.DestroyImmediate(o);
+    // }
     EditorSceneManager.SaveScene(currentScene);
   }
 }
