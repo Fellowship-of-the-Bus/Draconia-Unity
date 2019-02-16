@@ -11,16 +11,6 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
   public string tiptext = "Missing tooltip!";
   public GameObject tipbox;
   protected float hoverThreshold = 0.25f;
-  protected float width {
-    get {
-      return rectTrans.rect.width;
-    }
-  }
-  protected float height {
-    get {
-      return rectTrans.rect.height;
-    }
-  }
   protected RectTransform rectTrans;
 
   void Start() {
@@ -45,7 +35,12 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     }
 
     if (tooltipShown) {
-      tipbox.transform.position = tipPosition(Input.mousePosition);
+      Vector3[] corners = new Vector3[4];
+      rectTrans.GetWorldCorners(corners);
+      float width = corners[2].x - corners[0].x;
+      float height = corners[1].y - corners[0].y;
+
+      tipbox.transform.position = tipPosition(Input.mousePosition, width, height);
       if (tipbox.transform.TransformPoint(tipbox.transform.position).x - width  < 0) {
         tipbox.transform.Translate(new Vector3(width,0,0));
       }
@@ -70,7 +65,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     tipbox.SetActive(false);
   }
 
-  public Vector3 tipPosition(Vector3 mousePosition) {
+  public Vector3 tipPosition(Vector3 mousePosition, float width, float height) {
     Vector3 mouseRelative = mousePosition;
     return new Vector3(mouseRelative.x - width / 2, mouseRelative.y + height / 2, 0);
   }

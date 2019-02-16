@@ -20,6 +20,7 @@ public class CharPreview: MonoBehaviour {
       o.GetComponentInChildren<Text>().text = skill.name;
       Tooltip tooltip = o.GetComponent<Tooltip>();
       tooltip.tiptext = skill.tooltip;
+      o.transform.Find("Image").GetComponent<Image>().sprite = SkillList.get.skillImages[skill.GetType()];
     }
     charName.text = c.name;
   }
