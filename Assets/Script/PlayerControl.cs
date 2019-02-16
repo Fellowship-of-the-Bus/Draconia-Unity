@@ -119,7 +119,7 @@ public class PlayerControl : MonoBehaviour {
     if (preGame) {
       BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
 
-      if (clickedChar != null && clickedChar.team == 0) {
+      if (clickedChar != null && clickedChar.team == 0 && clickedChar.aiType == AIType.None) {
         if (clickedChar == selectedCharacter) {
           deselect();
           return;
