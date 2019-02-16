@@ -152,6 +152,7 @@ public class GameSceneController: MonoBehaviour {
   public void resetStartTileColour() {
     setStartTileColour(Color.red);
     if (pControl.selectedCharacter != null) {
+      Debug.Log(pControl.selectedCharacter.curTile);
       pControl.selectedCharacter.curTile.setColor(Color.yellow);
     }
   }
@@ -160,6 +161,10 @@ public class GameSceneController: MonoBehaviour {
     foreach (Tile t in tileStartLocs) {
       t.setColor(c);
     }
+  }
+
+  public int numChars() {
+    return (int)Math.Min(numCharInBattle, pStartLocTiles.Count);
   }
 
   public static GameSceneController get {get; set;}
