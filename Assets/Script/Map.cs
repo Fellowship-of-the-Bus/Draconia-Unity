@@ -163,7 +163,9 @@ public class Map {
     return adjacentTiles;
   }
 
-  public List<Tile> getTilesWithinRange(Tile t, int range, bool heightAdvantage = false) {
+  // ignorePathing - if this is true, the range will simply extend out ignoring whether terrain is pathable
+  // with the exception that it will still be blocked by "Wall" tiles.
+  private List<Tile> getTilesWithinRange(Tile t, int range, bool ignorePathing) {
     List<Tile> inRangeTiles = new List<Tile>();
     List<Tile> edgeTiles = new List<Tile>();
     List<Tile> outerTiles = new List<Tile>();
@@ -173,7 +175,7 @@ public class Map {
     for (int dist = 1; dist < range + 1; dist++) {
       foreach (Tile e in edgeTiles) {
         foreach (Tile a in getAdjacentTiles(e)) {
-          if (!inRangeTiles.Contains(a) && !outerTiles.Contains(a) && a.movePointSpent < 10) {
+          if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall()))) {
             outerTiles.Add(a);
           }
         }
@@ -186,6 +188,16 @@ public class Map {
 
     inRangeTiles.Remove(t);
     return inRangeTiles;
+  }
+
+  public List<Tile> getTilesWithinRange(Tile t, int range) {
+    return getTilesWithinRange(t, range, false);
+
+  }
+
+  // Get all tiles within a fixed distance of the given tile, ignoring height differences and pathability
+  public List<Tile> getTilesWithinDistance(Tile t, int range) {
+    return getTilesWithinRange(t, range, true);
   }
 
   public List<Tile> getTilesWithinMovementRange(int mvRange) {

@@ -25,7 +25,7 @@ public abstract class SingleTarget: ActiveSkill {
     if (canTargetSelf) targets.Add(posn);
     return targets;
   }
-  public List<Tile> getTargetsInAoe(Tile position, bool heightAdvantage = false) {
-    return getTargetsInAoe(position, 0, heightAdvantage);
+  public List<Tile> getTargetsInAoe(Tile position) {
+    return getTargetsInAoe(position, 0);
   }
 }
