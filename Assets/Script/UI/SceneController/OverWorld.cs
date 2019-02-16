@@ -78,7 +78,7 @@ public class OverWorld: MonoBehaviour {
   }
 
   private void open(string scene) {
-    UI.GetComponent<CanvasGroup>().interactable = false;
-    SceneManager.LoadSceneAsync(scene);
+    LoadingScreen.nextScene = scene;
+    SceneManager.LoadSceneAsync("LoadingScreen");
   }
 }
