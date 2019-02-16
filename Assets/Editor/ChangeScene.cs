@@ -16,8 +16,29 @@ public static class MenuItemGenerator {
 
   private static MethodInfo switchToSceneInfo;
 
+  private const string menuName = "Open Scene/Enable Button Generation";
+  private const string settingName = "EnableButtonGeneration";
+
+  public static bool isEnabled {
+    get { return EditorPrefs.GetBool(settingName, false); }
+    set { EditorPrefs.SetBool(settingName, value); }
+  }
+
+  [MenuItem(menuName)]
+  private static void toggleButtonGeneration() {
+    isEnabled = !isEnabled;
+  }
+
+  [MenuItem(menuName, true)]
+  private static bool toggleButtonGenerationValidate() {
+    Menu.SetChecked(menuName, isEnabled);
+    return true;
+  }
+
   static MenuItemGenerator() {
-    EditorSceneManager.sceneSaved += onSceneSaved;
+    if (isEnabled) {
+      EditorSceneManager.sceneSaved += onSceneSaved;
+    }
 
     Type thisType = typeof(MenuItemGenerator);
     switchToSceneInfo = thisType.GetMethod("switchToScene");
