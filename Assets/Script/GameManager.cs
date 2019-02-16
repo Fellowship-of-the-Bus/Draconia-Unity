@@ -257,8 +257,8 @@ public class GameManager : MonoBehaviour {
         actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
       }
     }
-
-    List<Character> charInBattle = new List<Character>(players.Map(x => x.GetComponent<BattleCharacter>().baseChar));
+    List<GameObject> users = new List<GameObject>(players.Filter(x => x.GetComponent<BattleCharacter>().aiType == AIType.None));
+    List<Character> charInBattle = new List<Character>(users.Map(x => x.GetComponent<BattleCharacter>().baseChar));
     GameManager.postData.inBattle = charInBattle;
   }
 
