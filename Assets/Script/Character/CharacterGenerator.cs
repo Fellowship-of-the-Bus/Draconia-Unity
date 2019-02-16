@@ -24,6 +24,9 @@ public class CharacterGenerator {
     attr.speed = Random.Range(SPEED_MIN, SPEED_MAX+1);
     attr.maxHealth = Random.Range(HEALTH_MIN, HEALTH_MAX+1);
 
+    attr.moveRange = 4;
+
+
     return attr;
   }
 
