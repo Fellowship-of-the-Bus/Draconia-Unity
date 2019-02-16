@@ -15,6 +15,12 @@ public class CharacterGenerator {
   private static readonly int HEALTH_MIN = 20;
   private static readonly int HEALTH_MAX = 30;
 
+  private static string[] lines;
+
+  static CharacterGenerator() {
+     lines = File.ReadAllLines("Assets/Resources/names.txt");
+  }
+
   private static Attributes generateBaseAttributes() {
     Attributes attr = new Attributes();
 
@@ -25,7 +31,6 @@ public class CharacterGenerator {
     attr.maxHealth = Random.Range(HEALTH_MIN, HEALTH_MAX+1);
 
     attr.moveRange = 4;
-
 
     return attr;
   }
@@ -38,7 +43,6 @@ public class CharacterGenerator {
 
 
   private static string generateName() {
-    var lines = File.ReadAllLines("Assets/Resources/names.txt");
     int index = Random.Range(0, lines.Length);
     return lines[index];
   }
