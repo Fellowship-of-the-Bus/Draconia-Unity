@@ -163,5 +163,9 @@ public class GameSceneController: MonoBehaviour {
     }
   }
 
+  public int numChars() {
+    return (int)Math.Min(numCharInBattle, pStartLocTiles.Count);
+  }
+
   public static GameSceneController get {get; set;}
 }

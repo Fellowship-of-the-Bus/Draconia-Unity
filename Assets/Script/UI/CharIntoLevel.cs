@@ -14,10 +14,9 @@ public class CharIntoLevel: MonoBehaviour {
   public List<Character> addedCharacters = new List<Character>();
   //CharPreview curPreview;
 
-  private int _numCharSelected;
   public int numCharSelected {
-    get {return _numCharSelected;}
-    set { _numCharSelected = value; setText(value);}
+    get {return addedCharacters.Count;}
+    set {setText(value);}
   }
 
   public CharPreview selectedPanel;
@@ -44,11 +43,11 @@ public class CharIntoLevel: MonoBehaviour {
 
   public void addCharacter(Character c, bool mandatory = false) {
     //check character has not been added
-    if (addedCharacters.Contains(c)) {
+    if (!canAddCharacter(c)) {
       return;
     }
     //check we are not over limit
-    if (numCharSelected >= GameSceneController.get.numCharInBattle) {
+    if (numCharSelected >= GameSceneController.get.numChars()) {
       return;
     }
 
@@ -75,7 +74,7 @@ public class CharIntoLevel: MonoBehaviour {
 
 
     addedCharacters.Add(c);
-    setText(addedCharacters.Count);
+    numCharSelected = addedCharacters.Count;
   }
 
   public void removeCharacter(CharPreview curPreview) {
@@ -84,12 +83,12 @@ public class CharIntoLevel: MonoBehaviour {
     curPreview.gameObject.transform.SetParent(null, false);
     addedCharacters.Remove(curPreview.c.baseChar);
     curPreview = null;
-    setText(addedCharacters.Count);
+    numCharSelected = addedCharacters.Count;
   }
 
 
   protected void setText(int i) {
-    display.text = "Characters Selected: " + i +"/" + GameSceneController.get.numCharInBattle + ".";
+    display.text = "Characters Selected: " + i +"/" + GameSceneController.get.numChars() + ".";
   }
   public static CharIntoLevel get { get; set; }
 
