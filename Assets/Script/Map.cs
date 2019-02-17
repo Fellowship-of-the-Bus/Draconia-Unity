@@ -124,14 +124,10 @@ public class Map {
     return null;
   }
 
-  public Tile getTile(Vector3 location, IEnumerable<Tile> list) {
-    foreach (Tile tile in list) {
-      if (Math.Abs(tile.transform.position.x - location.x) < 0.05f &&
-          Math.Abs(tile.transform.position.z - location.z) < 0.05f) {
-        return tile;
-      }
-    }
-    return null;
+  // for internal use by djikstra only
+  private Tile getTile(Vector3 location, ISet<Tile> set) {
+    Tile target = getTile(location);
+    return set.Contains(target) ? target : null;
   }
 
   List<Tile> getAdjacentTiles(Tile t) {
