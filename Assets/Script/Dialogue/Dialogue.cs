@@ -26,9 +26,7 @@ public class Dialogue : MonoBehaviour {
     if (currentFragment >= dialogues.Count) {
       //end of dialogue, consider closing the dialogue instead of doing nothing.
       skipDialogue();
-      return;
-    }
-    if (dialogues[currentFragment].hasNextFrame) {
+    } else if (dialogues[currentFragment].hasNextFrame) {
       string text = dialogues[currentFragment].getNextFrameText();
       StartCoroutine(displayText(text));
       // //check last frame in last fragment

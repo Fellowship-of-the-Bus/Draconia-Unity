@@ -26,8 +26,4 @@ public class DialogueFragment {
       return tmp.Substring(0, index);
     }
   }
-  public void resetFrames() {
-    textIndex = 0;
-    hasNextFrame = true;
-  }
 }
