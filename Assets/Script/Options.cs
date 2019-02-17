@@ -17,7 +17,7 @@ public class Options {
     public bool val;
     public OpToggleField(bool val, string name) : base(name) {
       this.val = val;
-      panel = (GameObject)Resources.Load("UI/OpToggle");
+      panel = (GameObject)Resources.Load("UI/Options/OpToggle");
     }
     public override void init(GameObject o) {
       label = o.transform.Find("Label").gameObject.GetComponent<Text>();
@@ -38,7 +38,7 @@ public class Options {
       this.min = min;
       this.max = max;
       this.wholeValue = wholeValue;
-      panel = (GameObject)Resources.Load("UI/OpSlider");
+      panel = (GameObject)Resources.Load("UI/Options/OpSlider");
     }
     public override void init(GameObject o) {
       label = o.transform.Find("Label").gameObject.GetComponent<Text>();
@@ -78,8 +78,9 @@ public class Options {
 
 
   public static OpField[] displayedOptions = new OpField[] {//Display Animation should default to true in real game
-                                                    new OpToggleField(true, "Display Animations"),
-                                                    new OpSliderField(1f,0,1, "Grid Transparency",false)};
+    new OpToggleField(true, "Display Animations"),
+    new OpSliderField(1f,0,1, "Grid Transparency",false)
+  };
   //Visible fields
   public static bool displayAnimation {
     get { return ((OpToggleField)displayedOptions[OptionType.disAni]).val;}
