@@ -20,23 +20,23 @@ public class GameData {
     GameData.gameData.characters.Add(new Character("Brodric"));
     GameData.gameData.characters.Add(new Character("Sisdric"));
 
+    for(int i = 0; i < 5; i++) {
+      GameData.gameData.characters.Add(CharacterGenerator.generateCharacter(1));
+    }
 
     inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
     inv.addEquipment(new Weapon(EquipmentClass.Sword, 2, 1));
 
     foreach (Character c in  GameData.gameData.characters) {
-      c.attr.strength = 10;
-      c.attr.intelligence = 125;
-      c.attr.speed = 10;
+      if (c.attr.strength == 0) c.attr.strength = 10;
+      if (c.attr.intelligence == 0) c.attr.intelligence = 125;
+      if (c.attr.speed == 0) c.attr.speed = 10;
       skillTree = c.skills;
       foreach (String skill in skills) {
         Type t = Type.GetType(skill);
         skillTree.setSkillLevel(t, 1);
         skillTree.equipSkill(t);
       }
-    }
-    for(int i = 0; i < 5; i++) {
-      GameData.gameData.characters.Add(CharacterGenerator.generateCharacter(1));
     }
   }
 
