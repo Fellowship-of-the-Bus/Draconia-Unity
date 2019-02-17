@@ -45,6 +45,7 @@ public class Map {
       tile.dir = Vector3.zero;
     }
 
+    float moveTolerance = charToMove.moveTolerance;
     HashSet<Tile> tilesToGo = new HashSet<Tile>(tiles);
 
     Tile startTile = getTile(unitLocation);
@@ -72,7 +73,7 @@ public class Map {
         Vector3 neighbour = minTile.transform.position + dir;
         Tile neighbourTile = getTile(neighbour, tilesToGo);
         if (neighbourTile != null) {
-          int d = minTile.distance + distance(minTile, neighbourTile, charToMove.moveTolerance);
+          int d = minTile.distance + distance(minTile, neighbourTile, moveTolerance);
           if (d < neighbourTile.distance) {
             neighbourTile.distance = d;
             neighbourTile.dir = dir;
