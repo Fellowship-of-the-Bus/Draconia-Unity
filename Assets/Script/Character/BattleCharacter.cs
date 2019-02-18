@@ -10,28 +10,7 @@ public enum AIType {
   Aggressive,Basic,Buff,Sentry,None
 }
 
-public enum CharacterType {
-  Human,
-  Lizard,
-  Snake
-}
-
-public class BattleCharacterModels {
-  public static GameObject HumanModel = Resources.Load("Human", typeof(GameObject)) as GameObject;
-  public static GameObject LizardModel = Resources.Load("Lizard", typeof(GameObject)) as GameObject;
-  public static GameObject SnakeModel = Resources.Load("Snake", typeof(GameObject)) as GameObject;
-
-  public static Dictionary<CharacterType,GameObject> models = new Dictionary<CharacterType,GameObject>() {
-    {CharacterType.Human, BattleCharacterModels.HumanModel},
-    {CharacterType.Lizard, BattleCharacterModels.LizardModel},
-    {CharacterType.Snake, BattleCharacterModels.SnakeModel}
-  };
-}
-
 public class BattleCharacter : Effected {
-
-  public CharacterType characterType;
-
   public Character baseChar = new Character();
   public AIType aiType = AIType.None;
   public new string name {
@@ -151,24 +130,17 @@ public class BattleCharacter : Effected {
 
   List<String> prevSkillSet = new List<String>();
 
-  [HideInInspector]
-  public Animator animator;
   public HealthBarManager healthBars;
   public GameObject lifebar;
   GameObject damagebar;
   public GameObject healingbar;
-
-  [HideInInspector]
-  public Transform leftHand;
-  [HideInInspector]
-  public Transform rightHand;
 
   void Start(){
     init();
   }
 
   bool initCalled = false;
-  private GameObject model;
+
   public void init(bool inGame = true) {
     if (initCalled) return;
     initCalled = true;
@@ -202,28 +174,9 @@ public class BattleCharacter : Effected {
 
     applyPassives();
 
-    ui = transform.Find("UI");
-
-    lifebar = ui.Find("Health Bar/Health").gameObject;
-    damagebar = ui.Find("Health Bar/Damage").gameObject;
-    healingbar = ui.Find("Health Bar/Healing").gameObject;
-
-
     if (inGame) {
-      model = transform.findRecursive("Model").gameObject;
-/*
-      model.name = "old";
-      model.SetActive(false);
-
-
-      model = Instantiate(BattleCharacterModels.models[characterType],this.transform);
-      model.name = "Model";
-*/
-      animator = model.GetComponent<Animator>();
-      leftHand = transform.findRecursive("Hand.L");
-      rightHand = transform.findRecursive("Hand.R");
       GameObject weaponModel = weapon.getModel();
-      if (weaponModel) GameObject.Instantiate(weaponModel, rightHand);
+      if (weaponModel) GameObject.Instantiate(weaponModel, model.rightHand);
     }
     gameObject.name = name;
   }
@@ -291,7 +244,9 @@ public class BattleCharacter : Effected {
     }
   }
 
-  private Transform ui;
+  public CharacterModel model;
+  public Transform ui;
+
   void Update() {
     // rotate overhead UI (health bar) to look at camera
     ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
@@ -340,14 +295,14 @@ public class BattleCharacter : Effected {
     face(target.transform.position);
 
 
-    if (animator) {
+    if (model.animator) {
       if (skill.castColor != Color.clear) {
         var castMain = castingCircle.main;
         castMain.startColor = skill.castColor;
         castingCircle.Play();
       }
 
-      GameManager.get.waitFor(animator, skill.animation,
+      GameManager.get.waitFor(model.animator, skill.animation,
         () => {
           castingCircle.Stop();
           skill.playAVEffects(() => {
@@ -476,7 +431,7 @@ public class BattleCharacter : Effected {
         onDeath();
       }
     } else {
-      if (animator) GameManager.get.waitFor(animator,"TakeDamage");
+      if (model.animator) GameManager.get.waitFor(model.animator,"TakeDamage");
     }
   }
 
@@ -487,7 +442,7 @@ public class BattleCharacter : Effected {
 
   IEnumerator fadeOut() {
 
-    Coroutine c = GameManager.get.waitFor(animator, "Death");
+    Coroutine c = GameManager.get.waitFor(model.animator, "Death");
     yield return GameManager.get.waitUntilPopped(c);
 
     SkinnedMeshRenderer r = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -509,7 +464,7 @@ public class BattleCharacter : Effected {
 
     onEvent(new Event(this, EventHook.postDeath));
 
-    if (animator) GameManager.get.waitFor(StartCoroutine(fadeOut()));
+    if (model.animator) GameManager.get.waitFor(StartCoroutine(fadeOut()));
     else gameObject.SetActive(false);
 
     curTile.occupant = null;

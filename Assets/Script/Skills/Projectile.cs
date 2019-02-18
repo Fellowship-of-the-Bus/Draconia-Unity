@@ -45,7 +45,7 @@ public class Projectile {
     this.callback = callback;
     if (Projectiles[projType]) {
       projectile = GameObject.Instantiate(Projectiles[projType]) as GameObject;
-      projectile.transform.position = source.leftHand.position;
+      projectile.transform.position = source.model.leftHand.position;
     } else {
       projectile = null;
     }

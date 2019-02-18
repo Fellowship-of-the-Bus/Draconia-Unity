@@ -607,7 +607,7 @@ public class GameManager : MonoBehaviour {
       yield return new WaitForSeconds(0.5f);
     }
 
-    Animator animator = character.animator;
+    Animator animator = character.model.animator;
     if (setWalking && animator) {
       animator.SetBool("isWalking", true);
       animator.SetBool("isNinja", character.isNinja);
