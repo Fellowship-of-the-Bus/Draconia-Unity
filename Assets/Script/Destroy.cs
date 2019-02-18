@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class Destroy : MonoBehaviour {
+  public GameObject objectToDestroy;
+
   void die() {
-    GameObject.Destroy(gameObject);
+    objectToDestroy.SetActive(false);
   }
 }

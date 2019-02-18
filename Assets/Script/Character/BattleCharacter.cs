@@ -384,15 +384,9 @@ public class BattleCharacter : Effected {
     baseChar.gainExp(expGained);
   }
 
+  public FloatingText damageText;
   void floatingText(int val, Color colour) {
-    GameObject ngo = Instantiate(GameManager.get.text) as GameObject;
-    ngo.transform.SetParent(ui, false);
-    Text txt = (Text)ngo.GetComponent<Text>();
-    txt.text = val.ToString();
-    txt.color = colour;
-    var phys = ngo.AddComponent<Rigidbody>();
-    phys.useGravity = false;
-    phys.velocity = new Vector3(0, 1f);
+    damageText.animate(val, colour);
   }
 
   public int calculateDamage(int rawDamage, DamageType type, DamageElement element) {
