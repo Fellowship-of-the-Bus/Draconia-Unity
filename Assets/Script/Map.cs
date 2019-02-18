@@ -308,7 +308,7 @@ public class Map {
             else {
               foreach (Tile tile in skill.getTargets()) {
                 if (tile == t)
-                  t.setColor(new Color(1, 0.5f, 0, 1));
+                  t.setColor(new Color(1, 0.5f, 0, 1)); // TODO: named Constant for this color
               }
             }
           }
