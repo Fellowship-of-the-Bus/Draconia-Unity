@@ -163,9 +163,9 @@ public class Map {
   // ignorePathing - if this is true, the range will simply extend out ignoring whether terrain is pathable
   // with the exception that it will still be blocked by "Wall" tiles.
   private List<Tile> getTilesWithinRange(Tile t, int range, bool ignorePathing) {
-    List<Tile> inRangeTiles = new List<Tile>();
-    List<Tile> edgeTiles = new List<Tile>();
-    List<Tile> outerTiles = new List<Tile>();
+    ISet<Tile> inRangeTiles = new HashSet<Tile>();
+    ISet<Tile> edgeTiles = new HashSet<Tile>();
+    ISet<Tile> outerTiles = new HashSet<Tile>();
     inRangeTiles.Add(t);
     edgeTiles.Add(t);
 
@@ -178,13 +178,13 @@ public class Map {
         }
       }
 
-      inRangeTiles.AddRange(outerTiles);
+      inRangeTiles.UnionWith(outerTiles);
       edgeTiles = outerTiles;
-      outerTiles = new List<Tile>();
+      outerTiles = new HashSet<Tile>();
     }
 
     inRangeTiles.Remove(t);
-    return inRangeTiles;
+    return new List<Tile>(inRangeTiles);
   }
 
   public List<Tile> getTilesWithinRange(Tile t, int range) {
