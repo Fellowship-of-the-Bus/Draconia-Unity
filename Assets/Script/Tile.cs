@@ -21,7 +21,7 @@ public class Tile : Effected {
 
   private string wallType;
 
-  public void Awake() {
+  new void Awake() {
     base.Awake();
     wallType = ((GameObject)Resources.Load("Map/Tiles/Wall")).GetComponent<Tile>().type;
   }
