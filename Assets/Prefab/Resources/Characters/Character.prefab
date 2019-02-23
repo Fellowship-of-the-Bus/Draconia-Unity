@@ -128,14 +128,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492e74dd2e979c74c84cf581b959ce25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterType: 0
   baseChar:
     skills:
       numSkillPoints: 0
     attr:
-      strength: 2
-      intelligence: 2
-      speed: 2
+      strength: 0
+      intelligence: 0
+      speed: 0
       maxHealth: 25
       physicalDefense: 0
       magicDefense: 0
@@ -209,7 +208,6 @@ MonoBehaviour:
   team: 0
   particleEffects: []
   levitating: 0
-  animator: {fileID: 0}
   healthBars:
     healthBar: {fileID: 6547734376964588690}
     damageBar: {fileID: 8573004101874537935}
@@ -217,8 +215,7 @@ MonoBehaviour:
     character: {fileID: 8370140779603674502}
   lifebar: {fileID: 6547734376964588690}
   healingbar: {fileID: 91182010555634660}
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
+  model: {fileID: 0}
   ui: {fileID: 2764587258471519892}
   damageText: {fileID: 1531240565287090516}
 --- !u!136 &3973635183698003870
