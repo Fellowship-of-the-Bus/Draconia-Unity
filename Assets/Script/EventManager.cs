@@ -21,7 +21,7 @@ public class EventManager : MonoBehaviour {
   Queue<Event> eventQueue;
   Dictionary<EventHook, HashSet<EventListener>> listeners = new Dictionary<EventHook, HashSet<EventListener>>();
 
-  void Awake() {
+  protected void Awake() {
     foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
       listeners.Add(i, new HashSet<EventListener>());
     }
