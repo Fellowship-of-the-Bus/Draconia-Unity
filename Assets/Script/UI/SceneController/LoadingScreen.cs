@@ -13,12 +13,15 @@ public class LoadingScreen : MonoBehaviour {
   void Start() {
     async = SceneManager.LoadSceneAsync(nextScene);
     // Don't let the Scene activate until you allow it to
-    // async.allowSceneActivation = false;
+    async.allowSceneActivation = false;
   }
 
   void Update() {
     //Output the current progress
     loadingBar.transform.localScale = new Vector3(async.progress, 1f, 1f);
+
+    // delay switching scenes until saving/loading is complete
+    async.allowSceneActivation = ! SaveLoad.active;
 
     // // Check if the load has finished
     // if (async.progress >= 0.9f) {

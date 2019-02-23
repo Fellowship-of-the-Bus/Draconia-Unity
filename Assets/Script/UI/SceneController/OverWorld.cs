@@ -8,6 +8,7 @@ public class OverWorld: MonoBehaviour {
   public FileBrowser saveBrowser;
   public GameObject levelParent;
   public GameObject UI;
+  public Button saveButton;
 
   //When adding maps, key is the new map name, the value is the set of prereq maps that needs to be
   //completed already. No key => no prereqs
@@ -46,6 +47,11 @@ public class OverWorld: MonoBehaviour {
         }
       }
     }
+  }
+
+  void Update() {
+    // save button should not be interactable while saving or loading
+    saveButton.interactable = ! SaveLoad.active;
   }
 
   public void playScenario(string scenario) {
