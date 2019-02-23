@@ -461,6 +461,8 @@ public class GameManager : MonoBehaviour {
       }
       Image cooldownDisplay = imageObject.transform.Find("CooldownOverlay").gameObject.GetComponent<Image>();
       if (s.canUse()) {
+        cooldownDisplay.fillAmount = 0f;
+      } else {
         cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
       }
     }
