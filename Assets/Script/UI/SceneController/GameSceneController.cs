@@ -36,7 +36,7 @@ public class GameSceneController: MonoBehaviour {
   public Dialogue dialogue;
 
   public void back() {
-    SceneManager.LoadSceneAsync("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 
   public void toCharPositioning() {

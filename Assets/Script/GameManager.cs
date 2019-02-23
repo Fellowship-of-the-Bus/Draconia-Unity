@@ -780,7 +780,7 @@ public class GameManager : MonoBehaviour {
     GameManager.postData.win = win;
     GameManager.postData.loot = LootGenerator.get.getLoot(SceneManager.GetActiveScene().name);
     GameManager.postData.mapName = SceneManager.GetActiveScene().name;
-    SceneManager.LoadSceneAsync("PostMap");
+    LoadingScreen.load("PostMap");
   }
 
   IEnumerator doHandleAI(int time) {

@@ -49,7 +49,7 @@ public class SkillSelectController: MonoBehaviour {
   }
 
   public void back() {
-    SceneManager.LoadSceneAsync ("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 
   public SkillInfo equip(Type t) {

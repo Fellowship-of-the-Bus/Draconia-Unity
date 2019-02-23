@@ -10,7 +10,7 @@ public class MainMenu: MonoBehaviour {
     LootGenerator.init();
   }
   public void test() {
-    SceneManager.LoadSceneAsync("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 
   public void loadGame() {
@@ -21,6 +21,6 @@ public class MainMenu: MonoBehaviour {
     GameData.gameData = new GameData();
     GameData.gameData.newGame();
 
-    SceneManager.LoadSceneAsync("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 }

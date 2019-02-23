@@ -60,16 +60,16 @@ public class PostMapController: MonoBehaviour {
 
   public void loadAuto() {
     SaveLoad.loadAuto();
-    SceneManager.LoadSceneAsync("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 
   public void toOverWorld() {
-    SceneManager.LoadSceneAsync("OverWorld");
+    LoadingScreen.load("OverWorld");
     //autoSave when returning to overWorld.
     SaveLoad.saveAuto();
   }
 
   public void exit() {
-    SceneManager.LoadSceneAsync("MainMenu");
+    LoadingScreen.load("MainMenu");
   }
 }
