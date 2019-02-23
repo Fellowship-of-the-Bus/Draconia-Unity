@@ -7,7 +7,7 @@ public class Punch: SingleTarget {
     useWepRange = true;
     useLos = false;
     name = "Punch";
-    maxCooldown = 2;
+    maxCooldown = 1;
     targetAlly(false);
     targetEnemy(true);
   }

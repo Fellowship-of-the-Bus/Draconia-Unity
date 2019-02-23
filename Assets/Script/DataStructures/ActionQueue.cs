@@ -29,9 +29,6 @@ public class ActionQueue : MonoBehaviour {
 
   void Awake() {
     get = this;
-  }
-
-  void Start() {
     RectTransform trans = turnButton.GetComponent<RectTransform>();
     buttonWidth = trans.rect.width;
     buttonHeight = trans.rect.height;

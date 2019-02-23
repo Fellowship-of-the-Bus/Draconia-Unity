@@ -61,7 +61,7 @@ public class Character {
 
 
   public Character() {
-    attr.maxHealth = 10;
+    attr.maxHealth = 25;
     attr.moveRange = 4;
     equip(Weapon.defaultWeapon);
     equip(Armour.defaultArmour);
