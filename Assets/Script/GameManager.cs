@@ -295,39 +295,41 @@ public class GameManager : MonoBehaviour {
     */
     selectedHealth.update(netChange);
 
-    if (Options.debugMode && selectedCharacter.team == 0) {
-      for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
-        s = selectedCharacter.equippedSkills[i];
-        Debug.AssertFormat(s.name != "", "Skill Name is empty");
 
-        // Set the text on the button TODO: Remove this when every skill has an icon
-        skillButtons[i].GetComponentInChildren<Text>().text = s.name;
+    // Uncomment this code if you need to change skills via the editor ingame.
+    // if (Options.debugMode && selectedCharacter.team == 0) {
+      // for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
+      //   s = selectedCharacter.equippedSkills[i];
+      //   Debug.AssertFormat(s.name != "", "Skill Name is empty");
 
-        // Set the button image
-        Sprite skillImage = SkillList.get.skillImages[s.GetType()];
-        GameObject imageObject = skillButtons[i].transform.Find("SkillImage").gameObject;
-        Image skillDisplay = imageObject.GetComponent<Image>();
-        Image cooldownDisplay = imageObject.transform.Find("CooldownOverlay").gameObject.GetComponent<Image>();
-        if (skillImage == null) {
-          skillDisplay.enabled = false;
-        } else {
-          skillDisplay.sprite = skillImage;
-          skillDisplay.enabled = true;
-        }
+      //   // Set the text on the button TODO: Remove this when every skill has an icon
+      //   skillButtons[i].GetComponentInChildren<Text>().text = s.name;
 
-        // Set the tooltip
-        skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+      //   // Set the button image
+      //   Sprite skillImage = SkillList.get.skillImages[s.GetType()];
+      //   GameObject imageObject = skillButtons[i].transform.Find("SkillImage").gameObject;
+      //   Image skillDisplay = imageObject.GetComponent<Image>();
+      //   Image cooldownDisplay = imageObject.transform.Find("CooldownOverlay").gameObject.GetComponent<Image>();
+      //   if (skillImage == null) {
+      //     skillDisplay.enabled = false;
+      //   } else {
+      //     skillDisplay.sprite = skillImage;
+      //     skillDisplay.enabled = true;
+      //   }
 
-        // Cooldown indication
-        bool buttonEnabled = s.canUse();
-        skillButtons[i].interactable = buttonEnabled;
-        if (buttonEnabled) {
-          cooldownDisplay.fillAmount = 0f;
-        } else {
-          cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
-        }
-      }
-    }
+      //   // Set the tooltip
+      //   skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
+
+      //   // Cooldown indication
+      //   bool buttonEnabled = s.canUse();
+      //   skillButtons[i].interactable = buttonEnabled;
+      //   if (buttonEnabled) {
+      //     cooldownDisplay.fillAmount = 0f;
+      //   } else {
+      //     cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
+      //   }
+      // }
+    // }
 
     if (previewTarget == null) {
       targetPanel.SetActive(false);
@@ -434,7 +436,12 @@ public class GameManager : MonoBehaviour {
     cancelStack.Clear();
 
     for (int i = 0; i < skillButtons.Count; i++) {
+      GameObject imageObject = skillButtons[i].transform.Find("SkillImage").gameObject;
+      Image skillDisplay = imageObject.GetComponent<Image>();
       skillButtons[i].interactable = false;
+      skillDisplay.enabled = false;
+      skillButtons[i].GetComponentInChildren<Text>().text = "";
+      skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = "";
     }
 
     for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
@@ -443,6 +450,19 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].GetComponentInChildren<Text>().text = s.name;
       skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
       skillButtons[i].interactable = s.canUse();
+      GameObject imageObject = skillButtons[i].transform.Find("SkillImage").gameObject;
+      Image skillDisplay = imageObject.GetComponent<Image>();
+      Sprite skillImage = SkillList.get.skillImages[s.GetType()];
+      if (skillImage == null) {
+        skillDisplay.enabled = false;
+      } else {
+        skillDisplay.sprite = skillImage;
+        skillDisplay.enabled = true;
+      }
+      Image cooldownDisplay = imageObject.transform.Find("CooldownOverlay").gameObject.GetComponent<Image>();
+      if (s.canUse()) {
+        cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
+      }
     }
     unlockUI();
   }
