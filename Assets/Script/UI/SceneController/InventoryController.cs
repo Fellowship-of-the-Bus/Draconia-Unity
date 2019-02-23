@@ -18,7 +18,7 @@ public class InventoryController: MonoBehaviour {
   }
 
   public void back() {
-    SceneManager.LoadSceneAsync ("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 
   public static InventoryController get { get; set; }

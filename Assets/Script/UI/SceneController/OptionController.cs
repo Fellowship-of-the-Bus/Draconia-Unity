@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class OptionController: MonoBehaviour {
   public Transform parent;
   public void back() {
-    SceneManager.LoadSceneAsync("OverWorld");
+    LoadingScreen.load("OverWorld");
   }
 
   void Start() {

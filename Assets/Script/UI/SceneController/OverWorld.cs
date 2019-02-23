@@ -78,7 +78,6 @@ public class OverWorld: MonoBehaviour {
   }
 
   private void open(string scene) {
-    LoadingScreen.nextScene = scene;
-    SceneManager.LoadSceneAsync("LoadingScreen");
+    LoadingScreen.load(scene);
   }
 }

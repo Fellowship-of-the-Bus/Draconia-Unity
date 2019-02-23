@@ -28,4 +28,9 @@ public class LoadingScreen : MonoBehaviour {
     //     // async.allowSceneActivation = true;
     // }
   }
+
+  public static void load(string scene) {
+    LoadingScreen.nextScene = scene;
+    SceneManager.LoadSceneAsync("LoadingScreen");
+  }
 }
