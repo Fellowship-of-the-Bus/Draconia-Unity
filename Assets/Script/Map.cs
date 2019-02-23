@@ -12,6 +12,8 @@ public class Map {
   public List<Tile> startPositions = new List<Tile>();
   Tile[,] map = null;
 
+  private static readonly Color orange = new Color(1, 0.5f, 0, 1);
+
   public void awake() {
     float xMax = 0f;
     float zMax = 0f;
@@ -163,9 +165,9 @@ public class Map {
   // ignorePathing - if this is true, the range will simply extend out ignoring whether terrain is pathable
   // with the exception that it will still be blocked by "Wall" tiles.
   private List<Tile> getTilesWithinRange(Tile t, int range, bool ignorePathing) {
-    List<Tile> inRangeTiles = new List<Tile>();
-    List<Tile> edgeTiles = new List<Tile>();
-    List<Tile> outerTiles = new List<Tile>();
+    ISet<Tile> inRangeTiles = new HashSet<Tile>();
+    ISet<Tile> edgeTiles = new HashSet<Tile>();
+    ISet<Tile> outerTiles = new HashSet<Tile>();
     inRangeTiles.Add(t);
     edgeTiles.Add(t);
 
@@ -178,13 +180,13 @@ public class Map {
         }
       }
 
-      inRangeTiles.AddRange(outerTiles);
+      inRangeTiles.UnionWith(outerTiles);
       edgeTiles = outerTiles;
-      outerTiles = new List<Tile>();
+      outerTiles = new HashSet<Tile>();
     }
 
     inRangeTiles.Remove(t);
-    return inRangeTiles;
+    return new List<Tile>(inRangeTiles);
   }
 
   public List<Tile> getTilesWithinRange(Tile t, int range) {
@@ -265,6 +267,7 @@ public class Map {
   // GameMap functions
   public void setTileColours(Tile src = null) {
     GameObject SelectedPiece = GameManager.get.SelectedPiece;
+    BattleCharacter selectedBattleChar = SelectedPiece.GetComponent<BattleCharacter>();
     int SelectedSkill = GameManager.get.SelectedSkill;
     if (src == null) src = getTile(GameManager.get.SelectedPiece.transform.position);
     clearColour();
@@ -279,7 +282,7 @@ public class Map {
         ti.setColor(Color.blue);
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
-      ActiveSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill];
+      ActiveSkill skill = selectedBattleChar.equippedSkills[SelectedSkill];
       bool aoe = (skill is AoeSkill);
       int range = skill.range;
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
@@ -291,7 +294,8 @@ public class Map {
           t.setColor(Color.red);
         }
       } else {
-        foreach (Tile t in skill.getTargets()) {
+        var skillTargets = skill.getTargets();
+        foreach (Tile t in skillTargets) {
           t.setColor(Color.white);
         }
         AoeSkill areaSkill = skill as AoeSkill;
@@ -304,11 +308,12 @@ public class Map {
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             t.setColor(Color.yellow);
-            if (t.occupied() && SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
+            if (t.occupied() && selectedBattleChar.equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
             else {
-              foreach (Tile tile in skill.getTargets()) {
-                if (tile == t)
-                  t.setColor(new Color(1, 0.5f, 0, 1)); // TODO: named Constant for this color
+              foreach (Tile tile in skillTargets) {
+                if (tile == t) {
+                  t.setColor(orange);
+                }
               }
             }
           }
