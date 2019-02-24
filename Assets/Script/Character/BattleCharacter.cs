@@ -324,28 +324,28 @@ public class BattleCharacter : Effected {
       else tTargets.Add(e as Tile);
     }
     skill.setCooldown();
-    Event preSkillEvent = new Event(this, EventHook.preSkill);
+    Draconia.Event preSkillEvent = new Draconia.Event(this, EventHook.preSkill);
     preSkillEvent.skillUsed = skill;
     onEvent(preSkillEvent);
     if (skill is HealingSkill) {
       HealingSkill hSkill = skill as HealingSkill;
       foreach (BattleCharacter c in cTargets) {
-        onEvent(new Event(this, EventHook.preHealing));
+        onEvent(new Draconia.Event(this, EventHook.preHealing));
         int amount = skill.calculateHealing(c);
-        if (amount > 0) c.onEvent(new Event(this, EventHook.preHealed));
+        if (amount > 0) c.onEvent(new Draconia.Event(this, EventHook.preHealed));
         hSkill.activate(c);
-        if (amount > 0) c.onEvent(new Event(this, EventHook.postHealed));
-        Event postHealingEvent = new Event(this, EventHook.postHealing);
+        if (amount > 0) c.onEvent(new Draconia.Event(this, EventHook.postHealed));
+        Draconia.Event postHealingEvent = new Draconia.Event(this, EventHook.postHealing);
         postHealingEvent.healingDone = amount;
         postHealingEvent.healTarget = c;
         onEvent(postHealingEvent);
       }
     } else {
       foreach (BattleCharacter t in cTargets) {
-        onEvent(new Event(this, EventHook.preAttack));
+        onEvent(new Draconia.Event(this, EventHook.preAttack));
         var c = t;
         int damage = skill.calculateDamage(c);
-        Event preDamageEvent = new Event(this, EventHook.preDamage);
+        Draconia.Event preDamageEvent = new Draconia.Event(this, EventHook.preDamage);
         if (damage > 0) {
           c.onEvent(preDamageEvent);
         }
@@ -357,14 +357,14 @@ public class BattleCharacter : Effected {
           skill.activate(c);
           if (c.isAlive()){
             if (damage > 0) {
-              Event postDamageEvent = new Event(this, EventHook.postDamage);
+              Draconia.Event postDamageEvent = new Draconia.Event(this, EventHook.postDamage);
               postDamageEvent.damageTaken = damage;
               c.onEvent(postDamageEvent);
             }
           } else {
             expGained += getExpGained(skill, c);
           }
-          Event postAttackEvent = new Event(this, EventHook.postAttack);
+          Draconia.Event postAttackEvent = new Draconia.Event(this, EventHook.postAttack);
           postAttackEvent.damageTaken = damage;
           postAttackEvent.attackTarget = c;
           postAttackEvent.skillUsed = skill;
@@ -376,7 +376,7 @@ public class BattleCharacter : Effected {
     foreach (Tile t in tTargets) {
       skill.activate(t);
     }
-    Event postSkill = new Event(this, EventHook.postSkill);
+    Draconia.Event postSkill = new Draconia.Event(this, EventHook.postSkill);
     postSkill.targets = targets;
     postSkill.skillUsed = skill;
     onEvent(postSkill);
@@ -417,7 +417,7 @@ public class BattleCharacter : Effected {
     floatingText(damage, Color.red);
     curHealth -= damage;
     if (curHealth <= 0) {
-      Event e = new Event(this, EventHook.preDeath);
+      Draconia.Event e = new Draconia.Event(this, EventHook.preDeath);
       onEvent(e);
       if (e.preventDeath) {
         curHealth = 1;
@@ -456,7 +456,7 @@ public class BattleCharacter : Effected {
   public void onDeath() {
     ActionQueue.get.remove(gameObject);
 
-    onEvent(new Event(this, EventHook.postDeath));
+    onEvent(new Draconia.Event(this, EventHook.postDeath));
 
     if (model.animator) GameManager.get.waitFor(StartCoroutine(fadeOut()));
     else gameObject.SetActive(false);

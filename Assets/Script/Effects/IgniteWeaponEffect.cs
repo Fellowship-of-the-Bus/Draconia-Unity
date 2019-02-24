@@ -10,7 +10,7 @@ public class IgniteWeaponEffect : DurationEffect {
   protected override void onDeactivateListeners() {
     detachListener(owner);
   }
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if(e.hook == EventHook.preSkill) {
       ActiveSkill skill = e.skillUsed;
       if (skill.dType == DamageType.physical) {

@@ -11,7 +11,7 @@ public class Dodge : PassiveSkill {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     float chance = UnityEngine.Random.value;
     if (chance < 0.1*level) {
       e.finishAttack = false;

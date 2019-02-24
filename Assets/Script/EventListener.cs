@@ -9,5 +9,5 @@ public abstract class EventListener {
     manager.removeListener(this);
   }
 
-  public abstract void onEvent(Event e);
+  public abstract void onEvent(Draconia.Event e);
 }

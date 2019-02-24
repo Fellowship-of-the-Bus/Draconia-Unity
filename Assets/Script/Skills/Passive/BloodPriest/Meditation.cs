@@ -8,7 +8,7 @@ public class Meditation : PassiveSkill {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     owner.takeHealing((int)(1*owner.healingMultiplier));
   }
 }

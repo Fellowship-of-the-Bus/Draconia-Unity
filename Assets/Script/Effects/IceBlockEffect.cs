@@ -21,7 +21,7 @@ public class IceBlockEffect : DurationEffect {
     detachListener(caster);
   }
 
-  public override bool shouldDecrement(Event e) {
+  public override bool shouldDecrement(Draconia.Event e) {
     return e.sender == caster;
   }
 }

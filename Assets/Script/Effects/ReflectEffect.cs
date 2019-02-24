@@ -10,7 +10,7 @@ public class ReflectEffect : DurationEffect {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (e.sender is BattleCharacter) {
       e.newTarget = e.sender;
       owner.removeEffect(this);

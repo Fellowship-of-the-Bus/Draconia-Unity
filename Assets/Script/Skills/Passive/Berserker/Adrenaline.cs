@@ -13,7 +13,7 @@ public class Adrenaline : PassiveSkill {
   protected override void onDeactivate() {
     detachListener(owner);
   }
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (e.hook == EventHook.preDeath && timeToActivate == 0) {
       e.preventDeath = true;
       timeToActivate = maxCooldown;

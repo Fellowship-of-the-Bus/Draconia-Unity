@@ -15,7 +15,7 @@ public class DisableEffect : Effect {
     target.maxCooldown = 0;
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (target.maxCooldown == 0) {
       // end maxCooldown of skill that applied this effect
       origin.maxCooldown = 0;

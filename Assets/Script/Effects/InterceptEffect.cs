@@ -11,7 +11,7 @@ public class InterceptEffect : DurationEffect {
   protected override void onDeactivateListeners() {
     detachListener(owner);
   }
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     e.newTarget = origin;
   }
 }

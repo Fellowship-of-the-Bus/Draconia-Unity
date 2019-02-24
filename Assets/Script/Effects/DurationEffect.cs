@@ -23,7 +23,7 @@ public abstract class DurationEffect : Effect {
   }
 
 
-  public sealed override void onEvent(Event e) {
+  public sealed override void onEvent(Draconia.Event e) {
     Debug.Assert(duration != 0);
     //sender == null means sent by global game manager
     if (e.hook == EventHook.endTurn && shouldDecrement(e)) {
@@ -38,7 +38,7 @@ public abstract class DurationEffect : Effect {
     }
   }
 
-  public virtual bool shouldDecrement(Event e) {
+  public virtual bool shouldDecrement(Draconia.Event e) {
     return e.sender != null;
   }
 

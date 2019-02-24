@@ -10,7 +10,7 @@ public abstract class BFTimeEvent : BFEvent{
     triggerTime = t;
   }
 
-  public override void onEvent(Event e) {
+  public override void onEvent(Draconia.Event e) {
     float newTime = e.nextCharTime;
     if (previousTime < triggerTime && triggerTime <= (int) newTime ) {
       trigger();

@@ -19,7 +19,7 @@ public class RealityDistortionEffect : DurationEffect {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     owner.attrChange += attr;
     attr += owner.attrChange;
     owner.attrChange = -attr;

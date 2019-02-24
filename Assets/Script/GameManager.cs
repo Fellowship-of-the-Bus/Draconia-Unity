@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour {
   private List<BFEvent> BFevents = new List<BFEvent>();
 
   private class CharacterListener : EventListener {
-    public override void onEvent(Event e) {
+    public override void onEvent(Draconia.Event e) {
       if (e.hook == EventHook.postDeath) {
         GameManager g = GameManager.get;
         g.characters[e.sender.team].Remove(e.sender.gameObject);
@@ -411,7 +411,7 @@ public class GameManager : MonoBehaviour {
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
     BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.startTurn));
+    selectedCharacter.onEvent(new Draconia.Event(selectedCharacter, EventHook.startTurn));
     moveRange = selectedCharacter.moveRange;
     activeBuffBar.update(selectedCharacter);
     selectedHealth.setCharacter(selectedCharacter);
@@ -564,13 +564,13 @@ public class GameManager : MonoBehaviour {
       // Wait for turn events to finish
       yield return StartCoroutine(waitUntilEmpty());
 
-      //send endTurn event to the current piece
+      //send endTurn Draconia.Event to the current piece
       BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-      Event e = new Event(null, EventHook.endTurn);
+      Draconia.Event e = new Draconia.Event(null, EventHook.endTurn);
       e.endTurnChar = selectedCharacter;
       e.nextCharTime = actionQueue.peekNext();
       eventManager.onEvent(e);
-      selectedCharacter.onEvent(new Event(selectedCharacter, EventHook.endTurn));
+      selectedCharacter.onEvent(new Draconia.Event(selectedCharacter, EventHook.endTurn));
 
       // Wait for end turn events to complete
       yield return StartCoroutine(waitUntilEmpty());
@@ -654,7 +654,7 @@ public class GameManager : MonoBehaviour {
         piece.transform.Translate(pos-piece.transform.position);
       }
       // tell listeners that this character moved
-      Event enterEvent = new Event(character, EventHook.enterTile);
+      Draconia.Event enterEvent = new Draconia.Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
       EventManager.get.onEvent(enterEvent);
       if (enterEvent.interruptMove) {
@@ -694,11 +694,11 @@ public class GameManager : MonoBehaviour {
 
 
   public void updateTile(BattleCharacter c, Tile t) {
-    eventManager.onEvent(new Event(c, EventHook.preMove));
+    eventManager.onEvent(new Draconia.Event(c, EventHook.preMove));
     c.curTile.occupant = null;
     c.curTile = t;
     t.occupant = c;
-    eventManager.onEvent(new Event(c, EventHook.postMove));
+    eventManager.onEvent(new Draconia.Event(c, EventHook.postMove));
   }
 
   /** remaining move amount */
@@ -764,7 +764,7 @@ public class GameManager : MonoBehaviour {
       UndoAction act = cancelStack.Pop();
       act.undo();
     }
-    eventManager.onEvent(new Event(character, EventHook.cancel));
+    eventManager.onEvent(new Draconia.Event(character, EventHook.cancel));
   }
 
   public void endGame(bool win) {

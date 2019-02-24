@@ -10,7 +10,7 @@ public class CounterSkill : PassiveSkill {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     // don't counter yourself or your teammates.
     if (owner == e.sender || owner.team == e.sender.team) return;
     float chance = UnityEngine.Random.value;

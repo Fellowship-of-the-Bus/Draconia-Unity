@@ -15,7 +15,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     applyToEnemies = enemyAffecting;
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (e.hook == EventHook.preMove) {
       removeAura();
     } else if (e.hook == EventHook.postMove) {
