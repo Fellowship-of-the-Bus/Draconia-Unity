@@ -33,7 +33,7 @@ public class SmoothColorChanger : MonoBehaviour {
 
   void OnValidate() {
     if (colors.Length < 2) {
-      Debug.Log("Smooth Color Changer requires at least 2 colors");
+      Channel.editor.LogError("Smooth Color Changer requires at least 2 colors");
     }
   }
 
