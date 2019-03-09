@@ -44,25 +44,40 @@ static class MapGenerator {
   private static void selectFileWrapper() {
     selectFile();
   }
+  //file should be just the name of the map
   private static void selectFile(string file = "") {
     string fileName;
+    string sceneName;
     if (file == "") {
       fileName = EditorUtility.OpenFilePanel("Select Map File", Application.dataPath, "csv");
+      sceneName = fileName.Remove(fileName.Length-4);
+      sceneName = "Assets/Scene/maps/"+sceneName.Substring(sceneName.LastIndexOf("/")+1)+".unity";
     } else {
-      fileName = file;
+      fileName = "Assets/maps/"+file+".csv";
+      sceneName = "Assets/Scene/maps/"+file+".unity";
+    }
+    Scene currentScene = EditorSceneManager.OpenScene(sceneName);
+    board = GameObject.Find("Board");
+    if (board == null) {
+      board = GameObject.Find("Board(Clone)");
+    }
+    if (board != null) {
+      Object.DestroyImmediate(board);
     }
     UnityEngine.Random.InitState(0);
     int lineNum = 0;
-    if (!string.IsNullOrEmpty(fileName)) {
-      board = (GameObject)PrefabUtility.InstantiatePrefab(Resources.Load("Map/Board"));
-      var lines = File.ReadAllLines(fileName);
-      lineNum = lines.Length;
-      foreach (string s in lines) {
-        lineNum--;
-        generateRow(s, lineNum);
-      }
-
+    if (string.IsNullOrEmpty(fileName)) {
+      Channel.editor.Log("Bad file name: " + fileName);
+      return;
     }
+    board = (GameObject)PrefabUtility.InstantiatePrefab(Resources.Load("Map/Board"));
+    var lines = File.ReadAllLines(fileName);
+    lineNum = lines.Length;
+    foreach (string s in lines) {
+      lineNum--;
+      generateRow(s, lineNum);
+    }
+    EditorSceneManager.SaveScene(currentScene);
   }
 
   private static void generateRow(string s, int lineNum) {
@@ -154,19 +169,17 @@ static class MapGenerator {
     string prevScene = EditorSceneManager.GetActiveScene().path;
     foreach (FileInfo f in info) {
       string name = f.Name.Remove(f.Name.Length-4);
-      Debug.Log("Generating map for: " + name);
-      Scene currentScene = EditorSceneManager.OpenScene("Assets/Scene/maps/"+name+".unity");
-      GameObject board = GameObject.Find("Board");
-      if (board == null) {
-        board = GameObject.Find("Board(Clone)");
-      }
-      if (board != null) {
-        Object.DestroyImmediate(board);
-      }
-      selectFile("Assets/maps/"+name+".csv");
-      EditorSceneManager.SaveScene(currentScene);
+      Channel.editor.Log("Generating map for: " + name);
+      selectFile(name);
     }
     EditorSceneManager.OpenScene(prevScene);
+  }
+  [MenuItem("Modify Map/Generate Terrain Current")]
+  private static void generateCurrentMap() {
+    string fileName = EditorSceneManager.GetActiveScene().path;
+    fileName = fileName.Remove(fileName.Length-6);
+    fileName = fileName.Substring(fileName.LastIndexOf("/")+1);
+    selectFile(fileName);
   }
 
 }
