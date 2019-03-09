@@ -372,9 +372,7 @@ public class GameManager : MonoBehaviour {
 
   void changeState(GameState newState) {
     if (newState == GameState.moving) {
-      // previewTarget = null;
       SelectedSkill = -1;
-      // selectTarget(null);
     }
     gameState = newState;
     if (newState == GameState.attacking) map.clearPath();
@@ -497,9 +495,7 @@ public class GameManager : MonoBehaviour {
   // Preview of targetting a character
   public void selectTarget(GameObject target) {
     if (previewTarget) {
-      // previewTarget.PreviewDamage = 0;
-      // previewTarget.PreviewHealing = 0;
-      // previewTarget.PreviewChange = 0;
+      previewTarget.PreviewChange = 0;
       if (targetHealth != null) targetHealth.update();
       previewTarget = null;
     }
