@@ -25,7 +25,9 @@ public class TargetMover : SingleTarget {
   bool validTile(BattleCharacter c, Tile t) {
     GameManager game = GameManager.get;
     Map map = game.map;
-    return t != null && ((map.getHeight(c.curTile) + upThreshold) > map.getHeight(t)) && !t.occupied();
+    return t != null && // tile exists
+      ((map.getHeight(c.curTile) + upThreshold) > map.getHeight(t)) // not moving up a cliff
+      && !t.occupied() && !t.unpathable(); // can move to tile
   }
 
   LinkedList<Tile> movePath(BattleCharacter c) {
