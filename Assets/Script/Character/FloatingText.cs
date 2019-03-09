@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class FloatingText : MonoBehaviour {
   public Rigidbody phys;
-  public Text txt;
+  public CustomText txt;
 
   public void animate(int val, Color colour) {
     txt.gameObject.transform.localPosition = Vector3.zero;

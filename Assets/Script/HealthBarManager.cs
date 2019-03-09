@@ -3,12 +3,11 @@ using System;
 
 [System.Serializable]
 public class HealthBarManager {
-
   public GameObject healthBar;
   public GameObject damageBar;
   public GameObject healingBar;
-  [HideInInspector]
-  public BattleCharacter character;
+
+  private BattleCharacter character;
 
   private void updateBar(GameObject bar, int health) {
     Vector3 scale = bar.transform.localScale;

@@ -130,11 +130,6 @@ public class BattleCharacter : Effected {
 
   List<String> prevSkillSet = new List<String>();
 
-  public HealthBarManager healthBars;
-  public GameObject lifebar;
-  GameObject damagebar;
-  public GameObject healingbar;
-
   void Start(){
     init();
   }
@@ -153,6 +148,9 @@ public class BattleCharacter : Effected {
       setSkills();
       prevSkillSet = new List<String>(skillSet.Select(x => x.name));
     }
+
+    ui.healthBars.setCharacter(this);
+    ui.name.text = baseChar.name;
 
     curHealth = maxHealth;
     switch (aiType) {
@@ -245,16 +243,7 @@ public class BattleCharacter : Effected {
   }
 
   public CharacterModel model;
-  public Transform ui;
-
-  void Update() {
-    // rotate overhead UI (health bar) to look at camera
-    ui.rotation = Camera.main.transform.rotation; // Take care about camera rotation
-
-    // scale health on health bar to match current HP values
-    updateLifeBars();
-  }
-
+  public BattleCharacterUI ui;
 
   public float calcMoveTime(float time, int turns = 1) {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
@@ -487,17 +476,7 @@ public class BattleCharacter : Effected {
   }
 
   public void updateLifeBars(int change = 0) {
-    healthBars.update(change);
-  }
-
-  public void updateLifeBar(GameObject lifebar) {
-    updateLifeBar(lifebar, curHealth);
-  }
-
-  public void updateLifeBar(GameObject lifebar, int health) {
-    Vector3 scale = lifebar.transform.localScale;
-    scale.x = Math.Max(Math.Min((float)health/maxHealth,1),0);
-    lifebar.transform.localScale = scale;
+    ui.updateLifeBars(change);
   }
 
   public void updateActionBar(float timePassed) {

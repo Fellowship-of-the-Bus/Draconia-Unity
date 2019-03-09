@@ -2,10 +2,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour {
-  private Camera PlayerCam;
   // Camera used by the player
-  private GameManager gameManager;
+  private Camera PlayerCam;
   // GameObject responsible for the management of the game
+  private GameManager gameManager;
+  private Channel channel = new Channel("PlayerControl", false);
 
   [HideInInspector]
   public bool preGame = true;
@@ -37,10 +38,15 @@ public class PlayerControl : MonoBehaviour {
     //Decides whether the pointer is over a ui element or gameobject.
     //Despite what the name implies, it returns true if the pointer is over a ui element
     //and false if it is over a game object.
-    return EventSystem.current.IsPointerOverGameObject();
+    bool ret = EventSystem.current.IsPointerOverGameObject();
+    if (ret) {
+      channel.Log("Over UI");
+    }
+    return ret;
   }
 
   void handleHovered(GameObject hoveredObject) {
+    channel.Log("handleHovered: {0}", hoveredObject);
     gameManager.lineTo(gameManager.SelectedPiece);
     if (overUI() || hoveredObject == null) return;
     if (hoveredObject.transform.parent == null) return;
@@ -65,6 +71,8 @@ public class PlayerControl : MonoBehaviour {
     bool isPiece = hoveredObject.tag == "Unit";
     Tile hoveredTile = map.getTile(hoveredObject.transform.position);
     if (hoveredTile) currentHoveredTile = hoveredTile;
+
+    channel.Log("Hovering over tile? {0}; piece? {1}", isTile, isPiece);
 
     if (preGame){
       map.clearColour();

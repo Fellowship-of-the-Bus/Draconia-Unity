@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 [System.Serializable]
 public class Options {
   [System.Serializable]
@@ -91,12 +93,12 @@ public class Options {
 
   public class TextOptions {
     public Font font;
-    public delegate void FontChangedEvent(Font newFont);
+    public delegate void FontChangedEvent(TMP_FontAsset newFont);
     public delegate void FontSizeChangedEvent(int newSize);
     public event FontChangedEvent onFontChange;
     public event FontSizeChangedEvent onSizeChange;
   }
-  public static TextOptions Text;
+  public static TextOptions Text = new TextOptions();
 
   //internal use fields
   public static int FPS = 60;
