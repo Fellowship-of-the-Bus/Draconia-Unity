@@ -9,7 +9,7 @@ public class HealWhenHitEffect : DurationEffect {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (owner.isAlive()) {
       owner.takeHealing(owner.calculateHealing(level));
     }

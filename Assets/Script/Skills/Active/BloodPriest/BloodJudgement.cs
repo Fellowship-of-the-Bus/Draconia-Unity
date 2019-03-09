@@ -36,7 +36,7 @@ public class BloodJudgement: CircleAoE {
     return 1f;
   }
 
-  protected override void trigger(Event e) {
+  protected override void trigger(Draconia.Event e) {
     if (e.hook == EventHook.postSkill) {
       //Does not use calculate damage since the cost should not be effected by any defenses
       self.takeDamage((int)(cost * percent()));

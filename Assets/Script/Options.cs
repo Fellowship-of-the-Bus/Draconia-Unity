@@ -89,6 +89,15 @@ public class Options {
     get { return ((OpSliderField)displayedOptions[OptionType.gridTransparency]).val;}
   }
 
+  public class TextOptions {
+    public Font font;
+    public delegate void FontChangedEvent(Font newFont);
+    public delegate void FontSizeChangedEvent(int newSize);
+    public event FontChangedEvent onFontChange;
+    public event FontSizeChangedEvent onSizeChange;
+  }
+  public static TextOptions Text;
+
   //internal use fields
   public static int FPS = 60;
   public static bool debugMode = true;

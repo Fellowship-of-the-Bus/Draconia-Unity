@@ -15,7 +15,7 @@ public class Vengeance : PassiveSkill {
     return (int)Math.Round(3 * level * (1 - percent));
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     int originalHealth = self.curHealth + e.damageTaken;
     self.attrChange.strength += strBonus((float)self.curHealth / self.maxHealth)
                               - strBonus((float)originalHealth / self.maxHealth);

@@ -23,7 +23,7 @@ public class Ward: SingleTarget {
     target.applyEffect(e);
 
 
-    Event buffEvent = new Event(self, EventHook.useBuffSkill);
+    Draconia.Event buffEvent = new Draconia.Event(self, EventHook.useBuffSkill);
     buffEvent.appliedBuff = e;
     self.onEvent(buffEvent);
   }

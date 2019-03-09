@@ -30,7 +30,7 @@ public class Regenerate: SingleTarget, HealingSkill {
     target.applyEffect(buff);
 
 
-    Event buffEvent = new Event(self, EventHook.useBuffSkill);
+    Draconia.Event buffEvent = new Draconia.Event(self, EventHook.useBuffSkill);
     buffEvent.appliedBuff = buff;
     self.onEvent(buffEvent);
   }

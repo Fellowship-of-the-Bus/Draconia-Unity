@@ -38,11 +38,11 @@ public class Portal : ActiveSkill, AoeSkill {
     return getTargetsInAoe(position, aoe);
   }
 
-  protected override void trigger(Event e) {
+  protected override void trigger(Draconia.Event e) {
     if (e.skillUsed != this) return;
     List<Effected> targets = e.targets;
-    Debug.AssertFormat(targets != null, "Portal on event with null targets");
-    Debug.AssertFormat(targets.Count == 2, "Portal on event with wrong number of targets {0}", targets.Count);
+    Debug.AssertFormat(targets != null, "Portal on Draconia.Event with null targets");
+    Debug.AssertFormat(targets.Count == 2, "Portal on Draconia.Event with wrong number of targets {0}", targets.Count);
     PortalEffect eff1 = makeEffect();
     PortalEffect eff2 = makeEffect();
     eff1.sibling = eff2;

@@ -9,7 +9,7 @@ public class Berserk : PassiveSkill {
   protected override void onDeactivate() {
     detachListener(owner);
   }
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     double percentage = Math.Abs(e.damageTaken)/(double)owner.maxHealth;
 
     if (percentage == 0) {

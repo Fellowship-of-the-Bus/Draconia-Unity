@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Profiling;
 
 public static class SaveLoad {
+  private static Channel channel = new Channel("Save Game", true);
   public static string autoSaveName = "AutoSave";
   public static string dirPath = Path.Combine(Application.persistentDataPath, "savedGames");
 
@@ -59,10 +60,10 @@ public static class SaveLoad {
       try {
         GameData.gameData = (GameData)bf.Deserialize(file);
       } catch (SerializationException) {
-        Debug.Log("Corrupted save file: " + saveName);
+        channel.Log("Corrupted save file: " + saveName);
       }
       file.Close();
-    } else Debug.Log(saveName + " doesn't exist");
+    } else channel.Log(saveName + " doesn't exist");
     inProgress = false;
 
     // Unregister the thread before exit

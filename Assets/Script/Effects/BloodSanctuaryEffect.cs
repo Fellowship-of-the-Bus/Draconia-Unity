@@ -19,7 +19,7 @@ public class BloodSanctuaryEffect : DurationEffect {
     return caster.intelligence * 1f * c.healingMultiplier;
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (e.sender == null && e.hook == EventHook.endTurn) {
       BattleCharacter occupant = null;
       if (ownerTile.occupant != null) {
@@ -35,7 +35,7 @@ public class BloodSanctuaryEffect : DurationEffect {
     }
   }
 
-  public override bool shouldDecrement(Event e) {
+  public override bool shouldDecrement(Draconia.Event e) {
     return e.sender == caster;
   }
 }

@@ -30,7 +30,7 @@ public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
     return c.calculateDamage((int)(caster.intelligence * 0.2f), DamageType.none, DamageElement.fire);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     if (e.sender == null && e.hook == EventHook.endTurn) {
       BattleCharacter occupant = null;
       if (ownerTile.occupant != null) {
@@ -47,7 +47,7 @@ public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
     }
   }
 
-  public override bool shouldDecrement(Event e) {
+  public override bool shouldDecrement(Draconia.Event e) {
     return e.sender == caster;
   }
 

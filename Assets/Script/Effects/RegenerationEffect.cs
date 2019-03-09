@@ -9,7 +9,7 @@ public class RegenerationEffect : DurationEffect, HealthChangingEffect {
   protected override void onDeactivateListeners() {
     detachListener(owner);
   }
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     owner.takeHealing(owner.calculateHealing(healing));
   }
   public override int CompareTo(Effect e) {

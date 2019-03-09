@@ -20,7 +20,7 @@ public class IronSkin : PassiveSkill {
     return (int)(level * numHits * .2f);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     switch (e.hook) {
       case EventHook.startTurn:
         self.attrChange.physicalDefense -= addedDefense;

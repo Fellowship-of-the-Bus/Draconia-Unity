@@ -192,7 +192,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     curCooldown = maxCooldown + 1;
   }
 
-  public override sealed void onEvent(Event e) {
+  public override sealed void onEvent(Draconia.Event e) {
     if (curCooldown != 0 && e.hook == EventHook.endTurn) {
       curCooldown -= 1;
       if (listenOnEndturn) {
@@ -204,7 +204,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
   }
 
-  protected virtual void trigger(Event e) {}
+  protected virtual void trigger(Draconia.Event e) {}
 
   public sealed override void attachListener(EventManager e, EventHook hook) {
     if (hook == EventHook.endTurn) {

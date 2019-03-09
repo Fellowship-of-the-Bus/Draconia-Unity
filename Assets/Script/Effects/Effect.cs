@@ -38,21 +38,21 @@ public abstract class Effect : EventListener, IComparable<Effect> {
 
   public virtual void activate() {
     onActivate();
-    if (owner) owner.onEvent(new Event(owner, EventHook.activateEffect));
-    else ownerTile.onEvent(new Event(ownerTile, EventHook.activateEffect));
+    if (owner) owner.onEvent(new Draconia.Event(owner, EventHook.activateEffect));
+    else ownerTile.onEvent(new Draconia.Event(ownerTile, EventHook.activateEffect));
   }
 
   public virtual void deactivate() {
     onDeactivate();
-    if (owner) owner.onEvent(new Event(owner, EventHook.deactivateEffect));
-    else ownerTile.onEvent(new Event(ownerTile, EventHook.deactivateEffect));
+    if (owner) owner.onEvent(new Draconia.Event(owner, EventHook.deactivateEffect));
+    else ownerTile.onEvent(new Draconia.Event(ownerTile, EventHook.deactivateEffect));
   }
 
-  public override void onEvent(Event e) {
+  public override void onEvent(Draconia.Event e) {
     additionalEffect(e);
   }
 
-  protected virtual void additionalEffect(Event e) {}
+  protected virtual void additionalEffect(Draconia.Event e) {}
 
   public virtual int CompareTo(Effect other) {
     return this.level.CompareTo(other.level);

@@ -10,7 +10,7 @@ public class DodgeEffect : DurationEffect {
     detachListener(owner);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     e.finishAttack = false;
     owner.removeEffect(this);
   }

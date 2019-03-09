@@ -6,7 +6,7 @@ public class FreezingHit : PassiveSkill {
     attachListener(self,EventHook.postAttack);
   }
 
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     float chance = UnityEngine.Random.value;
     if (e.hook == EventHook.postAttack && e.damageTaken > 0 && chance < (0.1 * level)) {
       Debug.Log("Slowed " + e.attackTarget);

@@ -9,7 +9,7 @@ public class Reciprocate : PassiveSkill {
   protected override void onDeactivate() {
     detachListener(owner);
   }
-  protected override void additionalEffect(Event e) {
+  protected override void additionalEffect(Draconia.Event e) {
     Effect buff = e.appliedBuff.clone();
     owner.applyEffect(buff);
   }

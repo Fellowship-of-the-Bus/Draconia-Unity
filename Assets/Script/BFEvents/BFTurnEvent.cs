@@ -14,7 +14,7 @@ public abstract class BFTurnEvent : BFEvent {
     triggerTime = t;
   }
 
-  public override void onEvent(Event e) {
+  public override void onEvent(Draconia.Event e) {
     if (boss == null) return;
     if (e.endTurnChar == boss) {
       bossTurns += 1;
