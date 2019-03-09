@@ -344,8 +344,6 @@ public class GameManager : MonoBehaviour {
       List<Tile> tiles = new List<Tile>();
       if (s is AoeSkill) {
         tiles = (s as AoeSkill).getTargetsInAoe(currTile.position);
-      } else {
-        tiles.Add(currTile);
       }
 
       foreach(Tile t in tiles) {
@@ -374,8 +372,9 @@ public class GameManager : MonoBehaviour {
 
   void changeState(GameState newState) {
     if (newState == GameState.moving) {
-      previewTarget = null;
+      // previewTarget = null;
       SelectedSkill = -1;
+      // selectTarget(null);
     }
     gameState = newState;
     if (newState == GameState.attacking) map.clearPath();
@@ -497,28 +496,32 @@ public class GameManager : MonoBehaviour {
 
   // Preview of targetting a character
   public void selectTarget(GameObject target) {
-    BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
     if (previewTarget) {
-      previewTarget.PreviewDamage = 0;
-      previewTarget.PreviewHealing = 0;
-      previewTarget.PreviewChange = 0;
+      // previewTarget.PreviewDamage = 0;
+      // previewTarget.PreviewHealing = 0;
+      // previewTarget.PreviewChange = 0;
+      if (targetHealth != null) targetHealth.update();
+      previewTarget = null;
     }
 
-    previewTarget = targetChar;
-    targetHealth.setCharacter(previewTarget);
+    if (target != null) {
+      BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
+      previewTarget = targetChar;
+      targetHealth.setCharacter(previewTarget);
 
-    if (targetChar == null) {
-      actionQueue.highlight(null);
-      return;
-    }
+      if (targetChar == null) {
+        actionQueue.highlight(null);
+        return;
+      }
 
-    actionQueue.highlight(target);
-    if (SelectedSkill != -1) {
-      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-      ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
-      HealingSkill hskill = skill as HealingSkill;
-      if (hskill != null) previewTarget.PreviewHealing = skill.calculateHealing(previewTarget);
-      else previewTarget.PreviewDamage = skill.calculateDamage(previewTarget);
+      actionQueue.highlight(target);
+      if (SelectedSkill != -1) {
+        BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
+        ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
+        HealingSkill hskill = skill as HealingSkill;
+        if (hskill != null) previewTarget.PreviewChange = skill.calculateHealing(previewTarget);
+        else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget);
+      }
     }
   }
 
@@ -793,8 +796,10 @@ public class GameManager : MonoBehaviour {
     }
 
     yield return waitUntilPopped(movePiece(destination));
-    if (selectedCharacter.isAlive()) {
-      yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+    if (selectedCharacter.ai.willAttack()) {
+      if (selectedCharacter.isAlive()) {
+        yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+      }
     }
 
     StartCoroutine(endTurn());

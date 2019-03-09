@@ -6,17 +6,6 @@ using System.Collections;
 using System.Linq;
 
 public class AggressiveAI : BaseAI {
-  SkillData best;
-
-  public override void target() {
-    if (best != null) {
-      GameManager.get.SelectedSkill = best.index;
-
-      List<Tile> target = new List<Tile>();
-      target.Add(best.targetTile);
-      owner.useSkill(best.skill, target);
-    }
-  }
 
   public override Vector3 move() {
     Heap<SkillData> db = new Heap<SkillData>();
@@ -67,6 +56,8 @@ public class AggressiveAI : BaseAI {
       }
     } else {
       newPosition = best.tile.transform.position;
+      GameManager.get.SelectedSkill = best.index;
+      GameManager.get.selectTarget(best.targetTile.occupant.gameObject);
     }
 
     map.setPath(newPosition);
