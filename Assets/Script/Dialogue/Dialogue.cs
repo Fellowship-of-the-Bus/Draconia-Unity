@@ -8,7 +8,7 @@ using System.Collections;
 //Dialogue, consider disabling player control to more or less disable the map when activated.
 public class Dialogue : MonoBehaviour {
   public List<DialogueFragment> dialogues;
-  public Text textBox;
+  public CustomText textBox;
   public Button nextButton;
   public Action onExit;
 
