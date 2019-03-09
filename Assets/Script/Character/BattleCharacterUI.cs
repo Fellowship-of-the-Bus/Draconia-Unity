@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class BattleCharacterUI : MonoBehaviour {
-  public CustomText name;
+  public new CustomText name;
   public HealthBarManager healthBars;
 
   void Update() {
