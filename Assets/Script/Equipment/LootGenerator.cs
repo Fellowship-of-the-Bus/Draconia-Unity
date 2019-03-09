@@ -14,7 +14,7 @@ public class LootGenerator {
 
     //add items in guaranteed loot items
     List<Equipment> l = new List<Equipment>();
-    l.Add(new Weapon(EquipmentClass.Sword, 1, 1, Weapon.Kinds.Melee));
+    l.Add(new Weapon(EquipmentClass.Sword, 1, 1));
     get.guaranteed.Add("Map1", l);
   }
 
