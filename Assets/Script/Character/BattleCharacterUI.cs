@@ -9,7 +9,7 @@ public class BattleCharacterUI : MonoBehaviour {
     transform.rotation = Camera.main.transform.rotation; // Take care about camera rotation
 
     // scale health on health bar to match current HP values
-    updateLifeBars();
+    healthBars.updatePreview();
   }
 
   public void updateLifeBars(int change = 0) {

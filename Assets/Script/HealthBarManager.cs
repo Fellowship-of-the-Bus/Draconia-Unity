@@ -26,6 +26,10 @@ public class HealthBarManager {
     }
   }
 
+  public void updatePreview() {
+    update(character.PreviewChange);
+  }
+
   public void setCharacter(BattleCharacter character) {
     this.character = character;
     if (character) update();

@@ -376,6 +376,7 @@ public class BattleCharacter : Effected {
   public FloatingText damageText;
   void floatingText(int val, Color colour) {
     damageText.animate(val, colour);
+    previewChange = 0;
   }
 
   public int calculateDamage(int rawDamage, DamageType type, DamageElement element) {

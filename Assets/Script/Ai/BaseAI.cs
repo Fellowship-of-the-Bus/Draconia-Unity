@@ -7,13 +7,19 @@ using System.Linq;
 
 public abstract class BaseAI {
   public BattleCharacter owner;
+  protected SkillData best;
   public virtual void init() {}
-  public abstract void target();
   public abstract Vector3 move();
 
   protected struct TargetSet {
     public Tile tile;
     public List<BattleCharacter> affected;
+  }
+
+  public virtual void target() {
+    if (best != null) {
+      GameManager.get.attackTarget(best.targetTile);
+    }
   }
 
   protected List<TargetSet> getTargetSets(ActiveSkill skill, List<Tile> targets, Tile userTile) {
@@ -100,5 +106,9 @@ public abstract class BaseAI {
     }
 
     return db.getMax();
+  }
+
+  public bool willAttack() {
+    return best != null;
   }
 }
