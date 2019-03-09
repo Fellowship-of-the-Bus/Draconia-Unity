@@ -70,8 +70,6 @@ public class GameManager : MonoBehaviour {
   public GameObject targetPanel;
   public GameObject mainUI;
 
-  public GameObject text;
-
   //skillbutton tooltip
   public GameObject tooltip;
 
