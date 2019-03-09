@@ -6,21 +6,10 @@ using System.Collections;
 using System.Linq;
 
 public class SentryAI : BaseAI {
-  SkillData best;
   Tile startTile = null;
 
   public override void init() {
     startTile = owner.curTile;
-  }
-
-  public override void target() {
-    if (best != null) {
-      GameManager.get.SelectedSkill = best.index;
-
-      List<Tile> target = new List<Tile>();
-      target.Add(best.targetTile);
-      owner.useSkill(best.skill, new List<Tile>(target));
-    }
   }
 
   public override Vector3 move() {
@@ -43,6 +32,10 @@ public class SentryAI : BaseAI {
       }
     }
     best = evaluateSkillOptions(newTile);
+    if (best != null) {
+      GameManager.get.SelectedSkill = best.index;
+      GameManager.get.selectTarget(best.targetTile.occupant.gameObject);
+    }
 
     map.setPath(newPosition);
     return newPosition;
