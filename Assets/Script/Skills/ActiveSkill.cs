@@ -30,7 +30,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   //experience gained when used
   public int expGainUse = 10;
 
-  private bool[] usableWeapon = new bool[3] { true, true, true };
+  private bool[] usableWeapon = new bool[2] { true, true };
   private bool unarmed = true;
 
   //[0] = targets allies, [0] = targets enemies
