@@ -333,5 +333,10 @@ public class Map {
   public void clearPath() {
     path.Clear();
   }
+
+  public void getDimensions(out int x, out int z) {
+    x = map.GetLength(0);
+    z = map.GetLength(1);
+  }
 }
 
