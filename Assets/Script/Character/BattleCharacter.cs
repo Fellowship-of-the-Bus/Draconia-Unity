@@ -72,8 +72,10 @@ public class BattleCharacter : Effected {
   [HideInInspector]
   public float curAction = 0;
 
-  //0 = player, 1 = enemy, 2 = ally
-  public int team = 0;
+  public enum Team {
+    Player, Enemy, Ally
+  };
+  public Team team = Team.Player;
 
   private int previewDamage;
   public int PreviewDamage{
@@ -170,6 +172,8 @@ public class BattleCharacter : Effected {
     }
     ai.owner = this;
 
+    minimapIconRenderer.material = GameManager.get.minimapIcons[(int)team];
+
     applyPassives();
 
     if (inGame) {
@@ -177,6 +181,7 @@ public class BattleCharacter : Effected {
       if (weaponModel) GameObject.Instantiate(weaponModel, model.rightHand);
     }
     gameObject.name = name;
+
   }
 
   void setSkills() {
@@ -244,6 +249,7 @@ public class BattleCharacter : Effected {
 
   public CharacterModel model;
   public BattleCharacterUI ui;
+  public MeshRenderer minimapIconRenderer;
 
   public float calcMoveTime(float time, int turns = 1) {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
