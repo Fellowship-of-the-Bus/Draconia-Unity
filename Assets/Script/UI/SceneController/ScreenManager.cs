@@ -4,8 +4,10 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
+// From: https://docs.unity3d.com/Manual/HOWTO-UIScreenTransition.html
+
 public class ScreenManager : MonoBehaviour {
-  //Screen to open automatically at the start of the Scene
+  // Screen to open automatically at the start of the Scene
   public Animator initiallyOpen;
 
   // Currently Open Screen
