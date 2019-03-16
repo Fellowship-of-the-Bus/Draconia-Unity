@@ -101,7 +101,7 @@ public class PlayerControl : MonoBehaviour {
         }
       }
       //handle attack based tile colouring:
-      if ((gameManager.gameState == GameState.attacking && s != null && s.getTargets().Contains(hoveredTile))) {
+      if ((gameManager.gameState == GameState.attacking && s != null && s.useLos)) {
         //handle attack
         map.setTileColours(hoveredTile);
         if (isPiece) gameManager.lineTo(hoveredObject);

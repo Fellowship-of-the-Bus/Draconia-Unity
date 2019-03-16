@@ -8,8 +8,7 @@ public class ForceShot: TargetMover {
 
   public ForceShot() {
     requireWeapon(Weapon.Kinds.Ranged);
-    useWepRange = false;
-    range = 2;
+    useWepRange = true;
     useLos = true;
     name = "Force Shot";
     maxCooldown = 2;

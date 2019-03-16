@@ -834,21 +834,20 @@ public class GameManager : MonoBehaviour {
     return UILock.count != 0;
   }
 
-  public bool checkLine(Vector3 source, Vector3 target, float offset = 0.25f) {
+  public bool checkLine(Vector3 source, Vector3 target, Collider targetCollider) {
     RaycastHit info;
-    return checkLine(source, target, out info, offset);
+    return checkLine(source, target, out info, targetCollider);
   }
 
-  public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info, float offset = 0.25f) {
+  public bool checkLine(Vector3 source, Vector3 target, out RaycastHit info, Collider targetCollider) {
     Vector3 toTarget = target - source;
-
     Ray ray = new Ray(source, toTarget.normalized);
     RaycastHit hitInfo;
     Physics.Raycast(ray, out hitInfo);
     info = hitInfo;
+
     if (hitInfo.collider == null) return false;
-    Vector3 hit = new Vector3(hitInfo.collider.transform.position.x, hitInfo.collider.transform.position.y + offset, hitInfo.collider.transform.position.z);
-    return (hit == target);
+    return (hitInfo.collider == targetCollider);
   }
 
   // Draw line to piece
@@ -856,11 +855,12 @@ public class GameManager : MonoBehaviour {
     if (SelectedPiece && piece) {
       if (SelectedPiece == piece) {
         line.SetPosition(1, SelectedPiece.transform.position);
+        line.GetComponent<Renderer>().material.color = Color.clear;
       } else {
-        Vector3 source = new Vector3(SelectedPiece.transform.position.x, SelectedPiece.transform.position.y + 0.25f, SelectedPiece.transform.position.z);
-        Vector3 target = new Vector3(piece.transform.position.x, piece.transform.position.y + 0.25f, piece.transform.position.z);
+        Vector3 source = getTargetingPostion(SelectedPiece);
+        Vector3 target = getTargetingPostion(piece);
         RaycastHit hitInfo;
-        if (checkLine(source, target, out hitInfo)) {
+        if (checkLine(source, target, out hitInfo, piece.GetComponent<Collider>())) {
           line.GetComponent<Renderer>().material.color = Color.red;
         } else {
           line.GetComponent<Renderer>().material.color = Color.black;
@@ -870,6 +870,17 @@ public class GameManager : MonoBehaviour {
         line.SetPosition(1, hitInfo.point);
       }
     }
+  }
+
+  // Get the point from which projectiles originate from or hit a character
+  public Vector3 getTargetingPostion(GameObject piece) {
+    float height = piece.GetComponent<MeshFilter>().mesh.bounds.extents.y;
+
+    return new Vector3(
+      piece.transform.position.x,
+      piece.transform.position.y + 2*height/3,
+      piece.transform.position.z
+    );
   }
 
   // Get the object being clicked on
