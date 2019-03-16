@@ -83,10 +83,12 @@ public class GameManager : MonoBehaviour {
   //Map Boss
   public BattleCharacter boss;
 
-  public Dictionary<int, List<GameObject>> characters = new Dictionary<int, List<GameObject>>();
-  public List<GameObject> players { get{ return characters[0]; } }
-  public List<GameObject> enemies { get{ return characters[1]; } }
+  public Dictionary<BattleCharacter.Team, List<GameObject>> characters = new Dictionary<BattleCharacter.Team, List<GameObject>>();
+  public List<GameObject> players { get{ return characters[BattleCharacter.Team.Player]; } }
+  public List<GameObject> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
   private List<Coroutine> waitingOn = new List<Coroutine>();
+
+  public Material[] minimapIcons;
 
   private List<BFEvent> BFevents = new List<BFEvent>();
 
@@ -224,8 +226,6 @@ public class GameManager : MonoBehaviour {
     foreach (BFEvent e in BFevents) {
       e.init();
     }
-
-    pControl = GameSceneController.get.pControl;
   }
 
   public void init() {
