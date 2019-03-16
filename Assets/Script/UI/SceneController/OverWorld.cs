@@ -57,33 +57,14 @@ public class OverWorld: MonoBehaviour {
   public void playScenario(string scenario) {
     //auto save before battle
     SaveLoad.saveAuto();
+    LoadingScreen.load(scenario);
+  }
 
-    open(scenario);
-  }
-  public void manage() {
-    open("CharacterManagement");
-  }
   public void back() {
-    open("MainMenu");
+    LoadingScreen.load("MainMenu");
   }
 
   public void save() {
     saveBrowser.createOptions(SaveLoad.listSaveFiles());
-  }
-
-  public void inventory() {
-    open("Inventory");
-  }
-
-  public void option() {
-    open("Option");
-  }
-
-  public void skills() {
-    open("SkillSelect");
-  }
-
-  private void open(string scene) {
-    LoadingScreen.load(scene);
   }
 }

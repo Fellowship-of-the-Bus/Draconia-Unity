@@ -48,10 +48,6 @@ public class SkillSelectController: MonoBehaviour {
     }
   }
 
-  public void back() {
-    LoadingScreen.load("OverWorld");
-  }
-
   public SkillInfo equip(Type t) {
     if (equippedSkills.Count < NUM_EQUIPPED_SKILLS) {
       GameObject o = Instantiate(skillInfo, equippedSkillView);

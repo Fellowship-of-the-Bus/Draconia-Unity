@@ -17,9 +17,5 @@ public class InventoryController: MonoBehaviour {
     get = this;
   }
 
-  public void back() {
-    LoadingScreen.load("OverWorld");
-  }
-
   public static InventoryController get { get; set; }
 }
