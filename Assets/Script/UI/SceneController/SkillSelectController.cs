@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class SkillSelectController: MonoBehaviour {
-
-  public int NUM_EQUIPPED_SKILLS = 4;
+  private const int NUM_EQUIPPED_SKILLS = 4;
 
   public GameObject skillInfo;
   public InvCharSelect charSelect;
@@ -25,10 +24,7 @@ public class SkillSelectController: MonoBehaviour {
     foreach(Type t in SkillList.get.skills) {
       GameObject o = Instantiate(skillInfo, skillView);
       SkillInfo s = o.GetComponent<SkillInfo>();
-      s.init();
-      s.skillType = t;
-      s.info.GetComponent<Text>().text = t.FullName;
-      s.displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[t];
+      s.init(t, false);
       skills.Add(s);
     }
 
@@ -52,9 +48,7 @@ public class SkillSelectController: MonoBehaviour {
     if (equippedSkills.Count < NUM_EQUIPPED_SKILLS) {
       GameObject o = Instantiate(skillInfo, equippedSkillView);
       SkillInfo s = o.GetComponent<SkillInfo>();
-      s.init(true);
-      s.info.GetComponent<Text>().text = t.displayName();
-      s.skillType = t;
+      s.init(t, true);
       s.update(curChar.skills);
       equippedSkills.Add(s);
       return s;

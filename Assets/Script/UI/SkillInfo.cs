@@ -26,11 +26,15 @@ public class SkillInfo: MonoBehaviour {
 
   public bool equipped { get; private set; }
 
-  public void init(bool isEquipped = false) {
+  public void init(Type type, bool isEquipped) {
     controller = SkillSelectController.get;
     equipText = equipButton.GetComponentInChildren<Text>();
     equipped = isEquipped;
     if (equipped) equipText.text = "Unequip";
+
+    skillType = type;
+    info.GetComponent<Text>().text = type.FullName;
+    displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[type];
   }
 
   public void update(SkillTree t, SkillInfo caller = null) {
