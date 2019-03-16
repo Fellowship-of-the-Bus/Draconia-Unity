@@ -9,7 +9,7 @@ public class Fireball: SingleTarget {
   public Fireball() {
     range = 3;
     useWepRange = false;
-    useLos = false;
+    useLos = true;
     name = "Fireball";
     maxCooldown = 2;
 

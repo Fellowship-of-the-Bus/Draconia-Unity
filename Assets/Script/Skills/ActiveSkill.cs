@@ -23,7 +23,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   private int _range;
   public int range {get {if (useWepRange) return self.weapon.range; else return _range;} set {_range = value;}}
   public bool useWepRange {get; set;}
-  public bool useLos {get; set;}
+  public bool useLos {get; set;} // Use line of sight for targeting
   public string name {get; set;}
   public int maxCooldown {get; set;}
 
