@@ -495,6 +495,7 @@ public class GameManager : MonoBehaviour {
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
       if (targetHealth != null) targetHealth.update();
+      previewTarget.updateLifeBars();
       previewTarget = null;
     }
 
@@ -536,6 +537,10 @@ public class GameManager : MonoBehaviour {
     }
     if (targets.Count() != skill.ntargets) {
       return;
+    }
+
+    foreach(Tile t in targets) {
+      if (t.occupied()) t.occupant.updateLifeBars(t.occupant.PreviewChange);
     }
 
     if (selectedCharacter.useSkill(skill, targets)) {

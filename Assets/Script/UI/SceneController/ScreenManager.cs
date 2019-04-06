@@ -22,7 +22,9 @@ public class ScreenManager : MonoBehaviour {
 
   // Animator State and Transition names we need to check against.
   const string OpenTransitionName = "Open";
-  const string ClosedStateName = "Closed";
+
+  // Menu containing elements common to all screens
+  public GameObject genericMenu;
 
   public void OnEnable() {
     // We cache the Hash to the "Open" Parameter, so we can feed to Animator.SetBool.
@@ -49,6 +51,9 @@ public class ScreenManager : MonoBehaviour {
 
     CloseCurrent();
 
+    // Activate the back button
+    genericMenu.SetActive(true);
+
     PreviouslySelected = newPreviouslySelected;
 
     // Set the new Screen as then open one.
@@ -63,15 +68,13 @@ public class ScreenManager : MonoBehaviour {
 
   // Finds the first Selectable element in the providade hierarchy.
   static GameObject FindFirstEnabledSelectable (GameObject gameObject) {
-    GameObject go = null;
     var selectables = gameObject.GetComponentsInChildren<Selectable> (true);
     foreach (var selectable in selectables) {
       if (selectable.IsActive () && selectable.IsInteractable ()) {
-        go = selectable.gameObject;
-        break;
+        return selectable.gameObject;
       }
     }
-    return go;
+    return null;
   }
 
   // Closes the currently open Screen
@@ -81,34 +84,17 @@ public class ScreenManager : MonoBehaviour {
     if (Open == null)
       return;
 
-    //Start the close animation.
+    // Start the close animation.
     Open.SetBool(OpenParameterId, false);
 
-    //Reverting selection to the Selectable used before opening the current screen.
+    // Reverting selection to the Selectable used before opening the current screen.
     SetSelected(PreviouslySelected);
-    //Start Coroutine to disable the hierarchy when closing animation finishes.
-    StartCoroutine(DisablePanelDeleyed(Open));
-    //No screen open.
+    // No screen open.
     Open = null;
+    // TODO: this needs to happen at the end of the animation, probably in MenuClosedStateController
+    genericMenu.SetActive(false);
   }
 
-  //Coroutine that will detect when the Closing animation is finished and it will deactivate the
-  //hierarchy.
-  IEnumerator DisablePanelDeleyed(Animator anim) {
-    bool closedStateReached = false;
-    bool wantToClose = true;
-    while (!closedStateReached && wantToClose) {
-      if (!anim.IsInTransition(0))
-        closedStateReached = anim.GetCurrentAnimatorStateInfo(0).IsName(ClosedStateName);
-
-      wantToClose = !anim.GetBool(OpenParameterId);
-
-      yield return new WaitForEndOfFrame();
-    }
-
-    if (wantToClose)
-      anim.gameObject.SetActive(false);
-  }
 
   // Make the provided GameObject selected
   // When using the mouse/touch we actually want to set it as the previously selected and
