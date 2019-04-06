@@ -9,6 +9,7 @@ public class Character {
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";
+  public List<Trait> traits;
 
   [System.Serializable]
   public class Gear {
@@ -55,9 +56,18 @@ public class Character {
 
   public Character(string name): this() {
     this.name = name;
+    traits = new List<Trait>();
   }
 
-  public Attributes totalAttr { get { return attr + gearAttr(); } }
+  public Attributes totalAttr {
+    get {
+      Trait t = new Trait();
+      foreach (Trait tr in traits) {
+        t = t + tr;
+      }
+      return t.applyTrait(attr + gearAttr());
+    }
+  }
 
 
   public Character() {

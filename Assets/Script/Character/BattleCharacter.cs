@@ -150,11 +150,11 @@ public class BattleCharacter : Effected {
       setSkills();
       prevSkillSet = new List<String>(skillSet.Select(x => x.name));
     }
+    curHealth = maxHealth;
 
     ui.healthBars.setCharacter(this);
     ui.name.text = baseChar.name;
 
-    curHealth = maxHealth;
     switch (aiType) {
       case AIType.Aggressive:
       case AIType.None:
