@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 [System.Serializable]
 public class HealthBarManager {
@@ -8,6 +9,7 @@ public class HealthBarManager {
   public GameObject healingBar;
 
   private BattleCharacter character;
+  private int offset;
 
   private void updateBar(GameObject bar, int health) {
     Vector3 scale = bar.transform.localScale;
@@ -28,6 +30,33 @@ public class HealthBarManager {
 
   public void updatePreview() {
     update(character.PreviewChange);
+  }
+
+  private IEnumerator animate(Action callback) {
+    int NUM_STEPS = 10;
+    float TIME_PER_STEP = 0.1f;
+    // if (offset > 0) {
+    //   updateBar(healingBar, character.curHealth + offset);
+    // } else {
+    //   updateBar(healthBar, character.curHealth + offset);
+    // }
+    for(int i = 0; i < NUM_STEPS; i++) {
+      int cur = (int)Mathf.Lerp(character.curHealth, character.curHealth + offset, i * TIME_PER_STEP);
+      if (offset > 0) {
+        updateBar(healthBar, cur);
+      } else {
+        updateBar(damageBar, cur);
+        updateBar(healingBar, cur);
+      }
+      yield return new WaitForSeconds(TIME_PER_STEP);
+    }
+    callback();
+    update();
+  }
+
+  public void animateToNeutral(int change, Action callback) {
+    offset = change;
+    GameManager.get.waitFor(GameManager.get.StartCoroutine(animate(callback)));
   }
 
   public void setCharacter(BattleCharacter character) {

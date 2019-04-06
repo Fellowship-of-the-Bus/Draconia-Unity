@@ -66,7 +66,7 @@ public class BattleCharacter : Effected {
   [HideInInspector]
   public Tile curTile = null;
 
-  [HideInInspector]
+  // [HideInInspector]
   public int curHealth;
   public const float maxAction = 1000f;
   [HideInInspector]
@@ -380,8 +380,10 @@ public class BattleCharacter : Effected {
   }
 
   public FloatingText damageText;
-  void floatingText(int val, Color colour) {
+  void floatingText(int val, Color colour, Action callback) {
+    Debug.Log(PreviewChange);
     damageText.animate(val, colour);
+    ui.healthBars.animateToNeutral(previewChange, callback);
     previewChange = 0;
   }
 
@@ -410,24 +412,26 @@ public class BattleCharacter : Effected {
 
   public void takeDamage(int damage) {
     if (curHealth <= 0) return;
-    floatingText(damage, Color.red);
-    curHealth -= damage;
-    if (curHealth <= 0) {
-      Draconia.Event e = new Draconia.Event(this, EventHook.preDeath);
-      onEvent(e);
-      if (e.preventDeath) {
-        curHealth = 1;
+    floatingText(damage, Color.red, () => {
+      curHealth -= damage;
+      if (curHealth <= 0) {
+        Draconia.Event e = new Draconia.Event(this, EventHook.preDeath);
+        onEvent(e);
+        if (e.preventDeath) {
+          curHealth = 1;
+        } else {
+          onDeath();
+        }
       } else {
-        onDeath();
+        if (model.animator) GameManager.get.waitFor(model.animator,"TakeDamage");
       }
-    } else {
-      if (model.animator) GameManager.get.waitFor(model.animator,"TakeDamage");
-    }
+    });
   }
 
   public void takeHealing(int amount) {
-    floatingText(amount, Color.green);
-    curHealth = Math.Min(maxHealth, curHealth + amount);
+    floatingText(amount, Color.green, () => {
+      curHealth = Math.Min(maxHealth, curHealth + amount);
+    });
   }
 
   IEnumerator fadeOut() {
