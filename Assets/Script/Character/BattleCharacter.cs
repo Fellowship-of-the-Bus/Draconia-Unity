@@ -384,6 +384,7 @@ public class BattleCharacter : Effected {
     damageText.animate(val, colour);
     ui.healthBars.animateToNeutral(previewChange, callback);
     GameManager.get.targetHealth.animateToNeutral(previewChange, () => {});
+    GameManager.get.selectedHealth.animateToNeutral(previewChange, () => {});
     previewChange = 0;
   }
 

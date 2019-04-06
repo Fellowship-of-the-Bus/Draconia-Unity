@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour {
       }
     }
 
-    selectedCharacter.updateLifeBars();
+
 /*    if (netChange < 0) {
       selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth + netChange);
     } else if (netChange > 0) {
@@ -291,8 +291,6 @@ public class GameManager : MonoBehaviour {
       selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth);
     }
     */
-    selectedHealth.update(netChange);
-
 
     // Uncomment this code if you need to change skills via the editor ingame.
     // if (Options.debugMode && selectedCharacter.team == 0) {
@@ -492,9 +490,11 @@ public class GameManager : MonoBehaviour {
 
   // Preview of targetting a character
   public void selectTarget(GameObject target) {
+    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
       // if (targetHealth != null) targetHealth.update();
+      selectedHealth.update(previewTarget.PreviewChange);
       previewTarget.updateLifeBars();
       previewTarget = null;
     }
@@ -511,12 +511,12 @@ public class GameManager : MonoBehaviour {
 
       actionQueue.highlight(target);
       if (SelectedSkill != -1) {
-        BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
         ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
         HealingSkill hskill = skill as HealingSkill;
         if (hskill != null) previewTarget.PreviewChange = skill.calculateHealing(previewTarget);
         else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget);
       }
+      if (previewTarget == selectedCharacter) selectedHealth.update(previewTarget.PreviewChange);
     }
   }
 
