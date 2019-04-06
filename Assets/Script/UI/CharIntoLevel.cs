@@ -79,9 +79,9 @@ public class CharIntoLevel: MonoBehaviour {
 
   public void removeCharacter(CharPreview curPreview) {
     //if (curPreview == null) return;
-    GameSceneController.get.removeCharacter(curPreview.c);
+    GameSceneController.get.removeCharacter(curPreview.character);
     curPreview.gameObject.transform.SetParent(null, false);
-    addedCharacters.Remove(curPreview.c.baseChar);
+    addedCharacters.Remove(curPreview.character.baseChar);
     curPreview = null;
     numCharSelected = addedCharacters.Count;
   }
