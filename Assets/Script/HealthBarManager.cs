@@ -11,7 +11,7 @@ public class HealthBarManager {
   private BattleCharacter character;
   private int offset;
 
-  private void updateBar(GameObject bar, int health) {
+  private void updateBar(GameObject bar, float health) {
     Vector3 scale = bar.transform.localScale;
     scale.x = Math.Max(Math.Min((float)health/character.maxHealth,1),0);
     bar.transform.localScale = scale;
@@ -33,15 +33,15 @@ public class HealthBarManager {
   }
 
   private IEnumerator animate(Action callback) {
-    int NUM_STEPS = 10;
-    float TIME_PER_STEP = 0.1f;
+    int NUM_STEPS = Options.FPS;
+    float TIME_PER_STEP = 1/(NUM_STEPS * 1f);
     // if (offset > 0) {
     //   updateBar(healingBar, character.curHealth + offset);
     // } else {
     //   updateBar(healthBar, character.curHealth + offset);
     // }
     for(int i = 0; i < NUM_STEPS; i++) {
-      int cur = (int)Mathf.Lerp(character.curHealth, character.curHealth + offset, i * TIME_PER_STEP);
+      float cur = Mathf.Lerp(character.curHealth, character.curHealth + offset, i * TIME_PER_STEP);
       if (offset > 0) {
         updateBar(healthBar, cur);
       } else {

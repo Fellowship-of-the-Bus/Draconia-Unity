@@ -494,7 +494,7 @@ public class GameManager : MonoBehaviour {
   public void selectTarget(GameObject target) {
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
-      if (targetHealth != null) targetHealth.update();
+      // if (targetHealth != null) targetHealth.update();
       previewTarget.updateLifeBars();
       previewTarget = null;
     }
@@ -542,6 +542,7 @@ public class GameManager : MonoBehaviour {
     foreach(Tile t in targets) {
       if (t.occupied()) t.occupant.updateLifeBars(t.occupant.PreviewChange);
     }
+    if (previewTarget) targetHealth.update(previewTarget.PreviewChange);
 
     if (selectedCharacter.useSkill(skill, targets)) {
       SelectedSkill = -1;

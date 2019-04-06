@@ -381,9 +381,9 @@ public class BattleCharacter : Effected {
 
   public FloatingText damageText;
   void floatingText(int val, Color colour, Action callback) {
-    Debug.Log(PreviewChange);
     damageText.animate(val, colour);
     ui.healthBars.animateToNeutral(previewChange, callback);
+    GameManager.get.targetHealth.animateToNeutral(previewChange, () => {});
     previewChange = 0;
   }
 
