@@ -4,20 +4,22 @@ using System.IO;
 
 public class CharacterGenerator {
 
-  // private static readonly int STR_MIN = 5;
-  // private static readonly int STR_MAX = 10;
+  public static readonly int STR_BASE = 80;
 
-  // private static readonly int INT_MIN = 5;
-  // private static readonly int INT_MAX = 10;
+  public static readonly int INT_BASE = 80;
 
-  private static readonly int SPEED_MIN = 5;
-  private static readonly int SPEED_MAX = 10;
+  public static readonly int SPEED_BASE = 50;
 
-  // private static readonly int HEALTH_MIN = 20;
-  // private static readonly int HEALTH_MAX = 30;
+  public static readonly int HEALTH_BASE = 250;
 
-  private static readonly int TRAIT_MIN = 2;
-  private static readonly int TRAIT_MAX = 3;
+  public static readonly int PDEF_BASE = 30;
+
+  public static readonly int MDEF_BASE = 30;
+
+  public static readonly int MRANGE_BASE = 4;
+
+  public static readonly int TRAIT_MIN = 2;
+  public static readonly int TRAIT_MAX = 3;
 
   private static string[] lines;
 
@@ -29,14 +31,14 @@ public class CharacterGenerator {
     Attributes attr = new Attributes();
 
     //UnityEngine.Random.value;
-    attr.strength = 80;
-    attr.intelligence = 80;
-    attr.speed = Random.Range(SPEED_MIN, SPEED_MAX+1);
-    attr.maxHealth = 250;
-    attr.physicalDefense = 30;
-    attr.magicDefense = 30;
+    attr.strength = STR_BASE;
+    attr.intelligence = INT_BASE;
+    attr.speed = SPEED_BASE;
+    attr.maxHealth = HEALTH_BASE;
+    attr.physicalDefense = PDEF_BASE;
+    attr.magicDefense = MDEF_BASE;
 
-    attr.moveRange = 4;
+    attr.moveRange = MRANGE_BASE;
 
     return attr;
   }
@@ -69,4 +71,29 @@ public class CharacterGenerator {
     return character;
   }
 
+  public static Character generateBrodric() {
+    Character character = new Character();
+    character.name = "Brodric";
+    character.attr = generateBaseAttributes();
+    //give additional stats unique to brodric
+    character.attr.strength += 5;
+    character.attr.physicalDefense += 3;
+    character.attr.maxHealth += 25;
+    //give some traits?
+    character.traits = new List<Trait>() {new Trait(TraitName.strPlus), new Trait(TraitName.maxHPPlus)};
+    return character;
+  }
+
+  public static Character generateSisdric() {
+    Character character = new Character();
+    character.name = "Sisdric";
+    character.attr = generateBaseAttributes();
+    //give additional stats unique to brodric
+    character.attr.intelligence += 5;
+    character.attr.magicDefense += 3;
+    character.attr.maxHealth += 25;
+    //give some traits?
+    character.traits = new List<Trait>() {new Trait(TraitName.intPlus), new Trait(TraitName.mDefPlus)};
+    return character;
+  }
 }
