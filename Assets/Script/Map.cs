@@ -20,7 +20,6 @@ public class Map {
 
     cubes = new List<GameObject>(GameObject.FindGameObjectsWithTag("Cube"));
     foreach (GameObject cube in cubes) {
-      cube.AddComponent<Tile>();
       Tile t = cube.GetComponent<Tile>();
       tiles.Add(t);
       t.setup();
