@@ -125,6 +125,9 @@ static class MapGenerator {
       o.transform.position = new Vector3(0,0,index);
       //set startTile
       Tile newTile = o.GetComponent<Tile>();
+      // if (newTile == null) {
+        newTile = o.transform.GetChild(0).GetComponent<Tile>();
+      // }
       newTile.startTile = startTile;
       //set height
       if (floating) {
@@ -132,16 +135,16 @@ static class MapGenerator {
           newTile.additionalHeight = height-1;
           o.transform.position = new Vector3(0, height-1, index);
         } else {
-          o.transform.position = new Vector3(0, height-0.5f-floatScale/2, index);
+          o.transform.position = new Vector3(0, height-floatScale, index);
           o.transform.localScale = new Vector3(1,floatScale,1);
-          newTile.additionalHeight = height-0.5f-floatScale/2;
+          newTile.additionalHeight = height-floatScale;
         }
         var baseBlock = (GameObject)PrefabUtility.InstantiatePrefab(cubes[baseBlockSymbol]);
         baseBlock.transform.SetParent(row.transform);
         baseBlock.transform.position = new Vector3(0,0,index);
-        baseBlock.tag = "Untagged";
+        baseBlock.transform.GetChild(0).tag = "Untagged";
       } else {
-        o.transform.localScale = new Vector3(1,2*height-1,1);
+        o.transform.localScale = new Vector3(1,height,1);
       }
       if (hasTree) {
         var tree = (GameObject)PrefabUtility.InstantiatePrefab(treeModel);

@@ -31,7 +31,7 @@ public class Tile : Effected {
   }
 
   public float getHeight() {
-    return transform.localScale.y/2 + additionalHeight;
+    return transform.parent.localScale.y + additionalHeight;
   }
 
   public Vector3 position {
