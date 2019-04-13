@@ -13,10 +13,14 @@ public static class SaveLoad {
 
   private static DirectoryInfo dir = System.IO.Directory.CreateDirectory(dirPath);
 
-  private static bool inProgress = false;
   public static bool active {
-    get { return inProgress; }
+    get; private set;
   }
+
+  public enum Mode {
+    Inactive, Save, Load
+  }
+  public static Mode currentMode { get; private set; }
 
   private static CustomSampler sampler = CustomSampler.Create("SaveLoadSampler");
 
@@ -25,13 +29,17 @@ public static class SaveLoad {
     Profiler.BeginThreadProfiling("Tasks", "Save Task");
     sampler.Begin();
 
-    Debug.Assert(! inProgress);
+    Debug.Assert(! active);
+    currentMode = Mode.Save;
+    active = true;
     BinaryFormatter bf = new BinaryFormatter();
     if (!saveName.EndsWith(".bro")) saveName += ".bro";
     FileStream file = File.Create(Path.Combine(dirPath, saveName));
+    // does this need to be copied before beginning the save?
     bf.Serialize(file, GameData.gameData);
     file.Close();
-    inProgress = false;
+    currentMode = Mode.Inactive;
+    active = false;
 
     // Unregister the thread before exit
     sampler.End();
@@ -52,7 +60,9 @@ public static class SaveLoad {
     Profiler.BeginThreadProfiling("Tasks", "Load Task");
     sampler.Begin();
 
-    Debug.Assert(! inProgress);
+    Debug.Assert(! active);
+    currentMode = Mode.Load;
+    active = true;
     saveName = Path.Combine(dirPath, saveName);
     if (File.Exists(saveName)) {
       BinaryFormatter bf = new BinaryFormatter();
@@ -64,7 +74,7 @@ public static class SaveLoad {
       }
       file.Close();
     } else channel.Log(saveName + " doesn't exist");
-    inProgress = false;
+    active = false;
 
     // Unregister the thread before exit
     sampler.End();
