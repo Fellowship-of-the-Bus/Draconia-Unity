@@ -9,12 +9,18 @@ ModelImporter:
     100006: //RootNode
     100008: String
     100010: Bow
+    100012: Armature
+    100014: Grip
+    100016: String_end
     400000: Body
     400002: Bone
     400004: Bone_end
     400006: //RootNode
     400008: String
     400010: Bow
+    400012: Armature
+    400014: Grip
+    400016: String_end
     2300000: Body
     2300002: String
     2300004: Bow
@@ -24,7 +30,19 @@ ModelImporter:
     4300000: Body
     4300002: String
     4300004: Bow
+    9500000: //RootNode
+    13700000: Bow
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BowWood
+    second: {fileID: 2100000, guid: d2ce6289bf5263541add150f73b833b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bowstring
+    second: {fileID: 2100000, guid: e3026b3fee26c9f4a851a26780817cb9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -54,7 +72,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -86,8 +104,8 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -109,12 +127,12 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Grip
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
