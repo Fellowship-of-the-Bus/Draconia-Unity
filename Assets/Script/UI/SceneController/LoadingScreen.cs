@@ -17,11 +17,12 @@ public class LoadingScreen : MonoBehaviour {
   }
 
   void Update() {
-    //Output the current progress
+    // Output the current progress
     loadingBar.transform.localScale = new Vector3(async.progress, 1f, 1f);
 
     // delay switching scenes until saving/loading is complete
     async.allowSceneActivation = ! SaveLoad.active;
+
 
     // // Check if the load has finished
     // if (async.progress >= 0.9f) {

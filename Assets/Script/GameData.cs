@@ -17,8 +17,8 @@ public class GameData {
   	String[] skills = {"Punch", "Knockback", "Knockback", "Knockback"};
   	SkillTree skillTree;
 
-    GameData.gameData.characters.Add(new Character("Brodric"));
-    GameData.gameData.characters.Add(new Character("Sisdric"));
+    GameData.gameData.characters.Add(CharacterGenerator.generateBrodric());
+    GameData.gameData.characters.Add(CharacterGenerator.generateSisdric());
 
     for(int i = 0; i < 5; i++) {
       GameData.gameData.characters.Add(CharacterGenerator.generateCharacter(1));
