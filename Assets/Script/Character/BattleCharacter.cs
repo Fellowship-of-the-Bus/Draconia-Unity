@@ -30,15 +30,12 @@ public class BattleCharacter : Effected {
 
   //base stats + permanent stat passives
   public Attributes attr {
-    get { return baseChar.attr; }
+    get { return baseChar.totalAttr; }
   }
   //change in stats due to buffs/debuffs
   [HideInInspector]
   public Attributes attrChange = new Attributes();
-  //Sum of stats from equipments
-  public Attributes attrEquip {
-    get {if (weapon != null ) return weapon.attr; else return new Attributes();}
-  }
+
   public Weapon weapon {
     get { return (Weapon)baseChar.gear[EquipType.weapon]; }
   }
@@ -495,7 +492,7 @@ public class BattleCharacter : Effected {
     model.transform.rotation = angle;
   }
 
-  private Attributes totalAttr { get { return attr + attrChange + attrEquip; } }
+  private Attributes totalAttr { get { return attr + attrChange; } }
 
   public int strength {
     get {return (int)Math.Max(0, totalAttr.strength);}

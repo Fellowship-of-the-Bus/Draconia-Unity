@@ -65,14 +65,14 @@ public class Character {
       foreach (Trait tr in traits) {
         t = t + tr;
       }
-      return t.applyTrait(attr + gearAttr());
+      return t.applyTrait(attr) + gearAttr();
     }
   }
 
 
   public Character() {
-    attr.maxHealth = 25;
-    attr.moveRange = 4;
+    attr.maxHealth = CharacterGenerator.HEALTH_BASE;
+    attr.moveRange = CharacterGenerator.MRANGE_BASE;
     equip(Weapon.defaultWeapon);
     equip(Armour.defaultArmour);
   }
@@ -109,8 +109,19 @@ public class Character {
     skills.gainLevels(levelsToGain);
   }
 
+  private static readonly int STR_GAIN = 2;
+  private static readonly int INT_GAIN = 2;
+  private static readonly int SPEED_GAIN = 8;
+  private static readonly int HEALTH_GAIN = 60;
+  private static readonly int PDEF_GAIN = 5;
+  private static readonly int MDEF_GAIN = 5;
   //gain stats functionp
   public void gainStats(int levels) {
-
+    attr.strength += STR_GAIN * levels;
+    attr.intelligence += INT_GAIN * levels;
+    attr.speed += SPEED_GAIN * levels;
+    attr.maxHealth += HEALTH_GAIN * levels;
+    attr.physicalDefense += PDEF_GAIN * levels;
+    attr.magicDefense += MDEF_GAIN * levels;
   }
 }
