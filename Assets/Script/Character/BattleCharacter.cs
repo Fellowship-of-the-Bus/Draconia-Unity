@@ -77,21 +77,9 @@ public class BattleCharacter : Effected {
   };
   public Team team = Team.Player;
 
-  private int previewDamage;
-  public int PreviewDamage{
-    get { return Math.Min(previewDamage, curHealth); }
-    set { previewDamage = value; }
-  }
-
-  private int previewHealing;
-  public int PreviewHealing{
-    get { return Math.Min(previewHealing, maxHealth - curHealth); }
-    set { previewHealing = value; }
-  }
-
   private int previewChange;
   public int PreviewChange{
-    get { return Math.Min(previewChange, curHealth); }
+    get { return Mathf.Clamp(previewChange, -curHealth, maxHealth - curHealth); }
     set { previewChange = value; }
   }
 
