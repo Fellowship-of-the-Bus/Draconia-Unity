@@ -18,12 +18,10 @@ public class Tile : Effected {
   public Material color;
   private Renderer border;
   private bool isClear = false;
-
-  private string wallType;
+  public bool isWall = false;
 
   new void Awake() {
     base.Awake();
-    wallType = ((GameObject)Resources.Load("Map/Tiles/Wall")).GetComponent<Tile>().type;
   }
 
   public bool occupied() {
@@ -65,9 +63,5 @@ public class Tile : Effected {
       setColor(transparent);
     }
     isClear = true;
-  }
-
-  public bool isWall() {
-    return type == wallType;
   }
 }

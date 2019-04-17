@@ -173,7 +173,7 @@ public class Map {
     for (int dist = 1; dist < range + 1; dist++) {
       foreach (Tile e in edgeTiles) {
         foreach (Tile a in getAdjacentTiles(e)) {
-          if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall()))) {
+          if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall))) {
             outerTiles.Add(a);
           }
         }
