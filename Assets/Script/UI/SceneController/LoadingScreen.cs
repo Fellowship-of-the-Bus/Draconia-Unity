@@ -12,6 +12,8 @@ public class LoadingScreen : MonoBehaviour {
 
   void Start() {
     async = SceneManager.LoadSceneAsync(nextScene);
+    // Run the garbage collector now to clean up the previous scene, to make GC less likely during the next scene
+    System.GC.Collect();
     // Don't let the Scene activate until you allow it to
     async.allowSceneActivation = false;
   }

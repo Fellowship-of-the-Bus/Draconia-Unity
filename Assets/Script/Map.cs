@@ -265,10 +265,9 @@ public class Map {
 
   // GameMap functions
   public void setTileColours(Tile src = null) {
-    GameObject SelectedPiece = GameManager.get.SelectedPiece;
-    BattleCharacter selectedBattleChar = SelectedPiece.GetComponent<BattleCharacter>();
+    BattleCharacter SelectedPiece = GameManager.get.SelectedPiece;
     int SelectedSkill = GameManager.get.SelectedSkill;
-    if (src == null) src = getTile(GameManager.get.SelectedPiece.transform.position);
+    if (src == null) src = getTile(GameManager.get.SelectedPiece.gameObject.transform.position);
     clearColour();
     if (GameManager.get.gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
@@ -281,10 +280,10 @@ public class Map {
         ti.setColor(Color.blue);
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
-      ActiveSkill skill = selectedBattleChar.equippedSkills[SelectedSkill];
+      ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
       bool aoe = (skill is AoeSkill);
       int range = skill.range;
-      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.transform.position), range);
+      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range);
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
           t.setColor(Color.white);
@@ -307,7 +306,7 @@ public class Map {
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             t.setColor(Color.yellow);
-            if (t.occupied() && selectedBattleChar.equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
+            if (t.occupied() && SelectedPiece.equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
             else {
               foreach (Tile tile in skillTargets) {
                 if (tile == t) {
