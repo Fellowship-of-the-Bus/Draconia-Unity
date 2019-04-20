@@ -53,7 +53,7 @@ public class InvCharSelect: MonoBehaviour {
   }
 
   protected virtual void onButtonClick(Selection s){
-    selectedPanel.background.color = Color.white;
+    selectedPanel.background.color = Color.clear;
     s.background.color = Color.red;
     selectedPanel = s;
     updateAttrView();

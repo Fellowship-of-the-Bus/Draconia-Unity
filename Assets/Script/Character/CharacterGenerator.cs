@@ -2,29 +2,31 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
-public class CharacterGenerator {
-
+public class CharacterGenerator : MonoBehaviour {
   public static readonly int STR_BASE = 80;
-
   public static readonly int INT_BASE = 80;
-
   public static readonly int SPEED_BASE = 50;
-
   public static readonly int HEALTH_BASE = 250;
-
   public static readonly int PDEF_BASE = 30;
-
   public static readonly int MDEF_BASE = 30;
-
   public static readonly int MRANGE_BASE = 4;
 
   public static readonly int TRAIT_MIN = 2;
   public static readonly int TRAIT_MAX = 3;
 
-  private static string[] lines;
+  public TextAsset namesFile;
+  private string[] names;
 
-  static CharacterGenerator() {
-     lines = File.ReadAllLines("Assets/Resources/names.txt");
+  public static CharacterGenerator get;
+
+  void Awake() {
+    if (get != null) {
+      Destroy(gameObject);
+      return;
+    }
+    get = this;
+    names = namesFile.text.Split(new string[]{ "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
+    DontDestroyOnLoad(gameObject);
   }
 
   private static Attributes generateBaseAttributes() {
@@ -53,8 +55,8 @@ public class CharacterGenerator {
   }
 
   private static string generateName() {
-    int index = Random.Range(0, lines.Length);
-    return lines[index];
+    int index = Random.Range(0, get.names.Length);
+    return get.names[index];
   }
 
   public static Character generateCharacter(int level) {

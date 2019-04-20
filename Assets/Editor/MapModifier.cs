@@ -127,8 +127,9 @@ static class MapModifier {
         if (row.gameObject.name != "Row") continue;
         if (row.position.x == childObject.transform.position.x) {
           foreach(Transform cube in row.transform) {
-            if (cube.position.z == childObject.transform.position.z) {
-              childObject.transform.position = new Vector3(childObject.transform.position.x, cube.gameObject.GetComponent<Tile>().position.y, childObject.transform.position.z);
+            Transform child = cube.GetChild(0);
+            if (child.position.z == childObject.transform.position.z) {
+              childObject.transform.position = new Vector3(childObject.transform.position.x, child.gameObject.GetComponent<Tile>().position.y, childObject.transform.position.z);
               SerializedObject sObject = new SerializedObject(childObject.GetComponent<BattleCharacter>());
               SerializedProperty team = sObject.FindProperty("team");
               team.intValue = 1;

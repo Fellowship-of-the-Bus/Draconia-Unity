@@ -29,7 +29,7 @@ public class Grapple: CircleAoE {
       path.AddFirst(t);
       GameManager.get.moving = true;
       GameManager.get.waitFor(GameManager.get.StartCoroutine(
-        GameManager.get.IterateMove(path, self.gameObject, GameManager.get.getWaitingIndex(), false, false)));
+        GameManager.get.IterateMove(path, self, GameManager.get.getWaitingIndex(), false, false)));
     }
   }
 }

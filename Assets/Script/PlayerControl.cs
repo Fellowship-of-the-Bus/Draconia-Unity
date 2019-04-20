@@ -47,7 +47,7 @@ public class PlayerControl : MonoBehaviour {
 
   void handleHovered(GameObject hoveredObject) {
     channel.Log("handleHovered: {0}", hoveredObject);
-    gameManager.lineTo(gameManager.SelectedPiece);
+    if (gameManager.SelectedPiece) gameManager.lineTo(gameManager.SelectedPiece.gameObject);
     if (overUI() || hoveredObject == null) return;
     if (hoveredObject.transform.parent == null) return;
     Map map = gameManager.map;
@@ -59,16 +59,16 @@ public class PlayerControl : MonoBehaviour {
 
 
     //handle multicubes
-    if (hoveredObject.transform.parent.tag == "Cube") {
+    if (hoveredObject.transform.parent.CompareTag("Cube")) {
       hoveredObject = hoveredObject.transform.parent.gameObject;
     }
     Transform parent = hoveredObject.transform.parent;
-    while (parent != null && parent.tag != "Unit") {
+    while (parent != null && !parent.CompareTag("Unit")) {
       parent = parent.parent;
     }
     if (parent) hoveredObject = parent.gameObject;
-    bool isTile = hoveredObject.tag == "Cube";
-    bool isPiece = hoveredObject.tag == "Unit";
+    bool isTile = hoveredObject.CompareTag("Cube");
+    bool isPiece = hoveredObject.CompareTag("Unit");
     Tile hoveredTile = map.getTile(hoveredObject.transform.position);
     if (hoveredTile) currentHoveredTile = hoveredTile;
 
@@ -114,14 +114,14 @@ public class PlayerControl : MonoBehaviour {
   void handleClicked(GameObject clickedObject) {
     if (overUI() || clickedObject == null || gameManager.moving) return;
     //handle multicubes
-    if (clickedObject.transform.parent.tag == "Cube") {
+    if (clickedObject.transform.parent.CompareTag("Cube")) {
       clickedObject = clickedObject.transform.parent.gameObject;
-    } else if (clickedObject.transform.parent.tag == "Unit") {
+    } else if (clickedObject.transform.parent.CompareTag("Unit")) {
       clickedObject = clickedObject.transform.parent.gameObject;
     }
 
-    bool isTile = clickedObject.tag == "Cube";
-    bool isPiece = clickedObject.tag == "Unit";
+    bool isTile = clickedObject.CompareTag("Cube");
+    bool isPiece = clickedObject.CompareTag("Unit");
     Tile clickedTile = gameManager.map.getTile(clickedObject.transform.position);
 
     if (preGame) {

@@ -4,8 +4,6 @@ using UnityEngine;
 
 [System.Serializable]
 public class Character {
-
-
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";

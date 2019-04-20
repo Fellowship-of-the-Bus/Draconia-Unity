@@ -38,8 +38,9 @@ public class ActionQueue : MonoBehaviour {
     return queue.First.Value.time;
   }
 
-  public GameObject getNext() {
+  public BattleCharacter getNext() {
     GameObject next = queue.First.Value.piece;
+    BattleCharacter ret = next.GetComponent<BattleCharacter>();
     float newTime = queue.First.Value.time;
     float timePassed = newTime - curTime;
 
@@ -48,9 +49,9 @@ public class ActionQueue : MonoBehaviour {
       n.Value.piece.GetComponent<BattleCharacter>().updateActionBar(timePassed);
     }
 
-    next.GetComponent<BattleCharacter>().curAction = 0f;
+    ret.curAction = 0f;
     curTime = newTime;
-    return next;
+    return ret;
   }
 
   public void endTurn() {
@@ -255,6 +256,7 @@ public class ActionQueue : MonoBehaviour {
     Vector3 d = new Vector3(x, y, 0) / (Options.FPS * time);
     for (int i = 0; i < Options.FPS * time; i++) {
       button.transform.localPosition += d;
+      // TODO: can this just be yield return null?
       yield return new WaitForSeconds(1/Options.FPS);
     }
 

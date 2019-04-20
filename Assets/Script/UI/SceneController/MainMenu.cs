@@ -23,4 +23,8 @@ public class MainMenu: MonoBehaviour {
 
     LoadingScreen.load("OverWorld");
   }
+
+  public void quitGame() {
+    Application.Quit();
+  }
 }

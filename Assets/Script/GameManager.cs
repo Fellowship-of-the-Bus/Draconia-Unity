@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour {
 
   }
   public Stack<UndoAction> cancelStack = new Stack<UndoAction>();
-  public GameObject SelectedPiece { get; private set;}
+  public BattleCharacter SelectedPiece { get; private set;}
   public int SelectedSkill {get; set;}
   [HideInInspector]
   public List<Tile> skillTargets;
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour {
       if (e.hook == EventHook.postDeath) {
         GameManager g = GameManager.get;
         g.characters[e.sender.team].Remove(e.sender.gameObject);
-        if (e.sender == g.SelectedPiece.GetComponent<BattleCharacter>()) {
+        if (e.sender == g.SelectedPiece) {
           g.endTurnWrapper();
         }
       }
@@ -262,10 +262,9 @@ public class GameManager : MonoBehaviour {
     //enable the line only when attacking
     line.enabled = gameState == GameState.attacking;
     ActiveSkill s;
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     int netChange = 0;
-    List<Effect> effects = new List<Effect>(selectedCharacter.getEffects());
-    effects.AddRange(new List<Effect>(selectedCharacter.curTile.getEffects()));
+    List<Effect> effects = new List<Effect>(SelectedPiece.getEffects());
+    effects.AddRange(new List<Effect>(SelectedPiece.curTile.getEffects()));
 
     foreach(Effect e in effects) {
       if (e is HealthChangingEffect) {
@@ -325,7 +324,7 @@ public class GameManager : MonoBehaviour {
     if (SelectedSkill == -1)  return;
 
     // Preview damage and healing for the selected skill
-    s = selectedCharacter.equippedSkills[SelectedSkill];
+    s = SelectedPiece.equippedSkills[SelectedSkill];
     Tile currTile = pControl.currentHoveredTile;
     if (currTile != null && skillTargets.Contains(currTile)) {
       List<Tile> tiles = new List<Tile>();
@@ -394,11 +393,10 @@ public class GameManager : MonoBehaviour {
     //get character whose turn it is
     //do something different for ai
     SelectedPiece = actionQueue.getNext();
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    selectedCharacter.onEvent(new Draconia.Event(selectedCharacter, EventHook.startTurn));
-    moveRange = selectedCharacter.moveRange;
-    activeBuffBar.update(selectedCharacter);
-    selectedHealth.setCharacter(selectedCharacter);
+    SelectedPiece.onEvent(new Draconia.Event(SelectedPiece, EventHook.startTurn));
+    moveRange = SelectedPiece.moveRange;
+    activeBuffBar.update(SelectedPiece);
+    selectedHealth.setCharacter(SelectedPiece);
 
     // SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
@@ -406,11 +404,11 @@ public class GameManager : MonoBehaviour {
 
 
     Vector3 position = SelectedPiece.transform.position;
-    map.djikstra(position, SelectedPiece.GetComponent<BattleCharacter>());
+    map.djikstra(position, SelectedPiece);
 
     changeState(GameState.moving);
     // AI's
-    if (selectedCharacter.team != 0 || selectedCharacter.aiType != AIType.None) {
+    if (SelectedPiece.team != 0 || SelectedPiece.aiType != AIType.None) {
       handleAI();
       return;
     }
@@ -425,8 +423,8 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].tooltip.tiptext = "";
     }
 
-    for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
-      ActiveSkill s = selectedCharacter.equippedSkills[i];
+    for (int i = 0; i < SelectedPiece.equippedSkills.Count; i++) {
+      ActiveSkill s = SelectedPiece.equippedSkills[i];
       Debug.AssertFormat(s.name != "", "Skill Name is empty");
       skillButtons[i].tooltip.tiptext = s.tooltip;
       skillButtons[i].button.interactable = s.canUse();
@@ -460,7 +458,7 @@ public class GameManager : MonoBehaviour {
     }
 
     SelectedSkill = i;
-    ActiveSkill skill = SelectedPiece.GetComponent<BattleCharacter>().equippedSkills[i];
+    ActiveSkill skill = SelectedPiece.equippedSkills[i];
 
     skillTargets = skill.getTargets();
     //change colours of the tiles for attacking
@@ -476,7 +474,6 @@ public class GameManager : MonoBehaviour {
 
   // Preview of targetting a character
   public void selectTarget(GameObject target) {
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
       // if (targetHealth != null) targetHealth.update();
@@ -497,20 +494,19 @@ public class GameManager : MonoBehaviour {
 
       actionQueue.highlight(target);
       if (SelectedSkill != -1) {
-        ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
+        ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
         HealingSkill hskill = skill as HealingSkill;
         if (hskill != null) previewTarget.PreviewChange = skill.calculateHealing(previewTarget);
         else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget);
       }
-      if (previewTarget == selectedCharacter) selectedHealth.update(previewTarget.PreviewChange);
+      if (previewTarget == SelectedPiece) selectedHealth.update(previewTarget.PreviewChange);
     }
   }
 
   [HideInInspector]
   public List<Tile> targets = new List<Tile>();
   public void attackTarget(Tile target) {
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    ActiveSkill skill = selectedCharacter.equippedSkills[SelectedSkill];
+    ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
     List<Tile> validTargets = skill.getTargets();
 
     if (validTargets.Contains(target)) {
@@ -530,7 +526,7 @@ public class GameManager : MonoBehaviour {
     }
     if (previewTarget) targetHealth.update(previewTarget.PreviewChange);
 
-    if (selectedCharacter.useSkill(skill, targets)) {
+    if (SelectedPiece.useSkill(skill, targets)) {
       SelectedSkill = -1;
       endTurnWrapper();
     }
@@ -543,7 +539,7 @@ public class GameManager : MonoBehaviour {
 
   public IEnumerator endTurn() {
     if (gameState != GameState.ending) {
-      if (SelectedPiece.GetComponent<BattleCharacter>().team == 0 && SelectedPiece.GetComponent<BattleCharacter>().aiType == AIType.None) {
+      if (SelectedPiece.team == 0 && SelectedPiece.aiType == AIType.None) {
         lockUI();
       }
 
@@ -554,12 +550,11 @@ public class GameManager : MonoBehaviour {
       yield return StartCoroutine(waitUntilEmpty());
 
       //send endTurn Draconia.Event to the current piece
-      BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
       Draconia.Event e = new Draconia.Event(null, EventHook.endTurn);
-      e.endTurnChar = selectedCharacter;
+      e.endTurnChar = SelectedPiece;
       e.nextCharTime = actionQueue.peekNext();
       eventManager.onEvent(e);
-      selectedCharacter.onEvent(new Draconia.Event(selectedCharacter, EventHook.endTurn));
+      SelectedPiece.onEvent(new Draconia.Event(SelectedPiece, EventHook.endTurn));
 
       // Wait for end turn events to complete
       yield return StartCoroutine(waitUntilEmpty());
@@ -608,13 +603,13 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  public IEnumerator IterateMove(LinkedList<Tile> path, GameObject piece, int index, bool setWalking, bool teleport) {
+  public IEnumerator IterateMove(LinkedList<Tile> path, BattleCharacter character, int index, bool setWalking, bool teleport) {
     const float speed = 3f;
     lockUI();
-    BattleCharacter character = piece.GetComponent<BattleCharacter>();
+    GameObject piece = character.gameObject;
 
     if (gameState == GameState.moving && setWalking) {
-      cam.follow(SelectedPiece);
+      cam.follow(SelectedPiece.gameObject);
       yield return new WaitForSeconds(0.5f);
     }
 
@@ -700,21 +695,20 @@ public class GameManager : MonoBehaviour {
     LinkedList<Tile> localPath = new LinkedList<Tile>(map.path);
 
     Tile destination = map.getTile(coordToMove);
-    BattleCharacter c = SelectedPiece.GetComponent<BattleCharacter>();
     Coroutine co = null;
 
     if (destination.distance <= moveRange && !destination.occupied()) {
       // update position stack with current values,
       // update remaining move range, and recolor the tiles given the new current position
       int i = moveRange;
-      Tile cur = c.curTile;
+      Tile cur = SelectedPiece.curTile;
       cancelStack.Push(new UndoAction(() => {
         Vector3 coord = cur.transform.position;
         moveRange = i;
         SelectedPiece.transform.position = cur.position;
-        updateTile(c,cur);
+        updateTile(SelectedPiece, cur);
         changeState(GameState.moving);
-        map.djikstra(coord, c);
+        map.djikstra(coord, SelectedPiece);
         map.setTileColours();
       }));
 
@@ -739,7 +733,7 @@ public class GameManager : MonoBehaviour {
     moving = Options.displayAnimation;
     waitFor(StartCoroutine(IterateMove(
       path,
-      c.gameObject,
+      c,
       waitingOn.Count,
       setWalking && Options.displayAnimation,
       !Options.displayAnimation
@@ -747,13 +741,12 @@ public class GameManager : MonoBehaviour {
   }
 
   public void cancelAction() {
-    BattleCharacter character = SelectedPiece.GetComponent<BattleCharacter>();
     if (cancelStack.Count() > 0) {
       // reset character to previous position and remaining move range, then recolor movable tiles
       UndoAction act = cancelStack.Pop();
       act.undo();
     }
-    eventManager.onEvent(new Draconia.Event(character, EventHook.cancel));
+    eventManager.onEvent(new Draconia.Event(SelectedPiece, EventHook.cancel));
   }
 
   public void endGame(bool win) {
@@ -773,8 +766,7 @@ public class GameManager : MonoBehaviour {
   }
 
   IEnumerator doHandleAI(int time) {
-    BattleCharacter selectedCharacter = SelectedPiece.GetComponent<BattleCharacter>();
-    Vector3 destination = selectedCharacter.ai.move();
+    Vector3 destination = SelectedPiece.ai.move();
     map.setTileColours();
     Tile t = map.getTile(destination);
     while(t != map.path.Last.Value) {
@@ -782,9 +774,9 @@ public class GameManager : MonoBehaviour {
     }
 
     yield return waitUntilPopped(movePiece(destination));
-    if (selectedCharacter.ai.willAttack()) {
-      if (selectedCharacter.isAlive()) {
-        yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(selectedCharacter))));
+    if (SelectedPiece.ai.willAttack()) {
+      if (SelectedPiece.isAlive()) {
+        yield return waitUntilPopped(waitFor(StartCoroutine(AIperformAttack(SelectedPiece))));
       }
     }
 
@@ -796,7 +788,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public IEnumerator AIperformAttack(BattleCharacter selectedCharacter) {
-    cam.follow(SelectedPiece);
+    cam.follow(SelectedPiece.gameObject);
     yield return new WaitForSeconds(0.5f);
     selectedCharacter.ai.target();
     yield return new WaitForSeconds(0.25f);
@@ -849,7 +841,7 @@ public class GameManager : MonoBehaviour {
         line.SetPosition(1, SelectedPiece.transform.position);
         line.GetComponent<Renderer>().material.color = Color.clear;
       } else {
-        Vector3 source = getTargetingPostion(SelectedPiece);
+        Vector3 source = getTargetingPostion(SelectedPiece.gameObject);
         Vector3 target = getTargetingPostion(piece);
         RaycastHit hitInfo;
         if (checkLine(source, target, out hitInfo, piece.GetComponent<Collider>())) {
@@ -895,10 +887,10 @@ public class GameManager : MonoBehaviour {
     return null;
   }
 
-  public GameObject piece;
+  public GameObject playerPrefab;
   // Test function that instantiates a character
   public BattleCharacter createPiece() {
-    GameObject newCharObj = Instantiate(piece, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.Find("Players").transform) as GameObject;
+    GameObject newCharObj = Instantiate(playerPrefab, new Vector3(0f, 1f, 0f), Quaternion.identity, GameObject.Find("Players").transform) as GameObject;
     var c = newCharObj.GetComponent<BattleCharacter>();
     return c;
   }
