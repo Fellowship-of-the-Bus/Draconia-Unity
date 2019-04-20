@@ -399,11 +399,6 @@ public class GameManager : MonoBehaviour {
     map.djikstra(position, SelectedPiece);
 
     changeState(GameState.moving);
-    // AI's
-    if (SelectedPiece.team != 0 || SelectedPiece.aiType != AIType.None) {
-      handleAI();
-      return;
-    }
 
     cam.panTo(SelectedPiece.transform.position);
 
@@ -435,6 +430,13 @@ public class GameManager : MonoBehaviour {
         cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
       }
     }
+
+    // AI's
+    if (SelectedPiece.team != 0 || SelectedPiece.aiType != AIType.None) {
+      handleAI();
+      return;
+    }
+
     unlockUI();
   }
 
