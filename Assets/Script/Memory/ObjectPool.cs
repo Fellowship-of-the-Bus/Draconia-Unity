@@ -46,12 +46,13 @@ public class ObjectPool<T> where T : class, PoolableObject {
     if (grow) {
       int newSize = pool.Length*growFactor;
       int ret = pool.Length;
-      channel.Log("Pool too small, resizing from {0} to {1}", ret, newSize);
+      channel.Log("Pool of {2} too small, resizing from {0} to {1}", ret, newSize, typeof(T).ToString());
       Array.Resize(ref pool, newSize);
       growPool(ret, newSize);
       return alloc(ret);
     }
 
+    channel.Log("Pool of {0} too small, returning default value", typeof(T).ToString());
     return default(T);
   }
 
@@ -64,6 +65,6 @@ public class ObjectPool<T> where T : class, PoolableObject {
         return;
       }
     }
-    channel.Log("free could not find object: {0} in ObjectPool: {1}", obj, this);
+    channel.Log("free could not find object: {0} in ObjectPool of {2}: {1}", obj, this, typeof(T).ToString());
   }
 }

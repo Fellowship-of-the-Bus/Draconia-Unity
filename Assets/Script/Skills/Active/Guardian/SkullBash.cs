@@ -28,6 +28,6 @@ public class SkullBash: SingleTarget {
     debuff.level = level;
     debuff.duration = 3;
     target.applyEffect(debuff);
-    ActionQueue.get.updateTime(target.gameObject);
+    ActionQueue.get.updateTime(target);
   }
 }

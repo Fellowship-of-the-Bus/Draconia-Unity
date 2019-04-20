@@ -8,19 +8,19 @@ public class ActionQueue : MonoBehaviour {
   public GameObject turnButton;
 
   private LinkedList<actionTime> queue = new LinkedList<actionTime>();
-  private List<GameObject> pieces = new List<GameObject>();
+  private List<BattleCharacter> pieces = new List<BattleCharacter>();
   private float curTime = 0;
 
   private float buttonWidth = 0;
   private float buttonHeight = 0;
 
   struct actionTime {
-    public GameObject piece;
+    public BattleCharacter piece;
     public GameObject button;
 
     public float time;
 
-    public actionTime(GameObject p, GameObject b, float t) {
+    public actionTime(BattleCharacter p, GameObject b, float t) {
       piece = p;
       button = b;
       time = t;
@@ -39,30 +39,29 @@ public class ActionQueue : MonoBehaviour {
   }
 
   public BattleCharacter getNext() {
-    GameObject next = queue.First.Value.piece;
-    BattleCharacter ret = next.GetComponent<BattleCharacter>();
+    BattleCharacter next = queue.First.Value.piece;
     float newTime = queue.First.Value.time;
     float timePassed = newTime - curTime;
 
     //update action bars for all characters
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
-      n.Value.piece.GetComponent<BattleCharacter>().updateActionBar(timePassed);
+      n.Value.piece.updateActionBar(timePassed);
     }
 
-    ret.curAction = 0f;
+    next.curAction = 0f;
     curTime = newTime;
-    return ret;
+    return next;
   }
 
   public void endTurn() {
   	// TODO: Fix crash here when everyone dies
-    GameObject SelectedPiece = queue.First.Value.piece;
+    BattleCharacter SelectedPiece = queue.First.Value.piece;
     removeFirst(SelectedPiece);
 
     if (!hasObject(SelectedPiece)) {
       bool last = enqueue(SelectedPiece);
       if (last) {
-        foreach (GameObject p in pieces) {
+        foreach (BattleCharacter p in pieces) {
           if (p != SelectedPiece) {
             fillActions(p);
           }
@@ -71,7 +70,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  public bool hasObject (GameObject piece) {
+  public bool hasObject (BattleCharacter piece) {
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece == piece) {
         return true;
@@ -80,7 +79,7 @@ public class ActionQueue : MonoBehaviour {
     return false;
   }
 
-  int actionsCount (GameObject piece) {
+  int actionsCount (BattleCharacter piece) {
     int count = 0;
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece == piece) {
@@ -90,7 +89,7 @@ public class ActionQueue : MonoBehaviour {
     return count;
   }
 
-  public void updateTime(GameObject piece) {
+  public void updateTime(BattleCharacter piece) {
     if (!hasObject(piece)) {
       return;
     }
@@ -98,11 +97,11 @@ public class ActionQueue : MonoBehaviour {
     add(piece);
   }
 
-  public void add(GameObject piece) {
+  public void add(BattleCharacter piece) {
     int i = 1;
     bool last = enqueue(piece);
     if (last) {
-      foreach (GameObject p in pieces) {
+      foreach (BattleCharacter p in pieces) {
         fillActions(p);
       }
     }
@@ -114,7 +113,7 @@ public class ActionQueue : MonoBehaviour {
     pieces.Add(piece);
   }
 
-  void fillActions(GameObject piece) {
+  void fillActions(BattleCharacter piece) {
     int k = actionsCount(piece) + 1;
     bool filledIn = false;
     while (!filledIn) {
@@ -123,7 +122,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  public void remove(GameObject piece) {
+  public void remove(BattleCharacter piece) {
     int i = 0;
     List<LinkedListNode<actionTime>> toRemove = new List<LinkedListNode<actionTime>>();
 
@@ -142,7 +141,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  public void highlight(GameObject piece) {
+  public void highlight(BattleCharacter piece) {
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       Image buttonImg = n.Value.button.GetComponent<Image>();
 
@@ -154,7 +153,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  public void removeFirst(GameObject piece) {
+  public void removeFirst(BattleCharacter piece) {
     int i = 0;
 
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
@@ -171,13 +170,12 @@ public class ActionQueue : MonoBehaviour {
   // Add a turn marker to the action queue
   // Does not add to the end unless it is the only turn marker for that piece
   // Returns whether the requested marker belongs at the end of the queue
-  bool enqueue(GameObject piece, int turn = 1) {
+  bool enqueue(BattleCharacter piece, int turn = 1) {
     bool isLast = false;
-    BattleCharacter newCharacter = piece.GetComponent<BattleCharacter>();
     GameObject buttonObject = null;
 
     int i = 0;
-    float newTime = newCharacter.calcMoveTime(curTime, turn);
+    float newTime = piece.calcMoveTime(curTime, turn);
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       float time = n.Value.time;
       if (time > newTime) {
@@ -198,24 +196,24 @@ public class ActionQueue : MonoBehaviour {
 
     float posn = getPosn(i);
     moveDown(i);
-    if (newCharacter.name == "") {
-      newCharacter.name = queue.Count.ToString();
+    if (piece.name == "") {
+      piece.name = queue.Count.ToString();
     }
 
     if (buttonObject != null) {
-      buttonObject.GetComponentsInChildren<Text>()[0].text = newCharacter.name;
+      buttonObject.GetComponentsInChildren<Text>()[0].text = piece.name;
       buttonObject.transform.localPosition += new Vector3(0, posn, 0);
     }
 
     return isLast;
   }
 
-  GameObject makeButton(GameObject piece) {
+  GameObject makeButton(BattleCharacter piece) {
     GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
     buttonObject.transform.SetParent(gameObject.transform, false);
     Button button = buttonObject.GetComponent<Button>();
     button.onClick.AddListener(delegate {
-      GameManager.get.cam.panTo(piece.transform.position);
+      GameManager.get.cam.panTo(piece.gameObject.transform.position);
     });
 
     return buttonObject;

@@ -440,7 +440,7 @@ public class BattleCharacter : Effected {
   }
 
   public void onDeath() {
-    ActionQueue.get.remove(gameObject);
+    ActionQueue.get.remove(this);
 
     onEvent(new Draconia.Event(this, EventHook.postDeath));
 

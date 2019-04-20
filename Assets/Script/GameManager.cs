@@ -243,7 +243,7 @@ public class GameManager : MonoBehaviour {
         bchar.init();
         bchar.ai.init();
         characterListener.attachListener(bchar, EventHook.postDeath);
-        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
+        actionQueue.add(bchar); //Needs to be done here since it relies on characters having their attribute set
       }
     }
     List<GameObject> users = new List<GameObject>(players.Filter(x => x.GetComponent<BattleCharacter>().aiType == AIType.None));
@@ -492,7 +492,7 @@ public class GameManager : MonoBehaviour {
         return;
       }
 
-      actionQueue.highlight(target);
+      actionQueue.highlight(targetChar);
       if (SelectedSkill != -1) {
         ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
         HealingSkill hskill = skill as HealingSkill;
