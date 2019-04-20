@@ -252,11 +252,6 @@ public class GameManager : MonoBehaviour {
   }
 
   void Update() {
-    if (!UILocked()) {
-      if (Input.GetKeyDown(KeyCode.Return)) {
-        endTurnWrapper();
-      }
-    }
     cancelButton.interactable = cancelStack.Count != 0;
 
     //enable the line only when attacking

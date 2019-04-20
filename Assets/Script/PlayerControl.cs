@@ -22,13 +22,19 @@ public class PlayerControl : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
+    // Don't allow input on AI turn
+    if (gameManager.UILocked()) return;
+
+    if (Input.GetKeyDown(KeyCode.Return)) {
+      gameManager.endTurnWrapper();
+    }
+
     GetMouseInputs();
   }
 
   // Detect Mouse Inputs
   void GetMouseInputs() {
-    // Don't allow input on AI turn
-    if (gameManager.UILocked()) return;
+
 
     handleHovered(gameManager.getHovered(PlayerCam));
     handleClicked(gameManager.getClicked(PlayerCam));
