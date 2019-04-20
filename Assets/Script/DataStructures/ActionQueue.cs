@@ -254,8 +254,7 @@ public class ActionQueue : MonoBehaviour {
     Vector3 d = new Vector3(x, y, 0) / (Options.FPS * time);
     for (int i = 0; i < Options.FPS * time; i++) {
       button.transform.localPosition += d;
-      // TODO: can this just be yield return null?
-      yield return new WaitForSeconds(1/Options.FPS);
+      yield return null;
     }
 
     if (deleteAfter) {

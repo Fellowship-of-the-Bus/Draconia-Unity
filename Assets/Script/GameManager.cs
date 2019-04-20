@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour {
   public GameObject buffButton;
   public PlayerControl pControl;
 
-  //variables to handles turns
-
   //TODO: Finish handling of portal skll
   public class UndoAction {
     Action act;
@@ -83,9 +81,9 @@ public class GameManager : MonoBehaviour {
   //Map Boss
   public BattleCharacter boss;
 
-  public Dictionary<BattleCharacter.Team, List<GameObject>> characters = new Dictionary<BattleCharacter.Team, List<GameObject>>();
-  public List<GameObject> players { get{ return characters[BattleCharacter.Team.Player]; } }
-  public List<GameObject> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
+  public Dictionary<BattleCharacter.Team, List<BattleCharacter>> characters = new Dictionary<BattleCharacter.Team, List<BattleCharacter>>();
+  public List<BattleCharacter> players { get{ return characters[BattleCharacter.Team.Player]; } }
+  public List<BattleCharacter> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   public Material[] minimapIcons;
@@ -96,7 +94,7 @@ public class GameManager : MonoBehaviour {
     public override void onEvent(Draconia.Event e) {
       if (e.hook == EventHook.postDeath) {
         GameManager g = GameManager.get;
-        g.characters[e.sender.team].Remove(e.sender.gameObject);
+        g.characters[e.sender.team].Remove(e.sender);
         if (e.sender == g.SelectedPiece) {
           g.endTurnWrapper();
         }
@@ -222,15 +220,16 @@ public class GameManager : MonoBehaviour {
   public void init() {
     lockUI();
     dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
-    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
+
+    var chars = GameObject.FindGameObjectsWithTag("Unit").Select(x => x.GetComponent<BattleCharacter>());
+    var objs = chars.GroupBy(x => x.team);
     foreach (var x in objs) {
-      characters[x.Key] = new List<GameObject>(x);
+      characters[x.Key] = new List<BattleCharacter>(x);
     }
 
     foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        BattleCharacter c = o.GetComponent<BattleCharacter>();
-        Tile t = map.getTile(o.transform.position);
+      foreach (var c in l) {
+        Tile t = map.getTile(c.gameObject.transform.position);
         c.transform.position = t.position;
         t.occupant = c;
         c.curTile = t;
@@ -238,16 +237,15 @@ public class GameManager : MonoBehaviour {
     }
 
     foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        var bchar = o.GetComponent<BattleCharacter>();
+      foreach (var bchar in l) {
         bchar.init();
         bchar.ai.init();
         characterListener.attachListener(bchar, EventHook.postDeath);
         actionQueue.add(bchar); //Needs to be done here since it relies on characters having their attribute set
       }
     }
-    List<GameObject> users = new List<GameObject>(players.Filter(x => x.GetComponent<BattleCharacter>().aiType == AIType.None));
-    List<Character> charInBattle = new List<Character>(users.Map(x => x.GetComponent<BattleCharacter>().baseChar));
+    List<BattleCharacter> users = new List<BattleCharacter>(players.Filter(x => x.aiType == AIType.None));
+    List<Character> charInBattle = new List<Character>(users.Map(x => x.baseChar));
     GameManager.postData.inBattle = charInBattle;
   }
 

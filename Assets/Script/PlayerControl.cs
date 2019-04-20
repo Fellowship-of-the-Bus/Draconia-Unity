@@ -58,7 +58,7 @@ public class PlayerControl : MonoBehaviour {
     if (hoveredObject.transform.parent == null) return;
     Map map = gameManager.map;
     BattleCharacter selectedCharacter = null;
-    if (!preGame) selectedCharacter = gameManager.SelectedPiece.GetComponent<BattleCharacter>();
+    if (!preGame) selectedCharacter = gameManager.SelectedPiece;
 
     ActiveSkill s = null;
     if (gameManager.SelectedSkill != -1 && !preGame) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];
