@@ -25,7 +25,7 @@ public class PlayerControl : MonoBehaviour {
     // Don't allow input on AI turn
     if (gameManager.UILocked()) return;
 
-    if (Input.GetKeyDown(KeyCode.Return)) {
+    if (Input.GetAxis("Submit") > 0) {
       gameManager.endTurnWrapper();
     }
 
