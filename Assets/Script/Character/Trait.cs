@@ -33,6 +33,7 @@ public enum UniqueTraitName{
 
 [System.Serializable]
 public class Trait {
+  [System.Serializable]
   public class TraitAttr {
     public float strength = 0;
     public float intelligence = 0;
@@ -43,11 +44,12 @@ public class Trait {
     public int moveRange = 0;
     public float healingMultiplier = 0;
   }
+  [System.Serializable]
   public class TraitSpec {
     public static List<EquipmentClass> equips = new List<EquipmentClass>((IEnumerable<EquipmentClass>)Enum.GetValues(typeof(EquipmentClass)));
     public static List<EnemyType> enemies = new List<EnemyType>((IEnumerable<EnemyType>)Enum.GetValues(typeof(EnemyType)));
     public static List<DamageElement> elements = new List<DamageElement>((IEnumerable<DamageElement>)Enum.GetValues(typeof(DamageElement)));
-    public float expGain = 1;
+    public float expGain = 0;
     public Dictionary<EquipmentClass, float> wepSpec = new Dictionary<EquipmentClass, float>();
     public Dictionary<EnemyType, float> enemySpec = new Dictionary<EnemyType, float>();
     public Dictionary<DamageElement, float> elementSpec = new Dictionary<DamageElement, float>();
