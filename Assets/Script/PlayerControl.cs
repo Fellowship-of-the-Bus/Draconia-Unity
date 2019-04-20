@@ -125,7 +125,7 @@ public class PlayerControl : MonoBehaviour {
     Tile clickedTile = gameManager.map.getTile(clickedObject.transform.position);
 
     if (preGame) {
-      BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
+      BattleCharacter clickedChar = clickedTile.occupant;
 
       if (clickedChar != null && clickedChar.team == 0 && clickedChar.aiType == AIType.None) {
         if (clickedChar == selectedCharacter) {

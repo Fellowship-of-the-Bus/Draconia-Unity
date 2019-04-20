@@ -396,7 +396,6 @@ public class GameManager : MonoBehaviour {
     activeBuffBar.update(SelectedPiece);
     selectedHealth.setCharacter(SelectedPiece);
 
-    // SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
     line.SetPosition(1, SelectedPiece.transform.position);
 
