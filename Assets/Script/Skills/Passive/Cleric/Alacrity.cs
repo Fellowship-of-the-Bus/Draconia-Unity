@@ -13,7 +13,7 @@ public class Alacrity : PassiveSkill {
     if (e.healingDone > 0) {
       BattleCharacter target = e.healTarget;
       target.curAction = Math.Min(BattleCharacter.maxAction, target.curAction + 100f);
-      ActionQueue.get.updateTime(target.gameObject);
+      ActionQueue.get.updateTime(target);
     }
   }
 }
