@@ -267,7 +267,7 @@ public class Map {
   public void setTileColours(Tile src = null) {
     BattleCharacter SelectedPiece = GameManager.get.SelectedPiece;
     int SelectedSkill = GameManager.get.SelectedSkill;
-    if (src == null) src = getTile(GameManager.get.SelectedPiece.gameObject.transform.position);
+    if (src == null) src = getTile(SelectedPiece.transform.position);
     clearColour();
     if (GameManager.get.gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
@@ -306,8 +306,9 @@ public class Map {
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             t.setColor(Color.yellow);
-            if (t.occupied() && SelectedPiece.equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
-            else {
+            if (t.occupied() && SelectedPiece.equippedSkills[SelectedSkill].canTarget(t)) {
+              t.setColor(Color.red);
+            } else {
               foreach (Tile tile in skillTargets) {
                 if (tile == t) {
                   t.setColor(orange);

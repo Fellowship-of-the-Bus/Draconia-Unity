@@ -101,10 +101,10 @@ public class PlayerControl : MonoBehaviour {
         }
       }
       //handle attack based tile colouring:
-      if ((gameManager.gameState == GameState.attacking && s != null && s.useLos)) {
+      if ((gameManager.gameState == GameState.attacking && s != null)) {
         //handle attack
         map.setTileColours(hoveredTile);
-        if (isPiece) gameManager.lineTo(hoveredObject);
+        if (isPiece && s.useLos) gameManager.lineTo(hoveredObject);
       }
 
       gameManager.tInfo.setTile(hoveredTile);
