@@ -837,7 +837,7 @@ public class GameManager : MonoBehaviour {
   // Draw line to piece
   public void lineTo(GameObject piece) {
     if (SelectedPiece && piece) {
-      if (SelectedPiece == piece) {
+      if (SelectedPiece.gameObject == piece) {
         line.SetPosition(1, SelectedPiece.transform.position);
         line.GetComponent<Renderer>().material.color = Color.clear;
       } else {
