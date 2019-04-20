@@ -9,10 +9,10 @@ public class BrodricDies : Objective {
     description = "Brodric must survive.";
   }
   override public bool isMet(GameManager game) {
-    List<GameObject> allies = game.players;
+    List<BattleCharacter> allies = game.players;
     if (allies.Count == 0) return true;
-    foreach(GameObject o in allies) {
-      if (o.GetComponent<BattleCharacter>().name == "Brodric") {
+    foreach(BattleCharacter c in allies) {
+      if (c.name == "Brodric") {
         return false;
       }
     }

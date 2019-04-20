@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour {
   public GameObject buffButton;
   public PlayerControl pControl;
 
-  //variables to handles turns
-
   //TODO: Finish handling of portal skll
   public class UndoAction {
     Action act;
@@ -83,9 +81,9 @@ public class GameManager : MonoBehaviour {
   //Map Boss
   public BattleCharacter boss;
 
-  public Dictionary<BattleCharacter.Team, List<GameObject>> characters = new Dictionary<BattleCharacter.Team, List<GameObject>>();
-  public List<GameObject> players { get{ return characters[BattleCharacter.Team.Player]; } }
-  public List<GameObject> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
+  public Dictionary<BattleCharacter.Team, List<BattleCharacter>> characters = new Dictionary<BattleCharacter.Team, List<BattleCharacter>>();
+  public List<BattleCharacter> players { get{ return characters[BattleCharacter.Team.Player]; } }
+  public List<BattleCharacter> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   public Material[] minimapIcons;
@@ -96,7 +94,7 @@ public class GameManager : MonoBehaviour {
     public override void onEvent(Draconia.Event e) {
       if (e.hook == EventHook.postDeath) {
         GameManager g = GameManager.get;
-        g.characters[e.sender.team].Remove(e.sender.gameObject);
+        g.characters[e.sender.team].Remove(e.sender);
         if (e.sender == g.SelectedPiece) {
           g.endTurnWrapper();
         }
@@ -222,15 +220,16 @@ public class GameManager : MonoBehaviour {
   public void init() {
     lockUI();
     dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
-    var objs = GameObject.FindGameObjectsWithTag("Unit").GroupBy(x => x.GetComponent<BattleCharacter>().team);
+
+    var chars = GameObject.FindGameObjectsWithTag("Unit").Select(x => x.GetComponent<BattleCharacter>());
+    var objs = chars.GroupBy(x => x.team);
     foreach (var x in objs) {
-      characters[x.Key] = new List<GameObject>(x);
+      characters[x.Key] = new List<BattleCharacter>(x);
     }
 
     foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        BattleCharacter c = o.GetComponent<BattleCharacter>();
-        Tile t = map.getTile(o.transform.position);
+      foreach (var c in l) {
+        Tile t = map.getTile(c.gameObject.transform.position);
         c.transform.position = t.position;
         t.occupant = c;
         c.curTile = t;
@@ -238,25 +237,19 @@ public class GameManager : MonoBehaviour {
     }
 
     foreach (var l in characters.Values) {
-      foreach (var o in l) {
-        var bchar = o.GetComponent<BattleCharacter>();
+      foreach (var bchar in l) {
         bchar.init();
         bchar.ai.init();
         characterListener.attachListener(bchar, EventHook.postDeath);
-        actionQueue.add(o); //Needs to be done here since it relies on characters having their attribute set
+        actionQueue.add(bchar); //Needs to be done here since it relies on characters having their attribute set
       }
     }
-    List<GameObject> users = new List<GameObject>(players.Filter(x => x.GetComponent<BattleCharacter>().aiType == AIType.None));
-    List<Character> charInBattle = new List<Character>(users.Map(x => x.GetComponent<BattleCharacter>().baseChar));
+    List<BattleCharacter> users = new List<BattleCharacter>(players.Filter(x => x.aiType == AIType.None));
+    List<Character> charInBattle = new List<Character>(users.Map(x => x.baseChar));
     GameManager.postData.inBattle = charInBattle;
   }
 
   void Update() {
-    if (!UILocked()) {
-      if (Input.GetKeyDown(KeyCode.Return)) {
-        endTurnWrapper();
-      }
-    }
     cancelButton.interactable = cancelStack.Count != 0;
 
     //enable the line only when attacking
@@ -398,7 +391,6 @@ public class GameManager : MonoBehaviour {
     activeBuffBar.update(SelectedPiece);
     selectedHealth.setCharacter(SelectedPiece);
 
-    // SelectedPiece.GetComponent<Renderer>().material.color = Color.red;
     line.SetPosition(0, SelectedPiece.transform.position);
     line.SetPosition(1, SelectedPiece.transform.position);
 
@@ -407,11 +399,6 @@ public class GameManager : MonoBehaviour {
     map.djikstra(position, SelectedPiece);
 
     changeState(GameState.moving);
-    // AI's
-    if (SelectedPiece.team != 0 || SelectedPiece.aiType != AIType.None) {
-      handleAI();
-      return;
-    }
 
     cam.panTo(SelectedPiece.transform.position);
 
@@ -443,6 +430,13 @@ public class GameManager : MonoBehaviour {
         cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
       }
     }
+
+    // AI's
+    if (SelectedPiece.team != 0 || SelectedPiece.aiType != AIType.None) {
+      handleAI();
+      return;
+    }
+
     unlockUI();
   }
 
@@ -492,7 +486,7 @@ public class GameManager : MonoBehaviour {
         return;
       }
 
-      actionQueue.highlight(target);
+      actionQueue.highlight(targetChar);
       if (SelectedSkill != -1) {
         ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
         HealingSkill hskill = skill as HealingSkill;
@@ -837,7 +831,7 @@ public class GameManager : MonoBehaviour {
   // Draw line to piece
   public void lineTo(GameObject piece) {
     if (SelectedPiece && piece) {
-      if (SelectedPiece == piece) {
+      if (SelectedPiece.gameObject == piece) {
         line.SetPosition(1, SelectedPiece.transform.position);
         line.GetComponent<Renderer>().material.color = Color.clear;
       } else {

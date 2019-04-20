@@ -9,7 +9,7 @@ public class Rout : Objective {
     description = "Defeat all Enemy units.";
   }
   override public bool isMet(GameManager game) {
-    List<GameObject> enemies = game.enemies;
+    List<BattleCharacter> enemies = game.enemies;
     if (enemies.Count == 0) return true;
     else return false;
   }

@@ -11,7 +11,6 @@ public class BasicAI : BaseAI {
     Heap<SkillData> db = new Heap<SkillData>();
     GameManager game = GameManager.get;
     Map map = game.map;
-    List<GameObject> characterObjects = game.players;
     Vector3 newPosition;
 
     List<Tile> possibilities = map.tilesInMoveRange(owner);

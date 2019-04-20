@@ -17,6 +17,6 @@ public class Berserk : PassiveSkill {
     }
     percentage = percentage * (1 + (level -1));
     owner.curAction = (float)Math.Min(owner.curAction + BattleCharacter.maxAction*percentage, BattleCharacter.maxAction);
-    ActionQueue.get.updateTime(owner.gameObject);
+    ActionQueue.get.updateTime(owner);
   }
 }
