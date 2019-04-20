@@ -15,7 +15,6 @@ public class SentryAI : BaseAI {
   public override Vector3 move() {
     GameManager game = GameManager.get;
     Map map = game.map;
-    List<GameObject> characterObjects = game.players;
 
     Vector3 newPosition = owner.curTile.transform.position;
     Tile newTile = owner.curTile;
