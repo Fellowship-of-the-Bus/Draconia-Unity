@@ -2,108 +2,110 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public enum TraitName{
+public enum AttrTraitName{
   strPlus, intPlus, speedPlus, maxHPPlus, pDefPlus, mDefPlus, mvRangePlus,
+  strPluspDefMinus, strPlusmDefMinus, strPlusHPMinus,
+  intPlusmDefMinus, intPluspDefMinus, intPlusHPMinus,
+  speedPlusHPMinus, speedPlusDefMinus,
+  pDefPlusSpeedMinus, pDefPlusDmgMinus,
+  mDefPlusSpeedMinus, mDefPlusDmgMinus,
+  healingPlus,
+}
+public enum SpecTraitName{
+  swordPlus,
+  bowPlus,
+  axePlus,
+  staffPlus,
+  humanSlayer,
+  lizardSlayer,
+  chameleonSlayer,
+  snakeSlayer,
+  dragonSlayer,
+  icePlus,
+  firePlus,
+  lightningPlus,
+  elementPlus,
+  expGainPlus,
+}
+public enum UniqueTraitName{
+  brodric, sisdric
 }
 
 [System.Serializable]
 public class Trait {
-  public static class TraitFactory {
-    public static List<TraitName> traitNames = new List<TraitName>((IEnumerable<TraitName>)Enum.GetValues(typeof(TraitName)));
-    public static List<Trait> getRandomTraits(int n) {
-      List<int> randomNumbers = new List<int>();
-      int numTraits = traitNames.Count;
-      if (n > numTraits) {
-        Channel.game.Log("Trying to get too many Traits, stopping");
-        return new List<Trait>();
+  public class TraitAttr {
+    public float strength = 0;
+    public float intelligence = 0;
+    public float speed = 0;
+    public float maxHealth = 0;
+    public float physicalDefense = 0;
+    public float magicDefense = 0;
+    public int moveRange = 0;
+    public float healingMultiplier = 0;
+  }
+  public class TraitSpec {
+    public static List<EquipmentClass> equips = new List<EquipmentClass>((IEnumerable<EquipmentClass>)Enum.GetValues(typeof(EquipmentClass)));
+    public static List<EnemyType> enemies = new List<EnemyType>((IEnumerable<EnemyType>)Enum.GetValues(typeof(EnemyType)));
+    public static List<DamageElement> elements = new List<DamageElement>((IEnumerable<DamageElement>)Enum.GetValues(typeof(DamageElement)));
+    public float expGain = 1;
+    public Dictionary<EquipmentClass, float> wepSpec = new Dictionary<EquipmentClass, float>();
+    public Dictionary<EnemyType, float> enemySpec = new Dictionary<EnemyType, float>();
+    public Dictionary<DamageElement, float> elementSpec = new Dictionary<DamageElement, float>();
+    public TraitSpec() {
+      foreach (EquipmentClass e in equips) {
+        wepSpec[e] = 0;
       }
-      while (randomNumbers.Count < n) {
-        int rand = UnityEngine.Random.Range(0, numTraits);
-        if (randomNumbers.Contains(rand)) {
-          continue;
-        } else {
-          randomNumbers.Add(rand);
-        }
+      foreach (EnemyType e in enemies) {
+        enemySpec[e] = 0;
       }
-      List<Trait> ret = new List<Trait>();
-      foreach (int i in randomNumbers) {
-        ret.Add(new Trait(traitNames[i]));
+      foreach (DamageElement e in elements) {
+        elementSpec[e] = 0;
       }
-      return ret;
     }
   }
-  public TraitName type;
   public string name;
-  public float strength = 1;
-  public float intelligence = 1;
-  public float speed = 1;
-  public float maxHealth = 1;
-  public float physicalDefense = 1;
-  public float magicDefense = 1;
-  public int moveRange = 0;
+  public string description;
+  public TraitAttr attr = new TraitAttr();
+  public TraitSpec spec = new TraitSpec();
 
-  public Trait() {} // so i can make default traits still
-  public Trait(TraitName t) {
-    type = t;
-    switch(type) {
-      case TraitName.strPlus:
-        name = "Strong";
-        strength = 1.1f;
-        break;
-      case TraitName.intPlus:
-        name = "Intelligent";
-        intelligence = 1.1f;
-        break;
-      case TraitName.speedPlus:
-        name = "Quick";
-        speed = 1.1f;
-        break;
-      case TraitName.maxHPPlus:
-        name = "Resilient";
-        maxHealth = 1.1f;
-        break;
-      case TraitName.pDefPlus:
-        name = "Tough";
-        physicalDefense = 1.1f;
-        break;
-      case TraitName.mDefPlus:
-        name = "Warded??";
-        magicDefense = 1.1f;
-        break;
-      case TraitName.mvRangePlus:
-        name = "fleet??";
-        moveRange = 1;
-        physicalDefense = 0.95f;
-        magicDefense = 0.95f;
-        break;
-    }
+  public Trait(string name = "") {
+    this.name = name;
   }
 
   public static Trait operator+(Trait a1, Trait a2) {
-    Trait ret = a1.clone();
-    ret.strength = ret.strength + a2.strength - 1;
-    ret.intelligence = ret.intelligence + a2.intelligence - 1;
-    ret.speed = ret.speed + a2.speed - 1;
-    ret.maxHealth = ret.maxHealth + a2.maxHealth - 1;
-    ret.physicalDefense = ret.physicalDefense + a2.physicalDefense - 1;
-    ret.magicDefense = ret.magicDefense + a2.magicDefense - 1;
-    ret.moveRange = ret.moveRange + a2.moveRange;
+    Trait ret = new Trait();
+    ret.attr.strength = a1.attr.strength + a2.attr.strength;
+    ret.attr.intelligence = a1.attr.intelligence + a2.attr.intelligence;
+    ret.attr.speed = a1.attr.speed + a2.attr.speed;
+    ret.attr.maxHealth = a1.attr.maxHealth + a2.attr.maxHealth;
+    ret.attr.physicalDefense = a1.attr.physicalDefense + a2.attr.physicalDefense;
+    ret.attr.magicDefense = a1.attr.magicDefense + a2.attr.magicDefense;
+    ret.attr.moveRange = a1.attr.moveRange + a2.attr.moveRange;
+    ret.attr.healingMultiplier = a1.attr.healingMultiplier + a2.attr.healingMultiplier;
+
+    ret.spec.expGain = a1.spec.expGain + a2.spec.expGain;
+    foreach (var e in TraitSpec.equips) {
+      ret.spec.wepSpec[e] = a1.spec.wepSpec[e] + a2.spec.wepSpec[e];
+    }
+    foreach (var e in TraitSpec.enemies) {
+      ret.spec.enemySpec[e] = a1.spec.enemySpec[e] + a2.spec.enemySpec[e];
+    }
+    foreach (var e in TraitSpec.elements) {
+      ret.spec.elementSpec[e] = a1.spec.elementSpec[e] + a2.spec.elementSpec[e];
+    }
     return ret;
   }
 
   public Attributes applyTrait(Attributes baseAttr) {
     Attributes ret = baseAttr.clone();
-    ret.strength = (int)(ret.strength * strength);
-    ret.intelligence = (int)(ret.intelligence * intelligence);
-    ret.speed = (int)(ret.speed * speed);
-    ret.maxHealth = (int)(ret.maxHealth * maxHealth);
-    ret.physicalDefense = (int)(ret.physicalDefense * physicalDefense);
-    ret.magicDefense = (int)(ret.magicDefense * magicDefense);
-    ret.moveRange += moveRange;
+    ret.strength += (int)(ret.strength * attr.strength);
+    ret.intelligence += (int)(ret.intelligence * attr.intelligence);
+    ret.speed += (int)(ret.speed * attr.speed);
+    ret.maxHealth += (int)(ret.maxHealth * attr.maxHealth);
+    ret.physicalDefense += (int)(ret.physicalDefense * attr.physicalDefense);
+    ret.magicDefense += (int)(ret.magicDefense * attr.magicDefense);
+    ret.moveRange += attr.moveRange;
+    ret.healingMultiplier += attr.healingMultiplier;
     return ret;
-  }
-
-  public Trait clone() {
-    return MemberwiseClone() as Trait;
   }
 }
