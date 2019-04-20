@@ -99,7 +99,7 @@ public class Map {
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
     }
-    if (from.occupied() && !(GameManager.get.SelectedPiece.GetComponent<BattleCharacter>().team == from.occupant.GetComponent<BattleCharacter>().team)) {
+    if (from.occupied() && !(GameManager.get.SelectedPiece.team == from.occupant.team)) {
       return Int32.MaxValue/4;
     }
     //Look at what moveTolerance actually means
@@ -107,7 +107,7 @@ public class Map {
   }
 
   public float getHeight(Tile t) {
-    float scale = t.getHeight();//t.transform.localScale.y;
+    float scale = t.getHeight();
     return scale + 0.5f;
   }
 

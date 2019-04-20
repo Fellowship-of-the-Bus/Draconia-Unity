@@ -32,11 +32,8 @@ public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
 
   protected override void additionalEffect(Draconia.Event e) {
     if (e.sender == null && e.hook == EventHook.endTurn) {
-      BattleCharacter occupant = null;
-      if (ownerTile.occupant != null) {
-        occupant = ownerTile.occupant.GetComponent<BattleCharacter>();
-      }
-      if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !(occupant.levitating)) {
+      BattleCharacter occupant = ownerTile.occupant;
+      if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !occupant.levitating) {
         GameManager.get.waitFor(0.5f, () => occupant.takeDamage((int)(damage(occupant)))); //TODO: animation time rather than 0.5f
       }
       effected.Clear();
