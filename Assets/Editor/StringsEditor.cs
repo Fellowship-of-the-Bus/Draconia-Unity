@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 ////////////////
 // Want:
@@ -36,9 +34,10 @@ public class StringsEditor : EditorWindow {
     Blank, Keys, Values
   }
   public Mode mode;
-  private string activeFilePath;
   public StringKeys keys;
   public StringValues values;
+  private EditorFileManager keysFileManager;
+  private EditorFileManager valuesFileManager;
   private Channel channel = new Channel("StringsEditor", true);
 
   [MenuItem("Window/Strings Editor")]
@@ -57,7 +56,7 @@ public class StringsEditor : EditorWindow {
   private void drawBlank() {
     if (GUILayout.Button("New Keys")) {
       keys = new StringKeys();
-      activeFilePath = null;  // new file, forget path
+      keysFileManager.Reset();
       mode = Mode.Keys;
     }
     if (GUILayout.Button("Load Keys")) {
@@ -69,9 +68,9 @@ public class StringsEditor : EditorWindow {
       if (LoadKeys()) {
         calcWidth();
         values = new StringValues();
-        values.keysPath = activeFilePath;
+        values.keysPath = keysFileManager.activeFilePath;
         values.values = new string[keys.keys.Length];
-        activeFilePath = null;  // new file, forget path
+        valuesFileManager.Reset();
         mode = Mode.Values;
       }
     }
@@ -123,22 +122,9 @@ public class StringsEditor : EditorWindow {
     drawBlank();
   }
 
-  private void Save<T>(ref string filePath, T src, FilePanelData data) {
-    if (string.IsNullOrEmpty(filePath)) {
-      filePath = EditorUtility.SaveFilePanel(data.saveTitle, data.path, "", data.extension);
-    }
-    // not an else -- filePath may not have been set correctly above
-    // also needs to execute even if the code above did
-    if (!string.IsNullOrEmpty(filePath)) {
-      FileStream file = File.Create(filePath);
-      BinaryFormatter bf = new BinaryFormatter();
-      bf.Serialize(file, src);
-      file.Close();
-    }
-  }
-
   private void SaveKeys() {
-    Save(ref activeFilePath, keys, keysData);
+    keysFileManager.Save(keys);
+    string activeFilePath = keysFileManager.activeFilePath;
     if (!string.IsNullOrEmpty(activeFilePath)) {
       int begin = activeFilePath.LastIndexOf(Path.DirectorySeparatorChar) + 1;
       int end = activeFilePath.LastIndexOf('.');
@@ -163,63 +149,36 @@ public class StringsEditor : EditorWindow {
   }
 
   private void SaveValues() {
-    Save(ref activeFilePath, values, valuesData);
-  }
-
-  private bool Load<T>(ref string filePath, ref T dest, FilePanelData data) {
-    filePath = EditorUtility.OpenFilePanel(data.loadTitle, data.path, data.extension);
-    try {
-      if (!string.IsNullOrEmpty(filePath)) {
-        BinaryFormatter bf = new BinaryFormatter();
-        using (FileStream file = File.Open(filePath, FileMode.Open)) {
-          dest = (T)bf.Deserialize(file);
-          return true;
-        }
-      }
-    } catch (SerializationException) {
-      channel.Log("Corrupted " + typeof(T) + " file: " + filePath);
-    }
-    return false;
+    valuesFileManager.Save(values);
   }
 
   private bool LoadKeys() {
-    return Load(ref activeFilePath, ref keys, keysData);
+    return keysFileManager.Load(ref keys);
   }
 
   private bool LoadValues() {
     // TODO: cache previous values for restore on fail to load
     // TODO: needs to do a santity check that data has not gotten out of sync with keys
-    if (Load(ref activeFilePath, ref values, valuesData)) {
-      return Load(ref values.keysPath, ref keys, keysData);
+    if (valuesFileManager.Load(ref values)) {
+      keysFileManager.activeFilePath = values.keysPath;
+      return keysFileManager.Load(ref keys);
     }
     return false;
   }
 
-  private class FilePanelData {
-    public string path;
-    public string saveTitle;
-    public string loadTitle;
-    public string extension;
-    public FilePanelData(string path, string saveTitle, string loadTitle, string extension) {
-      this.path = path;
-      this.saveTitle = saveTitle;
-      this.loadTitle = loadTitle;
-      this.extension = extension;
-    }
-  }
-  private static FilePanelData keysData;
-  private static FilePanelData valuesData;
   private static string scriptPath;
 
   void OnEnable() {
     scriptPath = Path.Combine(Application.dataPath, "Script/generated/strings");
-    keysData = new FilePanelData(
+    keysFileManager = new EditorFileManager(
+      serializer: new BinarySerializer(),
       saveTitle: "Save keys file",
       loadTitle: "Select keys file",
       path: Path.Combine(Application.dataPath, "StringsData/keys"),
       extension: "stringkeys"
     );
-    valuesData = new FilePanelData(
+    valuesFileManager = new EditorFileManager(
+      serializer: new BinarySerializer(),
       saveTitle: "Save values file",
       loadTitle: "Select values file",
       path: Path.Combine(Application.dataPath, "StringsData"),
