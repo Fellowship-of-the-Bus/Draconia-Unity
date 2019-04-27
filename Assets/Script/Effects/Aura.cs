@@ -45,7 +45,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     }
     foreach (Tile t in tiles) {
       if (t.occupied()) {
-        BattleCharacter c = t.occupant.GetComponent<BattleCharacter>();
+        BattleCharacter c = t.occupant;
         if (c.team == owner.team ^ applyToEnemies) {
           setup(c);
         }

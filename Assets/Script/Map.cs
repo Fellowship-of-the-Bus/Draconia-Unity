@@ -99,7 +99,7 @@ public class Map {
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
     }
-    if (from.occupied() && !(GameManager.get.SelectedPiece.GetComponent<BattleCharacter>().team == from.occupant.GetComponent<BattleCharacter>().team)) {
+    if (from.occupied() && !(GameManager.get.SelectedPiece.team == from.occupant.team)) {
       return Int32.MaxValue/4;
     }
     //Look at what moveTolerance actually means
@@ -107,7 +107,7 @@ public class Map {
   }
 
   public float getHeight(Tile t) {
-    float scale = t.getHeight();//t.transform.localScale.y;
+    float scale = t.getHeight();
     return scale + 0.5f;
   }
 
@@ -267,7 +267,7 @@ public class Map {
   public void setTileColours(Tile src = null) {
     BattleCharacter SelectedPiece = GameManager.get.SelectedPiece;
     int SelectedSkill = GameManager.get.SelectedSkill;
-    if (src == null) src = getTile(GameManager.get.SelectedPiece.gameObject.transform.position);
+    if (src == null) src = getTile(SelectedPiece.transform.position);
     clearColour();
     if (GameManager.get.gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
@@ -306,8 +306,9 @@ public class Map {
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             t.setColor(Color.yellow);
-            if (t.occupied() && SelectedPiece.equippedSkills[SelectedSkill].canTarget(t)) t.setColor(Color.red);
-            else {
+            if (t.occupied() && SelectedPiece.equippedSkills[SelectedSkill].canTarget(t)) {
+              t.setColor(Color.red);
+            } else {
               foreach (Tile tile in skillTargets) {
                 if (tile == t) {
                   t.setColor(orange);

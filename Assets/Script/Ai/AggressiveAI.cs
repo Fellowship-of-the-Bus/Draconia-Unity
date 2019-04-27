@@ -11,7 +11,7 @@ public class AggressiveAI : BaseAI {
     Heap<SkillData> db = new Heap<SkillData>();
     GameManager game = GameManager.get;
     Map map = game.map;
-    List<GameObject> characterObjects = game.players;
+    List<BattleCharacter> characterObjects = game.players;
     Vector3 newPosition;
 
     List<Tile> possibilities = map.tilesInMoveRange(owner);
@@ -34,8 +34,7 @@ public class AggressiveAI : BaseAI {
       LinkedList<Tile> path = null;
 
       // Find closest enemy
-      foreach (GameObject c in characterObjects) {
-        BattleCharacter bc = c.GetComponent<BattleCharacter>();
+      foreach (BattleCharacter bc in characterObjects) {
         if (bc.team != owner.team) {
           if (bc.curTile.distance < closest) {
             closest = bc.curTile.distance;

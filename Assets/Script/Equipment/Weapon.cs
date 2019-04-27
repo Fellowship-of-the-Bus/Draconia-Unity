@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public static class WeaponModels {
   static GameObject Sword = Resources.Load("Sword") as GameObject;
+  public static GameObject Axe = Resources.Load("Axe") as GameObject;
   // static GameObject Jumonji = Resources.Load("jumonji") as GameObject;
   // static GameObject Yari = Resources.Load("yari") as GameObject;
   static GameObject Bow = Resources.Load("Bow") as GameObject;
@@ -12,6 +13,7 @@ public static class WeaponModels {
   public static Dictionary<EquipmentClass,GameObject> weaponModels = new Dictionary<EquipmentClass,GameObject>() {
     {EquipmentClass.Unarmed, null},
     {EquipmentClass.Sword, Sword},
+    {EquipmentClass.Axe, Axe},
     {EquipmentClass.Bow, Bow},
     {EquipmentClass.Staff, Staff},
   };

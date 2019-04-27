@@ -22,13 +22,19 @@ public class PlayerControl : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
+    // Don't allow input on AI turn
+    if (gameManager.UILocked()) return;
+
+    if (Input.GetAxis("Submit") > 0) {
+      gameManager.endTurnWrapper();
+    }
+
     GetMouseInputs();
   }
 
   // Detect Mouse Inputs
   void GetMouseInputs() {
-    // Don't allow input on AI turn
-    if (gameManager.UILocked()) return;
+
 
     handleHovered(gameManager.getHovered(PlayerCam));
     handleClicked(gameManager.getClicked(PlayerCam));
@@ -52,7 +58,7 @@ public class PlayerControl : MonoBehaviour {
     if (hoveredObject.transform.parent == null) return;
     Map map = gameManager.map;
     BattleCharacter selectedCharacter = null;
-    if (!preGame) selectedCharacter = gameManager.SelectedPiece.GetComponent<BattleCharacter>();
+    if (!preGame) selectedCharacter = gameManager.SelectedPiece;
 
     ActiveSkill s = null;
     if (gameManager.SelectedSkill != -1 && !preGame) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];
@@ -101,10 +107,10 @@ public class PlayerControl : MonoBehaviour {
         }
       }
       //handle attack based tile colouring:
-      if ((gameManager.gameState == GameState.attacking && s != null && s.useLos)) {
+      if ((gameManager.gameState == GameState.attacking && s != null)) {
         //handle attack
         map.setTileColours(hoveredTile);
-        if (isPiece) gameManager.lineTo(hoveredObject);
+        if (isPiece && s.useLos) gameManager.lineTo(hoveredObject);
       }
 
       gameManager.tInfo.setTile(hoveredTile);
@@ -125,7 +131,7 @@ public class PlayerControl : MonoBehaviour {
     Tile clickedTile = gameManager.map.getTile(clickedObject.transform.position);
 
     if (preGame) {
-      BattleCharacter clickedChar = clickedObject.GetComponent<BattleCharacter>();
+      BattleCharacter clickedChar = clickedTile.occupant;
 
       if (clickedChar != null && clickedChar.team == 0 && clickedChar.aiType == AIType.None) {
         if (clickedChar == selectedCharacter) {

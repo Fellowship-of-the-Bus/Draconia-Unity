@@ -209,20 +209,19 @@ public class BattleCharacter : Effected {
   }
 
   public void applyPassives() {
-    BattleCharacter c = GetComponent<BattleCharacter>();
     foreach (SkillData data in passiveSet) {
       PassiveSkill skill = null;
       foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
         if (t.IsSubclassOf(Type.GetType("PassiveSkill")) && t.FullName == data.name) {
           skill = (PassiveSkill)Activator.CreateInstance(t);
           skill.level = data.level;
-          skill.self = c;
-          skill.activate(c);
+          skill.self = this;
+          skill.activate(this);
         }
       }
     }
-    foreach (PassiveSkill passive in skills.getPassives(c)) {
-      passive.activate(c);
+    foreach (PassiveSkill passive in skills.getPassives(this)) {
+      passive.activate(this);
     }
   }
 
@@ -440,7 +439,7 @@ public class BattleCharacter : Effected {
   }
 
   public void onDeath() {
-    ActionQueue.get.remove(gameObject);
+    ActionQueue.get.remove(this);
 
     onEvent(new Draconia.Event(this, EventHook.postDeath));
 
