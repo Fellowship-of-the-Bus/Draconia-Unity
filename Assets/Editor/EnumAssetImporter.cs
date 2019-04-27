@@ -127,6 +127,14 @@ public class EnumAssetImporter : ScriptedImporter {
     CodeSnippetTypeMember conversion = new CodeSnippetTypeMember($"\n    public static implicit operator int({data.name} value) {{ return {field1.Name}; }}");
     enumType.Members.Add(conversion);
 
+    // public int minValue()
+
+    // public int maxValue()
+
+
+    // public <ENUM> getByIndex(int)
+
+    // public IEnumerator
 
     // write code to disk
     CSharpCodeProvider provider = new CSharpCodeProvider();
