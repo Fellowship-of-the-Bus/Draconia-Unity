@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using Microsoft.CSharp;
+using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -9,10 +10,21 @@ using System.Text;
 
 [ScriptedImporter(1, "enum")]
 public class EnumAssetImporter : ScriptedImporter {
-  private int curIndent = 0;
-  public static int indentAmount = 2;
-
   private static string scriptPath;
+
+  private class ParsedData {
+    public struct Enumerator {
+      public string name;
+      public int value;
+    }
+
+    public string namespaceName;
+    public string name;
+    public Enumerator[] enumerators;
+
+    public int minValue;
+    public int maxValue;
+  }
 
   private StreamWriter file;
 
@@ -28,9 +40,9 @@ public class EnumAssetImporter : ScriptedImporter {
 
     EnumData data = JsonUtility.FromJson<EnumData>(File.ReadAllText(ctx.assetPath));
 
-    validate(ctx, data);
+    ParsedData parsed = validate(ctx, data);
 
-    MonoScript script = generate(data);
+    MonoScript script = generate(parsed);
 
     // 'script' is a a GameObject and will be automatically converted into a Prefab
     // (Only the 'Main Asset' is elligible to become a Prefab.)
@@ -38,51 +50,34 @@ public class EnumAssetImporter : ScriptedImporter {
     ctx.SetMainObject(script);
   }
 
-  private void validate(AssetImportContext ctx, EnumData data) {
-    // TODO: ensure enum data is sensible:
+  private ParsedData validate(AssetImportContext ctx, EnumData data) {
+    // TODO: ensure enum data is sensible, and convert into ParsedData
     // * no values outside int range (probably already handled by JsonUtility?)
     // * all names are valid identifiers (enum name, namespaces, enumerator names)
     // * ensure (warning?) no duplicate values
-  }
 
-  private MonoScript generate(EnumData data) {
-    // generate the top-level namespace
-    CodeCompileUnit compileUnit = new CodeCompileUnit();
-    CodeNamespace nameSpace = new CodeNamespace();
-    if (data.namespaces.Length > 0) {
-      int length = data.namespaces[0].Length;
-      for (int i = 1; i < data.namespaces.Length; ++i) {
-        length += data.namespaces[i].Length + 1;
-      }
+    ParsedData parsed = new ParsedData();
 
-      StringBuilder sb = new StringBuilder(data.namespaces[0], length);
-      for (int i = 1; i < data.namespaces.Length; ++i) {
-        sb.AppendFormat(".{0}", data.namespaces[i]);
-      }
-      nameSpace.Name = sb.ToString();
-      compileUnit.Namespaces.Add(nameSpace);
+    int nElems = data.values.Length;
+    switch(data.type) {
+      // leave space for special member
+      case EnumType.Bitmask: nElems += 1; break;
     }
 
-    // generate the type container, inheriting from Draconia.Enum
-    CodeTypeDeclaration enumType = new CodeTypeDeclaration(data.name);
-    nameSpace.Types.Add(enumType);
-    enumType.IsStruct = true;
-    enumType.BaseTypes.Add(new CodeTypeReference(typeof(Draconia.Enum)));
-
-    // field containing the value of the enumerator
-    CodeMemberField field1 = new CodeMemberField(typeof(int), "value");
-    field1.Attributes = MemberAttributes.Private;
-    enumType.Members.Add(field1);
-
+    parsed.enumerators = new ParsedData.Enumerator[nElems];
+    parsed.minValue = Int32.MaxValue;
+    parsed.maxValue = Int32.MinValue;
     int currentValue = 0;
+    int idxOffset = 0;
     switch(data.type) {
       case EnumType.Bitmask:
         // for Bitmask enums add a special None value and then start the first real value at 1
-        CodeMemberField enumerator = new CodeMemberField(data.name, "None");
-        enumerator.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-        enumerator.InitExpression = new CodeObjectCreateExpression(data.name, new CodeExpression[] { new CodePrimitiveExpression(currentValue) });
-        enumType.Members.Add(enumerator);
+        parsed.enumerators[0].name = "None";
+        parsed.enumerators[0].value = currentValue;
+        parsed.minValue = currentValue;
+        parsed.maxValue = currentValue;
         currentValue = 1;
+        idxOffset = 1;
         break;
     }
 
@@ -94,10 +89,10 @@ public class EnumAssetImporter : ScriptedImporter {
       }
 
       // generate enumerator for current value
-      CodeMemberField enumerator = new CodeMemberField(data.name, enumValue.name);
-      enumerator.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-      enumerator.InitExpression = new CodeObjectCreateExpression(data.name, new CodeExpression[] { new CodePrimitiveExpression(currentValue) });
-      enumType.Members.Add(enumerator);
+      parsed.enumerators[i+idxOffset].name = data.values[i].name;
+      parsed.enumerators[i+idxOffset].value = currentValue;
+      parsed.minValue = Math.Min(parsed.minValue, currentValue);
+      parsed.maxValue = Math.Max(parsed.maxValue, currentValue);
 
       // increment based on kind of enum
       switch(data.type) {
@@ -106,33 +101,110 @@ public class EnumAssetImporter : ScriptedImporter {
       }
     }
 
+    parsed.name = data.name;
+    parsed.namespaceName = NamespaceName(data.namespaces);
+    return parsed;
+  }
+
+  private string NamespaceName(string[] namespaces) {
+    // convert array of names into a single dot separated namespace name
+    if (namespaces.Length > 0) {
+      int length = namespaces[0].Length;
+      for (int i = 1; i < namespaces.Length; ++i) {
+        length += namespaces[i].Length + 1;
+      }
+
+      StringBuilder sb = new StringBuilder(namespaces[0], length);
+      for (int i = 1; i < namespaces.Length; ++i) {
+        sb.AppendFormat(".{0}", namespaces[i]);
+      }
+      return sb.ToString();
+    }
+    return "";
+  }
+
+  private MonoScript generate(ParsedData data) {
+    // generate the top-level namespace
+    CodeCompileUnit compileUnit = new CodeCompileUnit();
+    CodeNamespace nameSpace = new CodeNamespace();
+    nameSpace.Name = data.namespaceName;
+    compileUnit.Namespaces.Add(nameSpace);
+
+    // generate the type container, inheriting from Draconia.Enum
+    CodeTypeDeclaration enumType = new CodeTypeDeclaration(data.name);
+    nameSpace.Types.Add(enumType);
+    enumType.IsStruct = true;
+    enumType.BaseTypes.Add(new CodeTypeReference(typeof(Draconia.Enum)));
+
+    // field containing the value of the enumerator
+    CodeMemberField valueField = Code.Field(typeof(int), "value")
+      .SetAttributes(MemberAttributes.Private);
+    enumType.Members.Add(valueField);
+
+
+    // generate all enumerators
+    CodeExpression[] enumeratorReferences = new CodeExpression[data.enumerators.Length];
+    for (int i = 0; i < data.enumerators.Length; ++i) {
+      ParsedData.Enumerator enumValue = data.enumerators[i];
+      enumType.Members.Add(Code.Field(data.name, enumValue.name)
+        .SetAttributes(MemberAttributes.Public | MemberAttributes.Static)
+        .SetInitializer(data.name, Code.Primitive(enumValue.value))
+      );
+      enumeratorReferences[i] = Code.VariableRef(enumValue.name);
+    }
+
+    string arrayName = "array";
+    enumType.Members.Add(Code.Field(Code.ArrayType(data.name), arrayName)
+      .SetAttributes(MemberAttributes.Private | MemberAttributes.Static)
+      .SetArrayInitializer(Code.ArrayType(data.name), enumeratorReferences)
+    );
+
     // private constructor(int)
-    CodeConstructor constructor1 = new CodeConstructor();
-    constructor1.Attributes = MemberAttributes.Private;
-    CodeParameterDeclarationExpression param1 = new CodeParameterDeclarationExpression(typeof(int), "value");
-    constructor1.Parameters.Add(param1);
-    constructor1.Statements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), field1.Name), new CodeVariableReferenceExpression(param1.Name)));
-    enumType.Members.Add(constructor1);
+    string param1 = "value";
+    enumType.Members.Add(new CodeConstructor()
+      .SetAttributes(MemberAttributes.Private)
+      .AddParameter(typeof(int), param1)
+      .AddAssignStatement(This.FieldRef(valueField.Name), new CodeVariableReferenceExpression(param1))
+    );
 
     // public int getInt()
-    CodeMemberMethod method1 = new CodeMemberMethod();
-    method1.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-    method1.Name = "toInt";
-    method1.ReturnType = new CodeTypeReference(typeof(int));
-    method1.Statements.Add(new CodeMethodReturnStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), field1.Name)));
-    enumType.Members.Add(method1);
+    enumType.Members.Add(new CodeMemberMethod()
+      .SetReturnType(typeof(int))
+      .SetAttributes(MemberAttributes.Public | MemberAttributes.Final)
+      .SetName("toInt")
+      .AddReturnStatement(This.FieldRef(valueField.Name))
+    );
 
     // implicit conversion
     // CodeDom doesn't provide a way to generate implicits or operator overloads, so dirty hack:
-    CodeSnippetTypeMember conversion = new CodeSnippetTypeMember($"\n    public static implicit operator int({data.name} value) {{ return {field1.Name}; }}");
+    CodeSnippetTypeMember conversion = new CodeSnippetTypeMember($"\n    public static implicit operator int({data.name} value) {{ return {valueField.Name}; }}");
     enumType.Members.Add(conversion);
 
     // public int minValue()
+    enumType.Members.Add(Code.Method()
+      .SetReturnType(typeof(int))
+      .SetAttributes(MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static)
+      .SetName("minValue")
+      .AddReturnStatement(Code.Primitive(data.minValue))
+    );
 
     // public int maxValue()
-
+    enumType.Members.Add(Code.Method()
+      .SetReturnType(typeof(int))
+      .SetAttributes(MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static)
+      .SetName("maxValue")
+      .AddReturnStatement(Code.Primitive(data.maxValue))
+    );
 
     // public <ENUM> getByIndex(int)
+    string idxName = "idx";
+    enumType.Members.Add(Code.Method()
+      .SetReturnType(data.name)
+      .SetAttributes(MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static)
+      .SetName("getByIndex")
+      .AddParameter(typeof(int), idxName)
+      .AddReturnStatement(Code.VariableRef(arrayName).ArrayIndex(Code.VariableRef(idxName)))
+    );
 
     // public IEnumerator
 
