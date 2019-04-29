@@ -87,6 +87,10 @@ public class Code {
   public static CodeTypeReference ArrayType(string t, int rank = 1) {
     return new CodeTypeReference(t, rank);
   }
+
+  public static CodeObjectCreateExpression New(string t, params CodeExpression[] args) {
+    return new CodeObjectCreateExpression(t, args);
+  }
 }
 
 public class This {

@@ -164,7 +164,7 @@ public class EnumAssetImporter : ScriptedImporter {
     enumType.Members.Add(new CodeConstructor()
       .SetAttributes(MemberAttributes.Private)
       .AddParameter(typeof(int), param1)
-      .AddAssignStatement(This.FieldRef(valueField.Name), new CodeVariableReferenceExpression(param1))
+      .AddAssignStatement(This.FieldRef(valueField.Name), Code.VariableRef(param1))
     );
 
     // public int getInt()
@@ -206,7 +206,13 @@ public class EnumAssetImporter : ScriptedImporter {
       .AddReturnStatement(Code.VariableRef(arrayName).ArrayIndex(Code.VariableRef(idxName)))
     );
 
-    // public IEnumerator
+    // public static ArrayEnumerator<ENUM> Enumerator()
+    enumType.Members.Add(Code.Method()
+      .SetReturnType($"ArrayEnumerator<{data.name}>")
+      .SetAttributes(MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static)
+      .SetName("Enumerator")
+      .AddReturnStatement(Code.New($"ArrayEnumerator<{data.name}>", Code.VariableRef(arrayName)))
+    );
 
     // write code to disk
     CSharpCodeProvider provider = new CSharpCodeProvider();
