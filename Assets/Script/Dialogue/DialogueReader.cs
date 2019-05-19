@@ -14,6 +14,8 @@ public class DialogueReader {
   string dataPath = Path.Combine(Application.dataPath, "Dialogues");
 
 
+  public List<DialogueFragment> seen = new List<DialogueFragment>();
+
   public DialogueReader(string mapName) {
     if (File.Exists(Path.Combine(dataPath, mapName+"_start"))) {
       loadSE(start, mapName+"_start");
