@@ -24,6 +24,9 @@ public class InvItemSelect: MonoBehaviour {
 
   void Start() {
     int eqIndex = 0;
+    // TODO: The inventory screen currently displays a fixed set of equipment, but we fill in the tooltips based on
+    //       the player's owned equipment. Only equipment owned by the player should be displayed, then this tooltip
+    //       system can be hooked up properly.
     foreach (Equipment e in ownedEquipment) {
       // create an item tooltip for each piece of equipment
       var equipPanel = scrollArea.transform.GetChild(eqIndex).gameObject;
@@ -37,9 +40,6 @@ public class InvItemSelect: MonoBehaviour {
   }
 
   public ItemTooltip getTooltipWithEquipment(Equipment e) {
-    // if (e == null) return null;
-    // int index = groupedEquipment[e.equipmentClass].IndexOf(e);
-    // if (index == -1) return null;
     return scrollArea.transform.GetChild(0).gameObject.GetComponent<ItemTooltip>();
   }
 
