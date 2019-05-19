@@ -61,7 +61,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
     return "red";
   }}
-  protected string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + damageFormula().ToString() + "</color>"; }}
+  protected string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + augmentedFormula().ToString() + "</color>"; }}
   protected string tooltipHealing { get {
     HealingSkill heal = this as HealingSkill;
     return "<color=lime>" + heal.healingFormula().ToString() + "</color>";
@@ -132,6 +132,12 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
+  private int augmentedFormula() {
+    float multiplier = 1;
+    multiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
+    multiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
+    return (int)(damageFormula()*multiplier);
+  }
   public virtual int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
     if (attackOrigin == null) {
       attackOrigin = self.curTile;
@@ -147,7 +153,11 @@ public abstract class ActiveSkill : EventListener, Skill {
       }
     }
     multiplier = Math.Max(0, multiplier);
-    return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier);
+    float traitMultiplier = 1;
+    traitMultiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
+    traitMultiplier += self.baseChar.totalTraits.spec.enemySpec[target.enemyType];
+    traitMultiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
+    return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier * traitMultiplier);
   }
 
   public virtual int calculateHealing(BattleCharacter target){
