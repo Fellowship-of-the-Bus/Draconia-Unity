@@ -55,7 +55,7 @@ public class Character {
   //gain experience when using a skill and when killing enemy.
   public int curLevel = 1;
   public const int maxLevel = 100;
-  //[HideInInspector]
+  [HideInInspector]
   public int curExp = 0;
   [HideInInspector]
   public int maxExp = 100;
