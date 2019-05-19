@@ -7,7 +7,7 @@ public class ScriptAllocator<T> : ObjectPool<T>.Allocator where T : class,Poolab
 
   private PrefabAllocator allocator;
 
-  ScriptAllocator(PrefabAllocator allocator) {
+  public ScriptAllocator(PrefabAllocator allocator) {
     this.allocator = allocator;
   }
 

@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class PrefabAllocator : MonoBehaviour {
+[System.Serializable]
+public class PrefabAllocator {
   public GameObject prefab;
+  public int size;
+  public bool grow;
 
   public GameObject alloc() {
-    return Instantiate(prefab) as GameObject;
+    return GameObject.Instantiate(prefab) as GameObject;
   }
 }
