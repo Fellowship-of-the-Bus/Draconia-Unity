@@ -66,6 +66,14 @@ public static class MenuItemGenerator {
     return true;
   }
 
+  [MenuItem("Open Scene/Reset Scene Switcher", false, 103)]
+  private static void resetSceneSwitcher() {
+    foreach (var asset in Directory.EnumerateFiles(outputDir, "*.dll")) {
+      channel.Log("{0} {1}", asset, AssetDatabase.DeleteAsset(asset));
+    }
+    regenerateAll();
+  }
+
   private static void regenerateAll() {
     channel.Log("Regenerating all scene switchers");
     // search for scenes in sceneDir and generate menu items for each

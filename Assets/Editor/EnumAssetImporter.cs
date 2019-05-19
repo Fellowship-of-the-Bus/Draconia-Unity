@@ -9,9 +9,6 @@ using System.Text;
 
 [ScriptedImporter(1, "enum")]
 public class EnumAssetImporter : ScriptedImporter {
-  private int curIndent = 0;
-  public static int indentAmount = 2;
-
   private static string scriptPath;
 
   private StreamWriter file;

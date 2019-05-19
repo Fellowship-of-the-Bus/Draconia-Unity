@@ -16,11 +16,11 @@ public class ActionQueue : MonoBehaviour {
 
   struct actionTime {
     public BattleCharacter piece;
-    public GameObject button;
+    public ActionQueueElem button;
 
     public float time;
 
-    public actionTime(BattleCharacter p, GameObject b, float t) {
+    public actionTime(BattleCharacter p, ActionQueueElem b, float t) {
       piece = p;
       button = b;
       time = t;
@@ -172,7 +172,7 @@ public class ActionQueue : MonoBehaviour {
   // Returns whether the requested marker belongs at the end of the queue
   bool enqueue(BattleCharacter piece, int turn = 1) {
     bool isLast = false;
-    GameObject buttonObject = null;
+    ActionQueueElem buttonObject = null;
 
     int i = 0;
     float newTime = piece.calcMoveTime(curTime, turn);
@@ -208,7 +208,7 @@ public class ActionQueue : MonoBehaviour {
     return isLast;
   }
 
-  GameObject makeButton(BattleCharacter piece) {
+  ActionQueueElem makeButton(BattleCharacter piece) {
     GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
     buttonObject.transform.SetParent(gameObject.transform, false);
     Button button = buttonObject.GetComponent<Button>();
@@ -216,7 +216,7 @@ public class ActionQueue : MonoBehaviour {
       GameManager.get.cam.panTo(piece.gameObject.transform.position);
     });
 
-    return buttonObject;
+    return buttonObject.GetComponent<ActionQueueElem>();
   }
 
   float getPosn(int i) {
@@ -227,7 +227,7 @@ public class ActionQueue : MonoBehaviour {
     int index = 0;
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (index > i) {
-        GameObject o = n.Value.button;
+        ActionQueueElem o = n.Value.button;
         GameManager.get.StartCoroutine(SlideButton(o, 0, -buttonHeight));
       }
       index++;
@@ -238,14 +238,14 @@ public class ActionQueue : MonoBehaviour {
     int index = 0;
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (index > i) {
-        GameObject o = n.Value.button;
+        ActionQueueElem o = n.Value.button;
         GameManager.get.StartCoroutine(SlideButton(o, 0, buttonHeight));
       }
       index++;
     }
   }
 
-  IEnumerator SlideButton(GameObject button, float x, float y, bool deleteAfter = false) {
+  IEnumerator SlideButton(ActionQueueElem button, float x, float y, bool deleteAfter = false) {
     const float time = 0.25f;
 
 
