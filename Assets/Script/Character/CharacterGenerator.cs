@@ -82,7 +82,7 @@ public class CharacterGenerator : MonoBehaviour {
     character.attr.physicalDefense += 3;
     character.attr.maxHealth += 25;
     //give some traits?
-    character.traits = new List<Trait>() {TraitFactory.get.getTrait(UniqueTraitName.brodric),TraitFactory.get.getTrait(SpecTraitName.swordPlus)};
+    character.traits = new List<Trait>() {TraitFactory.get.getTrait(UniqueTraitName.brodric))};
     return character;
   }
 
