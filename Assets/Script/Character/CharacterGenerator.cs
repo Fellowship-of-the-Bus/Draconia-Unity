@@ -51,7 +51,7 @@ public class CharacterGenerator : MonoBehaviour {
   }
 
   private static List<Trait> generateTraits() {
-    return Trait.TraitFactory.getRandomTraits(Random.Range(TRAIT_MIN, TRAIT_MAX+1));
+    return TraitFactory.get.getRandomTraits(1,1);//Random.Range(TRAIT_MIN, TRAIT_MAX+1));
   }
 
   private static string generateName() {
@@ -82,7 +82,7 @@ public class CharacterGenerator : MonoBehaviour {
     character.attr.physicalDefense += 3;
     character.attr.maxHealth += 25;
     //give some traits?
-    character.traits = new List<Trait>() {new Trait(TraitName.strPlus), new Trait(TraitName.maxHPPlus)};
+    character.traits = new List<Trait>() {TraitFactory.get.getTrait(UniqueTraitName.brodric)};
     return character;
   }
 
@@ -95,7 +95,7 @@ public class CharacterGenerator : MonoBehaviour {
     character.attr.magicDefense += 3;
     character.attr.maxHealth += 25;
     //give some traits?
-    character.traits = new List<Trait>() {new Trait(TraitName.intPlus), new Trait(TraitName.mDefPlus)};
+    character.traits = new List<Trait>() {TraitFactory.get.getTrait(UniqueTraitName.sisdric)};
     return character;
   }
 }

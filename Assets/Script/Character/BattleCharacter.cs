@@ -9,10 +9,14 @@ using System.Collections;
 public enum AIType {
   Aggressive,Basic,Buff,Sentry,None
 }
+public enum EnemyType {
+  Human, Lizard, Chameleon, Snake, Dragon, None
+}
 
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
   public AIType aiType = AIType.None;
+  public EnemyType enemyType = EnemyType.Human;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }

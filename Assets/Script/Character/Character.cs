@@ -7,7 +7,18 @@ public class Character {
   public SkillTree skills = new SkillTree();
   public Attributes attr = new Attributes();
   public string name = "";
-  public List<Trait> traits;
+  public List<Trait> _traits;
+  public List<Trait> traits {
+    get {return _traits;}
+    set {
+      _traits = value;
+      totalTraits = new Trait();
+      foreach (Trait tr in traits) {
+        totalTraits = totalTraits + tr;
+      }
+    }
+  }
+  public Trait totalTraits = new Trait();
 
   [System.Serializable]
   public class Gear {
@@ -59,11 +70,7 @@ public class Character {
 
   public Attributes totalAttr {
     get {
-      Trait t = new Trait();
-      foreach (Trait tr in traits) {
-        t = t + tr;
-      }
-      return t.applyTrait(attr) + gearAttr();
+      return totalTraits.applyTrait(attr) + gearAttr();
     }
   }
 
@@ -95,7 +102,7 @@ public class Character {
   }
 
   public void gainExp(int amount) {
-    curExp += amount;
+    curExp += (int)(amount * (1+totalTraits.spec.expGain));
     int levelsToGain = curExp/maxExp;
     curExp = curExp % maxExp;
     if (levelsToGain == 0 ) {
