@@ -24,8 +24,11 @@ public class GameData {
       GameData.gameData.characters.Add(CharacterGenerator.generateCharacter(1));
     }
 
-    inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
     inv.addEquipment(new Weapon(EquipmentClass.Sword, 2, 1));
+    inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
+    inv.addEquipment(new Weapon(EquipmentClass.Staff, 2, 1));
+    inv.addEquipment(new Weapon(EquipmentClass.Spear, 2, 1));
+    inv.addEquipment(new Weapon(EquipmentClass.Axe, 2, 1));
 
     foreach (Character c in  GameData.gameData.characters) {
       if (c.attr.strength == 0) c.attr.strength = 10;
