@@ -244,7 +244,7 @@ public class BattleCharacter : Effected {
   }
 
   public bool inRange(BattleCharacter target, int range) {
-    return GameManager.get.map.getTilesWithinRange(curTile, range).Contains(target.curTile);
+    return GameManager.get.map.getTilesWithinRange(curTile, range, false).Contains(target.curTile);
   }
 
   public bool useSkill(ActiveSkill skill, List<Tile> tileTargets) {

@@ -30,7 +30,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   //experience gained when used
   public int expGainUse = 10;
 
-  private bool[] usableWeapon = new bool[2] { true, true };
+  protected bool[] usableWeapon = new bool[2] { true, true };
   private bool unarmed = true;
 
   //[0] = targets allies, [0] = targets enemies
@@ -249,7 +249,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   // Get the tiles that will be affected by an aoe skill targeting position
   protected List<Tile> getTargetsInAoe(Tile position, int aoe) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinDistance(position, aoe);
+    List<Tile> targets = map.getTilesWithinDistance(position, aoe, usableWeapon[(int)Weapon.Kinds.Melee]);
+
     targets.Add(position);
     targets = new List<Tile>(targets.Filter((x) => canTarget(x)));
     return targets;
