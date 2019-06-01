@@ -105,9 +105,9 @@ public class CameraController : MonoBehaviour {
           Vector3 worldDelta = worldCurr - worldPrev;
 
           Vector3 proj = Vector3.Project(worldDelta, forward);
-          Vector3 proj2 = Vector3.Project(worldDelta, new Vector3(-forward.x, 0, forward.z));
+          Vector3 proj2 = Vector3.Project(worldDelta, new Vector3(forward.z, 0, -forward.x));
 
-          dx = proj2.x / forward.x;
+          dx = proj2.x / forward.z;
           dy = proj.x / forward.x;
         }
       }
