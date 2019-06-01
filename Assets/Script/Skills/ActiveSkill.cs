@@ -82,7 +82,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   protected Color castColorBloodPriest = Color.red;
   protected Color castColorCleric = Color.white;
   protected Color castColorEnhancer = Color.green;
-  protected Color castColorIceWizard = Color.blue;
+  protected Color castColorIceWizard =  new Color(0, 0.5f, 1);
   protected Color castColorPyromancer = new Color(1, 0.4f, 0);
   protected Color castColorWarlock = Color.black;
   protected Color castColorNone = Color.clear;

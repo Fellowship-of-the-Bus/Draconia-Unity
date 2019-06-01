@@ -27,7 +27,7 @@ public class Projectile {
   GameObject projectile;
   Vector3 direction;
 
-  static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; //Must be a prefab containing an instance of the desired model named "Projectile"
+  static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; // Must be a prefab containing an instance of the desired model named "Projectile"
   static GameObject Fireball = Resources.Load("Projectiles/Fireball") as GameObject;
   static GameObject FireLance = Resources.Load("Projectiles/FireLance") as GameObject;
   static GameObject HealingRay = Resources.Load("Projectiles/HealingRay") as GameObject;
@@ -40,6 +40,18 @@ public class Projectile {
     {ProjectileType.FireLance, Projectile.FireLance},
     {ProjectileType.HealingRay, Projectile.HealingRay},
     {ProjectileType.IceSpear, Projectile.IceSpear}
+  };
+
+  static GameObject FireballExplosion = Resources.Load("Projectiles/FireballExplosion") as GameObject;
+  static GameObject IceShatter = Resources.Load("Projectiles/IceShatter") as GameObject;
+
+  static Dictionary<ProjectileType,GameObject> ImpactEffects = new Dictionary<ProjectileType,GameObject>() {
+    {ProjectileType.None, null},
+    {ProjectileType.Arrow, null},
+    {ProjectileType.Fireball, Projectile.FireballExplosion},
+    {ProjectileType.FireLance, null},
+    {ProjectileType.HealingRay, null},
+    {ProjectileType.IceSpear, Projectile.IceShatter}
   };
 
   public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback) {
@@ -94,6 +106,13 @@ public class Projectile {
 
     if (projectile) {
       // Post collision effects
+
+      // Play impact effects
+      if (ImpactEffects[projType]) {
+        GameManager.get.waitFor(GameManager.get.StartCoroutine(playImpact(projType)));
+      }
+
+      // Wind down particle emitters
       switch (projType) {
         case ProjectileType.Fireball:
         case ProjectileType.FireLance:
@@ -102,7 +121,21 @@ public class Projectile {
           yield return new WaitForSeconds(1);
           break;
       }
+
       GameObject.Destroy(projectile);
     }
+  }
+
+  IEnumerator playImpact(ProjectileType projType) {
+    Quaternion angle = Quaternion.LookRotation(direction);
+    GameObject impactEffect = GameObject.Instantiate(
+      ImpactEffects[projType],
+      target.transform.position,
+      angle
+    ) as GameObject;
+
+    yield return new WaitForSeconds(1);
+
+    GameObject.Destroy(impactEffect);
   }
 }
