@@ -44,6 +44,7 @@ public class Tile : Effected {
     Transform t = gameObject.transform.Find("Top");
     color = t.gameObject.GetComponent<Renderer>().material;
     border = this.transform.Find("Border").gameObject.GetComponent<Renderer>();
+    this.clearColour();
   }
 
   public bool unpathable() {

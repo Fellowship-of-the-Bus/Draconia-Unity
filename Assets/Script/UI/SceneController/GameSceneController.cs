@@ -152,7 +152,6 @@ public class GameSceneController: MonoBehaviour {
   public void resetStartTileColour() {
     setStartTileColour(Color.red);
     if (pControl.selectedCharacter != null) {
-      Debug.Log(pControl.selectedCharacter.curTile);
       pControl.selectedCharacter.curTile.setColor(Color.yellow);
     }
   }

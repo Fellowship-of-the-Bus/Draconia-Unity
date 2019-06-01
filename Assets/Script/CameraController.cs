@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
-  public float mouseSensitivity = 0.01f;
+  public float mouseSensitivity = 1f;
   public float scrollSensitivity = 10f;
   private Vector3 lastPosition;
   private Vector3 rotationDirection = Vector3.up;
@@ -27,20 +27,20 @@ public class CameraController : MonoBehaviour {
   private float shakeIntensity = 0.3f;
 
   Quaternion rot;
+  Plane hPlane;
 
   // Use this for initialization
   void Start () {
     GameObject o = new GameObject("Previous transform");
     o.transform.SetParent(transform);
     preTransform =  o.transform;
+    // create a plane at 0,0,0 whose normal points to +Y:
+    hPlane = new Plane(Vector3.up, Vector3.zero);
   }
 
   // Update is called once per frame
   void Update () {
     ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-    Plane hPlane;
-    // create a plane at 0,0,0 whose normal points to +Y:
-    hPlane = new Plane(Vector3.up, Vector3.zero);
     // Plane.Raycast stores the distance from ray.origin to the hit point in this variable:
     distance = 0;
     // if the ray hits the plane...
@@ -88,13 +88,37 @@ public class CameraController : MonoBehaviour {
       }
 
       if (Input.GetMouseButton (0)) {
-        Vector3 delta = Input.mousePosition - lastPosition;
+        Vector3 curr = Input.mousePosition;
+        Vector3 delta = curr - lastPosition;
+        var olddx = delta.x;
+        var olddy = delta.y;
+
+        Ray rayCurr = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray rayPrev = Camera.main.ScreenPointToRay(lastPosition);
+
+        float distCurr = 0f;
+        float distPrev = 0f;
+
+        if (hPlane.Raycast(rayCurr, out distCurr) && hPlane.Raycast(rayPrev, out distPrev)) {
+          Vector3 worldCurr = rayCurr.GetPoint(distCurr);
+          Vector3 worldPrev = rayPrev.GetPoint(distPrev);
+
+          Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+
+          Vector3 worldDelta = worldCurr - worldPrev;
+
+          Vector3 proj = Vector3.Project(worldDelta, forward);
+          Vector3 proj2 = Vector3.Project(worldDelta, new Vector3(-forward.x, 0, forward.z));
+
+          dx = proj2.x / forward.x;
+          dy = proj.x / forward.x;
+
+
+        }
         lastPosition = Input.mousePosition;
-        dx = delta.x;
-        dy = delta.y;
       }
 
-      float moveFactor = transform.position.y * 2;
+      float moveFactor = transform.position.y * 2 * 0.01f;
       if (Input.GetKey(KeyCode.UpArrow))
         dy = -1 * moveFactor;
       if (Input.GetKey(KeyCode.DownArrow))

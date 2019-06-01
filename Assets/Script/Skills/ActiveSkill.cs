@@ -18,6 +18,9 @@ public enum DamageElement {
 public abstract class ActiveSkill : EventListener, Skill {
   public const int InfiniteCooldown = -2;
 
+  // Skills will always do at least this percentage of their calculated damage
+  private const float MINIMUM_DAMAGE_PERCENT = 0.1f;
+
   public int level {get; set;}
   public virtual BattleCharacter self {get; set;}
   private int _range;
@@ -30,7 +33,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   //experience gained when used
   public int expGainUse = 10;
 
-  private bool[] usableWeapon = new bool[2] { true, true };
+  protected bool[] usableWeapon = new bool[2] { true, true };
   private bool unarmed = true;
 
   //[0] = targets allies, [0] = targets enemies
@@ -61,7 +64,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
     return "red";
   }}
-  protected string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + damageFormula().ToString() + "</color>"; }}
+  protected string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + augmentedFormula().ToString() + "</color>"; }}
   protected string tooltipHealing { get {
     HealingSkill heal = this as HealingSkill;
     return "<color=lime>" + heal.healingFormula().ToString() + "</color>";
@@ -82,7 +85,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   protected Color castColorBloodPriest = Color.red;
   protected Color castColorCleric = Color.white;
   protected Color castColorEnhancer = Color.green;
-  protected Color castColorIceWizard = Color.blue;
+  protected Color castColorIceWizard =  new Color(0, 0.5f, 1);
   protected Color castColorPyromancer = new Color(1, 0.4f, 0);
   protected Color castColorWarlock = Color.black;
   protected Color castColorNone = Color.clear;
@@ -132,6 +135,12 @@ public abstract class ActiveSkill : EventListener, Skill {
   }
 
   public virtual int damageFormula() { return 0; }
+  private int augmentedFormula() {
+    float multiplier = 1;
+    multiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
+    multiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
+    return (int)(damageFormula()*multiplier);
+  }
   public virtual int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
     if (attackOrigin == null) {
       attackOrigin = self.curTile;
@@ -147,7 +156,16 @@ public abstract class ActiveSkill : EventListener, Skill {
       }
     }
     multiplier = Math.Max(0, multiplier);
-    return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier);
+    float traitMultiplier = 1;
+    traitMultiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
+    traitMultiplier += self.baseChar.totalTraits.spec.enemySpec[target.enemyType];
+    traitMultiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
+    int calculatedDamage = (int) (target.calculateDamage((int)(damageFormula() * multiplier * traitMultiplier), dType, dEle));
+    if (calculatedDamage <= 0) {
+      int minimumDamage = (int)Mathf.Ceil(damageFormula() * MINIMUM_DAMAGE_PERCENT);
+      return minimumDamage;
+    }
+    return calculatedDamage;
   }
 
   public virtual int calculateHealing(BattleCharacter target){
@@ -239,7 +257,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   // Get the tiles that will be affected by an aoe skill targeting position
   protected List<Tile> getTargetsInAoe(Tile position, int aoe) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinDistance(position, aoe);
+    List<Tile> targets = map.getTilesWithinDistance(position, aoe, usableWeapon[(int)Weapon.Kinds.Melee]);
+
     targets.Add(position);
     targets = new List<Tile>(targets.Filter((x) => canTarget(x)));
     return targets;

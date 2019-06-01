@@ -6,7 +6,7 @@ public static class WeaponModels {
   static GameObject Sword = Resources.Load("Sword") as GameObject;
   public static GameObject Axe = Resources.Load("Axe") as GameObject;
   // static GameObject Jumonji = Resources.Load("jumonji") as GameObject;
-  // static GameObject Yari = Resources.Load("yari") as GameObject;
+  static GameObject Spear = Resources.Load("yari") as GameObject;
   static GameObject Bow = Resources.Load("Bow") as GameObject;
   static GameObject Staff = Resources.Load("Staff") as GameObject;
 
@@ -16,6 +16,7 @@ public static class WeaponModels {
     {EquipmentClass.Axe, Axe},
     {EquipmentClass.Bow, Bow},
     {EquipmentClass.Staff, Staff},
+    {EquipmentClass.Spear, Spear},
   };
 }
 
