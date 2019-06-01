@@ -14,6 +14,7 @@ public static class EquipmentClassMethods {
       case EquipmentClass.Sword:
       case EquipmentClass.Axe:
       case EquipmentClass.Spear:
+      case EquipmentClass.Staff:
       case EquipmentClass.Unarmed:
         return Weapon.Kinds.Melee;
       case EquipmentClass.Bow:

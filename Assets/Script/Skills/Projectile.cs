@@ -12,6 +12,7 @@ public enum ProjectileType {
   Fireball,
   FireLance,
   HealingRay,
+  IceSpear
 }
 
 public enum ProjectileMovementType {
@@ -30,13 +31,15 @@ public class Projectile {
   static GameObject Fireball = Resources.Load("Projectiles/Fireball") as GameObject;
   static GameObject FireLance = Resources.Load("Projectiles/FireLance") as GameObject;
   static GameObject HealingRay = Resources.Load("Projectiles/HealingRay") as GameObject;
+  static GameObject IceSpear = Resources.Load("Projectiles/IceSpear") as GameObject;
 
   static Dictionary<ProjectileType,GameObject> Projectiles = new Dictionary<ProjectileType,GameObject>() {
     {ProjectileType.None, null},
     {ProjectileType.Arrow, Projectile.Arrow},
     {ProjectileType.Fireball, Projectile.Fireball},
     {ProjectileType.FireLance, Projectile.FireLance},
-    {ProjectileType.HealingRay, Projectile.HealingRay}
+    {ProjectileType.HealingRay, Projectile.HealingRay},
+    {ProjectileType.IceSpear, Projectile.IceSpear}
   };
 
   public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback) {
