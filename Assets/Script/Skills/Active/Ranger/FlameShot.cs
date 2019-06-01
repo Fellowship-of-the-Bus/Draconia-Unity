@@ -15,6 +15,9 @@ public class FlameShot: SingleTarget {
     dEle = DamageElement.fire;
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.FlameArrow;
+    projectileMoveType = ProjectileMovementType.Straight;
+    projectileSpeed = 1.5f;
   }
 
   public override int damageFormula() {
