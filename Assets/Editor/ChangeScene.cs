@@ -117,7 +117,7 @@ public static class MenuItemGenerator {
     EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 
     if (!EditorSceneManager.OpenScene(name).IsValid()) {
-      Debug.LogError(string.Format("error: scene not found: {0}", name));
+      Channel.editor.LogError(string.Format("error: scene not found: {0}", name));
     }
   }
 

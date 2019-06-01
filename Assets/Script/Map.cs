@@ -163,7 +163,7 @@ public class Map {
 
   // ignorePathing - if this is true, the range will simply extend out ignoring whether terrain is pathable
   // with the exception that it will still be blocked by "Wall" tiles.
-  private List<Tile> getTilesWithinRange(Tile t, int range, bool ignorePathing) {
+  private List<Tile> getTilesWithinRange(Tile t, int range, bool ignorePathing, bool melee) {
     ISet<Tile> inRangeTiles = new HashSet<Tile>();
     ISet<Tile> edgeTiles = new HashSet<Tile>();
     ISet<Tile> outerTiles = new HashSet<Tile>();
@@ -173,7 +173,8 @@ public class Map {
     for (int dist = 1; dist < range + 1; dist++) {
       foreach (Tile e in edgeTiles) {
         foreach (Tile a in getAdjacentTiles(e)) {
-          if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall))) {
+          if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall))
+                                        && (!melee || dist + a.getHeight() - t.getHeight()  <= range)) {
             outerTiles.Add(a);
           }
         }
@@ -188,14 +189,14 @@ public class Map {
     return new List<Tile>(inRangeTiles);
   }
 
-  public List<Tile> getTilesWithinRange(Tile t, int range) {
-    return getTilesWithinRange(t, range, false);
+  public List<Tile> getTilesWithinRange(Tile t, int range, bool melee) {
+    return getTilesWithinRange(t, range, false, melee);
 
   }
 
   // Get all tiles within a fixed distance of the given tile, ignoring height differences and pathability
-  public List<Tile> getTilesWithinDistance(Tile t, int range) {
-    return getTilesWithinRange(t, range, true);
+  public List<Tile> getTilesWithinDistance(Tile t, int range, bool melee) {
+    return getTilesWithinRange(t, range, true, melee);
   }
 
   public List<Tile> getTilesWithinMovementRange(int mvRange) {
@@ -209,7 +210,7 @@ public class Map {
   }
 
   public List<Tile> getCardinalTilesWithinRange(Tile t, int range) {
-    List<Tile> inRangeTiles = getTilesWithinRange(t, range);
+    List<Tile> inRangeTiles = getTilesWithinRange(t, range, false);
     inRangeTiles = new List<Tile>(inRangeTiles.Filter((tile) =>
       Math.Abs(tile.transform.position.x - t.transform.position.x) < 0.05f  ||
       Math.Abs(tile.transform.position.z - t.transform.position.z) < 0.05f));
@@ -283,7 +284,7 @@ public class Map {
       ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
       bool aoe = (skill is AoeSkill);
       int range = skill.range;
-      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range);
+      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range, false);
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
           t.setColor(Color.white);

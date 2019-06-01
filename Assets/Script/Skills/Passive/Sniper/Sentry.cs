@@ -13,7 +13,7 @@ public class Sentry : PassiveSkill {
   }
 
   protected override void additionalEffect(Draconia.Event e) {
-    List<Tile> tiles = GameManager.get.map.getTilesWithinRange(owner.curTile, aoe);
+    List<Tile> tiles = GameManager.get.map.getTilesWithinRange(owner.curTile, aoe, false);
     if (e.sender.team == owner.team) return; // don't shoot teammates
     if (tiles.Find(t => t.transform.position == e.position) != null) {
       List<Tile> target = new List<Tile>();

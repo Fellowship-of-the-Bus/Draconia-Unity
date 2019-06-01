@@ -18,6 +18,9 @@ public enum DamageElement {
 public abstract class ActiveSkill : EventListener, Skill {
   public const int InfiniteCooldown = -2;
 
+  // Skills will always do at least this percentage of their calculated damage
+  private const float MINIMUM_DAMAGE_PERCENT = 0.1f;
+
   public int level {get; set;}
   public virtual BattleCharacter self {get; set;}
   private int _range;
@@ -30,7 +33,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   //experience gained when used
   public int expGainUse = 10;
 
-  private bool[] usableWeapon = new bool[2] { true, true };
+  protected bool[] usableWeapon = new bool[2] { true, true };
   private bool unarmed = true;
 
   //[0] = targets allies, [0] = targets enemies
@@ -157,7 +160,12 @@ public abstract class ActiveSkill : EventListener, Skill {
     traitMultiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
     traitMultiplier += self.baseChar.totalTraits.spec.enemySpec[target.enemyType];
     traitMultiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
-    return (int) (target.calculateDamage(damageFormula(), dType, dEle) * multiplier * traitMultiplier);
+    int calculatedDamage = (int) (target.calculateDamage((int)(damageFormula() * multiplier * traitMultiplier), dType, dEle));
+    if (calculatedDamage <= 0) {
+      int minimumDamage = (int)Mathf.Ceil(damageFormula() * MINIMUM_DAMAGE_PERCENT);
+      return minimumDamage;
+    }
+    return calculatedDamage;
   }
 
   public virtual int calculateHealing(BattleCharacter target){
@@ -249,7 +257,8 @@ public abstract class ActiveSkill : EventListener, Skill {
   // Get the tiles that will be affected by an aoe skill targeting position
   protected List<Tile> getTargetsInAoe(Tile position, int aoe) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinDistance(position, aoe);
+    List<Tile> targets = map.getTilesWithinDistance(position, aoe, usableWeapon[(int)Weapon.Kinds.Melee]);
+
     targets.Add(position);
     targets = new List<Tile>(targets.Filter((x) => canTarget(x)));
     return targets;
