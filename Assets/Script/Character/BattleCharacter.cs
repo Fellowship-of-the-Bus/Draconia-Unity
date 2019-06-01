@@ -196,7 +196,7 @@ public class BattleCharacter : Effected {
         }
       }
       if (skill == null && invalidSkill) {
-        Debug.Log("Skill not recognized");
+        Channel.game.Log("Skill not recognized");
         skill = new Punch();
       }
       if (skill != null) {

@@ -14,7 +14,7 @@ public class EnumAssetImporter : ScriptedImporter {
   private StreamWriter file;
 
   public EnumAssetImporter() {
-    Debug.Log("New EnumAssetImporter");
+    Channel.editor.Log("New EnumAssetImporter");
   }
 
   public override void OnImportAsset(AssetImportContext ctx) {

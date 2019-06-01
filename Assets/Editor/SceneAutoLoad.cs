@@ -74,7 +74,7 @@ static class SceneAutoLoader
             {
                 if (!EditorSceneManager.OpenScene(MasterScene).IsValid())
                 {
-                    Debug.LogError(string.Format("error: scene not found: {0}", MasterScene));
+                    Channel.editor.LogError(string.Format("error: scene not found: {0}", MasterScene));
                     EditorApplication.isPlaying = false;
                 }
             }
@@ -82,7 +82,7 @@ static class SceneAutoLoader
             {
                 // User cancelled the save operation -- cancel play as well.
                 EditorApplication.isPlaying = false;
-                Debug.Log("CANCEL");
+                Channel.editor.Log("CANCEL");
             }
         }
 
@@ -92,7 +92,7 @@ static class SceneAutoLoader
             // User pressed stop -- reload previous scene.
             if (!EditorSceneManager.OpenScene(PreviousScene).IsValid())
             {
-                Debug.LogError(string.Format("error: scene not found: {0}", PreviousScene));
+                Channel.editor.LogError(string.Format("error: scene not found: {0}", PreviousScene));
             }
         }
     }

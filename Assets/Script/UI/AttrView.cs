@@ -36,8 +36,7 @@ public class AttrView: MonoBehaviour {
         attrDict[f.Name].text = f.Name + " " + value;
         attrDict[f.Name].enabled = !value.Equals(f.GetValue(baseAttr));
       } else {
-        Debug.Log(f.Name);
-        throw(new Exception());
+        throw(new Exception(f.Name));
       }
     }
   }
