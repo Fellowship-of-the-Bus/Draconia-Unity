@@ -60,6 +60,7 @@ public class Projectile {
   IEnumerator move(ProjectileType projType, ProjectileMovementType moveType, float speed) {
     const float height = 2f;
     if (projectile) {
+      bool isParabolic = moveType == ProjectileMovementType.Parabolic;
       projectile.transform.SetParent(null);
 
       Transform proj = projectile.transform.Find("Projectile");
@@ -67,7 +68,8 @@ public class Projectile {
         proj = projectile.transform;
       }
 
-      Quaternion angle = Quaternion.LookRotation(direction + new Vector3(0,height,0));
+      Vector3 startDirection = isParabolic ? direction + new Vector3(0,height,0) : direction;
+      Quaternion angle = Quaternion.LookRotation(startDirection);
       proj.rotation = angle;
 
       yield return GameManager.get.moveObject(
@@ -85,7 +87,7 @@ public class Projectile {
           proj.Rotate(Vector3.right,totalRotation*t);
         },
         false,
-        moveType == ProjectileMovementType.Parabolic
+        isParabolic
       );
     }
     callback();

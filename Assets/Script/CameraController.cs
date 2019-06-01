@@ -110,7 +110,6 @@ public class CameraController : MonoBehaviour {
           Vector3 proj = Vector3.Project(worldDelta, forward);
           Vector3 proj2 = Vector3.Project(worldDelta, new Vector3(-forward.x, 0, forward.z));
 
-          Debug.LogFormat("{0}, {1}, {2}, {3}", forward, worldDelta, proj, proj2);
           dx = proj2.x / forward.x;
           dy = proj.x / forward.x;
 
