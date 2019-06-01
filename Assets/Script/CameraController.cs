@@ -83,9 +83,6 @@ public class CameraController : MonoBehaviour {
       float dx = 0;
       float dy = 0;
 
-      if (Input.GetMouseButtonDown (0)) {
-        lastPosition = Input.mousePosition;
-      }
 
       if (Input.GetMouseButton (0)) {
         Vector3 curr = Input.mousePosition;
@@ -108,14 +105,11 @@ public class CameraController : MonoBehaviour {
           Vector3 worldDelta = worldCurr - worldPrev;
 
           Vector3 proj = Vector3.Project(worldDelta, forward);
-          Vector3 proj2 = Vector3.Project(worldDelta, new Vector3(-forward.x, 0, forward.z));
+          Vector3 proj2 = Vector3.Project(worldDelta, new Vector3(forward.z, 0, -forward.x));
 
-          dx = proj2.x / forward.x;
+          dx = proj2.x / forward.z;
           dy = proj.x / forward.x;
-
-
         }
-        lastPosition = Input.mousePosition;
       }
 
       float moveFactor = transform.position.y * 2 * 0.01f;
@@ -132,6 +126,7 @@ public class CameraController : MonoBehaviour {
         pan(dx, dy);
       }
     }
+    lastPosition = Input.mousePosition;
   }
 
   void LateUpdate() {

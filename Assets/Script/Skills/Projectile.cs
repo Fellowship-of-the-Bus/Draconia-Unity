@@ -9,6 +9,7 @@ using System.Linq;
 public enum ProjectileType {
   None,
   Arrow,
+  FlameArrow,
   Fireball,
   FireLance,
   HealingRay,
@@ -28,6 +29,7 @@ public class Projectile {
   Vector3 direction;
 
   static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; // Must be a prefab containing an instance of the desired model named "Projectile"
+  static GameObject FlameArrow = Resources.Load("Projectiles/FlameArrow") as GameObject;
   static GameObject Fireball = Resources.Load("Projectiles/Fireball") as GameObject;
   static GameObject FireLance = Resources.Load("Projectiles/FireLance") as GameObject;
   static GameObject HealingRay = Resources.Load("Projectiles/HealingRay") as GameObject;
@@ -36,6 +38,7 @@ public class Projectile {
   static Dictionary<ProjectileType,GameObject> Projectiles = new Dictionary<ProjectileType,GameObject>() {
     {ProjectileType.None, null},
     {ProjectileType.Arrow, Projectile.Arrow},
+    {ProjectileType.FlameArrow, Projectile.FlameArrow},
     {ProjectileType.Fireball, Projectile.Fireball},
     {ProjectileType.FireLance, Projectile.FireLance},
     {ProjectileType.HealingRay, Projectile.HealingRay},
@@ -48,6 +51,7 @@ public class Projectile {
   static Dictionary<ProjectileType,GameObject> ImpactEffects = new Dictionary<ProjectileType,GameObject>() {
     {ProjectileType.None, null},
     {ProjectileType.Arrow, null},
+    {ProjectileType.FlameArrow, null},
     {ProjectileType.Fireball, Projectile.FireballExplosion},
     {ProjectileType.FireLance, null},
     {ProjectileType.HealingRay, null},
