@@ -9,9 +9,11 @@ using System.Linq;
 public enum ProjectileType {
   None,
   Arrow,
+  FlameArrow,
   Fireball,
   FireLance,
   HealingRay,
+  IceSpear
 }
 
 public enum ProjectileMovementType {
@@ -26,17 +28,34 @@ public class Projectile {
   GameObject projectile;
   Vector3 direction;
 
-  static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; //Must be a prefab containing an instance of the desired model named "Projectile"
+  static GameObject Arrow = Resources.Load("Projectiles/Arrow") as GameObject; // Must be a prefab containing an instance of the desired model named "Projectile"
+  static GameObject FlameArrow = Resources.Load("Projectiles/FlameArrow") as GameObject;
   static GameObject Fireball = Resources.Load("Projectiles/Fireball") as GameObject;
   static GameObject FireLance = Resources.Load("Projectiles/FireLance") as GameObject;
   static GameObject HealingRay = Resources.Load("Projectiles/HealingRay") as GameObject;
+  static GameObject IceSpear = Resources.Load("Projectiles/IceSpear") as GameObject;
 
   static Dictionary<ProjectileType,GameObject> Projectiles = new Dictionary<ProjectileType,GameObject>() {
     {ProjectileType.None, null},
     {ProjectileType.Arrow, Projectile.Arrow},
+    {ProjectileType.FlameArrow, Projectile.FlameArrow},
     {ProjectileType.Fireball, Projectile.Fireball},
     {ProjectileType.FireLance, Projectile.FireLance},
-    {ProjectileType.HealingRay, Projectile.HealingRay}
+    {ProjectileType.HealingRay, Projectile.HealingRay},
+    {ProjectileType.IceSpear, Projectile.IceSpear}
+  };
+
+  static GameObject FireballExplosion = Resources.Load("Projectiles/FireballExplosion") as GameObject;
+  static GameObject IceShatter = Resources.Load("Projectiles/IceShatter") as GameObject;
+
+  static Dictionary<ProjectileType,GameObject> ImpactEffects = new Dictionary<ProjectileType,GameObject>() {
+    {ProjectileType.None, null},
+    {ProjectileType.Arrow, null},
+    {ProjectileType.FlameArrow, null},
+    {ProjectileType.Fireball, Projectile.FireballExplosion},
+    {ProjectileType.FireLance, null},
+    {ProjectileType.HealingRay, null},
+    {ProjectileType.IceSpear, Projectile.IceShatter}
   };
 
   public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback) {
@@ -57,6 +76,7 @@ public class Projectile {
   IEnumerator move(ProjectileType projType, ProjectileMovementType moveType, float speed) {
     const float height = 2f;
     if (projectile) {
+      bool isParabolic = moveType == ProjectileMovementType.Parabolic;
       projectile.transform.SetParent(null);
 
       Transform proj = projectile.transform.Find("Projectile");
@@ -64,7 +84,8 @@ public class Projectile {
         proj = projectile.transform;
       }
 
-      Quaternion angle = Quaternion.LookRotation(direction + new Vector3(0,height,0));
+      Vector3 startDirection = isParabolic ? direction + new Vector3(0,height,0) : direction;
+      Quaternion angle = Quaternion.LookRotation(startDirection);
       proj.rotation = angle;
 
       yield return GameManager.get.moveObject(
@@ -82,13 +103,20 @@ public class Projectile {
           proj.Rotate(Vector3.right,totalRotation*t);
         },
         false,
-        moveType == ProjectileMovementType.Parabolic
+        isParabolic
       );
     }
     callback();
 
     if (projectile) {
       // Post collision effects
+
+      // Play impact effects
+      if (ImpactEffects[projType]) {
+        GameManager.get.waitFor(GameManager.get.StartCoroutine(playImpact(projType)));
+      }
+
+      // Wind down particle emitters
       switch (projType) {
         case ProjectileType.Fireball:
         case ProjectileType.FireLance:
@@ -97,7 +125,21 @@ public class Projectile {
           yield return new WaitForSeconds(1);
           break;
       }
+
       GameObject.Destroy(projectile);
     }
+  }
+
+  IEnumerator playImpact(ProjectileType projType) {
+    Quaternion angle = Quaternion.LookRotation(direction);
+    GameObject impactEffect = GameObject.Instantiate(
+      ImpactEffects[projType],
+      target.transform.position,
+      angle
+    ) as GameObject;
+
+    yield return new WaitForSeconds(1);
+
+    GameObject.Destroy(impactEffect);
   }
 }

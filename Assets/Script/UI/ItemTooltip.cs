@@ -9,7 +9,6 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
   //if false it is in the list of equipments
   //if true it is on character
   public bool inCharacterView = false;
-  public bool inCombineView = false;
 
   override public void init() {
     if (!onlyOnce) return;
@@ -22,13 +21,7 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
 
   public void OnPointerClick(PointerEventData eventData) {
     if (eventData.button == PointerEventData.InputButton.Left){
-      if (!inCombineView) {
-        onButtonClick();
-      }
-    } else if (eventData.button == PointerEventData.InputButton.Right){
-      if (!inCharacterView){
-        onRightClick();
-      }
+      onButtonClick();
     }
   }
 
@@ -37,10 +30,6 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
       return;
     }
     List<Color> colors = new List<Color>();
-    if (InvItemSelect.get.isMaterial(equip)) {
-      // material
-      colors.Add(Color.red);
-    }
     if (equip.equippedTo != null) {
       // equipped
       colors.Add(Color.green);
@@ -87,28 +76,5 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
       updateColour();
     }
     inv.updateAttrView();
-  }
-
-  private void onRightClick() {
-    InvItemSelect inv = InvItemSelect.get;
-    Equipment curEquip = equip;
-    if (inCombineView) {
-      if (inv.isResult(this) && equip != null) {
-        // item is combine result, create it.
-        inv.createUpgrade();
-      } else {
-        // remove item from materials
-        equip = null;
-        inv.removeCreated();
-        tipbox.SetActive(false);
-      }
-    } else {
-      // from inventory, add it to materials
-      inv.addMaterial(equip);
-    }
-    ItemTooltip tip = inv.getTooltipWithEquipment(curEquip);
-    if (tip != null) {
-      tip.updateColour();
-    }
   }
 }

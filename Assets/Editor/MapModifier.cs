@@ -25,7 +25,7 @@ static class MapModifier {
     string prevScene = EditorSceneManager.GetActiveScene().path;
     foreach (FileInfo f in info) {
       string name = f.Name.Remove(f.Name.Length-4);
-      Debug.Log("Operating in Scene : " + name);
+      Channel.editor.Log("Operating in Scene : " + name);
       fun("Assets/Scene/maps/"+name+".unity");
     }
     EditorSceneManager.OpenScene(prevScene);

@@ -35,4 +35,4 @@ public class Range : IEnumerable<int>, IEnumerator<int> {
   public void Reset() { cur = start-step; }
 
   void IDisposable.Dispose() { }
-};
+}

@@ -39,7 +39,6 @@ public class PreBattleCharSelect : InvCharSelect {
     onButtonClick(selectedPanel);
     foreach (ItemTooltip tooltip in items.Map((i) => i as ItemTooltip).Filter((i) => i != null)) {
       tooltip.inCharacterView = true;
-      tooltip.inCombineView = false;
     }
   }
 

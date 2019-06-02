@@ -9,7 +9,7 @@ public class IceSpear: SingleTarget {
   public IceSpear() {
     range = 3;
     useWepRange = false;
-    useLos = false;
+    useLos = true;
     name = "Ice Spear";
     maxCooldown = 2;
 
@@ -17,6 +17,9 @@ public class IceSpear: SingleTarget {
     dEle = DamageElement.ice;
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.IceSpear;
+    projectileMoveType = ProjectileMovementType.Straight;
+    projectileSpeed = 2f;
   }
 
   protected override string tooltipDescription { get {

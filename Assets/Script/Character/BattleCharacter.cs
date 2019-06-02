@@ -9,10 +9,14 @@ using System.Collections;
 public enum AIType {
   Aggressive,Basic,Buff,Sentry,None
 }
+public enum EnemyType {
+  Human, Lizard, Chameleon, Snake, Dragon, None
+}
 
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
   public AIType aiType = AIType.None;
+  public EnemyType enemyType = EnemyType.Human;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }
@@ -192,7 +196,7 @@ public class BattleCharacter : Effected {
         }
       }
       if (skill == null && invalidSkill) {
-        Debug.Log("Skill not recognized");
+        Channel.game.Log("Skill not recognized");
         skill = new Punch();
       }
       if (skill != null) {
@@ -240,7 +244,7 @@ public class BattleCharacter : Effected {
   }
 
   public bool inRange(BattleCharacter target, int range) {
-    return GameManager.get.map.getTilesWithinRange(curTile, range).Contains(target.curTile);
+    return GameManager.get.map.getTilesWithinRange(curTile, range, false).Contains(target.curTile);
   }
 
   public bool useSkill(ActiveSkill skill, List<Tile> tileTargets) {
