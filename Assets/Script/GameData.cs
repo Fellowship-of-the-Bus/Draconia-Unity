@@ -41,6 +41,7 @@ public class GameData {
         skillTree.equipSkill(t);
       }
     }
+    Options.init();
   }
 
   public Character getCharacterWithItem(Equipment e) {
