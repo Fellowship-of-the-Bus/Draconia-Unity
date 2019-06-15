@@ -8,7 +8,7 @@ public class Tile : Effected {
     }
   } // TODO: update transparency on change
   public static int unpathableCost = 1000;
-  public int distance = 0;
+  public int distance = 0; // Distance from the turn character
   public int movePointSpent = 1;
   public Vector3 dir = Vector3.zero;
   public BattleCharacter occupant = null;

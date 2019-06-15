@@ -8,6 +8,7 @@ public class Ranged: SingleTarget {
     useLos = true;
     name = "Ranged";
     maxCooldown = 2;
+    dType = DamageType.physical;
   }
 
   public override int damageFormula() {
