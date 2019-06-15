@@ -14,6 +14,7 @@ public class InvItemSelect: MonoBehaviour {
   public GameObject scrollArea; // content area
 
   private LinkedList<Equipment> ownedEquipment;
+  private Dictionary<Equipment, ItemTooltip> tooltips;
 
 
   void Awake() {
@@ -23,6 +24,8 @@ public class InvItemSelect: MonoBehaviour {
   }
 
   void Start() {
+    tooltips = new Dictionary<Equipment, ItemTooltip>();
+
     int eqIndex = 0;
     // TODO: The inventory screen currently displays a fixed set of equipment, but we fill in the tooltips based on
     //       the player's owned equipment. Only equipment owned by the player should be displayed, then this tooltip
@@ -36,11 +39,12 @@ public class InvItemSelect: MonoBehaviour {
       InvCharSelect charSelect = InvCharSelect.get;
       tooltip.updateColour();
       eqIndex++;
+      tooltips.Add(e, tooltip);
     }
   }
 
   public ItemTooltip getTooltipWithEquipment(Equipment e) {
-    return scrollArea.transform.GetChild(0).gameObject.GetComponent<ItemTooltip>();
+    return tooltips[e];
   }
 
   public static InvItemSelect get { get; set; }
