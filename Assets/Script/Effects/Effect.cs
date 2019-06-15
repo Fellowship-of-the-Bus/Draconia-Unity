@@ -4,9 +4,14 @@ using System;
 public abstract class Effect : EventListener, IComparable<Effect> {
   public BattleCharacter owner = null;
   public Tile ownerTile = null;
+  public string name {get; set;}
   public int level = 0;
 
   public bool stackable = false;
+
+  public virtual string tooltipHeader { get { return "<b>" + name + "</b>\n"; }}
+  protected virtual string tooltipDescription { get { return "Effect Missing Tooltip!"; }}
+  public virtual string tooltip { get { return tooltipHeader + tooltipDescription; }}
 
   public virtual void apply(Effected e) {
     if (e is BattleCharacter) apply(e as BattleCharacter);
