@@ -9,6 +9,11 @@ public class Options {
     public float gridTransparency;
     public bool displayAnimation;
   }
+
+  public static void init() {
+    gridTransparency = 1f;
+    displayAnimation = true;
+  }
   public static OptionData instance = new OptionData();
 
   public static bool displayAnimation {
