@@ -42,7 +42,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int curCooldown = 0;
   public bool targetsTiles = false;
 
-  public DamageType dType = DamageType.physical;
+  public DamageType dType = DamageType.none;
   public DamageElement dEle = DamageElement.none;
 
   // Projectile Parameters

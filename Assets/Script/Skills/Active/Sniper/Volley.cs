@@ -13,6 +13,8 @@ public class Volley: CircleAoE {
     name = "Volley";
     effectsTiles = false;
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

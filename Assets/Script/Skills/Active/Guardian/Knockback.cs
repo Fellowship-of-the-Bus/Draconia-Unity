@@ -9,6 +9,8 @@ public class Knockback: TargetMover {
     useLos = false;
     name = "Knockback";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
     setDirection(TargetMover.Direction.away);

@@ -16,6 +16,7 @@ public class CircleSlash: ActiveSkill, AoeSkill {
     effectsTiles = false;
     maxCooldown = 2;
     targetsTiles = true;
+    dType = DamageType.physical;
 
     targetAlly(true);
     targetEnemy(true);
