@@ -9,7 +9,7 @@ public class DivineShield: SingleTarget {
   public DivineShield() {
     range = 5;
     useLos = false;
-    name = "DivineShield";
+    name = "Divine Shield";
     maxCooldown = 2;
     canTargetSelf = true;
     targetAlly(true);

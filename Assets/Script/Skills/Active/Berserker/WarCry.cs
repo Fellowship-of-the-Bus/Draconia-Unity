@@ -6,7 +6,7 @@ public class WarCry: CircleAoE {
     range = 0;
     aoe = 3;
     useLos = false;
-    name = "WarCry";
+    name = "War Cry";
     effectsTiles = false;
     maxCooldown = 2;
     targetAlly(true);

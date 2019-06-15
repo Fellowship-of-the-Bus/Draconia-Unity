@@ -1,6 +1,9 @@
 using UnityEngine;
 
 public class IgniteWeaponEffect : DurationEffect {
+  public IgniteWeaponEffect() {
+    name = "Flaming Weapon";
+  }
 
   DamageElement originalEle;
   protected override void onActivate() {
