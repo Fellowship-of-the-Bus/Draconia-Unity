@@ -6,7 +6,6 @@ using System.Collections;
 using System.Linq;
 
 public class AggressiveAI : BaseAI {
-
   public override Vector3 move() {
     Heap<SkillData> db = new Heap<SkillData>();
     GameManager game = GameManager.get;
@@ -18,11 +17,9 @@ public class AggressiveAI : BaseAI {
     possibilities.Add(owner.curTile);
 
     foreach (Tile tile in possibilities) {
-      if (!tile.occupied()) {
-        SkillData bestForTile = evaluateSkillOptions(tile);
-        if (bestForTile != null) {
-          db.add(bestForTile);
-        }
+      SkillData bestForTile = evaluateSkillOptions(tile);
+      if (bestForTile != null) {
+        db.add(bestForTile);
       }
     }
     best = db.getMax();
