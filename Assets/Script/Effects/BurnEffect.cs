@@ -5,6 +5,10 @@ public class BurnEffect : DurationEffect, HealthChangingEffect {
   public float multiplier = 1.0f;
   private GameObject particle;
 
+  public BurnEffect() {
+    name = "On Fire!";
+  }
+
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
 

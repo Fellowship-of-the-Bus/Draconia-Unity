@@ -9,7 +9,7 @@ public class BrainFreeze: SingleTarget {
   public BrainFreeze() {
     useWepRange = false;
     useLos = false;
-    name = "BrainFreeze";
+    name = "Brain Freeze";
     maxCooldown = 2;
     range = 3;
 

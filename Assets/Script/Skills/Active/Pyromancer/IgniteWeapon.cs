@@ -9,7 +9,7 @@ public class IgniteWeapon: SingleTarget {
   public IgniteWeapon() {
     range = 1;
     useLos = false;
-    name = "IgniteWeapon";
+    name = "Ignite Weapon";
     maxCooldown = 2;
     canTargetSelf = true;
     targetAlly(true);
