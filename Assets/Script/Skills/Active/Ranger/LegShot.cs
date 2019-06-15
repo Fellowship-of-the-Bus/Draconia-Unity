@@ -10,6 +10,8 @@ public class LegShot: SingleTarget {
     useWepRange = true;
     useLos = true;
     name = "Leg Shot";
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

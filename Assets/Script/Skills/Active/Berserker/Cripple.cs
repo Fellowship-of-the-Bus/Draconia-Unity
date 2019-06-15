@@ -8,6 +8,8 @@ public class Cripple: SingleTarget {
     useLos = false;
     name = "Cripple";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

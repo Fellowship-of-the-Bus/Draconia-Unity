@@ -83,6 +83,9 @@ public class CameraController : MonoBehaviour {
       float dx = 0;
       float dy = 0;
 
+      if (Input.GetMouseButtonDown(0)) {
+        lastPosition = Input.mousePosition;
+      }
 
       if (Input.GetMouseButton (0)) {
         Vector3 curr = Input.mousePosition;

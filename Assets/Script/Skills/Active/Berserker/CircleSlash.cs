@@ -12,10 +12,11 @@ public class CircleSlash: ActiveSkill, AoeSkill {
     useWepRange = false;
     aoe = 1;
     useLos = false;
-    name = "CircleSlash";
+    name = "Circle Slash";
     effectsTiles = false;
     maxCooldown = 2;
     targetsTiles = true;
+    dType = DamageType.physical;
 
     targetAlly(true);
     targetEnemy(true);

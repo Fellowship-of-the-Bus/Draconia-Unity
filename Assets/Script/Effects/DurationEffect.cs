@@ -4,6 +4,11 @@ public abstract class DurationEffect : Effect {
   public int duration = -1;
   bool listenOnEndturn = false;
 
+  public override string tooltip { get {
+    return tooltipHeader + tooltipDescription +
+      "\nTurns remaining: " + duration;
+  }}
+
   //when this is removed from owner
   public sealed override void remove() {
     base.remove();

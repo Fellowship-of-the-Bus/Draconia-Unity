@@ -9,6 +9,8 @@ public class SkullBash: SingleTarget {
     useLos = false;
     name = "Skull Bash";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

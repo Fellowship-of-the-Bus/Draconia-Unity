@@ -7,6 +7,8 @@ public class Shuriken: SingleTarget {
     useLos = true;
     name = "Shuriken";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

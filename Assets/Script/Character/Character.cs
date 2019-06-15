@@ -53,7 +53,7 @@ public class Character {
   public Gear gear = new Gear(null,null);
 
   //gain experience when using a skill and when killing enemy.
-  public int curLevel = 1;
+  public int curLevel = 0;
   public const int maxLevel = 100;
   [HideInInspector]
   public int curExp = 0;

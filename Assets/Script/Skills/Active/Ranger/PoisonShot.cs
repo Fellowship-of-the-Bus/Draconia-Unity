@@ -11,6 +11,8 @@ public class PoisonShot: SingleTarget {
     useLos = true;
     name = "Poison Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

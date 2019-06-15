@@ -12,6 +12,8 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     name = "Piercing Shot";
     effectsTiles = false;
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

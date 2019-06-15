@@ -12,6 +12,8 @@ public class ForceShot: TargetMover {
     useLos = true;
     name = "Force Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
     setDirection(TargetMover.Direction.away);

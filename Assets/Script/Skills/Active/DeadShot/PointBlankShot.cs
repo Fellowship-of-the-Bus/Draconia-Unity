@@ -13,6 +13,8 @@ public class PointBlankShot: SingleTarget {
     useLos = true;
     name = "Point Blank Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

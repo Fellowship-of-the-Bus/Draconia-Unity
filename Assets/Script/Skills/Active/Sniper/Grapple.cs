@@ -13,6 +13,8 @@ public class Grapple: CircleAoE {
     name = "Grapple";
     maxCooldown = 2;
     effectsTiles = true;
+    dType = DamageType.physical;
+
     targetAlly(true);
     targetEnemy(true);
   }

@@ -11,6 +11,8 @@ public class SerratedShot: SingleTarget {
     useLos = true;
     name = "Serrated Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

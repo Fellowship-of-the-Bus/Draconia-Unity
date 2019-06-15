@@ -12,6 +12,8 @@ public class BluntShot: SingleTarget {
     useLos = true;
     name = "Blunt Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }
