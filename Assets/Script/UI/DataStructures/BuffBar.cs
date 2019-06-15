@@ -22,7 +22,7 @@ public class BuffBar : MonoBehaviour {
       GameObject b = GameObject.Instantiate(button, new Vector3 (0,0,0), Quaternion.identity, transform) as GameObject;
 
       // TODO: Stop using the types. Support images that aren't for skills.
-      if (SkillList.get.skillImages[e.GetType()]) {
+      if (SkillList.get.skillImages.ContainsKey(e.GetType())) {
         b.GetComponent<Image>().sprite = SkillList.get.skillImages[e.GetType()];
       }
 
