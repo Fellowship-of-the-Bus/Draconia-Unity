@@ -14,6 +14,8 @@ public class Entrench: SelfTarget {
     useLos = false;
     name = "Entrench";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(true);
     targetEnemy(false);
   }

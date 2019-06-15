@@ -12,6 +12,8 @@ public class HookShot: TargetMover {
     useLos = true;
     name = "Hook Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
     setDirection(TargetMover.Direction.towards);

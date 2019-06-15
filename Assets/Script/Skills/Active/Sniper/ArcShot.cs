@@ -11,6 +11,8 @@ public class ArcShot: SingleTarget {
     useLos = false;
     name = "Arc Shot";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
     projectileType = ProjectileType.Arrow;

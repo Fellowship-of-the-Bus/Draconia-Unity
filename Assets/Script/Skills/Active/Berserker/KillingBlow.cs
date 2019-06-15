@@ -8,6 +8,8 @@ public class KillingBlow: SingleTarget {
     useLos = false;
     name = "Killing Blow";
     maxCooldown = 2;
+    dType = DamageType.physical;
+
     targetAlly(false);
     targetEnemy(true);
   }

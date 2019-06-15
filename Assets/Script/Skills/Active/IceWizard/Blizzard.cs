@@ -18,7 +18,8 @@ public class Blizzard: CircleAoE {
     maxCooldown = 2;
     dType = DamageType.magical;
     dEle = DamageElement.ice;
-    targetAlly(false);
+
+    targetAlly(true);
     targetEnemy(true);
   }
 
