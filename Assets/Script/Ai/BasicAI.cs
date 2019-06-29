@@ -30,7 +30,7 @@ public class BasicAI : BaseAI {
     } else {
       newPosition = best.tile.transform.position;
       GameManager.get.SelectedSkill = best.index;
-      GameManager.get.selectTarget(best.targetTile.occupant.gameObject);
+      GameManager.get.selectTarget(best.targetTile.occupant.gameObject, best.tile);
     }
 
     map.setPath(newPosition);

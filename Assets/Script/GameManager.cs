@@ -469,7 +469,7 @@ public class GameManager : MonoBehaviour {
   }
 
   // Preview of targetting a character
-  public void selectTarget(GameObject target) {
+  public void selectTarget(GameObject target, Tile sourceTile = null) {
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
       // if (targetHealth != null) targetHealth.update();
@@ -493,7 +493,7 @@ public class GameManager : MonoBehaviour {
         ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
         HealingSkill hskill = skill as HealingSkill;
         if (hskill != null) previewTarget.PreviewChange = skill.calculateHealing(previewTarget);
-        else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget);
+        else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget, sourceTile);
       }
       if (previewTarget == SelectedPiece) selectedHealth.update(previewTarget.PreviewChange);
     }
