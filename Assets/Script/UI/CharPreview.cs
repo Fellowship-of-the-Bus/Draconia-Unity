@@ -18,12 +18,10 @@ public class CharPreview: MonoBehaviour {
     int i = 0;
     for (; i < skills.Count; ++i) {
       ActiveSkill skill = skills[i];
-      skillButtons[i].tooltip.tiptext = skill.tooltip;
-      skillButtons[i].image.sprite = SkillList.get.skillImages[skill.GetType()];
+      skillButtons[i].setSkill(skill);
     }
     for (; i < skillButtons.Length; ++i) {
-      skillButtons[i].button.interactable = false;
-      skillButtons[i].image.enabled = false;
+      skillButtons[i].disable();
     }
     charName.text = character.name;
   }

@@ -194,8 +194,7 @@ public class GameManager : MonoBehaviour {
 
     //set skill buttons to the selected piece's skills, enable those that actually have skills
     new Range(0, skillButtons.Length).ForEach(i => {
-      skillButtons[i].button.onClick.AddListener(() => selectSkill(i));
-      skillButtons[i].button.enabled = true;
+      skillButtons[i].AddListener(() => selectSkill(i));
     });
 
     //winningConditions.Add(new Rout());
@@ -282,33 +281,7 @@ public class GameManager : MonoBehaviour {
       // for (int i = 0; i < selectedCharacter.equippedSkills.Count; i++) {
       //   s = selectedCharacter.equippedSkills[i];
       //   Debug.AssertFormat(s.name != "", "Skill Name is empty");
-
-      //   // Set the text on the button TODO: Remove this when every skill has an icon
-      //   skillButtons[i].GetComponentInChildren<Text>().text = s.name;
-
-      //   // Set the button image
-      //   Sprite skillImage = SkillList.get.skillImages[s.GetType()];
-      //   GameObject imageObject = skillButtons[i].transform.Find("SkillImage").gameObject;
-      //   Image skillDisplay = imageObject.GetComponent<Image>();
-      //   Image cooldownDisplay = imageObject.transform.Find("CooldownOverlay").gameObject.GetComponent<Image>();
-      //   if (skillImage == null) {
-      //     skillDisplay.enabled = false;
-      //   } else {
-      //     skillDisplay.sprite = skillImage;
-      //     skillDisplay.enabled = true;
-      //   }
-
-      //   // Set the tooltip
-      //   skillButtons[i].gameObject.GetComponent<Tooltip>().tiptext = s.tooltip;
-
-      //   // Cooldown indication
-      //   bool buttonEnabled = s.canUse();
-      //   skillButtons[i].interactable = buttonEnabled;
-      //   if (buttonEnabled) {
-      //     cooldownDisplay.fillAmount = 0f;
-      //   } else {
-      //     cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
-      //   }
+      //   skillButtons[i].setSkill(s);
       // }
     // }
 
@@ -407,30 +380,13 @@ public class GameManager : MonoBehaviour {
     cancelStack.Clear();
 
     for (int i = 0; i < skillButtons.Length; i++) {
-      skillButtons[i].button.interactable = false;
-      skillButtons[i].image.enabled = false;
-      skillButtons[i].tooltip.tiptext = "";
+      skillButtons[i].clearSkill();
     }
 
     for (int i = 0; i < SelectedPiece.equippedSkills.Count; i++) {
       ActiveSkill s = SelectedPiece.equippedSkills[i];
       Debug.AssertFormat(s.name != "", "Skill Name is empty");
-      skillButtons[i].tooltip.tiptext = s.tooltip;
-      skillButtons[i].button.interactable = s.canUse();
-      Image skillDisplay = skillButtons[i].image;
-      Sprite skillImage = SkillList.get.skillImages[s.GetType()];
-      if (skillImage == null) {
-        skillDisplay.enabled = false;
-      } else {
-        skillDisplay.sprite = skillImage;
-        skillDisplay.enabled = true;
-      }
-      Image cooldownDisplay = skillButtons[i].cooldown;
-      if (s.canUse()) {
-        cooldownDisplay.fillAmount = 0f;
-      } else {
-        cooldownDisplay.fillAmount = (float)s.curCooldown / (float)(s.maxCooldown + 1);
-      }
+      skillButtons[i].setSkill(s);
     }
 
     // AI's
@@ -447,6 +403,7 @@ public class GameManager : MonoBehaviour {
     //unselect
     if (gameState == GameState.attacking) {
       int currentSkill = SelectedSkill;
+      skillButtons[currentSkill].setSelected(false);
       while(!cancelStack.Pop().undo());
       if (currentSkill == i) {
         return;
@@ -454,6 +411,7 @@ public class GameManager : MonoBehaviour {
     }
 
     SelectedSkill = i;
+    skillButtons[i].setSelected(true);
     ActiveSkill skill = SelectedPiece.equippedSkills[i];
 
     skillTargets = skill.getTargets();
