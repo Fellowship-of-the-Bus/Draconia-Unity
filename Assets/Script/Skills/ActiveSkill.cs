@@ -221,6 +221,11 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
   }
 
+  // Returns whether a melee weapon is required for the skill
+  public bool isMeleeRequired() {
+    return !usableWeapon[(int)Weapon.Kinds.Ranged];
+  }
+
   protected void requireMelee() {
     usableWeapon[(int)Weapon.Kinds.Ranged] = false;
   }
@@ -294,7 +299,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   // Get the tiles that will be affected by an aoe skill targeting position
   protected List<Tile> getTargetsInAoe(Tile position, int aoe) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinDistance(position, aoe, usableWeapon[(int)Weapon.Kinds.Melee]);
+    List<Tile> targets = map.getTilesWithinDistance(position, aoe, isMeleeRequired());
 
     targets.Add(position);
     targets = new List<Tile>(targets.Filter((x) => canTarget(x)));

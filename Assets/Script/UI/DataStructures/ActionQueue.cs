@@ -6,6 +6,7 @@ using System.Collections;
 
 public class ActionQueue : MonoBehaviour {
   public GameObject turnButton;
+  public CharacterPortraitManager portraitManager;
 
   private LinkedList<actionTime> queue = new LinkedList<actionTime>();
   private List<BattleCharacter> pieces = new List<BattleCharacter>();
@@ -13,6 +14,7 @@ public class ActionQueue : MonoBehaviour {
 
   private float buttonWidth = 0;
   private float buttonHeight = 0;
+  public bool usePortraits = false;
 
   struct actionTime {
     public BattleCharacter piece;
@@ -143,7 +145,7 @@ public class ActionQueue : MonoBehaviour {
 
   public void highlight(BattleCharacter piece) {
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
-      Image buttonImg = n.Value.button.GetComponent<Image>();
+      Image buttonImg = n.Value.button.image;
 
       if (piece == null || n.Value.piece.Equals(piece)) {
         buttonImg.color = Color.white;
@@ -201,7 +203,7 @@ public class ActionQueue : MonoBehaviour {
     }
 
     if (buttonObject != null) {
-      buttonObject.GetComponentsInChildren<Text>()[0].text = piece.name;
+      buttonObject.text.text = piece.name;
       buttonObject.transform.localPosition += new Vector3(0, posn, 0);
     }
 
@@ -211,12 +213,16 @@ public class ActionQueue : MonoBehaviour {
   ActionQueueElem makeButton(BattleCharacter piece) {
     GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
     buttonObject.transform.SetParent(gameObject.transform, false);
-    Button button = buttonObject.GetComponent<Button>();
+    ActionQueueElem elem = buttonObject.GetComponent<ActionQueueElem>();
+    Button button = elem.button;
     button.onClick.AddListener(delegate {
       GameManager.get.cam.panTo(piece.gameObject.transform.position);
     });
-
-    return buttonObject.GetComponent<ActionQueueElem>();
+    if (usePortraits) {
+      elem.image.sprite = CharacterPortraitManager.getPortrait(piece);
+      elem.text.gameObject.SetActive(false);
+    }
+    return elem;
   }
 
   float getPosn(int i) {

@@ -863,26 +863,6 @@ public class GameManager : MonoBehaviour {
     );
   }
 
-  // Get the object being clicked on
-  public GameObject getClicked(Camera PlayerCam) {
-    if (Input.GetMouseButtonDown(0)) {
-      return getHovered(PlayerCam);
-    }
-    return null;
-  }
-
-  // Get the object being hovered over
-  public GameObject getHovered(Camera PlayerCam) {
-    Ray ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
-    // Raycast and verify that it collided
-
-    RaycastHit hitInfo;
-    if (Physics.Raycast(ray, out hitInfo)) {
-      return hitInfo.collider.gameObject;
-    }
-    return null;
-  }
-
   public GameObject playerPrefab;
   // Test function that instantiates a character
   public BattleCharacter createPiece() {

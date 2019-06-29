@@ -9,7 +9,7 @@ public class HealingRay: SingleTarget, HealingSkill {
   public HealingRay() {
     range = 3;
     useWepRange = false;
-    useLos = false;
+    useLos = true;
     name = "Healing Ray";
     maxCooldown = 2;
     canTargetSelf = true;
@@ -17,7 +17,7 @@ public class HealingRay: SingleTarget, HealingSkill {
     targetEnemy(false);
 
     projectileType = ProjectileType.HealingRay;
-    projectileMoveType = ProjectileMovementType.Straight;
+    projectileMoveType = ProjectileMovementType.Laser;
     projectileSpeed = 3f;
   }
 

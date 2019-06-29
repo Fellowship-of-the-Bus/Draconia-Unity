@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public abstract class SingleTarget: ActiveSkill {
   public override List<Tile> getTargets(Tile posn) {
     GameManager gm = GameManager.get;
-    List<Tile> tiles = gm.map.getTilesWithinRange(posn, range, usableWeapon[(int)Weapon.Kinds.Melee]);
+    List<Tile> tiles = gm.map.getTilesWithinRange(posn, range, isMeleeRequired());
     List<Tile> targets = new List<Tile>();
     Vector3 source = gm.getTargetingPostion(self.gameObject);
     foreach (Tile t in tiles) {
@@ -23,6 +23,7 @@ public abstract class SingleTarget: ActiveSkill {
     if (canTargetSelf) targets.Add(posn);
     return targets;
   }
+
   public List<Tile> getTargetsInAoe(Tile position) {
     return getTargetsInAoe(position, 0);
   }

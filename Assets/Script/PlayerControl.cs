@@ -34,10 +34,8 @@ public class PlayerControl : MonoBehaviour {
 
   // Detect Mouse Inputs
   void GetMouseInputs() {
-
-
-    handleHovered(gameManager.getHovered(PlayerCam));
-    handleClicked(gameManager.getClicked(PlayerCam));
+    handleHovered(getHovered(PlayerCam));
+    handleClicked(getClicked(PlayerCam));
   }
 
   bool overUI() {
@@ -51,7 +49,27 @@ public class PlayerControl : MonoBehaviour {
     return ret;
   }
 
-  void handleHovered(GameObject hoveredObject) {
+  // Get the object being clicked on
+  private GameObject getClicked(Camera PlayerCam) {
+    if (Input.GetMouseButtonDown(0)) {
+      return getHovered(PlayerCam);
+    }
+    return null;
+  }
+
+  // Get the object being hovered over
+  private GameObject getHovered(Camera PlayerCam) {
+    Ray ray = PlayerCam.ScreenPointToRay(Input.mousePosition); // Specify the ray to be casted from the position of the mouse click
+    // Raycast and verify that it collided
+
+    RaycastHit hitInfo;
+    if (Physics.Raycast(ray, out hitInfo)) {
+      return hitInfo.collider.gameObject;
+    }
+    return null;
+  }
+
+  private void handleHovered(GameObject hoveredObject) {
     channel.Log("handleHovered: {0}", hoveredObject);
     if (gameManager.SelectedPiece) gameManager.lineTo(gameManager.SelectedPiece.gameObject);
     if (overUI() || hoveredObject == null) return;
@@ -117,7 +135,7 @@ public class PlayerControl : MonoBehaviour {
     }
   }
 
-  void handleClicked(GameObject clickedObject) {
+  private void handleClicked(GameObject clickedObject) {
     if (overUI() || clickedObject == null || gameManager.moving) return;
     //handle multicubes
     if (clickedObject.transform.parent.CompareTag("Cube")) {
