@@ -20,6 +20,7 @@ public class Fortify: SingleTarget {
     FortifyEffect e = new FortifyEffect();
     e.level = level;
     e.duration = 2;
+    e.caster = self;
     target.applyEffect(e);
 
 

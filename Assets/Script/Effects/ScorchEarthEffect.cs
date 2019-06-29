@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
-  public BattleCharacter caster;
   List<BattleCharacter> effected = new List<BattleCharacter>();
   GameObject particleEff;
 
@@ -34,12 +33,12 @@ public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
     if (e.sender == null && e.hook == EventHook.endTurn) {
       BattleCharacter occupant = ownerTile.occupant;
       if (occupant != null && occupant == e.endTurnChar && !(effected.Contains(occupant)) && !occupant.levitating) {
-        GameManager.get.waitFor(0.5f, () => occupant.takeDamage((int)(damage(occupant)))); //TODO: animation time rather than 0.5f
+        GameManager.get.waitFor(0.5f, () => occupant.takeDamage((int)(damage(occupant)),caster)); //TODO: animation time rather than 0.5f
       }
       effected.Clear();
     } else if (e.hook == EventHook.enterTile && e.position == ownerTile.transform.position  && !(e.sender.levitating)) {
       effected.Add(e.sender);
-      GameManager.get.waitFor(0.5f, () => e.sender.takeDamage((int)(damage(e.sender)))); //TODO: animation time rather than 0.5f
+      GameManager.get.waitFor(0.5f, () => e.sender.takeDamage((int)(damage(e.sender)),caster)); //TODO: animation time rather than 0.5f
       e.interruptMove = true;
     }
   }

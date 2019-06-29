@@ -22,6 +22,7 @@ public class Levitate: SingleTarget {
     LevitateEffect debuff = new LevitateEffect();
     debuff.level = level;
     debuff.duration = 3;
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 

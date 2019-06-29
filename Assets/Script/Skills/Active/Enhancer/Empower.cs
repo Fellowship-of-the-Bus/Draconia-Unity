@@ -20,6 +20,7 @@ public class Empower: SingleTarget {
     EmpowerEffect e = new EmpowerEffect();
     e.level = level;
     e.duration = 2;
+    e.caster = self;
     target.applyEffect(e);
 
     Draconia.Event buffEvent = new Draconia.Event(self, EventHook.useBuffSkill);

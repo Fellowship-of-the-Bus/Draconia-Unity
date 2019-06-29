@@ -20,7 +20,7 @@ public class BurnEffect : DurationEffect, HealthChangingEffect {
     owner.removeParticle(particle);
   }
   protected override void additionalEffect(Draconia.Event e) {
-    owner.takeDamage(owner.calculateDamage((int)(damage * multiplier), DamageType.none, DamageElement.fire));
+    owner.takeDamage(owner.calculateDamage((int)(damage * multiplier), DamageType.none, DamageElement.fire),caster);
     multiplier -= 0.15f;
   }
   public override int CompareTo(Effect e) {

@@ -20,6 +20,7 @@ public class Enlighten: SingleTarget {
     EnlightenEffect e = new EnlightenEffect();
     e.level = level;
     e.duration = 2;
+    e.caster = self;
     target.applyEffect(e);
 
 

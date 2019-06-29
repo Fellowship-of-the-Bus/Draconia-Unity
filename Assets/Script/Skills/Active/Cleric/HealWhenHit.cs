@@ -26,6 +26,7 @@ public class HealWhenHit : CircleAoE {
     HealWhenHitEffect e = new HealWhenHitEffect();
     e.duration = 5;
     e.level = level;
+    e.caster = self;
     target.applyEffect(e);
   }
 }

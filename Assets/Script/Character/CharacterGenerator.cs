@@ -45,11 +45,6 @@ public class CharacterGenerator : MonoBehaviour {
     return attr;
   }
 
-  //Return the amount of exp necessary to go from level 1 to the given level.
-  private static int expToLevel(int level) {
-    return 100 * (level-1);
-  }
-
   private static List<Trait> generateTraits() {
     return TraitFactory.get.getRandomTraits(1,1);//Random.Range(TRAIT_MIN, TRAIT_MAX+1));
   }
@@ -66,7 +61,7 @@ public class CharacterGenerator : MonoBehaviour {
 
     character.attr = generateBaseAttributes();
 
-    character.gainExp(expToLevel(level));
+    character.setLevel(level);
 
     character.traits = generateTraits();
 

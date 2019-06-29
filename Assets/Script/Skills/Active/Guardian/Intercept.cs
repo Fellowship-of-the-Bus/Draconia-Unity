@@ -33,6 +33,7 @@ public class Intercept: SelfTarget {
     e.duration = 2;
     e.applyToSelf = false;
 
+    e.caster = self;
     target.applyEffect(e);
   }
 }

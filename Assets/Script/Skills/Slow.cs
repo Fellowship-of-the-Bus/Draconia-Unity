@@ -14,6 +14,7 @@ public class Slow: SingleTarget {
     SlowEffect debuff = new SlowEffect();
     debuff.level = level*2;
     debuff.duration = 2;
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 }

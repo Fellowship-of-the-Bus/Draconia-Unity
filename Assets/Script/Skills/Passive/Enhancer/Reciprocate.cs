@@ -11,6 +11,7 @@ public class Reciprocate : PassiveSkill {
   }
   protected override void additionalEffect(Draconia.Event e) {
     Effect buff = e.appliedBuff.clone();
+    buff.caster = self;
     owner.applyEffect(buff);
   }
 }

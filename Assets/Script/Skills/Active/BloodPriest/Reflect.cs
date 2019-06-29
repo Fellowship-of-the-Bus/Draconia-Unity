@@ -19,10 +19,11 @@ public class Reflect: SingleTarget {
   public override void additionalEffects (BattleCharacter target) {
     int cost = self.maxHealth / 10;
     if (self.curHealth > cost) {
-      self.takeDamage(cost);
+      self.takeDamage(cost,self);
       ReflectEffect e = new ReflectEffect();
       e.level = level;
       e.duration = 2;
+      e.caster = self;
       target.applyEffect(e);
 
 

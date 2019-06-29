@@ -23,6 +23,7 @@ public class Puncture: SingleTarget {
     debuff.level = level;
     debuff.duration = (level+5)/2;
     debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 }
