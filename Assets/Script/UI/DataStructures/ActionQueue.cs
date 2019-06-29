@@ -6,6 +6,7 @@ using System.Collections;
 
 public class ActionQueue : MonoBehaviour {
   public GameObject turnButton;
+  public CharacterPortraitManager portraitManager;
 
   private LinkedList<actionTime> queue = new LinkedList<actionTime>();
   private List<BattleCharacter> pieces = new List<BattleCharacter>();
@@ -13,6 +14,7 @@ public class ActionQueue : MonoBehaviour {
 
   private float buttonWidth = 0;
   private float buttonHeight = 0;
+  public bool usePortraits = false;
 
   struct actionTime {
     public BattleCharacter piece;
@@ -216,6 +218,10 @@ public class ActionQueue : MonoBehaviour {
     button.onClick.AddListener(delegate {
       GameManager.get.cam.panTo(piece.gameObject.transform.position);
     });
+    if (usePortraits) {
+      elem.image.sprite = CharacterPortraitManager.getPortrait(piece);
+      elem.text.gameObject.SetActive(false);
+    }
     return elem;
   }
 
