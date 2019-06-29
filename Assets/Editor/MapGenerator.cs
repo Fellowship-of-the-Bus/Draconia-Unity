@@ -152,7 +152,7 @@ static class MapGenerator {
         float rand = 0.05f - UnityEngine.Random.value/10.0f;
         tree.transform.localScale = new Vector3(tree.transform.localScale.x,
                                         tree.transform.localScale.y + rand / o.transform.localScale.y, tree.transform.localScale.z);
-        tree.transform.localPosition = new Vector3(0,0.5f,0);
+        tree.transform.localPosition = new Vector3(0,1f,0);
       }
       if (unpathable) {
         newTile.movePointSpent = 2*Tile.unpathableCost;
