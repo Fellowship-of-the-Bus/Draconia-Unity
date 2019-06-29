@@ -62,6 +62,9 @@ public class CameraController : MonoBehaviour {
       transform.rotation = preTransform.rotation;
     } else if (following != null) {
       Vector3 targetPosn = new Vector3(following.transform.position.x, 0, following.transform.position.z);
+      Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+      forward = forward * following.transform.position.y;
+      targetPosn = targetPosn + forward;
       if (panTime > 0f) {
         animatePan(panOrigin, targetPosn);
       } else {
@@ -197,7 +200,9 @@ public class CameraController : MonoBehaviour {
   }
 
   public void panTo(Vector3 target) {
-    savedPosn = new Vector3(target.x, 0, target.z);
+    Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+    forward = forward * target.y;
+    savedPosn = new Vector3(target.x, 0, target.z) + forward;
     relativePosn = transform.position - rotateAbout;
     panOrigin = transform.position - relativePosn;
     panTime = maxPanTime;
