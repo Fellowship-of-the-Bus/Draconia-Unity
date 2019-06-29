@@ -304,7 +304,7 @@ public class BattleCharacter : Effected {
   }
 
   void finishSkill(ActiveSkill skill, Tile target, List<Effected> targets) {
-    int expGained = getExpGained(skill, null);
+    int expGained = getExpGained(skill);
     List<BattleCharacter> cTargets = new List<BattleCharacter>();
     List<Tile> tTargets = new List<Tile>();
     foreach(Effected e in targets) {
@@ -349,8 +349,6 @@ public class BattleCharacter : Effected {
               postDamageEvent.damageTaken = damage;
               c.onEvent(postDamageEvent);
             }
-          } else {
-            expGained += getExpGained(skill, c);
           }
           Draconia.Event postAttackEvent = new Draconia.Event(this, EventHook.postAttack);
           postAttackEvent.damageTaken = damage;
@@ -404,7 +402,7 @@ public class BattleCharacter : Effected {
     return (int)(rawHeal*healingMultiplier);
   }
 
-  public void takeDamage(int damage) {
+  public void takeDamage(int damage, BattleCharacter source) {
     if (curHealth <= 0) return;
     floatingText(damage, Color.red, () => {
       curHealth -= damage;
@@ -414,7 +412,7 @@ public class BattleCharacter : Effected {
         if (e.preventDeath) {
           curHealth = 1;
         } else {
-          onDeath();
+          onDeath(source);
         }
       } else {
         if (model.animator) GameManager.get.waitFor(model.animator,"TakeDamage");
@@ -447,10 +445,11 @@ public class BattleCharacter : Effected {
     gameObject.SetActive(false);
   }
 
-  public void onDeath() {
+  public void onDeath(BattleCharacter source) {
     ActionQueue.get.remove(this);
-
-    onEvent(new Draconia.Event(this, EventHook.postDeath));
+    Draconia.Event e = new Draconia.Event(this, EventHook.postDeath);
+    e.killer = source;
+    onEvent(e);
 
     if (model.animator) GameManager.get.waitFor(StartCoroutine(fadeOut()));
     else gameObject.SetActive(false);
@@ -463,16 +462,8 @@ public class BattleCharacter : Effected {
     }
   }
 
-  //kill = null => get base exp for using skill
-  //get = character => get exp for killing it
-  public int getExpGained(ActiveSkill skill, BattleCharacter killed) {
-    int exp;
-    if (killed != null) {
-      //TODO: scale exp based on level difference
-      exp = killed.baseChar.expGiven;
-    } else {
-      exp = skill.expGainUse;
-    }
+  public int getExpGained(ActiveSkill skill) {
+    int exp = skill.expGainUse;
     return exp;
   }
 

@@ -33,6 +33,7 @@ public class RegenerateAura: SelfTarget {
     e.duration = 2;
     e.applyToSelf = true;
 
+    e.caster = self;
     target.applyEffect(e);
   }
 }

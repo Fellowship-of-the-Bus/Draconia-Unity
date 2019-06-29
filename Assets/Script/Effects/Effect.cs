@@ -6,6 +6,7 @@ public abstract class Effect : EventListener, IComparable<Effect> {
   public Tile ownerTile = null;
   public string name {get; set;}
   public int level = 0;
+  public BattleCharacter caster = null;
 
   public bool stackable = false;
 

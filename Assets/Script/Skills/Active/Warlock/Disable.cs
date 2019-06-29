@@ -21,6 +21,7 @@ public class Disable : SingleTarget {
     debuff.origin = this;
     debuff.target = target.equippedSkills[0]; // TODO: fix this to use the skill that the player selected
     debuff.level = level;
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 }

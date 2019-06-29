@@ -16,7 +16,7 @@ public class PoisonEffect : DurationEffect, HealthChangingEffect {
     owner.removeParticle(particle);
   }
   protected override void additionalEffect(Draconia.Event e) {
-    owner.takeDamage((int)(damage * multiplier));
+    owner.takeDamage((int)(damage * multiplier),caster);
     multiplier += 0.15f;
   }
   public override int CompareTo(Effect e) {

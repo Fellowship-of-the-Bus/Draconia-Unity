@@ -24,6 +24,7 @@ public class Entrench: SelfTarget {
     EntrenchEffect buff = new EntrenchEffect();
     buff.level = level;
     buff.duration = -1;
+    buff.caster = self;
     target.applyEffect(buff);
   }
 }

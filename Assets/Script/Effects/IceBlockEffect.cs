@@ -3,7 +3,6 @@ using UnityEngine;
 public class IceBlockEffect : DurationEffect {
   static GameObject blockPrefab = (GameObject)Resources.Load("Map/Doodads/CubeIce");
   GameObject block;
-  public BattleCharacter caster;
   protected override void onActivate() {
     block = (GameObject) GameObject.Instantiate(blockPrefab, new Vector3(ownerTile.transform.position.x, ownerTile.transform.position.y + ownerTile.getHeight() + 0.5f, ownerTile.transform.position.z), Quaternion.identity,
       ownerTile.transform);

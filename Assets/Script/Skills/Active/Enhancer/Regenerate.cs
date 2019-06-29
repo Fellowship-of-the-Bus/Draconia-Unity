@@ -27,6 +27,7 @@ public class Regenerate: SingleTarget, HealingSkill {
     buff.duration = (level+5)/2;
     //something about the damage needs to be addressed
     buff.healing = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
+    buff.caster = self;
     target.applyEffect(buff);
 
 

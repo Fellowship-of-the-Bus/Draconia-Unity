@@ -15,6 +15,7 @@ public class HolyShield : PassiveSkill {
       FortifyEffect effect = new FortifyEffect();
       effect.level = level;
       effect.duration = 2;
+      effect.caster = self;
       target.applyEffect(effect);
     }
   }

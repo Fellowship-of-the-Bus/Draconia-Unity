@@ -15,6 +15,12 @@ public enum DamageElement {
   none
 }
 
+public enum StatAlignment {
+  strength,
+  intelligence,
+  none
+}
+
 public abstract class ActiveSkill : EventListener, Skill {
   public const int InfiniteCooldown = -2;
 
@@ -31,7 +37,37 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int maxCooldown {get; set;}
 
   //experience gained when used
-  public int expGainUse = 10;
+  private float experienceStatMultiplier = 0.8f;
+  //for skills not aligned, give experience based on how much you would gain
+  //if you killed a target at your current level
+  private float notAlignedExpMultiplier = 0.4f;
+  private int notAlignedExp() {
+    return (int)(self.baseChar.expGiven*notAlignedExpMultiplier);
+  }
+  private int alignedExp(int statValue) {
+    return (int)(experienceStatMultiplier*statValue);
+  }
+  protected StatAlignment alignment = StatAlignment.none;
+  protected void strAligned() {
+    alignment = StatAlignment.strength;
+  }
+  protected void intAligned() {
+    alignment = StatAlignment.intelligence;
+  }
+  public int expGainUse {
+    get {
+      switch(alignment) {
+        case StatAlignment.strength:
+          return alignedExp(self.strength);
+        case StatAlignment.intelligence:
+          return alignedExp(self.intelligence);
+        case StatAlignment.none:
+          return notAlignedExp();
+        default:
+          return 0;
+      }
+    }
+  }
 
   protected bool[] usableWeapon = new bool[2] { true, true };
   private bool unarmed = true;
@@ -102,7 +138,7 @@ public abstract class ActiveSkill : EventListener, Skill {
       }
     } else {
       if (calculateDamage(target) != 0) {
-        target.takeDamage(calculateDamage(target));
+        target.takeDamage(calculateDamage(target),self);
       }
     }
     if (dEle == DamageElement.fire) {
@@ -112,6 +148,7 @@ public abstract class ActiveSkill : EventListener, Skill {
         debuff.level = level;
         debuff.duration = (int)(2*target.fireResMultiplier);
         debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*0.2f, 1);
+        debuff.caster = self;
         target.applyEffect(debuff);
       }
     }
@@ -182,6 +219,11 @@ public abstract class ActiveSkill : EventListener, Skill {
     } else {
       return curCooldown == 0 && unarmed;
     }
+  }
+
+  // Returns whether a melee weapon is required for the skill
+  public bool isMeleeRequired() {
+    return !usableWeapon[(int)Weapon.Kinds.Ranged];
   }
 
   protected void requireMelee() {
@@ -257,7 +299,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   // Get the tiles that will be affected by an aoe skill targeting position
   protected List<Tile> getTargetsInAoe(Tile position, int aoe) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinDistance(position, aoe, usableWeapon[(int)Weapon.Kinds.Melee]);
+    List<Tile> targets = map.getTilesWithinDistance(position, aoe, isMeleeRequired());
 
     targets.Add(position);
     targets = new List<Tile>(targets.Filter((x) => canTarget(x)));

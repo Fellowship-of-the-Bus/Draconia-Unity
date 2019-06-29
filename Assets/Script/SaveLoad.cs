@@ -76,6 +76,7 @@ public static class SaveLoad {
     } else channel.Log(saveName + " doesn't exist");
     active = false;
 
+    Options.init();
     // Unregister the thread before exit
     sampler.End();
     Profiler.EndThreadProfiling();

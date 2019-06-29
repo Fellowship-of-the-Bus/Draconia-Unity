@@ -22,12 +22,13 @@ public class DarkPower: CircleAoE {
   public override void additionalEffects (BattleCharacter target) {
     int cost = self.maxHealth / 10;
     if (self.curHealth > cost) {
-      self.takeDamage(cost);
+      self.takeDamage(cost,self);
 
       if (target.team == self.team) {
         BloodSacrificeEffect e = new BloodSacrificeEffect();
         e.setLevel(level);
         e.duration = 2;
+        e.caster = self;
         target.applyEffect(e);
       } else {
         BleedEffect debuff = new BleedEffect();
@@ -35,6 +36,7 @@ public class DarkPower: CircleAoE {
         debuff.duration = (level+5)/2;
         //some damage or debuff etc..
         debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
+        debuff.caster = self;
         target.applyEffect(debuff);
       }
     }

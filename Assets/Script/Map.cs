@@ -174,7 +174,7 @@ public class Map {
       foreach (Tile e in edgeTiles) {
         foreach (Tile a in getAdjacentTiles(e)) {
           if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall))
-                                        && (!melee || dist + a.getHeight() - t.getHeight()  <= range)) {
+                                        && (!melee || dist + a.getHeight() - t.getHeight()  < range+1)) {
             outerTiles.Add(a);
           }
         }
@@ -284,7 +284,7 @@ public class Map {
       ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
       bool aoe = (skill is AoeSkill);
       int range = skill.range;
-      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range, false);
+      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range, skill.isMeleeRequired());
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
           t.setColor(Color.white);

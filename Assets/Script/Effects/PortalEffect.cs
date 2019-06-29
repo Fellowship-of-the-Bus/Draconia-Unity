@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public class PortalEffect : DurationEffect {
   GameObject block;
-  public BattleCharacter caster;
   public PortalEffect sibling;
 
   public List<BattleCharacter> effected = new List<BattleCharacter>();

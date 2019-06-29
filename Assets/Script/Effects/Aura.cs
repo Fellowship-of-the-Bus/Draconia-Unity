@@ -62,6 +62,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
 
   private void setup(BattleCharacter c) {
     T effect = effectFactory();
+    effect.caster = caster;
     effect.level = level;
     c.applyEffect(effect);
     affected.Add(c, effect);

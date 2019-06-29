@@ -9,6 +9,7 @@ public abstract class PassiveSkill : Effect, Skill {
   public bool useLos {get; set;}
 
   public void activate(BattleCharacter target) {
+    this.caster = self;
     target.applyEffect(this);
   }
 }

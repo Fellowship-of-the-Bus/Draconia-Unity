@@ -33,7 +33,7 @@ public class SentryAI : BaseAI {
     best = evaluateSkillOptions(newTile);
     if (best != null) {
       GameManager.get.SelectedSkill = best.index;
-      GameManager.get.selectTarget(best.targetTile.occupant.gameObject);
+      GameManager.get.selectTarget(best.targetTile.occupant.gameObject, best.tile);
     }
 
     map.setPath(newPosition);
