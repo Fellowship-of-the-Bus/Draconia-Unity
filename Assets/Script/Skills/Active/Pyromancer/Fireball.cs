@@ -12,6 +12,7 @@ public class Fireball: SingleTarget {
     useLos = true;
     name = "Fireball";
     maxCooldown = 2;
+    intAligned();
 
     dType = DamageType.magical;
     dEle = DamageElement.fire;

@@ -10,6 +10,9 @@ namespace Draconia {
     public bool preventDeath = false;
     public BattleCharacter newTarget;
 
+    //Post death
+    public BattleCharacter killer;
+
     public int damageTaken;
     public BattleCharacter attackTarget;
     public ActiveSkill skillUsed;

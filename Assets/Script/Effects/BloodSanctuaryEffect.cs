@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class BloodSanctuaryEffect : DurationEffect {
-  public BattleCharacter caster;
   List<BattleCharacter> effected = new List<BattleCharacter>();
   protected override void onActivate() {
     attachListener(GameManager.get.eventManager, EventHook.endTurn);

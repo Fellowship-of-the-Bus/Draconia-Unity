@@ -20,6 +20,7 @@ public class Ward: SingleTarget {
     WardEffect e = new WardEffect();
     e.level = level;
     e.duration = 2;
+    e.caster = self;
     target.applyEffect(e);
 
 

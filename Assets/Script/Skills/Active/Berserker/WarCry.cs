@@ -21,6 +21,7 @@ public class WarCry: CircleAoE {
     WarCryEffect e = new WarCryEffect();
     e.level = level;
     e.duration = 1;
+    e.caster = self;
     target.applyEffect(e);
   }
 }

@@ -9,6 +9,7 @@ public class Punch: SingleTarget {
     name = "Punch";
     maxCooldown = 1;
     dType = DamageType.physical;
+    strAligned();
 
     targetAlly(false);
     targetEnemy(true);

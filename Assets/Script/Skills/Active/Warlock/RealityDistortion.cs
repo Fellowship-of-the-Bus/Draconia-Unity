@@ -20,6 +20,7 @@ public class RealityDistortion : SingleTarget {
     RealityDistortionEffect debuff = new RealityDistortionEffect();
     debuff.level = level;
     debuff.duration = 2;
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 }

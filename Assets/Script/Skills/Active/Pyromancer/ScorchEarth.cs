@@ -39,6 +39,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     burn.level = level;
     burn.duration = 3;
     burn.caster = self;
+    burn.caster = self;
     target.applyEffect(burn);
   }
 

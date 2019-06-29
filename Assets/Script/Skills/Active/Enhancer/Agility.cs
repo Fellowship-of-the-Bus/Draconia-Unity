@@ -20,6 +20,7 @@ public class Agility: SingleTarget {
     ClimbEffect e = new ClimbEffect();
     e.level = level;
     e.duration = 1;
+    e.caster = self;
     target.applyEffect(e);
   }
 }

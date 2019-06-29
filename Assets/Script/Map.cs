@@ -174,7 +174,7 @@ public class Map {
       foreach (Tile e in edgeTiles) {
         foreach (Tile a in getAdjacentTiles(e)) {
           if (!inRangeTiles.Contains(a) && ((!outerTiles.Contains(a) && a.movePointSpent < 10) || (ignorePathing && !a.isWall))
-                                        && (!melee || dist + a.getHeight() - t.getHeight()  <= range)) {
+                                        && (!melee || dist + a.getHeight() - t.getHeight()  < range+1)) {
             outerTiles.Add(a);
           }
         }

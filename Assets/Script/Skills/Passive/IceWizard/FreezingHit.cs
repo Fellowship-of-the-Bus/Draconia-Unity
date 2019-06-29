@@ -12,6 +12,7 @@ public class FreezingHit : PassiveSkill {
       SlowEffect debuff = new SlowEffect();
       debuff.level = level*2;
       debuff.duration = 2;
+      debuff.caster = self;
       e.attackTarget.applyEffect(debuff);
     }
   }

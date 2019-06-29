@@ -48,7 +48,9 @@ public class Portal : ActiveSkill, AoeSkill {
     eff1.sibling = eff2;
     eff2.sibling = eff1;
     eff1.effected = eff2.effected = new List<BattleCharacter>();
+    eff1.caster = self;
     targets[0].applyEffect(eff1);
+    eff2.caster = self;
     targets[1].applyEffect(eff2);
   }
 

@@ -20,6 +20,7 @@ public class DivineShield: SingleTarget {
     DodgeEffect e = new DodgeEffect();
     e.level = level;
     e.duration = 3;
+    e.caster = self;
     target.applyEffect(e);
   }
 }

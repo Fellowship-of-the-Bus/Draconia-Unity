@@ -21,7 +21,8 @@ public class BloodSacrifice : SelfTarget {
     BloodSacrificeEffect e = new BloodSacrificeEffect();
     e.setLevel(level);
     e.duration = 2;
+    e.caster = self;
     target.applyEffect(e);
-    target.takeDamage(2);
+    target.takeDamage(2,self);
   }
 }

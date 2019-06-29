@@ -23,6 +23,7 @@ public class ExsanguinationAura: PassiveSkill {
     e.duration = -1;
     e.applyToSelf = true;
 
+    e.caster = self;
     owner.applyEffect(e);
   }
 

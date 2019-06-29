@@ -24,6 +24,7 @@ public class LegShot: SingleTarget {
     CrippleEffect debuff = new CrippleEffect();
     debuff.level = level;
     debuff.duration = 2;
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 }

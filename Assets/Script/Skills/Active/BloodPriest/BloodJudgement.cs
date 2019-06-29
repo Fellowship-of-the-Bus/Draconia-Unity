@@ -39,7 +39,7 @@ public class BloodJudgement: CircleAoE {
   protected override void trigger(Draconia.Event e) {
     if (e.hook == EventHook.postSkill) {
       //Does not use calculate damage since the cost should not be effected by any defenses
-      self.takeDamage((int)(cost * percent()));
+      self.takeDamage((int)(cost * percent()), self);
     }
   }
 
@@ -53,7 +53,7 @@ public class BloodJudgement: CircleAoE {
     if (target.team == self.team) {
       target.takeHealing((int)(target.calculateHealing((int)(amount() * percent()))));
     } else {
-      target.takeDamage((int)(target.calculateDamage((int)(amount() * percent()), DamageType.magical, DamageElement.none)));
+      target.takeDamage((int)(target.calculateDamage((int)(amount() * percent()), DamageType.magical, DamageElement.none)), self);
     }
   }
 

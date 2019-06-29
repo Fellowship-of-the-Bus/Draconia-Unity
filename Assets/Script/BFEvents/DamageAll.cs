@@ -9,10 +9,10 @@ public class DamageAll : BFTimeEvent{
 
   public override void trigger() {
     foreach (BattleCharacter c in GameManager.get.players) {
-      c.takeDamage(2);
+      c.takeDamage(2, null);
     }
     foreach (BattleCharacter c in GameManager.get.enemies) {
-      c.takeDamage(3);
+      c.takeDamage(3, null);
     }
   }
 }

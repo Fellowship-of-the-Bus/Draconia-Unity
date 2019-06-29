@@ -53,15 +53,22 @@ public class Character {
   public Gear gear = new Gear(null,null);
 
   //gain experience when using a skill and when killing enemy.
-  public int curLevel = 0;
-  public const int maxLevel = 100;
-  [HideInInspector]
+  public int curLevel = 1;
+  //[HideInInspector]
   public int curExp = 0;
-  [HideInInspector]
-  public int maxExp = 100;
+  public int nextLevelExp {
+    get {
+      return expToLevel(curLevel+1);
+    }
+  }
 
   //exp given to killer on death
-  public int expGiven = 30;
+  //assuming ~10 kills gives a level up (took exp needed to levelup, divided by 10 and interpolated)
+  //then took the coefficients to be integers
+  //Maybe this should not be constant at all levels? Maybe should be like 6 kills at level 1, scaling to 10 at level 50?
+  public int expGiven {
+    get { return 6*curLevel*curLevel - 19*curLevel + 140; }
+  }
 
   public Character(string name): this() {
     this.name = name;
@@ -101,14 +108,41 @@ public class Character {
     return attr;
   }
 
-  public void gainExp(int amount) {
-    curExp += (int)(amount * (1+totalTraits.spec.expGain));
-    int levelsToGain = curExp/maxExp;
-    curExp = curExp % maxExp;
-    if (levelsToGain == 0 ) {
-      return;
+  //Interpolated experience points like (level, exp) : (2,1000), (3, 2250) etc:
+  //rounded coefficients to nice numbers afterwards.
+  public int expAtLevel(int l) {
+    if (l <= 1){
+      return 0;
     }
-    levelsToGain = (int)Math.Min(levelsToGain, maxLevel - curLevel);
+    l = l - 1;
+    return 20*l*l*l - 50*l*l + 1250*l - 200;
+  }
+  public int expToLevelUp() {
+    return expAtLevel(curLevel+1 - curExp);
+  }
+  public int expToLevel(int level) {
+    return expAtLevel(level) - curExp;
+  }
+  //requires l > curLevel or l == curLevel and curExp == exp_at_level(level)
+  public void setLevel(int level) {
+    if (! (level > curLevel || curExp == expAtLevel(level))) {
+      Channel.game.Log("character.set_level() called trying to lower level/remove exp, may infinite loop");
+    }
+    gainExp(expToLevel(level), false);
+  }
+  // for use in the debug button
+  public void setLevelUp() {
+    gainExp(expToLevelUp(), false);
+  }
+  public void gainExp(int amount, bool applyExpTrait = true) {
+    if (applyExpTrait) {
+      curExp += (int)(amount * (1+totalTraits.spec.expGain));
+    }
+    int newLevel = curLevel;
+    while(expAtLevel(newLevel+1) <= curExp){
+      newLevel += 1;
+    }
+    int levelsToGain = newLevel - curLevel;
     curLevel += levelsToGain;
     gainStats(levelsToGain);
     skills.gainLevels(levelsToGain);

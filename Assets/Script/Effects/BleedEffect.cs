@@ -15,7 +15,7 @@ public class BleedEffect : DurationEffect, HealthChangingEffect {
     owner.removeParticle(particle);
   }
   protected override void additionalEffect(Draconia.Event e) {
-    owner.takeDamage(damage);
+    owner.takeDamage(damage,caster);
   }
   public override int CompareTo(Effect e) {
     Debug.Assert(e is BleedEffect);

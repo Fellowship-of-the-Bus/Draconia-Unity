@@ -26,6 +26,7 @@ public class FrostArmor: SingleTarget {
     FrostArmorEffect debuff = new FrostArmorEffect();
     debuff.level = level;
     debuff.duration = 3;
+    debuff.caster = self;
     target.applyEffect(debuff);
   }
 

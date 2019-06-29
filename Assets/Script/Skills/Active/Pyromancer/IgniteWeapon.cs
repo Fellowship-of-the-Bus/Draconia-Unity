@@ -24,6 +24,7 @@ public class IgniteWeapon: SingleTarget {
     IgniteWeaponEffect buff = new IgniteWeaponEffect();
     buff.level = level;
     buff.duration = 2;
+    buff.caster = self;
     target.applyEffect(buff);
   }
 }

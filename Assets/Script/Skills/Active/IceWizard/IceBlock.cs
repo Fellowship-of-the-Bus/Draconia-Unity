@@ -36,6 +36,7 @@ public class IceBlock: ActiveSkill, AoeSkill {
     block.level = level;
     block.duration = 2;
     block.caster = self;
+    block.caster = self;
     target.applyEffect(block);
   }
 

@@ -29,6 +29,7 @@ public class SkullBash: SingleTarget {
     target.curAction = Math.Max(0, target.curAction - 300);
     debuff.level = level;
     debuff.duration = 3;
+    debuff.caster = self;
     target.applyEffect(debuff);
     ActionQueue.get.updateTime(target);
   }
