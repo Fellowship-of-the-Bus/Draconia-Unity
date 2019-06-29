@@ -284,7 +284,7 @@ public class Map {
       ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
       bool aoe = (skill is AoeSkill);
       int range = skill.range;
-      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range, false);
+      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range, skill.isMeleeRequired());
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
           t.setColor(Color.white);

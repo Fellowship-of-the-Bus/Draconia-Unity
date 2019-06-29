@@ -29,7 +29,7 @@ public class CircleSlash: ActiveSkill, AoeSkill {
   //implements AoeSkill....
   public List<Tile> getTargetsInAoe(Vector3 position) {
     Map map = GameManager.get.map;
-    List<Tile> targets = map.getTilesWithinRange(map.getTile(position), aoe, usableWeapon[(int)Weapon.Kinds.Melee]);
+    List<Tile> targets = map.getTilesWithinRange(map.getTile(position), aoe, isMeleeRequired());
     return targets;
   }
 
