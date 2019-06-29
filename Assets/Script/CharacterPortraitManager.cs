@@ -46,6 +46,10 @@ public class CharacterPortraitManager : MonoBehaviour {
     writeTexture(getPath(character), tex);
   }
 
+  public static void takePhoto(BattleCharacter character) {
+    get.generator.takePhoto(character);
+  }
+
   public static Sprite getPortrait(BattleCharacter character) {
     string path = getPath(character);
     Texture2D tex = readTexture(path);

@@ -73,9 +73,8 @@ public class BattleCharacter : Effected {
   [HideInInspector]
   public float curAction = 0;
 
-  public Vector3 portraitCameraPosition {
-    // Temporary. This should be changed to a position set in the model script.
-    get { return new Vector3(transform.position.x, transform.position.y, transform.position.z - 3); }
+  public Transform portraitCameraPosition {
+    get { return model.portraitCameraPosition; }
   }
 
   public enum Team {
@@ -176,6 +175,7 @@ public class BattleCharacter : Effected {
     }
     gameObject.name = name;
 
+    CharacterPortraitManager.takePhoto(this);
   }
 
   void setSkills() {

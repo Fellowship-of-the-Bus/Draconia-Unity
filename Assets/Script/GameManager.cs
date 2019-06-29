@@ -240,7 +240,7 @@ public class GameManager : MonoBehaviour {
     foreach (var l in characters.Values) {
       foreach (var bchar in l) {
         bchar.init();
-        bchar.ai.init();
+        bchar.ai.init(); // sentry AI needs curTile, which is set just above
         characterListener.attachListener(bchar, EventHook.postDeath);
         actionQueue.add(bchar); //Needs to be done here since it relies on characters having their attribute set
       }

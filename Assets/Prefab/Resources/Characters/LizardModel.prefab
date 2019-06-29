@@ -29,6 +29,7 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.65, z: 0.75}
   m_Children:
   - {fileID: 3066724735794488488}
+  - {fileID: 4860759074404325180}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,6 +50,37 @@ MonoBehaviour:
   leftHand: {fileID: 3066724735794488532}
   rightHand: {fileID: 3066724735794488552}
   characterType: 1
+  portraitCameraPosition: {fileID: 4860759074404325180}
+--- !u!1 &5393267210791940578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4860759074404325180}
+  m_Layer: 0
+  m_Name: Portrait Camera Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4860759074404325180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5393267210791940578}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: -0, w: -0.3420201}
+  m_LocalPosition: {x: 0.447, y: 0.628, z: 1.263}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4206057423441954}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 220, z: 0}
 --- !u!1001 &3066724735794101770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60,6 +92,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Model
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 5124425ce7dc00e4289be24410282ecc, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6b5fedd9b98f7aa4caaddf960892851d, type: 2}
     - target: {fileID: 400034, guid: 5124425ce7dc00e4289be24410282ecc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -104,10 +140,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9500000, guid: 5124425ce7dc00e4289be24410282ecc, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 6b5fedd9b98f7aa4caaddf960892851d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5124425ce7dc00e4289be24410282ecc, type: 3}
 --- !u!1 &3066724735794067656 stripped

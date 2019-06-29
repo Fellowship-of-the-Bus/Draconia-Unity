@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -8,22 +9,27 @@ using UnityEngine;
 public class CharacterPortraitGenerator : MonoBehaviour {
   public new Camera camera;
   public RenderTexture texture;
-  public BattleCharacter target;
-  private bool doPhoto = false;
+  private ConcurrentQueue<BattleCharacter> queue = new ConcurrentQueue<BattleCharacter>();
+  private BattleCharacter target;
 
-  // OnPostRender: script needs to be attached to an object with a Camera component
-  void OnPostRender() {
-    if (doPhoto) {
-      CharacterPortraitManager.savePortrait(target, renderToTex2d(texture));
-      doPhoto = false;
-    }
+  void Start() {
+    camera.enabled = false;
   }
 
-  public void takePhoto(BattleCharacter obj) {
-    target = obj;
-    // TODO: properly position camera to look at obj
-    camera.transform.position = obj.portraitCameraPosition;
-    doPhoto = true;
+  void Update() {
+    if (! queue.TryDequeue(out target)) return;
+    Transform cameraLoc = target.portraitCameraPosition;
+    transform.SetPositionAndRotation(cameraLoc.position, cameraLoc.rotation);
+    camera.Render();
+  }
+
+  // photos are taken once per frame if there are characters in the queue
+  void OnPostRender() {
+    CharacterPortraitManager.savePortrait(target, renderToTex2d(texture));
+  }
+
+  public void takePhoto(BattleCharacter target) {
+    queue.Enqueue(target);
   }
 
   private Texture2D renderToTex2d(RenderTexture texture) {
