@@ -17,7 +17,7 @@ public class HealingRay: SingleTarget, HealingSkill {
     targetEnemy(false);
 
     projectileType = ProjectileType.HealingRay;
-    projectileMoveType = ProjectileMovementType.Straight;
+    projectileMoveType = ProjectileMovementType.Laser;
     projectileSpeed = 3f;
   }
 

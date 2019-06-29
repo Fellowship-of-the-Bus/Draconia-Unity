@@ -18,7 +18,8 @@ public enum ProjectileType {
 
 public enum ProjectileMovementType {
   Straight,
-  Parabolic
+  Parabolic,
+  Laser
 }
 
 public class Projectile {
@@ -76,35 +77,43 @@ public class Projectile {
   IEnumerator move(ProjectileType projType, ProjectileMovementType moveType, float speed) {
     const float height = 2f;
     if (projectile) {
-      bool isParabolic = moveType == ProjectileMovementType.Parabolic;
       projectile.transform.SetParent(null);
+      if (moveType == ProjectileMovementType.Laser) {
+        LineRenderer laser = projectile.GetComponent<LineRenderer>();
 
-      Transform proj = projectile.transform.Find("Projectile");
-      if (proj == null) {
-        proj = projectile.transform;
+        laser.SetPosition(0, source.transform.position);
+        laser.SetPosition(1, target.transform.position);
+        yield return new WaitForSeconds(1);
+      } else {
+        bool isParabolic = moveType == ProjectileMovementType.Parabolic;
+
+        Transform proj = projectile.transform.Find("Projectile");
+        if (proj == null) {
+          proj = projectile.transform;
+        }
+
+        Vector3 startDirection = isParabolic ? direction + new Vector3(0,height,0) : direction;
+        Quaternion angle = Quaternion.LookRotation(startDirection);
+        proj.rotation = angle;
+
+        yield return GameManager.get.moveObject(
+          projectile,
+          speed,
+          projectile.transform.position,
+          target.transform.position,
+          0,
+          1,
+          null,
+          height,
+          (t) => {
+            const float totalRotation = 90f;
+            proj.rotation = angle;
+            proj.Rotate(Vector3.right,totalRotation*t);
+          },
+          false,
+          isParabolic
+        );
       }
-
-      Vector3 startDirection = isParabolic ? direction + new Vector3(0,height,0) : direction;
-      Quaternion angle = Quaternion.LookRotation(startDirection);
-      proj.rotation = angle;
-
-      yield return GameManager.get.moveObject(
-        projectile,
-        speed,
-        projectile.transform.position,
-        target.transform.position,
-        0,
-        1,
-        null,
-        height,
-        (t) => {
-          const float totalRotation = 90f;
-          proj.rotation = angle;
-          proj.Rotate(Vector3.right,totalRotation*t);
-        },
-        false,
-        isParabolic
-      );
     }
     callback();
 
@@ -120,7 +129,6 @@ public class Projectile {
       switch (projType) {
         case ProjectileType.Fireball:
         case ProjectileType.FireLance:
-        case ProjectileType.HealingRay:
           projectile.GetComponent<ParticleSystem>().Stop();
           yield return new WaitForSeconds(1);
           break;
