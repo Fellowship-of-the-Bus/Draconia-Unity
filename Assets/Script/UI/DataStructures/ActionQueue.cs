@@ -198,9 +198,6 @@ public class ActionQueue : MonoBehaviour {
 
     float posn = getPosn(i);
     moveDown(i);
-    if (piece.name == "") {
-      piece.name = queue.Count.ToString();
-    }
 
     if (buttonObject != null) {
       buttonObject.text.text = piece.name;
