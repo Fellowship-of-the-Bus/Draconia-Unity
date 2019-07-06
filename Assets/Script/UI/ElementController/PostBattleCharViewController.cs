@@ -19,7 +19,7 @@ public class PostBattleCharViewController: MonoBehaviour {
     // Set exp bar
     // TODO: Start at prebattle exp and animate to post battle exp value
     Vector3 scale = expBar.transform.localScale;
-    scale.x = Math.Max(Math.Min((float)newChar.curExp/newChar.nextLevelExp,1),0);
+    scale.x = newChar.percentageToNextLevel();
     expBar.transform.localScale = scale;
 	}
 }
