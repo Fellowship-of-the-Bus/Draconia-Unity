@@ -4,13 +4,13 @@ using UnityEngine.Events;
 
 public class SkillButton : MonoBehaviour {
   [SerializeField]
-  private Tooltip tooltip;
+  private Tooltip tooltip = null;
   [SerializeField]
-  private Image image;
+  private Image image = null;
   [SerializeField]
-  private Image cooldown;
+  private Image cooldown = null;
   [SerializeField]
-  private Button button;
+  private Button button = null;
 
   public void AddListener(UnityAction call) {
     button.onClick.AddListener(call);
