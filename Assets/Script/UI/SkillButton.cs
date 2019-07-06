@@ -29,7 +29,7 @@ public class SkillButton : MonoBehaviour {
 
     Sprite skillImage = SkillList.get.skillImages[skill.GetType()];
     if (skillImage != null) {
-      image.sprite = skillImage;
+      image.overrideSprite = skillImage;
     }
 
     if (usable) {
