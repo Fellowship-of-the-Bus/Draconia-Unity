@@ -420,13 +420,12 @@ public class GameManager : MonoBehaviour {
     changeState(GameState.attacking);
 
     cancelStack.Push(new UndoAction(() => {
-
-
+      skillButtons[i].setSelected(false);
       changeState(GameState.moving);
     }, true));
   }
 
-  // Preview of targetting a character
+  // Preview of targeting a character
   public void selectTarget(GameObject target, Tile sourceTile = null) {
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
