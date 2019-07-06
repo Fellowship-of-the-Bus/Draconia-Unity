@@ -159,7 +159,8 @@ public class Character {
     gainExp(expToLevelUp(), false);
   }
 
-  public void gainExp(int amount, bool applyExpTrait = true) {
+  //returns maxHP gain
+  public int gainExp(int amount, bool applyExpTrait = true) {
     if (applyExpTrait) {
       amount = (int)(amount * (1+totalTraits.spec.expGain));
     }
@@ -171,8 +172,8 @@ public class Character {
     expAtNextLevel = expAtLevel(newLevel + 1);
     int levelsToGain = newLevel - curLevel;
     curLevel = newLevel;
-    gainStats(levelsToGain);
     skills.gainLevels(levelsToGain);
+    return gainStats(levelsToGain);
   }
 
   private static readonly int STR_GAIN = 2;
@@ -182,12 +183,14 @@ public class Character {
   private static readonly int PDEF_GAIN = 5;
   private static readonly int MDEF_GAIN = 5;
   //gain stats functionp
-  public void gainStats(int levels) {
+  //returns maxHp gain
+  public int gainStats(int levels) {
     attr.strength += STR_GAIN * levels;
     attr.intelligence += INT_GAIN * levels;
     attr.speed += SPEED_GAIN * levels;
     attr.maxHealth += HEALTH_GAIN * levels;
     attr.physicalDefense += PDEF_GAIN * levels;
     attr.magicDefense += MDEF_GAIN * levels;
+    return HEALTH_GAIN*levels;
   }
 }

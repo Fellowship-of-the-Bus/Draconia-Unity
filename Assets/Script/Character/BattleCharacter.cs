@@ -367,7 +367,11 @@ public class BattleCharacter : Effected {
     postSkill.skillUsed = skill;
     onEvent(postSkill);
 
-    baseChar.gainExp(expGained);
+    int maxHPGain = baseChar.gainExp(expGained);
+    if (maxHPGain != 0){
+      PreviewChange = maxHPGain;
+      takeHealing(maxHPGain);
+    }
   }
 
   public FloatingText damageText;

@@ -72,6 +72,7 @@ public class CharacterGenerator : MonoBehaviour {
     Character character = new Character();
     character.name = "Brodric";
     character.attr = generateBaseAttributes();
+    character.setLevel(1);
     //give additional stats unique to brodric
     character.attr.strength += 5;
     character.attr.physicalDefense += 3;
@@ -85,6 +86,7 @@ public class CharacterGenerator : MonoBehaviour {
     Character character = new Character();
     character.name = "Sisdric";
     character.attr = generateBaseAttributes();
+    character.setLevel(1);
     //give additional stats unique to brodric
     character.attr.intelligence += 5;
     character.attr.magicDefense += 3;
