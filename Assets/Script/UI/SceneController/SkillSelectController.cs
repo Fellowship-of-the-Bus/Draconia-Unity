@@ -61,5 +61,13 @@ public class SkillSelectController: MonoBehaviour {
     GameObject.Destroy(s.gameObject);
   }
 
+  //Debug character level up
+  public void levelUp() {
+    if(curChar != null) {
+      curChar.setLevelUp();
+      charSelect.updateAttrView();
+    }
+  }
+
   public static SkillSelectController get { get; set; }
 }

@@ -56,6 +56,8 @@ public class Character {
   public int curLevel = 1;
   //[HideInInspector]
   public int curExp = 0;
+  //debug field only
+  public int expAtNextLevel = 0;
   public int nextLevelExp {
     get {
       return expToLevel(curLevel+1);
@@ -65,9 +67,15 @@ public class Character {
   //exp given to killer on death
   //assuming ~10 kills gives a level up (took exp needed to levelup, divided by 10 and interpolated)
   //then took the coefficients to be integers
+  //Current setting:
   //Maybe this should not be constant at all levels? Maybe should be like 6 kills at level 1, scaling to 10 at level 50?
   public int expGiven {
-    get { return 6*curLevel*curLevel - 19*curLevel + 140; }
+    get {
+      // return 6*curLevel*curLevel - 19*curLevel + 140;
+      //6 at level 1 to 10 at level 50
+      float numKillPerLevelup = 6 + curLevel*4/50.0f;
+      return (int)((expAtLevel(curLevel+1) - expAtLevel(curLevel))/numKillPerLevelup);
+    }
   }
 
   public Character(string name): this() {
@@ -118,12 +126,12 @@ public class Character {
     return 20*l*l*l - 50*l*l + 1250*l - 200;
   }
   public int expToLevelUp() {
-    return expAtLevel(curLevel+1 - curExp);
+    return expAtLevel(curLevel+1) - curExp;
   }
   public int expToLevel(int level) {
     return expAtLevel(level) - curExp;
   }
-  //requires l > curLevel or l == curLevel and curExp == exp_at_level(level)
+  //requires l > curLevel or l == curLevel and curExp == expAtLevel(level)
   public void setLevel(int level) {
     if (! (level > curLevel || curExp == expAtLevel(level))) {
       Channel.game.Log("character.set_level() called trying to lower level/remove exp, may infinite loop");
@@ -136,14 +144,16 @@ public class Character {
   }
   public void gainExp(int amount, bool applyExpTrait = true) {
     if (applyExpTrait) {
-      curExp += (int)(amount * (1+totalTraits.spec.expGain));
+      amount += (int)(amount * (1+totalTraits.spec.expGain));
     }
+    curExp += amount;
     int newLevel = curLevel;
     while(expAtLevel(newLevel+1) <= curExp){
       newLevel += 1;
     }
+    expAtNextLevel = expAtLevel(newLevel + 1);
     int levelsToGain = newLevel - curLevel;
-    curLevel += levelsToGain;
+    curLevel = newLevel;
     gainStats(levelsToGain);
     skills.gainLevels(levelsToGain);
   }
