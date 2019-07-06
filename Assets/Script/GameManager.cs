@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
   [HideInInspector]
   public List<Tile> skillTargets;
   [HideInInspector]
-  private BattleCharacter previewTarget;
+  public BattleCharacter previewTarget { get; private set;}
 
   [HideInInspector]
   public GameState gameState = GameState.moving;
