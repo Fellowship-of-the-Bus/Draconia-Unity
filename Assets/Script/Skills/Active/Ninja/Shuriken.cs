@@ -16,4 +16,8 @@ public class Shuriken: SingleTarget {
   public override int damageFormula() {
     return (int)(self.strength*(1+level*0.1));
   }
+
+  protected override string tooltipDescription { get {
+    return "Throw a shuriken dealing " + tooltipDamage + " to the target";
+  }}
 }

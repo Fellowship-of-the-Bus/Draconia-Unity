@@ -26,4 +26,9 @@ public class Puncture: SingleTarget {
     debuff.caster = self;
     target.applyEffect(debuff);
   }
+
+  protected override string tooltipDescription { get {
+    return "Strike the target for " + tooltipDamage + " and inflict a bleed effect,"
+    + " dealing X damage on each of their turns for Y turns";
+  }}
 }

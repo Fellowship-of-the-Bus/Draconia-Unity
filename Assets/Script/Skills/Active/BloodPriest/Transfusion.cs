@@ -20,6 +20,10 @@ public class Transfusion: SingleTarget, HealingSkill {
     return (int)(self.intelligence*(1+level*0.1));
   }
 
+  protected override string tooltipDescription { get {
+    return "Transfer " + tooltipHealing + " life from yourself to the target";
+  }}
+
   public override void additionalEffects(BattleCharacter target) {
     //This can kill you, should do something about this.
     self.takeDamage(healingFormula(),self);
