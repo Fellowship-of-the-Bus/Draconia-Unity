@@ -29,6 +29,7 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.65, z: 0.75}
   m_Children:
   - {fileID: 6216734990147178842}
+  - {fileID: 928302386655109503}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,6 +50,37 @@ MonoBehaviour:
   leftHand: {fileID: 6216734990147178830}
   rightHand: {fileID: 6216734990147178834}
   characterType: 0
+  portraitCameraPosition: {fileID: 928302386655109503}
+--- !u!1 &2340035009573020142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 928302386655109503}
+  m_Layer: 0
+  m_Name: Portrait Camera Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &928302386655109503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340035009573020142}
+  m_LocalRotation: {x: -0, y: 0.9848078, z: -0, w: 0.17364825}
+  m_LocalPosition: {x: -0.22, y: 1.13, z: 0.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400000}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 160, z: 0}
 --- !u!1001 &6216734990146784226
 PrefabInstance:
   m_ObjectHideFlags: 0

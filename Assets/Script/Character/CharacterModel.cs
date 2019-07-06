@@ -12,4 +12,5 @@ public class CharacterModel : MonoBehaviour {
   public Transform leftHand;
   public Transform rightHand;
   public CharacterType characterType;
+  public Transform portraitCameraPosition;
 }
