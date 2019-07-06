@@ -10,7 +10,7 @@ public class PortalEffect : DurationEffect {
     attachListener(caster, EventHook.endTurn);
     block = (GameObject) GameObject.Instantiate(Resources.Load("Map/Doodads/Portal"),
       new Vector3(ownerTile.transform.position.x,
-        ownerTile.transform.position.y + ownerTile.getHeight() + 0.5f,
+        ownerTile.getHeight() + 0.5f,
         ownerTile.transform.position.z), Quaternion.identity);
   }
 
