@@ -99,7 +99,7 @@ public class Map {
     if (Math.Abs(getHeight(from) - getHeight(to)) > moveTolerance) {
       return Int32.MaxValue/2;
     }
-    if (from.occupied() && !(GameManager.get.SelectedPiece.team == from.occupant.team)) {
+    if (from.occupied() && !(GameManager.get.SelectedCharacter.team == from.occupant.team)) {
       return Int32.MaxValue/4;
     }
     //Look at what moveTolerance actually means
@@ -266,9 +266,9 @@ public class Map {
 
   // GameMap functions
   public void setTileColours(Tile src = null) {
-    BattleCharacter SelectedPiece = GameManager.get.SelectedPiece;
+    BattleCharacter SelectedCharacter = GameManager.get.SelectedCharacter;
     int SelectedSkill = GameManager.get.SelectedSkill;
-    if (src == null) src = getTile(SelectedPiece.transform.position);
+    if (src == null) src = getTile(SelectedCharacter.transform.position);
     clearColour();
     if (GameManager.get.gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
@@ -281,10 +281,10 @@ public class Map {
         ti.setColor(Color.blue);
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
-      ActiveSkill skill = SelectedPiece.equippedSkills[SelectedSkill];
+      ActiveSkill skill = SelectedCharacter.equippedSkills[SelectedSkill];
       bool aoe = (skill is AoeSkill);
       int range = skill.range;
-      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedPiece.gameObject.transform.position), range, skill.isMeleeRequired());
+      List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedCharacter.gameObject.transform.position), range, skill.isMeleeRequired());
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
           t.setColor(Color.white);
@@ -307,7 +307,7 @@ public class Map {
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
             t.setColor(Color.yellow);
-            if (t.occupied() && SelectedPiece.equippedSkills[SelectedSkill].canTarget(t)) {
+            if (t.occupied() && SelectedCharacter.equippedSkills[SelectedSkill].canTarget(t)) {
               t.setColor(Color.red);
             } else {
               foreach (Tile tile in skillTargets) {

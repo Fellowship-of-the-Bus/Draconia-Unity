@@ -71,12 +71,12 @@ public class PlayerControl : MonoBehaviour {
 
   private void handleHovered(GameObject hoveredObject) {
     channel.Log("handleHovered: {0}", hoveredObject);
-    if (gameManager.SelectedPiece) gameManager.lineTo(gameManager.SelectedPiece.gameObject);
+    if (gameManager.SelectedCharacter) gameManager.lineTo(gameManager.SelectedCharacter.gameObject);
     if (overUI() || hoveredObject == null) return;
     if (hoveredObject.transform.parent == null) return;
     Map map = gameManager.map;
     BattleCharacter selectedCharacter = null;
-    if (!preGame) selectedCharacter = gameManager.SelectedPiece;
+    if (!preGame) selectedCharacter = gameManager.SelectedCharacter;
 
     ActiveSkill s = null;
     if (gameManager.SelectedSkill != -1 && !preGame) s = selectedCharacter.equippedSkills[gameManager.SelectedSkill];

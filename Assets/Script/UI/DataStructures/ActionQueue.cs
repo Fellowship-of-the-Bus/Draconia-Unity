@@ -57,14 +57,14 @@ public class ActionQueue : MonoBehaviour {
 
   public void endTurn() {
   	// TODO: Fix crash here when everyone dies
-    BattleCharacter SelectedPiece = queue.First.Value.piece;
-    removeFirst(SelectedPiece);
+    BattleCharacter SelectedCharacter = queue.First.Value.piece;
+    removeFirst(SelectedCharacter);
 
-    if (!hasObject(SelectedPiece)) {
-      bool last = enqueue(SelectedPiece);
+    if (!hasObject(SelectedCharacter)) {
+      bool last = enqueue(SelectedCharacter);
       if (last) {
         foreach (BattleCharacter p in pieces) {
-          if (p != SelectedPiece) {
+          if (p != SelectedCharacter) {
             fillActions(p);
           }
         }
