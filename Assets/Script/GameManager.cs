@@ -250,6 +250,8 @@ public class GameManager : MonoBehaviour {
     GameManager.postData.inBattle = charInBattle;
   }
 
+  List<BattleCharacter> aoePreviewTargets = new List<BattleCharacter>();
+
   void Update() {
     cancelButton.interactable = cancelStack.Count != 0;
 
@@ -291,6 +293,12 @@ public class GameManager : MonoBehaviour {
 
     if (SelectedSkill == -1)  return;
 
+    foreach(BattleCharacter target in aoePreviewTargets) {
+      target.PreviewChange = 0;
+      target.updateLifeBars(0);
+    }
+    aoePreviewTargets.Clear();
+
     // Preview damage and healing for the selected skill
     s = SelectedCharacter.equippedSkills[SelectedSkill];
     Tile currTile = pControl.currentHoveredTile;
@@ -309,6 +317,7 @@ public class GameManager : MonoBehaviour {
           c.PreviewChange = -1 * s.calculateDamage(c);
         }
         c.updateLifeBars(c.PreviewChange);
+        aoePreviewTargets.Add(c);
       }
     }
 
