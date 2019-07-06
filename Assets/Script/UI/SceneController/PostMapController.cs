@@ -10,12 +10,8 @@ public class PostMapController: MonoBehaviour {
   public GameManager.PostGameData data;
 
   public Transform charParent;
-  public GameObject charPreview;
+  public GameObject charViewPrefab;
 
-  public Transform equipParent;
-  public GameObject equipPreview;
-  public Text equipName;
-  public Text equippedTo;
   public AttrView attrView;
   public GameObject tipbox;
 
@@ -38,22 +34,14 @@ public class PostMapController: MonoBehaviour {
 
   public void displayLoot() {
     foreach (Character c in data.inBattle) {
-      GameObject o = Instantiate(charPreview, charParent);
-      //set image and name
-      string display = c.name;
-      if (c.skills.numSkillPoints != 0) display += "**";
-      o.GetComponentsInChildren<Text>()[0].text = display;
+      GameObject o = Instantiate(charViewPrefab, charParent);
+      PostBattleCharViewController charView = o.GetComponent<PostBattleCharViewController>();
+      charView.setCharacter(c);
     }
-    foreach (Equipment e in data.loot) {
-      GameObject eq = Instantiate(equipPreview, equipParent);
-      ItemTooltipSimple tooltip = eq.GetComponent<ItemTooltipSimple>();
-      tooltip.equipName = equipName;
-      tooltip.equippedTo = equippedTo;
-      tooltip.attrView = attrView;
-      tooltip.tipbox = tipbox;
-      tooltip.setItem(e);
-    }
+
+    // TODO: Display unlocked items and characters
   }
+
   public void loadGame() {
     loadBrowser.createOptions(SaveLoad.listSaveFiles());
   }
