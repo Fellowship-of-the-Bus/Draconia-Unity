@@ -116,21 +116,25 @@ public class Character {
     return attr;
   }
 
-  //Interpolated experience points like (level, exp) : (2,1000), (3, 2250) etc:
-  //rounded coefficients to nice numbers afterwards.
-  public int expAtLevel(int l) {
-    if (l <= 1){
+  // Interpolated experience points like (level, exp) : (2,1000), (3, 2250) etc:
+  // rounded coefficients to nice numbers afterwards.
+  public int expAtLevel(int level) {
+    if (level <= 1){
       return 0;
     }
-    l = l - 1;
-    return 20*l*l*l - 50*l*l + 1250*l - 200;
+
+    level = level - 1;
+    return 20*level*level*level - 50*level*level + 1250*level - 200;
   }
+
   public int expToLevelUp() {
     return expAtLevel(curLevel+1) - curExp;
   }
+
   public int expToLevel(int level) {
     return expAtLevel(level) - curExp;
   }
+
   //requires l > curLevel or l == curLevel and curExp == expAtLevel(level)
   public void setLevel(int level) {
     if (! (level > curLevel || curExp == expAtLevel(level))) {
@@ -138,10 +142,12 @@ public class Character {
     }
     gainExp(expToLevel(level), false);
   }
+
   // for use in the debug button
   public void setLevelUp() {
     gainExp(expToLevelUp(), false);
   }
+
   public void gainExp(int amount, bool applyExpTrait = true) {
     if (applyExpTrait) {
       amount += (int)(amount * (1+totalTraits.spec.expGain));
