@@ -25,7 +25,7 @@ public class GameData {
     }
 
     inv.addEquipment(new Weapon(EquipmentClass.Sword, 2, 1));
-    inv.addEquipment(new Weapon(EquipmentClass.Bow, 2, 1));
+    inv.addEquipment(new Weapon(EquipmentClass.Bow, 4, 1));
     inv.addEquipment(new Weapon(EquipmentClass.Staff, 2, 1));
     inv.addEquipment(new Weapon(EquipmentClass.Spear, 2, 1));
     inv.addEquipment(new Weapon(EquipmentClass.Axe, 2, 1));
@@ -41,7 +41,6 @@ public class GameData {
         skillTree.equipSkill(t);
       }
     }
-    Options.init();
   }
 
   public Character getCharacterWithItem(Equipment e) {

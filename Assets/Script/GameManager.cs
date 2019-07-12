@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
   public BuffBar targetBuffBar;
   public GameObject buffButton;
   public PlayerControl pControl;
+  public Material[] tileMaterials;
 
   //TODO: Finish handling of portal skll
   public class UndoAction {
