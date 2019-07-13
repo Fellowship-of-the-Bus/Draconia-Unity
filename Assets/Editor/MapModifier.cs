@@ -61,6 +61,16 @@ static class MapModifier {
     modifyAllMaps(addObject);
   }
 
+  [MenuItem("Modify Map/Set Character Stats/Current Map")]
+  private static void currentMapSetStats() {
+    setStats(EditorSceneManager.GetActiveScene().path);
+  }
+  // This is commented because it will overwrite stats for all the maps
+  // [MenuItem("Modify Map/Set Character Stats/Current Map")]
+  // private static void allMapSetStats() {
+  //   modifyAllMaps(currentMapSetStats);
+  // }
+
   private static void addObject(string name) {
     Scene currentScene = EditorSceneManager.OpenScene(name);
     GameObject o = new GameObject();
@@ -149,6 +159,40 @@ static class MapModifier {
     // foreach(GameObject o in toDelete) {
     //   GameObject.DestroyImmediate(o);
     // }
+    EditorSceneManager.SaveScene(currentScene);
+  }
+
+  //PSP = per skill point
+  private static int DamageStatGainLowPSP = 3;
+  private static int SpeedGainLowPSP = 0;
+  private static int HPGainLowPSP = 0;
+  private static int DefGainLowPSP = 0;
+  private static void setStats(string name) {
+    Scene currentScene = EditorSceneManager.OpenScene(name);
+    GameObject enemies = GameObject.Find("Enemies");
+    foreach (Transform child in enemies.transform) {
+      BattleCharacter enemyBCharacter = child.gameObject.GetComponent<BattleCharacter>();
+      SerializedObject sObject = new SerializedObject(enemyBCharacter);
+      int level = enemyBCharacter.baseChar.curLevel;
+      int numSkillPoints = SkillTree.skillPointsAtLevel(level);
+      //set strength and int
+      SerializedProperty strength = sObject.FindProperty("baseChar.attr.strength");
+      SerializedProperty intelligence = sObject.FindProperty("baseChar.attr.intelligence");
+      strength.intValue = CharacterGenerator.STR_BASE + (level-1)*Character.STR_GAIN + numSkillPoints*DamageStatGainLowPSP;
+      intelligence.intValue = CharacterGenerator.INT_BASE + (level-1)*Character.INT_GAIN + numSkillPoints*DamageStatGainLowPSP;
+      //set speed
+      SerializedProperty speed = sObject.FindProperty("baseChar.attr.speed");
+      speed.intValue = CharacterGenerator.SPEED_BASE + (level-1)*Character.SPEED_GAIN + numSkillPoints*SpeedGainLowPSP;
+      //set hp
+      SerializedProperty maxHP = sObject.FindProperty("baseChar.attr.maxHealth");
+      maxHP.intValue = CharacterGenerator.HEALTH_BASE + (level-1)*Character.HEALTH_GAIN + numSkillPoints*HPGainLowPSP;
+      //set defenses
+      SerializedProperty pDef = sObject.FindProperty("baseChar.attr.physicalDefense");
+      SerializedProperty mDef = sObject.FindProperty("baseChar.attr.magicDefense");
+      pDef.intValue = CharacterGenerator.PDEF_BASE + (level-1)*Character.PDEF_GAIN + numSkillPoints*DefGainLowPSP;
+      mDef.intValue = CharacterGenerator.MDEF_BASE + (level-1)*Character.MDEF_GAIN + numSkillPoints*DefGainLowPSP;
+      sObject.ApplyModifiedProperties();
+    }
     EditorSceneManager.SaveScene(currentScene);
   }
 }
