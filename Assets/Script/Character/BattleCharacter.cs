@@ -71,7 +71,14 @@ public class BattleCharacter : Effected {
   public int curHealth;
   public const float maxAction = 1000f;
   [HideInInspector]
-  public float curAction = 0;
+  public float curAction {
+    get { return currentAction; }
+    set {
+      currentAction = value;
+      StartCoroutine(ui.actionMeter.animate());
+    }
+  }
+  private float currentAction = 0;
 
   public Transform portraitCameraPosition {
     get { return model.portraitCameraPosition; }
@@ -146,6 +153,7 @@ public class BattleCharacter : Effected {
     curHealth = maxHealth;
 
     ui.healthBars.setCharacter(this);
+    ui.actionMeter.setCharacter(this);
     ui.name.text = baseChar.name;
 
     switch (aiType) {

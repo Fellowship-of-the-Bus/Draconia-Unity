@@ -46,8 +46,8 @@ public class ActionQueue : MonoBehaviour {
     float timePassed = newTime - curTime;
 
     //update action bars for all characters
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
-      n.Value.piece.updateActionBar(timePassed);
+    foreach (BattleCharacter character in pieces) {
+      character.updateActionBar(timePassed);
     }
 
     next.curAction = 0f;

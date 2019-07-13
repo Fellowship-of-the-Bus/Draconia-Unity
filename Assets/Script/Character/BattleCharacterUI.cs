@@ -3,6 +3,7 @@ using UnityEngine;
 public class BattleCharacterUI : MonoBehaviour {
   public new CustomText name;
   public HealthBarManager healthBars;
+  public ActionMeterController actionMeter;
 
   void Update() {
     // rotate overhead UI (health bar) to look at camera
