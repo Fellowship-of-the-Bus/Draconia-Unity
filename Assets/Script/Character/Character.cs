@@ -71,7 +71,7 @@ public class Character {
   //then took the coefficients to be integers
   //Current setting:
   //Maybe this should not be constant at all levels? Maybe should be like 6 kills at level 1, scaling to 10 at level 50?
-  private const int killsAtLevel1 = 5;
+  private const int killsAtLevel1 = 4;
   private const int killsAtLevel50 = 10;
   private const int bossMultiplier = 2;
   public int expGivenOnKill {

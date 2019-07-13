@@ -37,7 +37,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   public int maxCooldown {get; set;}
 
   //experience gained when used
-  private float experienceStatMultiplier = 0.8f;
+  private float experienceStatMultiplier = 1.2f;
   //for skills not aligned, give experience based on how much you would gain
   //if you killed a target at your current level
   private float notAlignedExpMultiplier = 0.4f;
