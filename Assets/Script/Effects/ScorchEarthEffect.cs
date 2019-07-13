@@ -26,7 +26,7 @@ public class ScorchEarthEffect : DurationEffect, HealthChangingEffect {
   }
 
   float damage(BattleCharacter c) {
-    return c.calculateDamage((int)(caster.intelligence * 0.2f), DamageType.none, DamageElement.fire);
+    return c.calculateDamage(effectValue, DamageType.none, DamageElement.fire);
   }
 
   protected override void additionalEffect(Draconia.Event e) {

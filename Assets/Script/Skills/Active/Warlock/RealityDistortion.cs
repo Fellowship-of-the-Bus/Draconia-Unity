@@ -18,7 +18,6 @@ public class RealityDistortion : SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     RealityDistortionEffect debuff = new RealityDistortionEffect();
-    debuff.level = level;
     debuff.duration = 2;
     debuff.caster = self;
     target.applyEffect(debuff);

@@ -5,9 +5,9 @@ public class EnlightenEffect : DurationEffect {
     stackable = true;
   }
   protected override void onActivate() {
-    owner.attrChange.intelligence += level;
+    owner.attrChange.intelligence += effectValue;
   }
   protected override void onDeactivateEffects() {
-    owner.attrChange.intelligence -= level;
+    owner.attrChange.intelligence -= effectValue;
   }
 }

@@ -17,7 +17,7 @@ public class HasteAura: PassiveSkill {
     };
 
     Aura<HasteEffect> e = new Aura<HasteEffect>(aoe, f);
-    e.level = level;
+    e.effectValue = level;
     e.duration = -1;
     e.applyToSelf = true;
 

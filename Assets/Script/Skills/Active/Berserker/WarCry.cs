@@ -19,7 +19,8 @@ public class WarCry: CircleAoE {
 
   public override void additionalEffects (BattleCharacter target) {
     WarCryEffect e = new WarCryEffect();
-    e.level = level;
+    e.scaling = level;
+    e.effectValue = 10;
     e.duration = 1;
     e.caster = self;
     target.applyEffect(e);

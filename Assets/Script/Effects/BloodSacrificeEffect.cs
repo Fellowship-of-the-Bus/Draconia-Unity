@@ -5,10 +5,10 @@ public class BloodSacrificeEffect : DurationEffect {
   public BloodSacrificeEffect() {
     stackable = true;
   }
-  public void setLevel(int l) {
-    level = l;
-    attr.intelligence = level;
-    attr.strength = level;
+  public void setValue(int val) {
+    effectValue = val;
+    attr.intelligence = effectValue;
+    attr.strength = effectValue;
   }
   protected override void onActivate() {
     owner.attrChange += attr;

@@ -12,14 +12,12 @@ public class ExsanguinationAura: PassiveSkill {
 
     Func<BleedEffect> f = () => {
       BleedEffect eff = new BleedEffect();
-      eff.level = level;
       eff.duration = -1;
-      eff.damage = owner.attr.intelligence;
       return eff;
     };
 
     Aura<BleedEffect> e = new Aura<BleedEffect>(aoe, f, true);
-    e.level = level;
+    e.effectValue = owner.attr.intelligence;
     e.duration = -1;
     e.applyToSelf = true;
 

@@ -145,9 +145,8 @@ public abstract class ActiveSkill : EventListener, Skill {
       float chance = UnityEngine.Random.value;
       if (chance < 0.3f) {
         BurnEffect debuff = new BurnEffect();
-        debuff.level = level;
         debuff.duration = (int)(2*target.fireResMultiplier);
-        debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*0.2f, 1);
+        debuff.effectValue = (int)System.Math.Max((int)calculateDamage(target)*0.2f, 1);
         debuff.caster = self;
         target.applyEffect(debuff);
       }
@@ -157,7 +156,7 @@ public abstract class ActiveSkill : EventListener, Skill {
       if (chance < 0.3f) {
         SlowEffect debuff = new SlowEffect();
         //something that depends on the damage done
-        debuff.level = (int)(3*calculateDamage(target)/target.maxHealth);
+        debuff.effectValue = (int)(3*calculateDamage(target)/target.maxHealth);
         debuff.duration = (int)(2*target.iceResMultiplier);
       }
     }

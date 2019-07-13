@@ -18,7 +18,6 @@ public class DivineShield: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     DodgeEffect e = new DodgeEffect();
-    e.level = level;
     e.duration = 3;
     e.caster = self;
     target.applyEffect(e);

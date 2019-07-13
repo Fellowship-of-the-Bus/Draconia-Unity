@@ -24,7 +24,7 @@ public class Cripple: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     CrippleEffect debuff = new CrippleEffect();
-    debuff.level = level;
+    debuff.effectValue = 2; //maybe scale based off of level
     debuff.duration = 2;
     debuff.caster = self;
     target.applyEffect(debuff);

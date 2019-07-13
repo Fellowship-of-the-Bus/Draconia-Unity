@@ -22,7 +22,7 @@ public class Entrench: SelfTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     EntrenchEffect buff = new EntrenchEffect();
-    buff.level = level;
+    buff.effectValue = 1; //additional range
     buff.duration = -1;
     buff.caster = self;
     target.applyEffect(buff);

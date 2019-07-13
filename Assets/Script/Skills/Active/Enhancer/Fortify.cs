@@ -18,7 +18,7 @@ public class Fortify: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     FortifyEffect e = new FortifyEffect();
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.caster = self;
     target.applyEffect(e);

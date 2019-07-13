@@ -5,7 +5,7 @@ public abstract class Effect : EventListener, IComparable<Effect> {
   public BattleCharacter owner = null;
   public Tile ownerTile = null;
   public string name {get; set;}
-  public int level = 0;
+  public int effectValue = 0;
   public BattleCharacter caster = null;
 
   public bool stackable = false;
@@ -19,13 +19,13 @@ public abstract class Effect : EventListener, IComparable<Effect> {
     else apply(e as Tile);
   }
   public void apply(BattleCharacter c) {
-    Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
+    // Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     owner = c;
     onApply(c);
   }
 
   public void apply(Tile t) {
-    Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
+    // Debug.AssertFormat(level != 0, "Level was not set in effect: {0}", this);
     ownerTile = t;
     onApply(t);
   }
@@ -61,7 +61,7 @@ public abstract class Effect : EventListener, IComparable<Effect> {
   protected virtual void additionalEffect(Draconia.Event e) {}
 
   public virtual int CompareTo(Effect other) {
-    return this.level.CompareTo(other.level);
+    return this.effectValue.CompareTo(other.effectValue);
   }
 
   public static bool operator >(Effect e1, Effect e2) {

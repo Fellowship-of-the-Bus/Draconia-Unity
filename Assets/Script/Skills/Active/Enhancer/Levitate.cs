@@ -20,7 +20,6 @@ public class Levitate: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     LevitateEffect debuff = new LevitateEffect();
-    debuff.level = level;
     debuff.duration = 3;
     debuff.caster = self;
     target.applyEffect(debuff);

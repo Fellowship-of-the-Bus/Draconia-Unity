@@ -18,7 +18,7 @@ public class Enlighten: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     EnlightenEffect e = new EnlightenEffect();
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.caster = self;
     target.applyEffect(e);
