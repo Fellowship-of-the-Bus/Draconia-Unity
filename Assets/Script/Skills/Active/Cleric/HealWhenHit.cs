@@ -25,7 +25,7 @@ public class HealWhenHit : CircleAoE {
   public override void additionalEffects(BattleCharacter target) {
     HealWhenHitEffect e = new HealWhenHitEffect();
     e.duration = 5;
-    e.level = level;
+    e.effectValue = level;
     e.caster = self;
     target.applyEffect(e);
   }

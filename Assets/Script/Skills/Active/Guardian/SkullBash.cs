@@ -27,7 +27,7 @@ public class SkullBash: SingleTarget {
   public override void additionalEffects (BattleCharacter target) {
     SlowEffect debuff = new SlowEffect();
     target.curAction = Math.Max(0, target.curAction - 300);
-    debuff.level = level;
+    debuff.effectValue = level;
     debuff.duration = 3;
     debuff.caster = self;
     target.applyEffect(debuff);

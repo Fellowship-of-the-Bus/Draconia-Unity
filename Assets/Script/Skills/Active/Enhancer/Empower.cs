@@ -18,7 +18,7 @@ public class Empower: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     EmpowerEffect e = new EmpowerEffect();
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.caster = self;
     target.applyEffect(e);

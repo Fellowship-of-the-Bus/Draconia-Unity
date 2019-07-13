@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public abstract class PassiveSkill : Effect, Skill {
+  public int level;
   int Skill.level { get { return level; } set { level = value; } }
 
   public BattleCharacter self {get; set;}

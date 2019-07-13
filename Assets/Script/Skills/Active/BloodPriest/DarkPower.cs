@@ -26,16 +26,15 @@ public class DarkPower: CircleAoE {
 
       if (target.team == self.team) {
         BloodSacrificeEffect e = new BloodSacrificeEffect();
-        e.setLevel(level);
+        e.setValue(level);
         e.duration = 2;
         e.caster = self;
         target.applyEffect(e);
       } else {
         BleedEffect debuff = new BleedEffect();
-        debuff.level = level;
         debuff.duration = (level+5)/2;
         //some damage or debuff etc..
-        debuff.damage = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
+        debuff.effectValue = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
         debuff.caster = self;
         target.applyEffect(debuff);
       }

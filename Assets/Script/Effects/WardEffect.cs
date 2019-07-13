@@ -5,9 +5,9 @@ public class WardEffect : DurationEffect {
     stackable = true;
   }
   protected override void onActivate() {
-    owner.attrChange.magicDefense += level;
+    owner.attrChange.magicDefense += effectValue;
   }
   protected override void onDeactivateEffects() {
-    owner.attrChange.magicDefense -= level;
+    owner.attrChange.magicDefense -= effectValue;
   }
 }

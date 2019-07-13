@@ -24,7 +24,7 @@ public class FrostArmor: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     FrostArmorEffect debuff = new FrostArmorEffect();
-    debuff.level = level;
+    debuff.effectValue = level;
     debuff.duration = 3;
     debuff.caster = self;
     target.applyEffect(debuff);

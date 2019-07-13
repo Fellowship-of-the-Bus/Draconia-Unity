@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class BurnEffect : DurationEffect, HealthChangingEffect {
-  public int damage;
   public float multiplier = 1.0f;
   private GameObject particle;
 
@@ -20,13 +19,13 @@ public class BurnEffect : DurationEffect, HealthChangingEffect {
     owner.removeParticle(particle);
   }
   protected override void additionalEffect(Draconia.Event e) {
-    owner.takeDamage(owner.calculateDamage((int)(damage * multiplier), DamageType.none, DamageElement.fire),caster);
+    owner.takeDamage(owner.calculateDamage((int)(effectValue * multiplier), DamageType.none, DamageElement.fire),caster);
     multiplier -= 0.15f;
   }
   public override int CompareTo(Effect e) {
     Debug.Assert(e is BurnEffect);
     if (e is BurnEffect) {
-      return this.damage.CompareTo((e as BurnEffect).damage);
+      return (this.effectValue*multiplier).CompareTo((e as BurnEffect).effectValue*(e as BurnEffect).multiplier);
     } else {
       //should only be comparing Burn effects, shouldn't ever get here.
       return base.CompareTo(e);
@@ -34,6 +33,6 @@ public class BurnEffect : DurationEffect, HealthChangingEffect {
   }
 
   public int healthChange() {
-    return -(int)(damage * multiplier);
+    return -(int)(effectValue * multiplier);
   }
 }

@@ -27,7 +27,7 @@ public class EnlightenAura: SelfTarget {
     };
 
     Aura<EnlightenEffect> e = new Aura<EnlightenEffect>(aoe, f);
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.applyToSelf = true;
 

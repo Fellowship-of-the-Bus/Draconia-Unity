@@ -22,7 +22,7 @@ public class IgniteWeapon: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     IgniteWeaponEffect buff = new IgniteWeaponEffect();
-    buff.level = level;
+    buff.effectValue = level;
     buff.duration = 2;
     buff.caster = self;
     target.applyEffect(buff);

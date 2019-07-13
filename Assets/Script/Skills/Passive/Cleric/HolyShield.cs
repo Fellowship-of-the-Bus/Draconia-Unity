@@ -13,7 +13,7 @@ public class HolyShield : PassiveSkill {
     if (e.healingDone > 0) {
       BattleCharacter target = e.healTarget;
       FortifyEffect effect = new FortifyEffect();
-      effect.level = level;
+      effect.effectValue = level;
       effect.duration = 2;
       effect.caster = self;
       target.applyEffect(effect);

@@ -5,9 +5,9 @@ public class EmpowerEffect : DurationEffect {
     stackable = true;
   }
   protected override void onActivate() {
-    owner.attrChange.strength += level;
+    owner.attrChange.strength += effectValue;
   }
   protected override void onDeactivateEffects() {
-    owner.attrChange.strength -= level;
+    owner.attrChange.strength -= effectValue;
   }
 }

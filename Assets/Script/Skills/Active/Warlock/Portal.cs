@@ -56,7 +56,6 @@ public class Portal : ActiveSkill, AoeSkill {
 
   PortalEffect makeEffect() {
     PortalEffect block = new PortalEffect();
-    block.level = level;
     block.duration = 10;
     block.caster = self;
     return block;

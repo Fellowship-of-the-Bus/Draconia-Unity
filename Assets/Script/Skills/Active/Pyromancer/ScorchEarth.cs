@@ -36,9 +36,8 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
 
   public override void tileEffects(Tile target) {
     ScorchEarthEffect burn = new ScorchEarthEffect();
-    burn.level = level;
+    burn.effectValue = (int)(self.intelligence*(0.2f+ 0.05f*level));
     burn.duration = 3;
-    burn.caster = self;
     burn.caster = self;
     target.applyEffect(burn);
   }

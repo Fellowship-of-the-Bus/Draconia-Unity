@@ -22,14 +22,13 @@ public class RegenerateAura: SelfTarget {
   public override void additionalEffects (BattleCharacter target) {
     Func<RegenerationEffect> f = () => {
       RegenerationEffect buff = new RegenerationEffect();
-      buff.level = level;
-      buff.healing = 2;
+      buff.effectValue = 2;
       buff.duration = -1;
       return buff;
     };
 
     Aura<RegenerationEffect> e = new Aura<RegenerationEffect>(aoe, f);
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.applyToSelf = true;
 

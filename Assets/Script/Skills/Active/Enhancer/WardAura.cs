@@ -27,7 +27,7 @@ public class WardAura: SelfTarget {
     };
 
     Aura<WardEffect> e = new Aura<WardEffect>(aoe, f);
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.applyToSelf = true;
 

@@ -27,7 +27,7 @@ public class BloodSanctuary: ActiveSkill, AoeSkill {
   public override void tileEffects(Tile target) {
     self.takeDamage((int)(self.intelligence * 0.5),self);
     BloodSanctuaryEffect block = new BloodSanctuaryEffect();
-    block.level = level;
+    block.effectValue = level;
     block.duration = 2;
     block.caster = self;
     target.applyEffect(block);

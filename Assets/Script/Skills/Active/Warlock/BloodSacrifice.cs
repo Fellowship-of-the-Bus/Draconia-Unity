@@ -19,7 +19,7 @@ public class BloodSacrifice : SelfTarget {
 
   public override void additionalEffects(BattleCharacter target) {
     BloodSacrificeEffect e = new BloodSacrificeEffect();
-    e.setLevel(level);
+    e.setValue(level);
     e.duration = 2;
     e.caster = self;
     target.applyEffect(e);
