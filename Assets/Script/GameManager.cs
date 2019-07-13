@@ -561,7 +561,6 @@ public class GameManager : MonoBehaviour {
       Vector3 d = speed*(end-start)/Options.FPS;
 
       // Arcing, hopping or jumping
-      Debug.Log(d.y);
       if (shouldJump || (!movingPiece && arcing)) {
         if (i < Options.FPS/(speed*2)) {
           d.y = dUp * Mathf.Lerp(1,0,i/(Options.FPS/(speed*2)));
