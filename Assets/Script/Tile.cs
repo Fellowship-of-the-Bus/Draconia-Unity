@@ -2,11 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Tile : Effected {
-  private static Color transparent {
-    get {
-      return new Color(0.8f, 0.8f, 0.8f, 0.25f * Options.gridTransparency);
-    }
-  } // TODO: update transparency on change
   public static int unpathableCost = 1000;
   public int distance = 0; // Distance from the turn character
   public int movePointSpent = 1;
@@ -42,7 +37,7 @@ public class Tile : Effected {
 
   public void setup() {
     Transform t = gameObject.transform.Find("Top");
-    color = t.gameObject.GetComponent<Renderer>().material;
+    color = t.gameObject.GetComponent<Renderer>().sharedMaterial;
     border = this.transform.Find("Border").gameObject.GetComponent<Renderer>();
     this.clearColour();
   }
@@ -51,17 +46,17 @@ public class Tile : Effected {
     return movePointSpent >= Tile.unpathableCost;
   }
 
-  public void setColor(Color c) {
+  public void setColor(Material material) {
     isClear = false;
     if (unpathable()) {
       return;
     }
-    border.material.color = c;
+    border.material = material;
   }
 
   public void clearColour() {
     if (!isClear) {
-      setColor(transparent);
+      setColor(TileMaterials.get.Transparent);
     }
     isClear = true;
   }
