@@ -42,7 +42,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   //if you killed a target at your current level
   private float notAlignedExpMultiplier = 0.4f;
   private int notAlignedExp() {
-    return (int)(self.baseChar.expGiven*notAlignedExpMultiplier);
+    return (int)(self.baseChar.expGivenOnKill*notAlignedExpMultiplier);
   }
   private int alignedExp(int statValue) {
     return (int)(experienceStatMultiplier*statValue);

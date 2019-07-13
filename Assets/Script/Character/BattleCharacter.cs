@@ -375,7 +375,7 @@ public class BattleCharacter : Effected {
     postSkill.skillUsed = skill;
     onEvent(postSkill);
 
-    int maxHPGain = baseChar.gainExp(expGained);
+    int maxHPGain = gainExp(expGained);
     if (maxHPGain != 0){
       PreviewChange = maxHPGain;
       takeHealing(maxHPGain);
@@ -477,6 +477,13 @@ public class BattleCharacter : Effected {
   public int getExpGained(ActiveSkill skill) {
     int exp = skill.expGainUse;
     return exp;
+  }
+
+  public int gainExp(int amount) {
+    if (team != Team.Player) {
+      return 0;
+    }
+    return baseChar.gainExp(amount);
   }
 
   public bool isAlive() {
