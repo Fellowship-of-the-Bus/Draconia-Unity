@@ -48,9 +48,25 @@ public class CameraController : MonoBehaviour {
     rotateAbout = ray.GetPoint(distance);
 
     float scroll = Input.GetAxis("Mouse ScrollWheel");
-    if ((scroll > 0 && transform.position.y > 5f) || (scroll < 0 && transform.position.y < 15f)) {
-      float scrollFactor = scrollSensitivity / (Mathf.Abs(transform.position.y - 10f) + 1);
-      transform.Translate (Vector3.forward * scroll * scrollFactor);
+    const float minZoom = 4f;
+    const float maxZoom = 20f;
+    if ((scroll > 0 && transform.position.y >= minZoom) || (scroll < 0 && transform.position.y <= maxZoom)) {
+      Vector3 localForward = transform.TransformDirection(Vector3.forward);
+      Vector3 scrollVector = Vector3.forward * scroll * scrollSensitivity;
+
+      // Clamp scroll amount
+      float scrollToY = transform.position.y + transform.TransformDirection(scrollVector).y;
+      float scrollFactorMultiplier = 1f;
+      if (scrollToY <= minZoom) {
+        float change = transform.position.y - minZoom;
+        scrollFactorMultiplier = change / (transform.position.y - scrollToY);
+      } else if (scrollToY >= maxZoom) {
+        float change = transform.position.y - maxZoom;
+        scrollFactorMultiplier = change / (transform.position.y - scrollToY);
+      }
+      scrollVector = scrollVector * scrollFactorMultiplier;
+
+      transform.Translate(scrollVector);
     }
 
     if (rotating && rotationTime > 0) {
