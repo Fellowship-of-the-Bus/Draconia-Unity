@@ -12,6 +12,7 @@ public class ArcShot: SingleTarget {
     name = "Arc Shot";
     maxCooldown = 2;
     dType = DamageType.physical;
+    strAligned();
 
     targetAlly(false);
     targetEnemy(true);
@@ -20,6 +21,6 @@ public class ArcShot: SingleTarget {
   }
 
   public override int damageFormula() {
-    return (int)(self.strength*(1+level*0.1));
+    return (int)(self.strength*(1.4+level*0.1));
   }
 }

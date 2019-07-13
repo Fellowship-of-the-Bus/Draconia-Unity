@@ -47,8 +47,8 @@ public class PostMapController: MonoBehaviour {
   }
 
   public void loadAuto() {
-    SaveLoad.loadAuto();
     LoadingScreen.load("OverWorld");
+    SaveLoad.loadAuto();
   }
 
   public void toOverWorld() {

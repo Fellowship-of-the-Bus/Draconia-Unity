@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour {
     public override void onEvent(Draconia.Event e) {
       if (e.hook == EventHook.postDeath) {
         //award experience
-        int maxHPGain = e.killer.baseChar.gainExp(e.sender.baseChar.expGiven);
+        int maxHPGain = e.killer.gainExp(e.sender.baseChar.expGivenOnKill);
         if (maxHPGain != 0) {
           e.killer.PreviewChange = maxHPGain;
           e.killer.takeHealing(maxHPGain);

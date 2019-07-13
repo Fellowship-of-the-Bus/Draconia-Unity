@@ -73,7 +73,8 @@ public class Character {
   //Maybe this should not be constant at all levels? Maybe should be like 6 kills at level 1, scaling to 10 at level 50?
   private const int killsAtLevel1 = 5;
   private const int killsAtLevel50 = 10;
-  public int expGiven {
+  private const int bossMultiplier = 2;
+  public int expGivenOnKill {
     get {
       // return 6*curLevel*curLevel - 19*curLevel + 140;
       //5 at level 1 to 10 at level 50 and beyond:
@@ -81,7 +82,12 @@ public class Character {
       if (curLevel > 50) {
         numKillPerLevelup = killsAtLevel50;
       }
-      return (int)((expAtLevel(curLevel+1) - expAtLevel(curLevel))/numKillPerLevelup);
+      int rawExp = (int)((expAtLevel(curLevel+1) - expAtLevel(curLevel))/numKillPerLevelup);
+      if (GameManager.get.boss != null && GameManager.get.boss.baseChar == this) {
+        return bossMultiplier*rawExp;
+      } else {
+        return rawExp;
+      }
     }
   }
 
