@@ -103,7 +103,7 @@ public class PlayerControl : MonoBehaviour {
       GameSceneController.get.resetStartTileColour();
       if (!isTile && !isPiece) return;
       if (hoveredTile != null) {
-        hoveredTile.setColor(Color.blue);
+        hoveredTile.setColor(TileMaterials.get.Blue);
       }
     } else {
       gameManager.selectTarget(hoveredObject);

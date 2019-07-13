@@ -56,11 +56,13 @@ public class Character {
   public int curLevel = 1;
   //[HideInInspector]
   public int curExp = 0;
-  //debug field only
+  //debug purposes only
   public int expAtNextLevel = 0;
-  public int nextLevelExp {
+
+  //difference of exp threshold of next level and current level
+  public int nextLevelExpDifference {
     get {
-      return expToLevel(curLevel+1);
+      return expAtLevel(curLevel+1) - expAtLevel(curLevel);
     }
   }
 
@@ -69,11 +71,16 @@ public class Character {
   //then took the coefficients to be integers
   //Current setting:
   //Maybe this should not be constant at all levels? Maybe should be like 6 kills at level 1, scaling to 10 at level 50?
+  private const int killsAtLevel1 = 5;
+  private const int killsAtLevel50 = 10;
   public int expGiven {
     get {
       // return 6*curLevel*curLevel - 19*curLevel + 140;
-      //6 at level 1 to 10 at level 50
-      float numKillPerLevelup = 6 + curLevel*4/50.0f;
+      //5 at level 1 to 10 at level 50 and beyond:
+      float numKillPerLevelup = killsAtLevel1 + curLevel*(killsAtLevel50-killsAtLevel1)/50.0f;
+      if (curLevel > 50) {
+        numKillPerLevelup = killsAtLevel50;
+      }
       return (int)((expAtLevel(curLevel+1) - expAtLevel(curLevel))/numKillPerLevelup);
     }
   }
@@ -128,11 +135,15 @@ public class Character {
   }
 
   public int expToLevelUp() {
-    return expAtLevel(curLevel+1) - curExp;
+    return expToLevel(curLevel + 1);
   }
 
   public int expToLevel(int level) {
     return expAtLevel(level) - curExp;
+  }
+
+  public float percentageToNextLevel() {
+    return (float)(curExp - expAtLevel(curLevel))/nextLevelExpDifference;
   }
 
   //requires l > curLevel or l == curLevel and curExp == expAtLevel(level)
@@ -148,9 +159,10 @@ public class Character {
     gainExp(expToLevelUp(), false);
   }
 
-  public void gainExp(int amount, bool applyExpTrait = true) {
+  //returns maxHP gain
+  public int gainExp(int amount, bool applyExpTrait = true) {
     if (applyExpTrait) {
-      amount += (int)(amount * (1+totalTraits.spec.expGain));
+      amount = (int)(amount * (1+totalTraits.spec.expGain));
     }
     curExp += amount;
     int newLevel = curLevel;
@@ -160,8 +172,8 @@ public class Character {
     expAtNextLevel = expAtLevel(newLevel + 1);
     int levelsToGain = newLevel - curLevel;
     curLevel = newLevel;
-    gainStats(levelsToGain);
     skills.gainLevels(levelsToGain);
+    return gainStats(levelsToGain);
   }
 
   private static readonly int STR_GAIN = 2;
@@ -171,12 +183,14 @@ public class Character {
   private static readonly int PDEF_GAIN = 5;
   private static readonly int MDEF_GAIN = 5;
   //gain stats functionp
-  public void gainStats(int levels) {
+  //returns maxHp gain
+  public int gainStats(int levels) {
     attr.strength += STR_GAIN * levels;
     attr.intelligence += INT_GAIN * levels;
     attr.speed += SPEED_GAIN * levels;
     attr.maxHealth += HEALTH_GAIN * levels;
     attr.physicalDefense += PDEF_GAIN * levels;
     attr.magicDefense += MDEF_GAIN * levels;
+    return HEALTH_GAIN*levels;
   }
 }

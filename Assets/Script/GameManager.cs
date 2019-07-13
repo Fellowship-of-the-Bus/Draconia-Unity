@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
   public BuffBar targetBuffBar;
   public GameObject buffButton;
   public PlayerControl pControl;
+  public Material[] tileMaterials;
 
   //TODO: Finish handling of portal skll
   public class UndoAction {
@@ -94,7 +95,11 @@ public class GameManager : MonoBehaviour {
     public override void onEvent(Draconia.Event e) {
       if (e.hook == EventHook.postDeath) {
         //award experience
-        e.killer.baseChar.gainExp(e.sender.baseChar.expGiven);
+        int maxHPGain = e.killer.baseChar.gainExp(e.sender.baseChar.expGiven);
+        if (maxHPGain != 0) {
+          e.killer.PreviewChange = maxHPGain;
+          e.killer.takeHealing(maxHPGain);
+        }
         GameManager g = GameManager.get;
         g.characters[e.sender.team].Remove(e.sender);
         if (e.sender == g.SelectedCharacter) {
@@ -250,6 +255,8 @@ public class GameManager : MonoBehaviour {
     GameManager.postData.inBattle = charInBattle;
   }
 
+  List<BattleCharacter> aoePreviewTargets = new List<BattleCharacter>();
+
   void Update() {
     cancelButton.interactable = cancelStack.Count != 0;
 
@@ -291,6 +298,12 @@ public class GameManager : MonoBehaviour {
 
     if (SelectedSkill == -1)  return;
 
+    foreach(BattleCharacter target in aoePreviewTargets) {
+      target.PreviewChange = 0;
+      target.updateLifeBars(0);
+    }
+    aoePreviewTargets.Clear();
+
     // Preview damage and healing for the selected skill
     s = SelectedCharacter.equippedSkills[SelectedSkill];
     Tile currTile = pControl.currentHoveredTile;
@@ -309,6 +322,7 @@ public class GameManager : MonoBehaviour {
           c.PreviewChange = -1 * s.calculateDamage(c);
         }
         c.updateLifeBars(c.PreviewChange);
+        aoePreviewTargets.Add(c);
       }
     }
 

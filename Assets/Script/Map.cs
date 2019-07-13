@@ -12,7 +12,7 @@ public class Map {
   public List<Tile> startPositions = new List<Tile>();
   Tile[,] map = null;
 
-  private static readonly Color orange = new Color(1, 0.5f, 0, 1);
+  public static readonly Color orange = new Color(1, 0.5f, 0, 1);
 
   public void awake() {
     float xMax = 0f;
@@ -273,12 +273,12 @@ public class Map {
     if (GameManager.get.gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
         if (tile.distance <= GameManager.get.moveRange && !tile.occupied()) {
-          tile.setColor(Color.green);
+          tile.setColor(TileMaterials.get.Green);
         }
       }
       // color the path
       foreach (Tile ti in path) {
-        ti.setColor(Color.blue);
+        ti.setColor(TileMaterials.get.Blue);
       }
     } else if (GameManager.get.gameState == GameState.attacking && SelectedSkill != -1) {
       ActiveSkill skill = SelectedCharacter.equippedSkills[SelectedSkill];
@@ -287,32 +287,31 @@ public class Map {
       List<Tile> inRangeTiles = getTilesWithinRange(getTile(SelectedCharacter.gameObject.transform.position), range, skill.isMeleeRequired());
       if (!aoe) {
         foreach (Tile t in inRangeTiles) {
-          t.setColor(Color.white);
+          t.setColor(TileMaterials.get.White);
         }
         foreach (Tile t in GameManager.get.skillTargets) {
-          t.setColor(Color.red);
+          t.setColor(TileMaterials.get.Red);
         }
       } else {
         var skillTargets = skill.getTargets();
         foreach (Tile t in skillTargets) {
-          t.setColor(Color.white);
+          t.setColor(TileMaterials.get.White);
         }
         AoeSkill areaSkill = skill as AoeSkill;
         var targetsInAoe = areaSkill.getTargetsInAoe(src.transform.position);
         if (areaSkill is Sprint) {
-          //set path to blue
           foreach (Tile t in path) {
-            t.setColor(Color.blue);
+            t.setColor(TileMaterials.get.Blue);
           }
         } else if (targetsInAoe != null) {
           foreach (Tile t in targetsInAoe) {
-            t.setColor(Color.yellow);
+            t.setColor(TileMaterials.get.Yellow);
             if (t.occupied() && SelectedCharacter.equippedSkills[SelectedSkill].canTarget(t)) {
-              t.setColor(Color.red);
+              t.setColor(TileMaterials.get.Red);
             } else {
               foreach (Tile tile in skillTargets) {
                 if (tile == t) {
-                  t.setColor(orange);
+                  t.setColor(TileMaterials.get.Orange);
                 }
               }
             }
@@ -321,7 +320,7 @@ public class Map {
       }
       // color the selected targets
       foreach (Tile target in GameManager.get.targets) {
-        target.setColor(Color.magenta);
+        target.setColor(TileMaterials.get.Magenta);
       }
     }
   }

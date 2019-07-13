@@ -22,7 +22,7 @@ public class PostBattleCharViewController: MonoBehaviour {
     int nextLevelExp = newChar.expAtLevel(newChar.curLevel + 1);
 
     Vector3 scale = expBar.transform.localScale;
-    scale.x = Math.Max(Math.Min((float)(newChar.curExp - curLevelExp) / nextLevelExp, 1), 0);
+    scale.x = newChar.percentageToNextLevel();
     expBar.transform.localScale = scale;
   }
 }

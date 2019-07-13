@@ -60,7 +60,7 @@ public class GameSceneController: MonoBehaviour {
     //disable positioning control
     pControl.preGame = false;
     GameManager.get.tooltip = battleCanvasTooltip;
-    setStartTileColour(Color.clear);
+    // setStartTileColour(Color.clear);
     //need to reenable battleChars
     GameManager.get.enabled = true;
     GameManager.get.init();
@@ -150,15 +150,15 @@ public class GameSceneController: MonoBehaviour {
   }
 
   public void resetStartTileColour() {
-    setStartTileColour(Color.red);
+    setStartTileColour(TileMaterials.get.Red);
     if (pControl.selectedCharacter != null) {
-      pControl.selectedCharacter.curTile.setColor(Color.yellow);
+      pControl.selectedCharacter.curTile.setColor(TileMaterials.get.Yellow);
     }
   }
-  public void setStartTileColour(Color c) {
+  public void setStartTileColour(Material material) {
     List<Tile> tileStartLocs = GameManager.get.map.getStartTiles();
     foreach (Tile t in tileStartLocs) {
-      t.setColor(c);
+      t.setColor(material);
     }
   }
 

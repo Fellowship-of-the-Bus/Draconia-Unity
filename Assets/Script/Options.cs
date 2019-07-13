@@ -10,11 +10,13 @@ public class Options {
     public bool displayAnimation;
   }
 
-  public static void init() {
-    gridTransparency = 1f;
-    displayAnimation = true;
+  public static OptionData init() {
+    OptionData data = new OptionData();
+    data.gridTransparency = 0.25f;
+    data.displayAnimation = true;
+    return data;
   }
-  public static OptionData instance = new OptionData();
+  public static OptionData instance = init();
 
   public static bool displayAnimation {
     get { return instance.displayAnimation; }
@@ -23,7 +25,10 @@ public class Options {
 
   public static float gridTransparency {
     get { return instance.gridTransparency; }
-    set { instance.gridTransparency = value; }
+    set {
+      instance.gridTransparency = value;
+      TileMaterials.updateTransparency();
+    }
   }
 
   [Serializable]
