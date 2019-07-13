@@ -87,7 +87,6 @@ public class Character {
 
   public Character(string name): this() {
     this.name = name;
-    traits = new List<Trait>();
   }
 
   public Attributes totalAttr {
@@ -98,6 +97,7 @@ public class Character {
 
 
   public Character() {
+    traits = new List<Trait>();
     attr.maxHealth = CharacterGenerator.HEALTH_BASE;
     attr.moveRange = CharacterGenerator.MRANGE_BASE;
     equip(Weapon.defaultWeapon);
@@ -176,12 +176,12 @@ public class Character {
     return gainStats(levelsToGain);
   }
 
-  private static readonly int STR_GAIN = 2;
-  private static readonly int INT_GAIN = 2;
-  private static readonly int SPEED_GAIN = 8;
-  private static readonly int HEALTH_GAIN = 60;
-  private static readonly int PDEF_GAIN = 5;
-  private static readonly int MDEF_GAIN = 5;
+  public static readonly int STR_GAIN = 2;
+  public static readonly int INT_GAIN = 2;
+  public static readonly int SPEED_GAIN = 8;
+  public static readonly int HEALTH_GAIN = 60;
+  public static readonly int PDEF_GAIN = 5;
+  public static readonly int MDEF_GAIN = 5;
   //gain stats functionp
   //returns maxHp gain
   public int gainStats(int levels) {

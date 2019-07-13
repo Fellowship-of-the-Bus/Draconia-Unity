@@ -374,12 +374,42 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 9
+      value: 58
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.strength
-      value: 8
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.name
+      value: L5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fc4a588f8bf3474ca9bc7df89447a36, type: 3}
@@ -2311,6 +2341,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
         type: 3}
+      propertyPath: skillSet.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
       propertyPath: aiType
       value: 0
       objectReference: {fileID: 0}
@@ -2323,6 +2358,76 @@ PrefabInstance:
         type: 3}
       propertyPath: team
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.name
+      value: H4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.strength
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.speed
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.skills.level
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ded051479fb895e4a979ca5b00b8de43, type: 3}
@@ -3593,12 +3698,42 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 8
+      value: 58
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.strength
-      value: 5
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.name
+      value: L4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fc4a588f8bf3474ca9bc7df89447a36, type: 3}
@@ -4121,6 +4256,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
         type: 3}
+      propertyPath: skillSet.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
       propertyPath: aiType
       value: 0
       objectReference: {fileID: 0}
@@ -4133,6 +4273,76 @@ PrefabInstance:
         type: 3}
       propertyPath: team
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.name
+      value: H1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.skills.level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.strength
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.speed
+      value: 58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ded051479fb895e4a979ca5b00b8de43, type: 3}
@@ -7683,6 +7893,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 224086957911463082, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4548942432237162, guid: 27572aee490181e40b4e4114f070474c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7713,6 +7928,163 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4548942432237162, guid: 27572aee490181e40b4e4114f070474c, type: 3}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4164446609500588, guid: 27572aee490181e40b4e4114f070474c, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 224658263950171392, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580058850743618, guid: 27572aee490181e40b4e4114f070474c, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790252805414942, guid: 27572aee490181e40b4e4114f070474c, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224077529166616246, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224172996953329282, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 224103545903826710, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 224554717769927136, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121591176844225049, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121591176844225049, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121591176844225049, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121591176844225049, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121591176844225049, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121591176844225049, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804732050891314711, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804732050891314711, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804732050891314711, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804732050891314711, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804732050891314711, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804732050891314711, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504885665069653456, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504885665069653456, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504885665069653456, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504885665069653456, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504885665069653456, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8504885665069653456, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978240309017480901, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978240309017480901, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978240309017480901, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978240309017480901, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978240309017480901, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978240309017480901, guid: 27572aee490181e40b4e4114f070474c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114799550511852994, guid: 27572aee490181e40b4e4114f070474c,
@@ -8235,48 +8607,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.000038146973
       objectReference: {fileID: 0}
-    - target: {fileID: 4164446609500588, guid: 27572aee490181e40b4e4114f070474c, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 224658263950171392, guid: 27572aee490181e40b4e4114f070474c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4580058850743618, guid: 27572aee490181e40b4e4114f070474c, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4790252805414942, guid: 27572aee490181e40b4e4114f070474c, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224086957911463082, guid: 27572aee490181e40b4e4114f070474c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 224077529166616246, guid: 27572aee490181e40b4e4114f070474c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 224172996953329282, guid: 27572aee490181e40b4e4114f070474c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 224103545903826710, guid: 27572aee490181e40b4e4114f070474c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 224554717769927136, guid: 27572aee490181e40b4e4114f070474c,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27572aee490181e40b4e4114f070474c, type: 3}
 --- !u!1001 &986289096
@@ -8548,7 +8878,42 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 11
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.name
+      value: L2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.strength
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fc4a588f8bf3474ca9bc7df89447a36, type: 3}
@@ -8765,7 +9130,42 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 11
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.name
+      value: L1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.strength
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fc4a588f8bf3474ca9bc7df89447a36, type: 3}
@@ -8918,17 +9318,17 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.strength
-      value: 11
+      value: 95
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.physicalDefense
-      value: 2
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.magicDefense
-      value: 2
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
@@ -8993,7 +9393,22 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 11
+      value: 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 430
       objectReference: {fileID: 0}
     - target: {fileID: 8193125987503758747, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
@@ -9845,6 +10260,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
         type: 3}
+      propertyPath: skillSet.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
       propertyPath: aiType
       value: 0
       objectReference: {fileID: 0}
@@ -9856,6 +10276,81 @@ PrefabInstance:
     - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
         type: 3}
       propertyPath: team
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.name
+      value: H2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.skills.level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.strength
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.speed
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.healingMultiplier
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -9996,6 +10491,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
         type: 3}
+      propertyPath: skillSet.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
       propertyPath: aiType
       value: 0
       objectReference: {fileID: 0}
@@ -10008,6 +10508,71 @@ PrefabInstance:
         type: 3}
       propertyPath: team
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.name
+      value: H3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[1].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[2].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].name
+      value: Punch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: skillSet.Array.data[3].level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.strength
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.speed
+      value: 58
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8855512118285115533, guid: ded051479fb895e4a979ca5b00b8de43,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ded051479fb895e4a979ca5b00b8de43, type: 3}
@@ -15241,12 +15806,42 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 9
+      value: 58
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.strength
-      value: 8
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.name
+      value: L6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fc4a588f8bf3474ca9bc7df89447a36, type: 3}
@@ -17293,12 +17888,42 @@ PrefabInstance:
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.speed
-      value: 8
+      value: 58
       objectReference: {fileID: 0}
     - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
         type: 3}
       propertyPath: baseChar.attr.strength
-      value: 5
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.name
+      value: L3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.curLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.intelligence
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.maxHealth
+      value: 310
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.physicalDefense
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050831351056265917, guid: 5fc4a588f8bf3474ca9bc7df89447a36,
+        type: 3}
+      propertyPath: baseChar.attr.magicDefense
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fc4a588f8bf3474ca9bc7df89447a36, type: 3}

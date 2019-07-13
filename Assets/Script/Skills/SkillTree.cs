@@ -11,7 +11,7 @@ public class SkillTree {
   List<Type> equippedSkills = new List<Type>();
 
   public int numSkillPoints = 0;
-  public int level = 0;
+  public int level = 1;
 
   public SkillTree() {
     foreach(Type t in SkillList.get.skills) {
@@ -92,9 +92,9 @@ public class SkillTree {
     numSkillPoints += skillPointsAtLevel(level+levelsToGain) - skillPointsAtLevel(level);
     level += levelsToGain;
   }
-  private int skillPointsAtLevel(int l){
-    int q = l/10;
-    int r = l%10;
-    return 5*q*(q+1) + l*(q+1);
+  public static int skillPointsAtLevel(int level){
+    int quotient = level/10;
+    int remainder = level%10;
+    return 5*quotient*(quotient+1) + remainder*(quotient+1) - 1;
   }
 }
