@@ -532,6 +532,8 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+  // Height tolerance before switching walk to jump
+  const float walkHeightTolerance = 0.2f;
   public IEnumerator moveObject(
     GameObject obj,
     float speed,
@@ -549,13 +551,18 @@ public class GameManager : MonoBehaviour {
     float dUp = speed*2*(hopHeight - start.y)/Options.FPS;
     float dDown = speed*2*(end.y - hopHeight)/Options.FPS;
     int curFrame = startFrame;
+
+    float heightDifference = (end-start).y;
+    bool shouldJump = movingPiece && (heightDifference < -walkHeightTolerance || heightDifference > walkHeightTolerance);
+
     for (int i = 0; i < Options.FPS/speed; i++) {
       float pct = curFrame * 1.0f / totalFrames;
       if (movingPiece) animator.SetFloat("Blend", (pct < 0.1) ? pct*10 : ((pct > 0.90) ? (1-pct)*10 : 1));
       Vector3 d = speed*(end-start)/Options.FPS;
 
-      // Arcing or hopping
-      if ((d.y != 0 && movingPiece) || (!movingPiece && arcing)) {
+      // Arcing, hopping or jumping
+      Debug.Log(d.y);
+      if (shouldJump || (!movingPiece && arcing)) {
         if (i < Options.FPS/(speed*2)) {
           d.y = dUp * Mathf.Lerp(1,0,i/(Options.FPS/(speed*2)));
         } else {
