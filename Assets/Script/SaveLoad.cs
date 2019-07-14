@@ -8,7 +8,7 @@ using UnityEngine.Profiling;
 
 public static class SaveLoad {
   private static Channel channel = new Channel("Save Game", true);
-  public static string autoSaveName = "AutoSave";
+  public static string autoSaveName = "AutoSave.bro";
   public static string dirPath = Path.Combine(Application.persistentDataPath, "savedGames");
 
   private static DirectoryInfo dir = System.IO.Directory.CreateDirectory(dirPath);
@@ -62,7 +62,7 @@ public static class SaveLoad {
     Profiler.BeginThreadProfiling("Tasks", "Load Task");
     sampler.Begin();
 
-    channel.Log("Saving to {0}", saveName);
+    channel.Log("Loading {0}", saveName);
 
     Debug.AssertFormat(! active, "Loading {0}: previously {1}", saveName, currentMode);
     currentMode = Mode.Loading;
