@@ -64,6 +64,7 @@ public class PlayerControl : MonoBehaviour {
 
     RaycastHit hitInfo;
     if (Physics.Raycast(ray, out hitInfo)) {
+      if (Options.debugMode) Debug.DrawLine(ray.origin, hitInfo.point);
       return hitInfo.collider.gameObject;
     }
     return null;
