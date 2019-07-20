@@ -81,10 +81,16 @@ public class CameraController : MonoBehaviour {
       Vector3 forward = new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
       forward = forward * following.transform.position.y;
       targetPosn = targetPosn + forward;
+
       if (panTime > 0f) {
         animatePan(panOrigin, targetPosn);
       } else {
-        lookAt(targetPosn);
+        Vector3 change = transform.position - (relativePosn + targetPosn);
+        if (change.sqrMagnitude > 1) {
+          panTo(targetPosn);
+        } else {
+          lookAt(targetPosn);
+        }
       }
     } else if (panTime > 0f) {
       animatePan(panOrigin, savedPosn);
