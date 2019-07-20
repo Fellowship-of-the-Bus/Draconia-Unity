@@ -27,7 +27,7 @@ public class FortifyAura: SelfTarget {
     };
 
     Aura<FortifyEffect> e = new Aura<FortifyEffect>(aoe, f);
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.applyToSelf = true;
 

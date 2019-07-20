@@ -18,7 +18,7 @@ public class Ward: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     WardEffect e = new WardEffect();
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.caster = self;
     target.applyEffect(e);

@@ -12,7 +12,7 @@ public class Slow: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     SlowEffect debuff = new SlowEffect();
-    debuff.level = level*2;
+    debuff.effectValue = level*2;
     debuff.duration = 2;
     debuff.caster = self;
     target.applyEffect(debuff);

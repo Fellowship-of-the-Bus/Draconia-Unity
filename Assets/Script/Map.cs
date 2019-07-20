@@ -36,7 +36,12 @@ public class Map {
     foreach (GameObject cube in cubes) {
       Tile t = cube.GetComponent<Tile>();
       Vector3 p = t.transform.position;
-      map[Mathf.RoundToInt(p.x),Mathf.RoundToInt(p.z)] = t;
+      int x = Mathf.RoundToInt(p.x);
+      int z = Mathf.RoundToInt(p.z);
+      // in the case where multiple tiles occupy the same (x, z) position, choose the top one
+      if (map[x,z] == null || p.y > map[x,z].transform.position.y) {
+        map[x,z] = t;
+      }
     }
   }
 

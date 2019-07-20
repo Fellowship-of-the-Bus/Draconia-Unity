@@ -10,9 +10,9 @@ public class CrippleEffect : DurationEffect {
   }}
 
   protected override void onActivate() {
-    owner.attrChange.moveRange -= level;
+    owner.attrChange.moveRange -= effectValue;
   }
   protected override void onDeactivateEffects() {
-    owner.attrChange.moveRange += level;
+    owner.attrChange.moveRange += effectValue;
   }
 }

@@ -10,7 +10,7 @@ public class FreezingHit : PassiveSkill {
     float chance = UnityEngine.Random.value;
     if (e.hook == EventHook.postAttack && e.damageTaken > 0 && chance < (0.1 * level)) {
       SlowEffect debuff = new SlowEffect();
-      debuff.level = level*2;
+      debuff.effectValue = level*2;
       debuff.duration = 2;
       debuff.caster = self;
       e.attackTarget.applyEffect(debuff);

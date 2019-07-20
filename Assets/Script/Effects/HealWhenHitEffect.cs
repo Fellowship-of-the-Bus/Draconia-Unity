@@ -11,7 +11,7 @@ public class HealWhenHitEffect : DurationEffect {
 
   protected override void additionalEffect(Draconia.Event e) {
     if (owner.isAlive()) {
-      owner.takeHealing(owner.calculateHealing(level));
+      owner.takeHealing(owner.calculateHealing(effectValue));
     }
   }
 }

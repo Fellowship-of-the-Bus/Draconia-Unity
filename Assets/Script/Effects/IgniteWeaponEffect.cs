@@ -19,13 +19,13 @@ public class IgniteWeaponEffect : DurationEffect {
       if (skill.dType == DamageType.physical) {
         originalEle = skill.dEle;
         skill.dEle = DamageElement.fire;
-        owner.attrChange.strength += 10;
+        owner.attrChange.strength += effectValue;
       }
     } else if (e.hook == EventHook.postSkill) {
       ActiveSkill skill = e.skillUsed;
       if (skill.dType == DamageType.physical) {
         skill.dEle = originalEle;
-        owner.attrChange.strength -= 10;
+        owner.attrChange.strength -= effectValue;
       }
     }
   }

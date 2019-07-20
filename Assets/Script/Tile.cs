@@ -36,8 +36,7 @@ public class Tile : Effected {
   }
 
   public void setup() {
-    Transform t = gameObject.transform.Find("Top");
-    color = t.gameObject.GetComponent<Renderer>().sharedMaterial;
+    color = GetComponent<Renderer>().sharedMaterial;
     border = this.transform.Find("Border").gameObject.GetComponent<Renderer>();
     this.clearColour();
   }

@@ -231,7 +231,7 @@ public class BattleCharacter : Effected {
       foreach (Type t in Assembly.GetExecutingAssembly().GetTypes()) {
         if (t.IsSubclassOf(Type.GetType("PassiveSkill")) && t.FullName == data.name) {
           skill = (PassiveSkill)Activator.CreateInstance(t);
-          skill.level = data.level;
+          skill.effectValue = data.level;
           skill.self = this;
           skill.activate(this);
         }

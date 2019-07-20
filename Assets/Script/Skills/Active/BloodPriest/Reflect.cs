@@ -21,7 +21,6 @@ public class Reflect: SingleTarget {
     if (self.curHealth > cost) {
       self.takeDamage(cost,self);
       ReflectEffect e = new ReflectEffect();
-      e.level = level;
       e.duration = 2;
       e.caster = self;
       target.applyEffect(e);

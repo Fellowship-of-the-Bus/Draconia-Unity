@@ -8,7 +8,7 @@ using UnityEngine.Profiling;
 
 public static class SaveLoad {
   private static Channel channel = new Channel("Save Game", true);
-  public static string autoSaveName = "AutoSave";
+  public static string autoSaveName = "AutoSave.bro";
   public static string dirPath = Path.Combine(Application.persistentDataPath, "savedGames");
 
   private static DirectoryInfo dir = System.IO.Directory.CreateDirectory(dirPath);
@@ -18,7 +18,7 @@ public static class SaveLoad {
   }
 
   public enum Mode {
-    Inactive, Save, Load
+    Inactive, Saving, Loading
   }
   public static Mode currentMode { get; private set; }
 
@@ -29,8 +29,10 @@ public static class SaveLoad {
     Profiler.BeginThreadProfiling("Tasks", "Save Task");
     sampler.Begin();
 
-    Debug.Assert(! active);
-    currentMode = Mode.Save;
+    channel.Log("Saving to {0}", saveName);
+
+    Debug.AssertFormat(! active, "Saving {0}: previously {1}", saveName, currentMode);
+    currentMode = Mode.Saving;
     active = true;
     BinaryFormatter bf = new BinaryFormatter();
     if (!saveName.EndsWith(".bro")) saveName += ".bro";
@@ -60,8 +62,10 @@ public static class SaveLoad {
     Profiler.BeginThreadProfiling("Tasks", "Load Task");
     sampler.Begin();
 
-    Debug.Assert(! active);
-    currentMode = Mode.Load;
+    channel.Log("Loading {0}", saveName);
+
+    Debug.AssertFormat(! active, "Loading {0}: previously {1}", saveName, currentMode);
+    currentMode = Mode.Loading;
     active = true;
     saveName = Path.Combine(dirPath, saveName);
     if (File.Exists(saveName)) {

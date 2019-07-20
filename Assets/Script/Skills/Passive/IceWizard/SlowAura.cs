@@ -17,7 +17,7 @@ public class SlowAura: PassiveSkill {
     };
 
     Aura<SlowEffect> e = new Aura<SlowEffect>(aoe, f, true);
-    e.level = level;
+    e.effectValue = level;
     e.duration = -1;
     e.applyToSelf = true;
 

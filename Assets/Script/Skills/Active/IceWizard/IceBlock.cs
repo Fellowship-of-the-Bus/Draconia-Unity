@@ -33,7 +33,6 @@ public class IceBlock: ActiveSkill, AoeSkill {
 
   public override void tileEffects(Tile target) {
     IceBlockEffect block = new IceBlockEffect();
-    block.level = level;
     block.duration = 2;
     block.caster = self;
     block.caster = self;

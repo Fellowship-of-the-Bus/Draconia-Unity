@@ -27,7 +27,7 @@ public class EmpowerAura: SelfTarget {
     };
 
     Aura<EmpowerEffect> e = new Aura<EmpowerEffect>(aoe, f);
-    e.level = level;
+    e.effectValue = level;
     e.duration = 2;
     e.applyToSelf = true;
 

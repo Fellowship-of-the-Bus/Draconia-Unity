@@ -29,7 +29,6 @@ public class Intercept: SelfTarget {
     };
 
     Aura<InterceptEffect> e = new Aura<InterceptEffect>(aoe, f);
-    e.level = level;
     e.duration = 2;
     e.applyToSelf = false;
 

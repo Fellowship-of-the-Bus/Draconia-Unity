@@ -5,9 +5,9 @@ public class FortifyEffect : DurationEffect {
     stackable = true;
   }
   protected override void onActivate() {
-    owner.attrChange.physicalDefense += level;
+    owner.attrChange.physicalDefense += effectValue;
   }
   protected override void onDeactivateEffects() {
-    owner.attrChange.physicalDefense -= level;
+    owner.attrChange.physicalDefense -= effectValue;
   }
 }
