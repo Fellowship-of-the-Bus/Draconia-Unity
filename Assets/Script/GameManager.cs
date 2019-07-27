@@ -396,15 +396,7 @@ public class GameManager : MonoBehaviour {
 
     cancelStack.Clear();
 
-    for (int i = 0; i < skillButtons.Length; i++) {
-      skillButtons[i].clearSkill();
-    }
-
-    for (int i = 0; i < SelectedCharacter.equippedSkills.Count; i++) {
-      ActiveSkill s = SelectedCharacter.equippedSkills[i];
-      Debug.AssertFormat(s.name != "", "Skill Name is empty");
-      skillButtons[i].setSkill(s);
-    }
+    updateSkillButtons();
 
     // AI's
     if (SelectedCharacter.team != 0 || SelectedCharacter.aiType != AIType.None) {
@@ -841,6 +833,27 @@ public class GameManager : MonoBehaviour {
       piece.transform.position.y + 2*height/3,
       piece.transform.position.z
     );
+  }
+
+  //sets skill buttons active/inactive depending on which skills exist
+  //Right now only assumes that the 5th skill granted by BFElements are temporary
+  public void updateSkillButtons() {
+
+
+    for (int i = 0; i < skillButtons.Length; i++) {
+      skillButtons[i].clearSkill();
+    }
+
+    for (int i = 0; i < SelectedCharacter.equippedSkills.Count; i++) {
+      ActiveSkill s = SelectedCharacter.equippedSkills[i];
+      if (s == null) {
+        continue;
+      }
+      Debug.AssertFormat(s.name != "", "Skill Name is empty");
+      skillButtons[i].setSkill(s);
+    }
+
+    skillButtons[BattleCharacter.numPermSkills].gameObject.SetActive(SelectedCharacter.equippedSkills[BattleCharacter.numPermSkills] != null);
   }
 
   public GameObject playerPrefab;

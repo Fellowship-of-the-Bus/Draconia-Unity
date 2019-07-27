@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 114387056045447532}
   - component: {fileID: 114779567416764352}
   - component: {fileID: 4662648295740746117}
+  - component: {fileID: 4054151058730663240}
   m_Layer: 5
   m_Name: SkillButton
   m_TagString: SkillButton
@@ -28,7 +29,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607198509308322}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -153,6 +154,26 @@ MonoBehaviour:
   image: {fileID: 8004842126936803521}
   cooldown: {fileID: 7784629553069674619}
   button: {fileID: 114387056045447532}
+--- !u!114 &4054151058730663240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607198509308322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 75
+  m_PreferredHeight: 75
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &3961955295990887606
 GameObject:
   m_ObjectHideFlags: 0
