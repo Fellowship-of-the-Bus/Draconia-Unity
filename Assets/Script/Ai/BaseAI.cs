@@ -65,6 +65,9 @@ public abstract class BaseAI {
     Heap<SkillData> db = new Heap<SkillData>();
     int index = 0;
     foreach (ActiveSkill skill in owner.equippedSkills) {
+      if (skill == null) {
+        continue;
+      }
       index++;
       // Skip unusable skills
       if (!skill.canUse()) continue;
@@ -82,14 +85,14 @@ public abstract class BaseAI {
         foreach (BattleCharacter ch in c) {
           if (skill is HealingSkill) {
             int val = Math.Min(skill.calculateHealing(ch), ch.maxHealth - ch.curHealth);
-            if (ch.team != owner.team) {
+            if (ch.isEnemyOf(owner)) {
               netChange -= val;
             } else {
               netChange += val;
             }
           } else {
             int val = skill.calculateDamage(ch, tile);
-            if (ch.team != owner.team) {
+            if (ch.isEnemyOf(owner)) {
               netChange += val;
             } else {
               netChange -= val;
