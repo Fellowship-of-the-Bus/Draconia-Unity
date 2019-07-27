@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 
 public class LegShot: SingleTarget {
+  const int crippleDuration = 2;
+  protected override string tooltipDescription { get {
+    return "Shoot the target in the leg dealing " + tooltipDamage + " and crippling them for " + crippleDuration + " turns";
+  }}
+
 
   public override string animation { get { return "Shoot"; }}
 
@@ -23,7 +28,7 @@ public class LegShot: SingleTarget {
   public override void additionalEffects (BattleCharacter target) {
     CrippleEffect debuff = new CrippleEffect();
     debuff.effectValue = 2;
-    debuff.duration = 2;
+    debuff.duration = crippleDuration;
     debuff.caster = self;
     target.applyEffect(debuff);
   }
