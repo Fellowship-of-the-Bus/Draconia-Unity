@@ -187,7 +187,7 @@ public class BattleCharacter : Effected {
 
     if (inGame) {
       GameObject weaponModel = weapon.getModel();
-      if (weaponModel) GameObject.Instantiate(weaponModel, model.rightHand);
+      if (weaponModel) model.weapon = GameObject.Instantiate(weaponModel, model.rightHand);
     }
     gameObject.name = name;
 
@@ -315,6 +315,9 @@ public class BattleCharacter : Effected {
       skillBeingUsed = skill;
       targetedTile = target;
       skillTargets = targets;
+      if (skill.animation == "Shoot") {
+        model.attachBowstring();
+      }
       GameManager.get.waitFor(model.animator, skill.animation,
         () => {
           castingCircle.Stop();
@@ -326,6 +329,7 @@ public class BattleCharacter : Effected {
   }
 
   public void doFinishSkill() {
+    model.detachBowstring();
     skillBeingUsed.playAVEffects(() => {
       finishSkill(skillBeingUsed, targetedTile, skillTargets);
     }, targetedTile);
