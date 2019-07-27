@@ -16,7 +16,7 @@ public class ActionQueue : MonoBehaviour {
   private float buttonHeight = 0;
   public bool usePortraits = false;
 
-  struct actionTime {
+  private struct actionTime {
     public BattleCharacter piece;
     public ActionQueueElem button;
 
@@ -72,7 +72,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  public bool hasObject (BattleCharacter piece) {
+  private bool hasObject (BattleCharacter piece) {
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece == piece) {
         return true;
@@ -81,7 +81,7 @@ public class ActionQueue : MonoBehaviour {
     return false;
   }
 
-  int actionsCount (BattleCharacter piece) {
+  private int actionsCount (BattleCharacter piece) {
     int count = 0;
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (n.Value.piece == piece) {
@@ -115,7 +115,7 @@ public class ActionQueue : MonoBehaviour {
     pieces.Add(piece);
   }
 
-  void fillActions(BattleCharacter piece) {
+  private void fillActions(BattleCharacter piece) {
     int k = actionsCount(piece) + 1;
     bool filledIn = false;
     while (!filledIn) {
@@ -155,7 +155,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  public void removeFirst(BattleCharacter piece) {
+  private void removeFirst(BattleCharacter piece) {
     int i = 0;
 
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
@@ -172,7 +172,7 @@ public class ActionQueue : MonoBehaviour {
   // Add a turn marker to the action queue
   // Does not add to the end unless it is the only turn marker for that piece
   // Returns whether the requested marker belongs at the end of the queue
-  bool enqueue(BattleCharacter piece, int turn = 1) {
+  private bool enqueue(BattleCharacter piece, int turn = 1) {
     bool isLast = false;
     ActionQueueElem buttonObject = null;
 
@@ -207,7 +207,7 @@ public class ActionQueue : MonoBehaviour {
     return isLast;
   }
 
-  ActionQueueElem makeButton(BattleCharacter piece) {
+  private ActionQueueElem makeButton(BattleCharacter piece) {
     GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
     buttonObject.transform.SetParent(gameObject.transform, false);
     ActionQueueElem elem = buttonObject.GetComponent<ActionQueueElem>();
@@ -222,11 +222,11 @@ public class ActionQueue : MonoBehaviour {
     return elem;
   }
 
-  float getPosn(int i) {
+  private float getPosn(int i) {
     return -i * buttonHeight;
   }
 
-  void moveDown(int i) {
+  private void moveDown(int i) {
     int index = 0;
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (index > i) {
@@ -237,7 +237,7 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  void moveUp(int i) {
+  private void moveUp(int i) {
     int index = 0;
     foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
       if (index > i) {
@@ -248,9 +248,8 @@ public class ActionQueue : MonoBehaviour {
     }
   }
 
-  IEnumerator SlideButton(ActionQueueElem button, float x, float y, bool deleteAfter = false) {
+  private IEnumerator SlideButton(ActionQueueElem button, float x, float y, bool deleteAfter = false) {
     const float time = 0.25f;
-
 
     GameManager.get.lockUI();
 
