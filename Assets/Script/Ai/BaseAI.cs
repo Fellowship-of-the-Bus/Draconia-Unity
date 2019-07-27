@@ -65,6 +65,9 @@ public abstract class BaseAI {
     Heap<SkillData> db = new Heap<SkillData>();
     int index = 0;
     foreach (ActiveSkill skill in owner.equippedSkills) {
+      if (skill == null) {
+        continue;
+      }
       index++;
       // Skip unusable skills
       if (!skill.canUse()) continue;

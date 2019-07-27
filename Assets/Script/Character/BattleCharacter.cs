@@ -62,7 +62,10 @@ public class BattleCharacter : Effected {
   public SkillData[] skillSet;
   public SkillData[] passiveSet;
 
-  public List<ActiveSkill> equippedSkills = new List<ActiveSkill>();
+
+  public static int numPermSkills = 4;
+  public static int numTempSkills = 1;
+  public List<ActiveSkill> equippedSkills = new List<ActiveSkill>(new ActiveSkill[5] {null,null,null,null,null});
 
   [HideInInspector]
   public Tile curTile = null;
@@ -146,7 +149,11 @@ public class BattleCharacter : Effected {
       this.transform
     ).GetComponent<ParticleSystem>();
     equippedSkills = skills.getActives(this);
-    if (Options.debugMode && equippedSkills.IsEmpty()) {
+    int numSkills = equippedSkills.Count;
+    while (equippedSkills.Count != numPermSkills + numTempSkills ) {
+      equippedSkills.Add(null);
+    }
+    if (Options.debugMode && numSkills == 0) {
       setSkills();
       prevSkillSet = new List<String>(skillSet.Select(x => x.name));
     }
@@ -203,7 +210,7 @@ public class BattleCharacter : Effected {
         if (t.IsSubclassOf(Type.GetType("ActiveSkill")) && t.FullName == data.name) {
           skill = (ActiveSkill)Activator.CreateInstance(t);
         }
-        if (equippedSkills.Count > i && t.FullName == data.name && t == equippedSkills[i].GetType()) {
+        if (equippedSkills.Count > i && t.FullName == data.name && equippedSkills[i] != null && t == equippedSkills[i].GetType()) {
           skill = null;
           invalidSkill = false;
         }
@@ -243,7 +250,7 @@ public class BattleCharacter : Effected {
   }
 
   void OnValidate() {
-    if (Options.debugMode && equippedSkills.Count != 0) {
+    if (Options.debugMode && equippedSkills.Count != 0 && equippedSkills[0] != null) {
       setSkills();
     }
   }
