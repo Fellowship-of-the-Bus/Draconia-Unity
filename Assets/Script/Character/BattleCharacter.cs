@@ -17,6 +17,7 @@ public class BattleCharacter : Effected {
   public Character baseChar = new Character();
   public AIType aiType = AIType.None;
   public EnemyType enemyType = EnemyType.Human;
+  public AudioSource audio;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }
@@ -260,6 +261,11 @@ public class BattleCharacter : Effected {
     return GameManager.get.map.getTilesWithinRange(curTile, range, false).Contains(target.curTile);
   }
 
+
+  ActiveSkill skillBeingUsed = null;
+  Tile targetedTile = null;
+  List<Effected> skillTargets = null;
+
   public bool useSkill(ActiveSkill skill, List<Tile> tileTargets) {
     List<Tile> validTargets = skill.getTargets();
     List<Effected> targets = new List<Effected>();
@@ -298,17 +304,24 @@ public class BattleCharacter : Effected {
         castingCircle.Play();
       }
 
+
+      skillBeingUsed = skill;
+      targetedTile = target;
+      skillTargets = targets;
       GameManager.get.waitFor(model.animator, skill.animation,
         () => {
           castingCircle.Stop();
-          skill.playAVEffects(() => {
-            finishSkill(skill, target, targets);
-          }, target);
         }
       );
     }
     else finishSkill(skill, target, targets);
     return true;
+  }
+
+  public void doFinishSkill() {
+    skillBeingUsed.playAVEffects(() => {
+      finishSkill(skillBeingUsed, targetedTile, skillTargets);
+    }, targetedTile);
   }
 
   void finishSkill(ActiveSkill skill, Tile target, List<Effected> targets) {
@@ -416,6 +429,15 @@ public class BattleCharacter : Effected {
 
   public void takeDamage(int damage, BattleCharacter source) {
     if (curHealth <= 0) return;
+    if (model.animator) {
+      audio.Play();
+      if ((curHealth - damage) <= 0) {
+        GameManager.get.waitFor(model.animator, "Death");
+      }
+      else {
+       GameManager.get.waitFor(model.animator,"TakeDamage");
+     }
+    }
     floatingText(damage, Color.red, () => {
       curHealth -= damage;
       if (curHealth <= 0) {
@@ -426,8 +448,6 @@ public class BattleCharacter : Effected {
         } else {
           onDeath(source);
         }
-      } else {
-        if (model.animator) GameManager.get.waitFor(model.animator,"TakeDamage");
       }
     });
   }
@@ -440,8 +460,8 @@ public class BattleCharacter : Effected {
 
   IEnumerator fadeOut() {
 
-    Coroutine c = GameManager.get.waitFor(model.animator, "Death");
-    yield return GameManager.get.waitUntilPopped(c);
+    // Coroutine c =
+    // yield return GameManager.get.waitUntilPopped(c);
 
     SkinnedMeshRenderer r = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
     List<Pair<Material,Color>> matcolors = new List<Pair<Material,Color>>();
@@ -556,5 +576,9 @@ public class BattleCharacter : Effected {
   }
   public float lightningResMultiplier {
     get {return (100f-lightningResistance)/100f;}
+  }
+
+  public void attackAnimationEvent(string s) {
+    print(s);
   }
 }

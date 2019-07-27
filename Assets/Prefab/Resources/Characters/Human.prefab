@@ -90,6 +90,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1066702111997486347}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8855512118285115533 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8370140779603674502, guid: cf068cc8142306649939badda65ce2ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 1066702111997486347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 492e74dd2e979c74c84cf581b959ce25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4612239843056557137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -156,6 +168,16 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 5956345972927424eba3db6f03f82542, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496155723111375, guid: 5956345972927424eba3db6f03f82542,
+        type: 3}
+      propertyPath: battleCharacter
+      value: 
+      objectReference: {fileID: 8855512118285115533}
+    - target: {fileID: 6718496155723111375, guid: 5956345972927424eba3db6f03f82542,
+        type: 3}
+      propertyPath: audio
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5956345972927424eba3db6f03f82542, type: 3}
