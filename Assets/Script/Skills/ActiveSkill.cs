@@ -108,7 +108,9 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual string tooltipHeader { get { return "<b>" + name + "</b>\n" + tooltipRange; }}
   protected virtual string tooltipDescription { get { return "Skill Missing Tooltip!"; }}
   public virtual string tooltip { get { return tooltipHeader + tooltipDescription; }}
-
+  protected string formatDamage(int value) {
+    return "<color=" + tooltipDamageColor + ">" + value.ToString() + "</color>";
+  }
 
 
   public bool canTargetSelf = false;

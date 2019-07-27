@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 
-[System.Serializable]
-public class HealthBarManager {
+public class HealthBarManager : MonoBehaviour {
   public GameObject healthBar;
   public GameObject damageBar;
   public GameObject healingBar;
+  public CustomText textDisplay;
 
   private BattleCharacter character;
   private int offset;
@@ -15,6 +16,7 @@ public class HealthBarManager {
     Vector3 scale = bar.transform.localScale;
     scale.x = Math.Max(Math.Min((float)health/character.maxHealth,1),0);
     bar.transform.localScale = scale;
+    textDisplay.text = ((int)health).ToString() + " / " + character.maxHealth.ToString();
   }
 
   public void update(int change = 0) {

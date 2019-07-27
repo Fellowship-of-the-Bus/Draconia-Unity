@@ -24,7 +24,7 @@ public class Fireball: SingleTarget {
   }
 
   protected override string tooltipDescription { get {
-    return "Deal " + tooltipDamage + " damage";
+    return "Hurl a ball of fire that deals " + tooltipDamage + " damage to the target";
   }}
 
   public override int damageFormula(){
