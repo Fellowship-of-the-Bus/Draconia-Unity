@@ -9,9 +9,6 @@ public class MainMenu: MonoBehaviour {
     SkillList.get.createDict();
     LootGenerator.init();
   }
-  public void test() {
-    LoadingScreen.load("OverWorld");
-  }
 
   public void loadGame() {
     loadBrowser.createOptions(SaveLoad.listSaveFiles());
