@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ActionQueueElem : MonoBehaviour, PoolableObject {
-  public Text text;
+  public CustomText text;
   public Button button;
   public Image image;
 

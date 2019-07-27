@@ -217,7 +217,6 @@ public class ActionQueue : MonoBehaviour {
     });
     if (usePortraits) {
       elem.image.sprite = CharacterPortraitManager.getPortrait(piece);
-      elem.text.gameObject.SetActive(false);
     }
     return elem;
   }
