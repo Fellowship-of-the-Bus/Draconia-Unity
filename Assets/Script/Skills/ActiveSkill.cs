@@ -177,6 +177,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     multiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
     return (int)(damageFormula()*multiplier);
   }
+  private const float heightDifferenceMultiplier = 0.2f;
   public virtual int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {
     if (attackOrigin == null) {
       attackOrigin = self.curTile;
@@ -186,7 +187,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     float multiplier = 1;
     if (range >= 1) {
       //balance here
-      multiplier += heightDifference * 0.2f;
+      multiplier += heightDifference * heightDifferenceMultiplier;
       if (multiplier < 0.5f) {
         multiplier = 0.5f;
       }
@@ -197,11 +198,8 @@ public abstract class ActiveSkill : EventListener, Skill {
     traitMultiplier += self.baseChar.totalTraits.spec.enemySpec[target.enemyType];
     traitMultiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
     int calculatedDamage = (int) (target.calculateDamage((int)(damageFormula() * multiplier * traitMultiplier), dType, dEle));
-    if (calculatedDamage <= 0) {
-      int minimumDamage = (int)Mathf.Ceil(damageFormula() * MINIMUM_DAMAGE_PERCENT);
-      return minimumDamage;
-    }
-    return calculatedDamage;
+    int minimumDamage = (int)Mathf.Ceil(damageFormula() * MINIMUM_DAMAGE_PERCENT);
+    return Math.Max(minimumDamage, calculatedDamage);
   }
 
   public virtual int calculateHealing(BattleCharacter target){
