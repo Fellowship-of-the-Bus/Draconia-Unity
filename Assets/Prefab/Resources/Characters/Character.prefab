@@ -390,10 +390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: {fileID: 4996650671225612567}
-  healthBars:
-    healthBar: {fileID: 344712365579076378}
-    damageBar: {fileID: 8209177788376820112}
-    healingBar: {fileID: 6013085091407102372}
+  healthBars: {fileID: 4448287720517695177}
   actionMeter: {fileID: 4984572158078914918}
 --- !u!1 &8316085232742059098
 GameObject:
@@ -611,24 +608,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 345413297736439130}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6013085091407102372 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6321332696027124990, guid: 2e96391ad69d845a89ea2eece4a4eed4,
+--- !u!114 &4448287720517695177 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4138906521028699027, guid: 2e96391ad69d845a89ea2eece4a4eed4,
     type: 3}
   m_PrefabInstance: {fileID: 345413297736439130}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8209177788376820112 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8441993258724031690, guid: 2e96391ad69d845a89ea2eece4a4eed4,
-    type: 3}
-  m_PrefabInstance: {fileID: 345413297736439130}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &344712365579076378 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1000012339238464, guid: 2e96391ad69d845a89ea2eece4a4eed4,
-    type: 3}
-  m_PrefabInstance: {fileID: 345413297736439130}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99129663d65c0f44a7b64f15e6a7d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1008615670678176334
 PrefabInstance:
   m_ObjectHideFlags: 0
