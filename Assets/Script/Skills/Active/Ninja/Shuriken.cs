@@ -18,6 +18,6 @@ public class Shuriken: SingleTarget {
   }
 
   protected override string tooltipDescription { get {
-    return "Throw a shuriken dealing " + tooltipDamage + " to the target";
+    return "Throw a shuriken which deals " + tooltipDamage + " to the target";
   }}
 }
