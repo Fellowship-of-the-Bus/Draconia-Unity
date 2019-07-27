@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class BleedEffect : DurationEffect, HealthChangingEffect {
   private GameObject particle;
+  public BleedEffect() {
+    name = "Bleeding";
+  }
+
+  protected override string tooltipDescription { get {
+    return "Taking " + effectValue + " damage at the end of each turn";
+  }}
 
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);

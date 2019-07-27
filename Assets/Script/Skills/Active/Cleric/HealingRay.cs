@@ -22,7 +22,7 @@ public class HealingRay: SingleTarget, HealingSkill {
   }
 
   protected override string tooltipDescription { get {
-    return "Heal the target by " + tooltipHealing;
+    return "Project a ray of energy that heals the target by " + tooltipHealing;
   }}
 
   public int healingFormula() {
