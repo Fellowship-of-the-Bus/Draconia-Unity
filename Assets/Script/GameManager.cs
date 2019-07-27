@@ -82,9 +82,11 @@ public class GameManager : MonoBehaviour {
   //Map Boss
   public BattleCharacter boss;
 
+  public List<BattleCharacter> allCharacters;
   public Dictionary<BattleCharacter.Team, List<BattleCharacter>> characters = new Dictionary<BattleCharacter.Team, List<BattleCharacter>>();
   public List<BattleCharacter> players { get{ return characters[BattleCharacter.Team.Player]; } }
   public List<BattleCharacter> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
+  public List<BattleCharacter> allies { get{ return characters[BattleCharacter.Team.Ally]; } }
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   public Material[] minimapIcons;
@@ -228,6 +230,7 @@ public class GameManager : MonoBehaviour {
     dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
 
     var chars = GameObject.FindGameObjectsWithTag("Unit").Select(x => x.GetComponent<BattleCharacter>());
+    allCharacters = new List<BattleCharacter>(chars);
     var objs = chars.GroupBy(x => x.team);
     foreach (var x in objs) {
       characters[x.Key] = new List<BattleCharacter>(x);

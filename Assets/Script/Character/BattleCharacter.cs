@@ -89,6 +89,13 @@ public class BattleCharacter : Effected {
     Player, Enemy, Ally
   };
   public Team team = Team.Player;
+  public bool isEnemyOf(BattleCharacter other) {
+    if (team == Team.Enemy) {
+      return other.team == Team.Player || other.team == Team.Ally;
+    } else {
+      return other.team == Team.Enemy;
+    }
+  }
 
   private int previewChange;
   public int PreviewChange{
