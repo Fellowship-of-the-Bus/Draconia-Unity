@@ -2,6 +2,191 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class BFAura: BFElement {
+public enum BFAuraType {
+  regen,
+}
 
+public enum BFAuraActivationCriteria {
+  majority,
+  singleTeam,
+  alwaysPlayers,
+  alwaysEnemies,
+}
+
+public enum BFAuraShape {
+  circle,
+  square,
+  diamond,
+  arbitrary
+}
+
+
+public class BFAura: BFElement {
+  public Tile[] activationTiles;
+  public Tile centerTile;
+  public BFAuraType type;
+  public BFAuraActivationCriteria criteria;
+  public BFAuraShape shape;
+  public int aoe;
+  public int auraEffectValue;
+  //should apply to enemies rather than allies?
+  public bool appliesToEnemies = false;
+  public List<Tile> effectTiles = new List<Tile>();
+  public Dictionary<BattleCharacter, Effect> appliedEffects = new Dictionary<BattleCharacter, Effect>();
+  public Team controllingTeam = Team.None;
+
+  public class BFAuraEffectFactory {
+    public static Effect getEffect(BFAura aura) {
+      Effect e = null;
+      switch(aura.type) {
+        case BFAuraType.regen:
+          e = new RegenerationEffect();
+          e.effectValue = aura.auraEffectValue;
+          break;
+      }
+      return e;
+    }
+  }
+
+  new protected void Start() {
+    base.Start();
+    switch(shape) {
+      case BFAuraShape.circle:
+        foreach(Tile t in GameManager.get.map.tiles) {
+          float dx = Mathf.Abs(centerTile.position.x - t.position.x);
+          float dz = Mathf.Abs(centerTile.position.z - t.position.z);
+          if (dx*dx + dz*dz <= aoe*aoe) {
+            effectTiles.Add(t);
+          }
+        }
+        break;
+      case BFAuraShape.square:
+        foreach(Tile t in GameManager.get.map.tiles) {
+          float dx = Mathf.Abs(centerTile.position.x - t.position.x);
+          float dz = Mathf.Abs(centerTile.position.z - t.position.z);
+          if (dx <= aoe && dz <= aoe) {
+            effectTiles.Add(t);
+          }
+        }
+        break;
+      case BFAuraShape.diamond:
+        foreach(Tile t in GameManager.get.map.tiles) {
+          float dx = Mathf.Abs(centerTile.position.x - t.position.x);
+          float dz = Mathf.Abs(centerTile.position.z - t.position.z);
+          if (dx + dz <= aoe) {
+            effectTiles.Add(t);
+          }
+        }
+        break;
+    }
+  }
+
+  public override void init() {
+    controllingTeam = controller();
+    applyAura();
+  }
+
+  Tile previousTile = null;
+  protected override void onPreMove(BattleCharacter character) {
+    previousTile = character.curTile;
+  }
+
+  protected override void onPostMove(BattleCharacter character) {
+    //check if owner of aura changed
+    Team curController = controller();
+    if (controllingTeam == curController) {
+      //check if the moving character moves in/out of the area
+      if (effectTiles.Contains(previousTile) == effectTiles.Contains(character.curTile)) {
+        return;
+      }//moves out
+      if (effectTiles.Contains(previousTile)) {
+        removeAura(character);
+      } else {
+        //moves in
+        applyAura(character);
+      }
+      return;
+    }
+    controllingTeam = curController;
+    removeAura();
+    applyAura();
+  }
+
+  void removeAura() {
+    var keys = new List<BattleCharacter>(appliedEffects.Keys);
+    foreach (BattleCharacter c in keys) {
+      removeAura(c);
+    }
+  }
+
+  void removeAura(BattleCharacter character){
+    if (appliedEffects.ContainsKey(character)) {
+      character.removeEffect(appliedEffects[character]);
+      appliedEffects.Remove(character);
+    }
+  }
+
+  void applyAura() {
+    foreach(Tile t in effectTiles) {
+      if (t.occupant != null)
+        applyAura(t.occupant);
+    }
+  }
+  void applyAura(BattleCharacter character) {
+    if (controllingTeam == Team.None) {
+      return;
+    }
+    //either aura applies to enemies and character is an enemy of the controlling team
+    //or aura applies to allies and character not an enemy of the controlling team
+    if ((character.isEnemyOf(controllingTeam) && appliesToEnemies) ||
+        (!character.isEnemyOf(controllingTeam) && !appliesToEnemies)) {
+      Effect e = BFAuraEffectFactory.getEffect(this);
+      character.applyEffect(e);
+      appliedEffects.Add(character, e);
+    }
+  }
+  //Function for determining who controls the aura and who the aura should apply to
+  private Team controller() {
+    bool hasOccupants = false;
+    Dictionary<Team, int> activationOccupants = new Dictionary<Team, int>();
+    activationOccupants.Add(Team.Player,0);
+    activationOccupants.Add(Team.Enemy,0);
+    activationOccupants.Add(Team.Ally,0);
+    foreach (Tile t in activationTiles) {
+      if (t.occupant == null) {
+        continue;
+      }
+      hasOccupants = true;
+      activationOccupants[t.occupant.team] += 1;
+    }
+    if (! hasOccupants) {
+      return Team.None;
+    }
+    switch(criteria){
+      case BFAuraActivationCriteria.majority:
+        if (activationOccupants[Team.Player] + activationOccupants[Team.Ally]
+            > activationOccupants[Team.Enemy]) {
+          return Team.Player;
+        } else if (activationOccupants[Team.Player] + activationOccupants[Team.Ally]
+            < activationOccupants[Team.Enemy]) {
+          return Team.Enemy;
+        } else {
+          return Team.None;
+        }
+      case BFAuraActivationCriteria.singleTeam:
+        if (activationOccupants[Team.Enemy] == 0) {
+          return Team.Player;
+        } else if (activationOccupants[Team.Player] + activationOccupants[Team.Ally] == 0) {
+          return Team.Enemy;
+        } else {
+          return Team.None;
+        }
+      case BFAuraActivationCriteria.alwaysPlayers:
+        return Team.Player;
+      case BFAuraActivationCriteria.alwaysEnemies:
+        return Team.Enemy;
+      default:
+        return Team.None;
+    }
+  }
 }

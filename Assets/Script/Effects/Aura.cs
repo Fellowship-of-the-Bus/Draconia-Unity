@@ -46,7 +46,7 @@ public class Aura<T> : DurationEffect where T: Effect, new() {
     foreach (Tile t in tiles) {
       if (t.occupied()) {
         BattleCharacter c = t.occupant;
-        if (c.team == owner.team ^ applyToEnemies) {
+        if (owner.isEnemyOf(c) == applyToEnemies ) {
           setup(c);
         }
       }
