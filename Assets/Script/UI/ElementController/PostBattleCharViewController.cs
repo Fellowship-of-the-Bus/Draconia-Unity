@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PostBattleCharViewController: MonoBehaviour {
   public Text nameDisplay;
   public Image portrait;
-  public GameObject expBar;
+  public ExperienceBarManager xpBar;
 
   private Character subject;
 
@@ -18,11 +18,6 @@ public class PostBattleCharViewController: MonoBehaviour {
 
     // Set exp bar
     // TODO: Start at prebattle exp and animate to post battle exp value
-    int curLevelExp = newChar.expAtLevel(newChar.curLevel);
-    int nextLevelExp = newChar.expAtLevel(newChar.curLevel + 1);
-
-    Vector3 scale = expBar.transform.localScale;
-    scale.x = newChar.percentageToNextLevel();
-    expBar.transform.localScale = scale;
+    xpBar.setCharacter(newChar);
   }
 }

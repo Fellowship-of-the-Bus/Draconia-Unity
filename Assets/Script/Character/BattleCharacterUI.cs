@@ -4,6 +4,7 @@ public class BattleCharacterUI : MonoBehaviour {
   public new CustomText name;
   public HealthBarManager healthBars;
   public ActionMeterController actionMeter;
+  public ExperienceBarManager xpBar;
 
   void Update() {
     // rotate overhead UI (health bar) to look at camera
@@ -15,5 +16,9 @@ public class BattleCharacterUI : MonoBehaviour {
 
   public void updateLifeBars(int change = 0) {
     healthBars.update(change);
+  }
+
+  public void updateXP() {
+    xpBar.update();
   }
 }
