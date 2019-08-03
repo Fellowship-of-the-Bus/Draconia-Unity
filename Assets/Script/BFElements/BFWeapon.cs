@@ -12,9 +12,9 @@ public class BFWeapon : BFElement {
   public BFWeaponType type;
 
   public class BFSkillFactory {
-    public static ActiveSkill getSkill(BFWeaponType type, BFWeapon weapon) {
+    public static ActiveSkill getSkill(BFWeapon weapon) {
       ActiveSkill skill = null;
-      switch(type) {
+      switch(weapon.type) {
         case BFWeaponType.ballista:
           var newSkill = new UseBallista();
           newSkill.weapon = weapon;
@@ -42,9 +42,9 @@ public class BFWeapon : BFElement {
   }
   private void addSkill(BattleCharacter character) {
     if (character.equippedSkills.Count == BattleCharacter.numPermSkills){
-      character.equippedSkills.Add(BFSkillFactory.getSkill(type, this));
+      character.equippedSkills.Add(BFSkillFactory.getSkill(this));
     } else {
-      character.equippedSkills[BattleCharacter.numPermSkills] = BFSkillFactory.getSkill(type, this);
+      character.equippedSkills[BattleCharacter.numPermSkills] = BFSkillFactory.getSkill(this);
     }
     GameManager.get.updateSkillButtons();
   }
