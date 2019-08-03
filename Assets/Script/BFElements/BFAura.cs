@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 public enum BFAuraType {
-  regen,
+  regen, burn,
 }
 
 public enum BFAuraActivationCriteria {
@@ -11,6 +11,7 @@ public enum BFAuraActivationCriteria {
   singleTeam,
   alwaysPlayers,
   alwaysEnemies,
+  alwaysNone,
 }
 
 public enum BFAuraShape {
@@ -41,6 +42,10 @@ public class BFAura: BFElement {
       switch(aura.type) {
         case BFAuraType.regen:
           e = new RegenerationEffect();
+          e.effectValue = aura.auraEffectValue;
+          break;
+        case BFAuraType.burn:
+          e = new BurnEffect();
           e.effectValue = aura.auraEffectValue;
           break;
       }
@@ -79,6 +84,10 @@ public class BFAura: BFElement {
         }
         break;
     }
+    if (criteria == BFAuraActivationCriteria.alwaysNone) {
+      appliesToEnemies = true;
+      controllingTeam = Team.None;
+    }
   }
 
   public override void init() {
@@ -92,22 +101,7 @@ public class BFAura: BFElement {
   }
 
   protected override void onPostMove(BattleCharacter character) {
-    //check if owner of aura changed
-    Team curController = controller();
-    if (controllingTeam == curController) {
-      //check if the moving character moves in/out of the area
-      if (effectTiles.Contains(previousTile) == effectTiles.Contains(character.curTile)) {
-        return;
-      }//moves out
-      if (effectTiles.Contains(previousTile)) {
-        removeAura(character);
-      } else {
-        //moves in
-        applyAura(character);
-      }
-      return;
-    }
-    controllingTeam = curController;
+    controllingTeam = controller();
     removeAura();
     applyAura();
   }
@@ -133,7 +127,8 @@ public class BFAura: BFElement {
     }
   }
   void applyAura(BattleCharacter character) {
-    if (controllingTeam == Team.None) {
+    //always None will apply effect to all units inside
+    if (controllingTeam == Team.None && criteria != BFAuraActivationCriteria.alwaysNone) {
       return;
     }
     //either aura applies to enemies and character is an enemy of the controlling team
