@@ -83,10 +83,10 @@ public class GameManager : MonoBehaviour {
   public BattleCharacter boss;
 
   public List<BattleCharacter> allCharacters;
-  public Dictionary<BattleCharacter.Team, List<BattleCharacter>> characters = new Dictionary<BattleCharacter.Team, List<BattleCharacter>>();
-  public List<BattleCharacter> players { get{ return characters[BattleCharacter.Team.Player]; } }
-  public List<BattleCharacter> enemies { get{ return characters[BattleCharacter.Team.Enemy]; } }
-  public List<BattleCharacter> allies { get{ return characters[BattleCharacter.Team.Ally]; } }
+  public Dictionary<Team, List<BattleCharacter>> characters = new Dictionary<Team, List<BattleCharacter>>();
+  public List<BattleCharacter> players { get{ return characters[Team.Player]; } }
+  public List<BattleCharacter> enemies { get{ return characters[Team.Enemy]; } }
+  public List<BattleCharacter> allies { get{ return characters[Team.Ally]; } }
   private List<Coroutine> waitingOn = new List<Coroutine>();
 
   public Material[] minimapIcons;
@@ -96,11 +96,13 @@ public class GameManager : MonoBehaviour {
   private class CharacterListener : EventListener {
     public override void onEvent(Draconia.Event e) {
       if (e.hook == EventHook.postDeath) {
-        //award experience
-        int maxHPGain = e.killer.gainExp(e.sender.baseChar.expGivenOnKill);
-        if (maxHPGain != 0) {
-          e.killer.PreviewChange = maxHPGain;
-          e.killer.takeHealing(maxHPGain);
+        if (e.killer != null) {
+          //award experience
+          int maxHPGain = e.killer.gainExp(e.sender.baseChar.expGivenOnKill);
+          if (maxHPGain != 0) {
+            e.killer.PreviewChange = maxHPGain;
+            e.killer.takeHealing(maxHPGain);
+          }
         }
         GameManager g = GameManager.get;
         g.characters[e.sender.team].Remove(e.sender);
@@ -256,6 +258,17 @@ public class GameManager : MonoBehaviour {
     List<BattleCharacter> users = new List<BattleCharacter>(players.Filter(x => x.aiType == AIType.None));
     List<Character> charInBattle = new List<Character>(users.Map(x => x.baseChar));
     GameManager.postData.inBattle = charInBattle;
+
+    //initialize BFElements
+    GameObject doodads = GameObject.Find("Doodads");
+    if (doodads != null) {
+      foreach (Transform child in doodads.transform) {
+        BFElement element = child.gameObject.GetComponent<BFElement>();
+        if (element != null) {
+          element.init();
+        }
+      }
+    }
   }
 
   List<BattleCharacter> aoePreviewTargets = new List<BattleCharacter>();
