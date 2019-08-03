@@ -275,6 +275,11 @@ public class Map {
     int SelectedSkill = GameManager.get.SelectedSkill;
     if (src == null) src = getTile(SelectedCharacter.transform.position);
     clearColour();
+
+    if (GameManager.get.previewTarget != null) {
+      GameManager.get.previewTarget.curTile.setColor(TileMaterials.get.Yellow);
+    }
+
     if (GameManager.get.gameState == GameState.moving) {
       foreach (Tile tile in tiles) {
         if (tile.distance <= GameManager.get.moveRange && !tile.occupied()) {

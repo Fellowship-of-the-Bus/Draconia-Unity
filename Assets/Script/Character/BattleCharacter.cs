@@ -176,6 +176,7 @@ public class BattleCharacter : Effected {
 
     ui.healthBars.setCharacter(this);
     ui.actionMeter.setCharacter(this);
+    ui.xpBar.setCharacter(this.baseChar);
     ui.name.text = baseChar.name;
 
     switch (aiType) {
@@ -530,7 +531,10 @@ public class BattleCharacter : Effected {
     if (team != Team.Player) {
       return 0;
     }
-    return baseChar.gainExp(amount);
+
+    int expGained = baseChar.gainExp(amount);
+    ui.updateXP();
+    return expGained;
   }
 
   public bool isAlive() {
