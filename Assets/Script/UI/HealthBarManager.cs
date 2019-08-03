@@ -13,6 +13,7 @@ public class HealthBarManager : MonoBehaviour {
   private int offset;
 
   private void updateBar(GameObject bar, float health) {
+    health = Math.Max(Math.Min(health, character.maxHealth), 0);
     Vector3 scale = bar.transform.localScale;
     scale.x = Math.Max(Math.Min((float)health/character.maxHealth,1),0);
     bar.transform.localScale = scale;
