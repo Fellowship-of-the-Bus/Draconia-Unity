@@ -97,9 +97,9 @@ public class BattleCharacter : Effected {
   }
   public bool isEnemyOf(Team other) {
     if (team == Team.Enemy) {
-      return other == Team.Player || other == Team.Ally;
+      return other == Team.Player || other == Team.Ally || other == Team.None;
     } else if (team == Team.Player || team == Team.Ally) {
-      return other == Team.Enemy;
+      return other == Team.Enemy || other == Team.None;
     } else {
       //everyone is an enemy of None
       //None team used in Battle Field Elements when no one is controlling a feature
