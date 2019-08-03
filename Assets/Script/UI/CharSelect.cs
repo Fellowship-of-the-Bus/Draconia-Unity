@@ -10,40 +10,77 @@ public class CharSelect : MonoBehaviour {
   public AttrView attrView;
 
   public ItemTooltipSimple[] items;
-  public CharPanel selectedPanel;
+  public CharPanel selectedPanel {
+    get { return selections[curSelection]; }
+  }
+
+  private int curSelection = 0;
+  private CharPanel[] selections;
 
   void Start() {
     //Assumes that gameData.characters is not empty. (reasonable)
-    bool firstIter = true;
-    foreach (Character c in GameData.gameData.characters) {
+    int numCharacters = GameData.gameData.characters.Count;
+    selections = new CharPanel[numCharacters];
+    for (int index = 0; index < numCharacters; ++index) {
+      Character character = GameData.gameData.characters[index];
       CharPanel charPanel = Instantiate(panel, content).GetComponent<CharPanel>();
-      charPanel.character = c;
+      charPanel.character = character;
+      int curIndex = index;
       //todo set image.
       charPanel.button.onClick.AddListener(() => {
-        onButtonClick(charPanel);
+        onButtonClick(curIndex);
       });
-      charPanel.text.text = c.name;
-      if (firstIter) {
-        selectedPanel = charPanel;
-        firstIter = false;
-      }
+      charPanel.text.text = character.name;
+      selections[index] = charPanel;
     }
-    onButtonClick(selectedPanel);
+    onButtonClick(curSelection);
     foreach (ItemTooltip tooltip in items.Map(i => i as ItemTooltip).Filter(i => i != null)) {
       tooltip.inCharacterView = true;
     }
   }
 
-  protected virtual void onButtonClick(CharPanel panel){
+
+  private const float fireDelta = 0.25F;
+  private float curTime = 0.0F;
+
+  void Update() {
+    curTime += Time.deltaTime;
+    if (curTime > fireDelta) {
+
+      float vert = Input.GetAxis("Vertical");
+      if (vert > 0) {
+        curTime = 0.0F;
+        prevSelection();
+      } else if (vert < 0) {
+        curTime = 0.0F;
+        nextSelection();
+      }
+    }
+  }
+
+  private void onButtonClick(int index) {
     selectedPanel.background.color = Color.clear;
-    panel.background.color = Color.red;
-    selectedPanel = panel;
+    curSelection = index;
+    selectedPanel.background.color = Color.red;
     updateAttrView();
     //add new items and set up links
-    foreach (Equipment e in panel.character.gear) {
+    foreach (Equipment e in selectedPanel.character.gear) {
       items[e.type].setItem(e);
     }
   }
+
+  private void prevSelection() {
+    if (curSelection > 0) {
+      onButtonClick(curSelection-1);
+    }
+  }
+
+  private void nextSelection() {
+    if (curSelection+1 < selections.Length) {
+      onButtonClick(curSelection+1);
+    }
+  }
+
 
   public void updateAttrView () {
     attrView.updateAttr(selectedPanel.character.totalAttr);
