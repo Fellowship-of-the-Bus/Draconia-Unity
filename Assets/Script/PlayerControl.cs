@@ -55,9 +55,12 @@ public class PlayerControl : MonoBehaviour {
   private GameObject getClicked(Camera PlayerCam) {
     if (Input.GetMouseButtonDown(0)) {
       lockedTarget = null;
-      gameManager.selectTarget(null);
+      GameObject hovered = getHovered(PlayerCam);
+      if (hovered == null) {
+        gameManager.selectTarget(null);
+      }
+      return hovered;
 
-      return getHovered(PlayerCam);
     }
     return null;
   }
