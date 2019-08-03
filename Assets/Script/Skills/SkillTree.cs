@@ -59,12 +59,21 @@ public class SkillTree {
 
   public int getSkillLevel(Type t) {
     if (passives.ContainsKey(t)) return passives[t];
-    else return actives[t];
+    else if (actives.ContainsKey(t)) return actives[t];
+    else {
+      // Must be a new skill
+      addSkill(t, 0);
+      return 0;
+    }
   }
 
   public void setSkillLevel(Type t, int lvl) {
     if (passives.ContainsKey(t)) passives[t] = lvl;
-    else actives[t] = lvl;
+    else if (actives.ContainsKey(t)) actives[t] = lvl;
+    else {
+      // Must be a new skill
+      addSkill(t, lvl);
+    }
   }
 
   public void equipSkill(Type t) {
