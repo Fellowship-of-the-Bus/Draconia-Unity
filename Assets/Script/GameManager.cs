@@ -297,6 +297,8 @@ public class GameManager : MonoBehaviour {
 
     if (previewTarget == null) {
       targetPanel.SetActive(false);
+    } else {
+      targetPanel.SetActive(true);
     }
 
     if (SelectedSkill == -1)  return;
@@ -330,8 +332,6 @@ public class GameManager : MonoBehaviour {
     }
 
     if (previewTarget) {
-      targetBuffBar.update(previewTarget);
-      targetPanel.SetActive(true);
       previewTarget.updateLifeBars(previewTarget.PreviewChange);
       if (s.canTarget(previewTarget.curTile)) {
         targetHealth.update(previewTarget.PreviewChange);
@@ -446,8 +446,11 @@ public class GameManager : MonoBehaviour {
 
     if (target != null) {
       BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
-      previewTarget = targetChar;
-      targetHealth.setCharacter(previewTarget);
+      if (previewTarget != targetChar) {
+        previewTarget = targetChar;
+        targetHealth.setCharacter(previewTarget);
+        targetBuffBar.update(previewTarget);
+      }
 
       if (targetChar == null) {
         actionQueue.highlight(null);
