@@ -4,7 +4,7 @@ using System;
 
 public class BFElement : MonoBehaviour{
   BFElementListener listener = new BFElementListener();
-  void Start() {
+  protected void Start() {
     listener.owner = this;
     listener.attachListener(GameManager.get.eventManager, EventHook.preMove);
     listener.attachListener(GameManager.get.eventManager, EventHook.postMove);
@@ -19,10 +19,14 @@ public class BFElement : MonoBehaviour{
       }
     }
   }
-  protected virtual void onPreMove(BattleCharacter c) {
+
+  public virtual void init() {
 
   }
-  protected virtual void onPostMove(BattleCharacter c) {
+  protected virtual void onPreMove(BattleCharacter character) {
+
+  }
+  protected virtual void onPostMove(BattleCharacter character) {
 
   }
 }

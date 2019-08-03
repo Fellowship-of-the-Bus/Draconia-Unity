@@ -14,6 +14,8 @@ public class PlayerControl : MonoBehaviour {
   [HideInInspector]
   public Tile currentHoveredTile = null;
 
+  private GameObject lockedTarget = null;
+
   // Use this for initialization
   void Start() {
     PlayerCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -25,7 +27,7 @@ public class PlayerControl : MonoBehaviour {
     // Don't allow input on AI turn
     if (gameManager.UILocked()) return;
 
-    if (Input.GetAxis("Submit") > 0) {
+    if (!preGame && Input.GetAxis("Submit") > 0) {
       gameManager.endTurnWrapper();
     }
 
@@ -52,7 +54,13 @@ public class PlayerControl : MonoBehaviour {
   // Get the object being clicked on
   private GameObject getClicked(Camera PlayerCam) {
     if (Input.GetMouseButtonDown(0)) {
-      return getHovered(PlayerCam);
+      lockedTarget = null;
+      GameObject hovered = getHovered(PlayerCam);
+      if (hovered == null) {
+        gameManager.selectTarget(null);
+      }
+      return hovered;
+
     }
     return null;
   }
@@ -107,7 +115,10 @@ public class PlayerControl : MonoBehaviour {
         hoveredTile.setColor(TileMaterials.get.Blue);
       }
     } else {
-      gameManager.selectTarget(hoveredObject);
+      if (lockedTarget == null) {
+        gameManager.selectTarget(hoveredObject);
+      }
+
       //if pieces are moving around, skip
       if (gameManager.moving || (!isTile && !isPiece)) return;
 
@@ -184,6 +195,9 @@ public class PlayerControl : MonoBehaviour {
         }
       } else if (gameManager.gameState == GameState.attacking && gameManager.SelectedSkill >= 0) {
         gameManager.attackTarget(clickedTile);
+      } else {
+        lockedTarget = clickedObject;
+        gameManager.selectTarget(lockedTarget);
       }
     }
   }

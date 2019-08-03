@@ -12,6 +12,9 @@ public enum AIType {
 public enum EnemyType {
   Human, Lizard, Chameleon, Snake, Dragon, None
 }
+public enum Team {
+  Player, Enemy, Ally, None
+};
 
 public class BattleCharacter : Effected {
   public Character baseChar = new Character();
@@ -88,15 +91,19 @@ public class BattleCharacter : Effected {
     get { return model.portraitCameraPosition; }
   }
 
-  public enum Team {
-    Player, Enemy, Ally
-  };
   public Team team = Team.Player;
   public bool isEnemyOf(BattleCharacter other) {
+    return isEnemyOf(other.team);
+  }
+  public bool isEnemyOf(Team other) {
     if (team == Team.Enemy) {
-      return other.team == Team.Player || other.team == Team.Ally;
+      return other == Team.Player || other == Team.Ally;
+    } else if (team == Team.Player || team == Team.Ally) {
+      return other == Team.Enemy;
     } else {
-      return other.team == Team.Enemy;
+      //everyone is an enemy of None
+      //None team used in Battle Field Elements when no one is controlling a feature
+      return true;
     }
   }
 
@@ -169,6 +176,7 @@ public class BattleCharacter : Effected {
 
     ui.healthBars.setCharacter(this);
     ui.actionMeter.setCharacter(this);
+    ui.xpBar.setCharacter(this.baseChar);
     ui.name.text = baseChar.name;
 
     switch (aiType) {
@@ -199,6 +207,8 @@ public class BattleCharacter : Effected {
     gameObject.name = name;
 
     CharacterPortraitManager.takePhoto(this);
+    //BattleCharacters should not have the None team
+    Debug.Assert(team != Team.None);
   }
 
   void setSkills() {
@@ -521,7 +531,10 @@ public class BattleCharacter : Effected {
     if (team != Team.Player) {
       return 0;
     }
-    return baseChar.gainExp(amount);
+
+    int expGained = baseChar.gainExp(amount);
+    ui.updateXP();
+    return expGained;
   }
 
   public bool isAlive() {

@@ -7,7 +7,7 @@ public static class WeaponModels {
   public static GameObject Axe = Resources.Load("Axe") as GameObject;
   // static GameObject Jumonji = Resources.Load("jumonji") as GameObject;
   static GameObject Spear = Resources.Load("yari") as GameObject;
-  static GameObject Bow = Resources.Load("Bow") as GameObject;
+  static GameObject Bow = Resources.Load("BowPrefab") as GameObject;
   static GameObject Staff = Resources.Load("Staff") as GameObject;
 
   public static Dictionary<EquipmentClass,GameObject> weaponModels = new Dictionary<EquipmentClass,GameObject>() {
