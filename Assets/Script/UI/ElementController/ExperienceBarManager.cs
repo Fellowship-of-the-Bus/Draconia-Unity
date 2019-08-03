@@ -8,16 +8,17 @@ public class ExperienceBarManager : MonoBehaviour {
   public CustomText textDisplay;
 
   private Character character;
-  private int displayedXP = 0;
+  private int displayedXP = -1;
 
-  private void updateBar(GameObject bar, float xp) {
+  private void updateBar(GameObject bar, int xp) {
     if (xp != displayedXP) {
       int max = character.nextLevelExpDifference;
 
       Vector3 scale = bar.transform.localScale;
       scale.x = Math.Max(Math.Min((float)xp / max, 1), 0);
       bar.transform.localScale = scale;
-      textDisplay.text = ((int)xp).ToString() + " / " + max.ToString();
+      textDisplay.text = xp.ToString() + " / " + max.ToString();
+      displayedXP = xp;
     }
   }
 

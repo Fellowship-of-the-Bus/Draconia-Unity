@@ -523,8 +523,9 @@ public class BattleCharacter : Effected {
       return 0;
     }
 
+    int expGained = baseChar.gainExp(amount);
     ui.updateXP();
-    return baseChar.gainExp(amount);
+    return expGained;
   }
 
   public bool isAlive() {
