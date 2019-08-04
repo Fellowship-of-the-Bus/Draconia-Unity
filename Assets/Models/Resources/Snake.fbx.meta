@@ -1,118 +1,338 @@
 fileFormatVersion: 2
 guid: f197debfb1b74194b99694b1fb85e578
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Arm IK.L
-    100002: Arm IK.R
-    100004: Armature_L_Lib.001
-    100006: Control
-    100008: Elbow.L
-    100010: Elbow.L_end
-    100012: Elbow.R
-    100014: Elbow.R_end
-    100016: Foot IK.L
-    100018: Foot IK.R
-    100020: Foot Rotation.L
-    100022: Foot Rotation.L_end
-    100024: Foot Rotation.R
-    100026: Foot Rotation.R_end
-    100028: Foot.L
-    100030: Foot.L_end
-    100032: Foot.R
-    100034: Foot.R_end
-    100036: Hand Rotation.L
-    100038: Hand Rotation.L_end
-    100040: Hand Rotation.R
-    100042: Hand Rotation.R_end
-    100044: Hand.L
-    100046: Hand.L_end
-    100048: Hand.R
-    100050: Hand.R_end
-    100052: Head
-    100054: Head_end
-    100056: Knee.L
-    100058: Knee.L_end
-    100060: Knee.R
-    100062: Knee.R_end
-    100064: Lizard
-    100066: Lizard.003
-    100068: Lower Arm.L
-    100070: Lower Arm.R
-    100072: Lower Leg.L
-    100074: Lower Leg.R
-    100076: Lower Torso
-    100078: Neck
-    100080: //RootNode
-    100082: Tail Base
-    100084: Tail Tip
-    100086: Tail Tip_end
-    100088: Tail.IK
-    100090: Tail.IK_end
-    100092: Upper Arm.L
-    100094: Upper Arm.R
-    100096: Upper Leg.L
-    100098: Upper Leg.R
-    100100: Upper Torso
-    100102: Armature
-    400000: Arm IK.L
-    400002: Arm IK.R
-    400004: Armature_L_Lib.001
-    400006: Control
-    400008: Elbow.L
-    400010: Elbow.L_end
-    400012: Elbow.R
-    400014: Elbow.R_end
-    400016: Foot IK.L
-    400018: Foot IK.R
-    400020: Foot Rotation.L
-    400022: Foot Rotation.L_end
-    400024: Foot Rotation.R
-    400026: Foot Rotation.R_end
-    400028: Foot.L
-    400030: Foot.L_end
-    400032: Foot.R
-    400034: Foot.R_end
-    400036: Hand Rotation.L
-    400038: Hand Rotation.L_end
-    400040: Hand Rotation.R
-    400042: Hand Rotation.R_end
-    400044: Hand.L
-    400046: Hand.L_end
-    400048: Hand.R
-    400050: Hand.R_end
-    400052: Head
-    400054: Head_end
-    400056: Knee.L
-    400058: Knee.L_end
-    400060: Knee.R
-    400062: Knee.R_end
-    400064: Lizard
-    400066: Lizard.003
-    400068: Lower Arm.L
-    400070: Lower Arm.R
-    400072: Lower Leg.L
-    400074: Lower Leg.R
-    400076: Lower Torso
-    400078: Neck
-    400080: //RootNode
-    400082: Tail Base
-    400084: Tail Tip
-    400086: Tail Tip_end
-    400088: Tail.IK
-    400090: Tail.IK_end
-    400092: Upper Arm.L
-    400094: Upper Arm.R
-    400096: Upper Leg.L
-    400098: Upper Leg.R
-    400100: Upper Torso
-    400102: Armature
-    4300000: Lizard.003
-    4300002: Lizard
-    9500000: //RootNode
-    13700000: Lizard
-    13700002: Lizard.003
-    2186277476908879412: ImportLogs
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Arm IK.L
+  - first:
+      1: 100002
+    second: Arm IK.R
+  - first:
+      1: 100004
+    second: Armature_L_Lib.001
+  - first:
+      1: 100006
+    second: Control
+  - first:
+      1: 100008
+    second: Elbow.L
+  - first:
+      1: 100010
+    second: Elbow.L_end
+  - first:
+      1: 100012
+    second: Elbow.R
+  - first:
+      1: 100014
+    second: Elbow.R_end
+  - first:
+      1: 100016
+    second: Foot IK.L
+  - first:
+      1: 100018
+    second: Foot IK.R
+  - first:
+      1: 100020
+    second: Foot Rotation.L
+  - first:
+      1: 100022
+    second: Foot Rotation.L_end
+  - first:
+      1: 100024
+    second: Foot Rotation.R
+  - first:
+      1: 100026
+    second: Foot Rotation.R_end
+  - first:
+      1: 100028
+    second: Foot.L
+  - first:
+      1: 100030
+    second: Foot.L_end
+  - first:
+      1: 100032
+    second: Foot.R
+  - first:
+      1: 100034
+    second: Foot.R_end
+  - first:
+      1: 100036
+    second: Hand Rotation.L
+  - first:
+      1: 100038
+    second: Hand Rotation.L_end
+  - first:
+      1: 100040
+    second: Hand Rotation.R
+  - first:
+      1: 100042
+    second: Hand Rotation.R_end
+  - first:
+      1: 100044
+    second: Hand.L
+  - first:
+      1: 100046
+    second: Hand.L_end
+  - first:
+      1: 100048
+    second: Hand.R
+  - first:
+      1: 100050
+    second: Hand.R_end
+  - first:
+      1: 100052
+    second: Head
+  - first:
+      1: 100054
+    second: Head_end
+  - first:
+      1: 100056
+    second: Knee.L
+  - first:
+      1: 100058
+    second: Knee.L_end
+  - first:
+      1: 100060
+    second: Knee.R
+  - first:
+      1: 100062
+    second: Knee.R_end
+  - first:
+      1: 100064
+    second: Lizard
+  - first:
+      1: 100066
+    second: Lizard.003
+  - first:
+      1: 100068
+    second: Lower Arm.L
+  - first:
+      1: 100070
+    second: Lower Arm.R
+  - first:
+      1: 100072
+    second: Lower Leg.L
+  - first:
+      1: 100074
+    second: Lower Leg.R
+  - first:
+      1: 100076
+    second: Lower Torso
+  - first:
+      1: 100078
+    second: Neck
+  - first:
+      1: 100080
+    second: //RootNode
+  - first:
+      1: 100082
+    second: Tail Base
+  - first:
+      1: 100084
+    second: Tail Tip
+  - first:
+      1: 100086
+    second: Tail Tip_end
+  - first:
+      1: 100088
+    second: Tail.IK
+  - first:
+      1: 100090
+    second: Tail.IK_end
+  - first:
+      1: 100092
+    second: Upper Arm.L
+  - first:
+      1: 100094
+    second: Upper Arm.R
+  - first:
+      1: 100096
+    second: Upper Leg.L
+  - first:
+      1: 100098
+    second: Upper Leg.R
+  - first:
+      1: 100100
+    second: Upper Torso
+  - first:
+      1: 100102
+    second: Armature
+  - first:
+      4: 400000
+    second: Arm IK.L
+  - first:
+      4: 400002
+    second: Arm IK.R
+  - first:
+      4: 400004
+    second: Armature_L_Lib.001
+  - first:
+      4: 400006
+    second: Control
+  - first:
+      4: 400008
+    second: Elbow.L
+  - first:
+      4: 400010
+    second: Elbow.L_end
+  - first:
+      4: 400012
+    second: Elbow.R
+  - first:
+      4: 400014
+    second: Elbow.R_end
+  - first:
+      4: 400016
+    second: Foot IK.L
+  - first:
+      4: 400018
+    second: Foot IK.R
+  - first:
+      4: 400020
+    second: Foot Rotation.L
+  - first:
+      4: 400022
+    second: Foot Rotation.L_end
+  - first:
+      4: 400024
+    second: Foot Rotation.R
+  - first:
+      4: 400026
+    second: Foot Rotation.R_end
+  - first:
+      4: 400028
+    second: Foot.L
+  - first:
+      4: 400030
+    second: Foot.L_end
+  - first:
+      4: 400032
+    second: Foot.R
+  - first:
+      4: 400034
+    second: Foot.R_end
+  - first:
+      4: 400036
+    second: Hand Rotation.L
+  - first:
+      4: 400038
+    second: Hand Rotation.L_end
+  - first:
+      4: 400040
+    second: Hand Rotation.R
+  - first:
+      4: 400042
+    second: Hand Rotation.R_end
+  - first:
+      4: 400044
+    second: Hand.L
+  - first:
+      4: 400046
+    second: Hand.L_end
+  - first:
+      4: 400048
+    second: Hand.R
+  - first:
+      4: 400050
+    second: Hand.R_end
+  - first:
+      4: 400052
+    second: Head
+  - first:
+      4: 400054
+    second: Head_end
+  - first:
+      4: 400056
+    second: Knee.L
+  - first:
+      4: 400058
+    second: Knee.L_end
+  - first:
+      4: 400060
+    second: Knee.R
+  - first:
+      4: 400062
+    second: Knee.R_end
+  - first:
+      4: 400064
+    second: Lizard
+  - first:
+      4: 400066
+    second: Lizard.003
+  - first:
+      4: 400068
+    second: Lower Arm.L
+  - first:
+      4: 400070
+    second: Lower Arm.R
+  - first:
+      4: 400072
+    second: Lower Leg.L
+  - first:
+      4: 400074
+    second: Lower Leg.R
+  - first:
+      4: 400076
+    second: Lower Torso
+  - first:
+      4: 400078
+    second: Neck
+  - first:
+      4: 400080
+    second: //RootNode
+  - first:
+      4: 400082
+    second: Tail Base
+  - first:
+      4: 400084
+    second: Tail Tip
+  - first:
+      4: 400086
+    second: Tail Tip_end
+  - first:
+      4: 400088
+    second: Tail.IK
+  - first:
+      4: 400090
+    second: Tail.IK_end
+  - first:
+      4: 400092
+    second: Upper Arm.L
+  - first:
+      4: 400094
+    second: Upper Arm.R
+  - first:
+      4: 400096
+    second: Upper Leg.L
+  - first:
+      4: 400098
+    second: Upper Leg.R
+  - first:
+      4: 400100
+    second: Upper Torso
+  - first:
+      4: 400102
+    second: Armature
+  - first:
+      43: 4300000
+    second: Lizard.003
+  - first:
+      43: 4300002
+    second: Lizard
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Lizard
+  - first:
+      137: 13700002
+    second: Lizard.003
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -183,6 +403,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -190,18 +411,19 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -210,10 +432,11 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  importAnimation: 1
+  referencedClips: []
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -223,6 +446,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

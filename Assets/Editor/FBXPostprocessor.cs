@@ -8,7 +8,6 @@ class FBXPostprocessor : AssetPostprocessor {
   const float y_val = -0.78f;
 
   List<string> models = new List<string>(new string[] {"Human", "Lizard", "Snake"});
-  List<string> toResize = new List<string>(new string[] {"Sword", "Bow", "Hammer", "jumonji", "Staff", "yari"});
   List<string> unwanted = new List<string>(new string[] {"Camera", "Lamp"});
 
   List<GameObject> getUnwantedParts(GameObject g) {
