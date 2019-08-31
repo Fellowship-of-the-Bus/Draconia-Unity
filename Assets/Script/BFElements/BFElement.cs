@@ -8,6 +8,15 @@ public class BFElement : MonoBehaviour{
     listener.owner = this;
     listener.attachListener(GameManager.get.eventManager, EventHook.preMove);
     listener.attachListener(GameManager.get.eventManager, EventHook.postMove);
+    Tile tile = GameManager.get.map.getTile(transform.position);
+    BFIdEffect e = new BFIdEffect();
+    e.element = this;
+    e.stackable = true;
+    tile.applyEffect(e);
+  }
+
+  public class BFIdEffect : Effect {
+    public BFElement element;
   }
   public class BFElementListener: EventListener {
     public BFElement owner;

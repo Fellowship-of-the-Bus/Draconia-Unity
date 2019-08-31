@@ -33,6 +33,10 @@ public class SentryAI : BaseAI {
     best = evaluateSkillOptions(newTile);
     if (best != null) {
       GameManager.get.SelectedSkill = best.index;
+      //using temp skill
+      if (best.index == BattleCharacter.numPermSkills) {
+        owner.equippedSkills[BattleCharacter.numPermSkills] = best.skill;
+      }
       GameManager.get.selectTarget(best.targetTile.occupant.gameObject, best.tile);
     }
 

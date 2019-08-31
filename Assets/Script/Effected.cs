@@ -62,6 +62,18 @@ public class Effected : EventManager {
     return heap != null ? heap.getMax() as EffectKind : null;
   }
 
+  public List<EffectKind> getEffectsOfaKind<EffectKind>() where EffectKind : class {
+    Heap<Effect> heap = effects.Get(typeof(EffectKind));
+    List<EffectKind> ret = new List<EffectKind>();
+    if (heap == null) {
+      return ret;
+    }
+    foreach (Effect e in heap.heap) {
+      ret.Add(e as EffectKind);
+    }
+    return ret;
+  }
+
   public List<Effect> getEffects() {
     List<Effect> ret = new List<Effect>();
     foreach (Type t in effects.dic.Keys) {

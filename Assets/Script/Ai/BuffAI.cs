@@ -30,6 +30,10 @@ public class BuffAI : BaseAI {
     } else {
       newPosition = best.tile.transform.position;
       GameManager.get.SelectedSkill = best.index;
+      //using temp skill
+      if (best.index == BattleCharacter.numPermSkills) {
+        owner.equippedSkills[BattleCharacter.numPermSkills] = best.skill;
+      }
       GameManager.get.selectTarget(best.targetTile.occupant.gameObject, best.tile);
     }
 
