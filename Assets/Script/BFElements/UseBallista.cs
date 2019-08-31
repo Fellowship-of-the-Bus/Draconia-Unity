@@ -17,7 +17,13 @@ public class UseBallista : SingleTarget {
       projectileMoveType = ProjectileMovementType.Parabolic;
     }
     protected override string tooltipDescription { get {
-      return "Deal " + tooltipDamage + " damage from afar.";
+      string s = "Deal " + tooltipDamage + " damage from afar.";
+      if (weapon.numUses >= 0) {
+        s += " Has " + weapon.numUses + " arrow(s) remaining.";
+      } else {
+        s += " Has all the arrows in the world remaining.";
+      }
+      return s;
     }}
 
     public override int damageFormula() {
@@ -28,5 +34,8 @@ public class UseBallista : SingleTarget {
       if (weapon.numUses > 0) {
         weapon.numUses -= 1;
       }
+    }
+    public override bool canUse() {
+      return base.canUse() && weapon.numUses != 0;
     }
   }
