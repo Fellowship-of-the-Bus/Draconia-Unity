@@ -31,7 +31,7 @@ public class BFWeapon : BFElement {
     }
   }
   protected override void onPostMove(BattleCharacter character) {
-    if (character.curTile == activationTile && numUses != 0) {
+    if (character.curTile == activationTile) {
       addSkill(character);
     }
   }
