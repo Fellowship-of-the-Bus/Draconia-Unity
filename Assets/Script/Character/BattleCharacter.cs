@@ -553,7 +553,7 @@ public class BattleCharacter : Effected {
     // Find direction
     Vector3 dir = posn - gameObject.transform.position;
     // Remove y
-    dir = new Vector3(dir.x, 0, dir.z);
+    dir = new Vector3(dir.x, 0, dir.z).normalized;
 
     // Set facing
     // The from vector needs the 0.01f in the x in order to make the 180 degree rotation unambiguous
