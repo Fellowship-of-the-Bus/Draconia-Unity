@@ -27,6 +27,14 @@ public class BFWeapon : BFElement {
       return skill;
     }
   }
+
+  public override void init() {
+    Tile tile = GameManager.get.map.getTile(transform.position);
+    if (tile.occupied()) {
+      //don't call the update skill buttons, game has not started yet.
+      addSkillTemp(tile.occupant);
+    }
+  }
   protected override void onPreMove(BattleCharacter character) {
     if (character.curTile == activationTile) {
       removeSkill(character);
@@ -57,6 +65,8 @@ public class BFWeapon : BFElement {
     }
   }
 
+  //Temp = don't update skill buttons, since the skill should be removed
+  //immediately afterwards anyway
   public void addSkillTemp(BattleCharacter character) {
     addSkill(character, true);
   }
