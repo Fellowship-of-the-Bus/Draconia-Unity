@@ -559,6 +559,12 @@ public class BattleCharacter : Effected {
     // The from vector needs the 0.01f in the x in order to make the 180 degree rotation unambiguous
     Quaternion angle = Quaternion.FromToRotation(new Vector3(0.01f, 0, 1), dir);
     model.transform.rotation = angle;
+
+    // Move model so it appears in the center of the tile
+    float xOffset = -(0.5f - (0.25f * model.transform.localScale.x));
+    float zOffset = -(0.5f - (0.25f * model.transform.localScale.z));
+    Vector3 pos = new Vector3(xOffset * dir.x, 0, zOffset * dir.z);
+    model.transform.localPosition = pos;
   }
 
   private Attributes totalAttr { get { return attr + attrChange; } }
