@@ -13,6 +13,7 @@ public class CharSelect : MonoBehaviour {
   public CharPanel selectedPanel {
     get { return selections[curSelection]; }
   }
+  public SkillSelectController skillSelectController;
 
   private int curSelection = 0;
   private CharPanel[] selections;
@@ -67,6 +68,7 @@ public class CharSelect : MonoBehaviour {
     foreach (Equipment e in selectedPanel.character.gear) {
       items[e.type].setItem(e);
     }
+    skillSelectController.setChar(selectedPanel.character);
   }
 
   private void prevSelection() {

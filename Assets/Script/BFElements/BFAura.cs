@@ -21,20 +21,26 @@ public enum BFAuraShape {
   arbitrary
 }
 
-
 public class BFAura: BFElement {
   public Tile[] activationTiles;
   public Tile centerTile;
   public BFAuraType type;
   public BFAuraActivationCriteria criteria;
   public BFAuraShape shape;
-  public int aoe;
+  public int radius;
   public int auraEffectValue;
   //should apply to enemies rather than allies?
   public bool appliesToEnemies = false;
   public List<Tile> effectTiles = new List<Tile>();
   public Dictionary<BattleCharacter, Effect> appliedEffects = new Dictionary<BattleCharacter, Effect>();
   public Team controllingTeam = Team.None;
+  public GameObject aoeIndicator;
+  //when aura is on
+  public Material onMaterial;
+  //when aura is off
+  public Material offMaterial;
+  Renderer aoeRenderer;
+
 
   public class BFAuraEffectFactory {
     public static Effect getEffect(BFAura aura) {
@@ -60,7 +66,7 @@ public class BFAura: BFElement {
         foreach(Tile t in GameManager.get.map.tiles) {
           float dx = Mathf.Abs(centerTile.position.x - t.position.x);
           float dz = Mathf.Abs(centerTile.position.z - t.position.z);
-          if (dx*dx + dz*dz <= aoe*aoe) {
+          if (dx*dx + dz*dz <= radius*radius) {
             effectTiles.Add(t);
           }
         }
@@ -69,7 +75,7 @@ public class BFAura: BFElement {
         foreach(Tile t in GameManager.get.map.tiles) {
           float dx = Mathf.Abs(centerTile.position.x - t.position.x);
           float dz = Mathf.Abs(centerTile.position.z - t.position.z);
-          if (dx <= aoe && dz <= aoe) {
+          if (dx <= radius && dz <= radius) {
             effectTiles.Add(t);
           }
         }
@@ -78,16 +84,26 @@ public class BFAura: BFElement {
         foreach(Tile t in GameManager.get.map.tiles) {
           float dx = Mathf.Abs(centerTile.position.x - t.position.x);
           float dz = Mathf.Abs(centerTile.position.z - t.position.z);
-          if (dx + dz <= aoe) {
+          if (dx + dz <= radius) {
             effectTiles.Add(t);
           }
         }
+        break;
+    }
+    switch (actShape) {
+      case BFElementActivationShape.single:
+        activationTiles = new Tile[] {centerTile};
+        break;
+      default:
         break;
     }
     if (criteria == BFAuraActivationCriteria.alwaysNone) {
       appliesToEnemies = true;
       controllingTeam = Team.None;
     }
+    aoeIndicator.transform.localScale = new Vector3(2*radius+1, 2*radius+1, 2*radius+1);
+    aoeRenderer = aoeIndicator.GetComponent<MeshRenderer>();
+    updateAuraGraphics();
   }
 
   public override void init() {
@@ -104,6 +120,7 @@ public class BFAura: BFElement {
     controllingTeam = controller();
     removeAura();
     applyAura();
+    updateAuraGraphics();
   }
 
   void removeAura() {
@@ -184,4 +201,32 @@ public class BFAura: BFElement {
         return Team.None;
     }
   }
+
+  public bool isActive() {
+    return controllingTeam != Team.None || criteria == BFAuraActivationCriteria.alwaysNone;
+  }
+
+  public void updateAuraGraphics() {
+    if (isActive()) {
+      aoeRenderer.material = onMaterial;
+      switch(controllingTeam){
+        case Team.None:
+          actRenderer.material = actNoneMaterial;
+          break;
+        case Team.Player:
+          actRenderer.material = actAllyMaterial;
+          break;
+        case Team.Enemy:
+          actRenderer.material = actEnemyMaterial;
+          break;
+        default:
+          actRenderer.material = actNoneMaterial;
+          break;
+      }
+    } else {
+      aoeRenderer.material = offMaterial;
+      actRenderer.material = actNoneMaterial;
+    }
+  }
+
 }

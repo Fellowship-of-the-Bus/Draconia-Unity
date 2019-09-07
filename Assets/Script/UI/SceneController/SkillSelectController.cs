@@ -9,7 +9,7 @@ public class SkillSelectController: MonoBehaviour {
   private const int NUM_EQUIPPED_SKILLS = 4;
 
   public GameObject skillInfo;
-  public InvCharSelect charSelect;
+  public CharSelect charSelect;
   public Transform equippedSkillView;
   public GameObject skillTreeView;
 
