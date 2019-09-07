@@ -54,7 +54,7 @@ public class SkillSelectController: MonoBehaviour {
     }
     equippedSkills.Clear();
     foreach (SkillInfo s in skills) {
-      s.update(c.skills);
+      s.update(c);
     }
     foreach(Type t in c.skills.getEquippedSkills()) {
       equip(t);
@@ -66,7 +66,7 @@ public class SkillSelectController: MonoBehaviour {
       GameObject o = Instantiate(skillInfo, equippedSkillView);
       SkillInfo s = o.GetComponent<SkillInfo>();
       s.init(t, true);
-      s.update(curChar.skills);
+      s.update(curChar);
       equippedSkills.Add(s);
       return s;
     }

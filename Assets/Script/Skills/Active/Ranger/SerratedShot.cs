@@ -22,7 +22,7 @@ public class SerratedShot: SingleTarget {
   }
 
   public override int damageFormula() {
-    return (int)(self.strength*(0.5+level*0.05));
+    return (int)(attributes.strength*(0.5+level*0.05));
   }
 
   int effectDamageFormula() {

@@ -19,7 +19,7 @@ public class PointBlankShot: SingleTarget {
     targetEnemy(true);
   }
   public override int damageFormula() {
-    return (int)(self.strength*(1+level*0.1));
+    return (int)(attributes.strength*(1+level*0.1));
   }
 
   protected override string tooltipDescription { get {

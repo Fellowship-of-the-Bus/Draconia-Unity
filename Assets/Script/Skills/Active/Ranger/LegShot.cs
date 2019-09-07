@@ -22,7 +22,7 @@ public class LegShot: SingleTarget {
   }
 
   public override int damageFormula() {
-    return (int)(self.strength*(1+level*0.1));
+    return (int)(attributes.strength*(1+level*0.1));
   }
 
   public override void additionalEffects (BattleCharacter target) {

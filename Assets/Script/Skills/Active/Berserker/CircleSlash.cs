@@ -34,6 +34,6 @@ public class CircleSlash: ActiveSkill, AoeSkill {
   }
 
   public override int damageFormula() {
-    return (int)(self.strength*(1+level*0.1));
+    return (int)(attributes.strength*(1+level*0.1));
   }
 }

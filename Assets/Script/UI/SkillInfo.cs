@@ -24,6 +24,7 @@ public class SkillInfo: MonoBehaviour {
 
   SkillInfo parent = null;
   List<SkillInfo> children = new List<SkillInfo>();
+  Skill skillInstance;
 
   public bool equipped { get; private set; }
 
@@ -33,6 +34,7 @@ public class SkillInfo: MonoBehaviour {
     } else {
       skillType = type;
     }
+    skillInstance = (Skill)Activator.CreateInstance(skillType);
 
     controller = SkillSelectController.get;
     equipped = isEquipped;
@@ -41,24 +43,29 @@ public class SkillInfo: MonoBehaviour {
     displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[skillType];
   }
 
-  public void update(SkillTree t, SkillInfo caller = null) {
+  public void update(Character newChar, SkillInfo caller = null) {
     if (skillType == null) {
       Debug.Log(skillName);
       return;
     }
-    tree = t;
+    tree = newChar.skills;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
     equipButton.interactable = skillLevel > 0;
 
     foreach(SkillInfo s in children) {
-      if (s != caller) s.update(tree);
+      if (s != caller) s.update(newChar);
     }
+    skillInstance.character = newChar;
+    skillInstance.level = skillLevel;
+    tooltip.tiptext = skillInstance.tooltip;
   }
 
   public void levelup() {
     skillLevel = skillLevel + 1;
-    update(tree);
-    if (parent) parent.update(tree, this);
+    skillInstance.level = skillLevel;
+
+    update(skillInstance.character);
+    if (parent) parent.update(skillInstance.character, this);
   }
 
   private void removeChild(SkillInfo s) {

@@ -567,7 +567,7 @@ public class BattleCharacter : Effected {
     model.transform.localPosition = pos;
   }
 
-  private Attributes totalAttr { get { return attr + attrChange; } }
+  public Attributes totalAttr { get { return attr + attrChange; } }
 
   public int strength {
     get {return (int)Math.Max(0, totalAttr.strength);}
