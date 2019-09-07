@@ -3,23 +3,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Reflection;
 
 public class SkillInfo: MonoBehaviour {
-  public Text info;
+  public Tooltip tooltip;
   public Button levelUpButton;
   public Button equipButton;
   public Image displayImage;
 
+  public String skillName;
   public Type skillType;
   public int skillLevel {
     get {return tree.getSkillLevel(skillType);}
     set {tree.setSkillLevel(skillType, value);}
   }
   public SkillTree tree;
+  public Text equipText;
 
   SkillSelectController controller;
-
-  Text equipText;
 
   SkillInfo parent = null;
   List<SkillInfo> children = new List<SkillInfo>();
@@ -27,21 +28,28 @@ public class SkillInfo: MonoBehaviour {
   public bool equipped { get; private set; }
 
   public void init(Type type, bool isEquipped) {
-    controller = SkillSelectController.get;
-    equipText = equipButton.GetComponentInChildren<Text>();
-    equipped = isEquipped;
-    if (equipped) equipText.text = "Unequip";
+    if (!String.IsNullOrEmpty(skillName)) {
+      skillType = Assembly.GetExecutingAssembly().GetType(skillName);
+    } else {
+      skillType = type;
+    }
 
-    skillType = type;
-    info.GetComponent<Text>().text = type.FullName;
-    displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[type];
+    controller = SkillSelectController.get;
+    equipped = isEquipped;
+    if (equipped) equipText.text = "U";
+
+    displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[skillType];
   }
 
   public void update(SkillTree t, SkillInfo caller = null) {
+    if (skillType == null) {
+      Debug.Log(skillName);
+      return;
+    }
     tree = t;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
-    info.text = skillType.FullName + ", level " + skillLevel;
     equipButton.interactable = skillLevel > 0;
+
     foreach(SkillInfo s in children) {
       if (s != caller) s.update(tree);
     }

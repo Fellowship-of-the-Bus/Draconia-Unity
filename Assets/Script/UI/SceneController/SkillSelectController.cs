@@ -10,8 +10,15 @@ public class SkillSelectController: MonoBehaviour {
 
   public GameObject skillInfo;
   public InvCharSelect charSelect;
-  public Transform skillView;
   public Transform equippedSkillView;
+  public GameObject skillTreeView;
+
+  [Serializable]
+  public struct NamedObject {
+    public string name;
+    public GameObject panel;
+  }
+  public NamedObject[] trees;
 
   List<SkillInfo> equippedSkills  = new List<SkillInfo>();
   List<SkillInfo> skills = new List<SkillInfo>();
@@ -20,14 +27,24 @@ public class SkillSelectController: MonoBehaviour {
 
   void Awake() {
     get = this;
-
-    foreach(Type t in SkillList.get.skills) {
-      GameObject o = Instantiate(skillInfo, skillView);
-      SkillInfo s = o.GetComponent<SkillInfo>();
-      s.init(t, false);
-      skills.Add(s);
+    skills = new List<SkillInfo>(skillTreeView.GetComponentsInChildren<SkillInfo>(true));
+    foreach (SkillInfo skill in skills) {
+      skill.init(null, false);
     }
+  }
 
+  public void setTree(string treeName) {
+    foreach (NamedObject treePanel in trees) {
+      if (treeName == treePanel.name) {
+        if (treePanel.panel) {
+          treePanel.panel.SetActive(true);
+        }
+      } else {
+        if (treePanel.panel) {
+          treePanel.panel.SetActive(false);
+        }
+      }
+    }
   }
 
   public void setChar(Character c) {
