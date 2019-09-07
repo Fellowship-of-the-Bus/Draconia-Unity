@@ -63,12 +63,25 @@ public abstract class BaseAI {
 
   protected SkillData evaluateSkillOptions(Tile tile) {
     Heap<SkillData> db = new Heap<SkillData>();
+    List<BFElement.BFIdEffect> ids = tile.getEffectsOfaKind<BFElement.BFIdEffect>();
+    ActiveSkill tempSkill = null;
+    //only one skill giving element exists
+    foreach(BFElement.BFIdEffect id in ids) {
+      BFWeapon weapon = id.element as BFWeapon;
+      if (weapon != null) {
+        tempSkill = BFWeapon.BFSkillFactory.getSkill(weapon);
+        tempSkill.self = owner;
+        break;
+      }
+    }
     int index = 0;
-    foreach (ActiveSkill skill in owner.equippedSkills) {
+    List<ActiveSkill> activeSkills = new List<ActiveSkill>(owner.equippedSkills);
+    activeSkills[BattleCharacter.numPermSkills] = tempSkill;
+    foreach (ActiveSkill skill in activeSkills) {
+      index++;
       if (skill == null) {
         continue;
       }
-      index++;
       // Skip unusable skills
       if (!skill.canUse()) continue;
       List<Tile> targets = skill.getTargets(tile);
@@ -103,7 +116,7 @@ public abstract class BaseAI {
         }
 
         if (netChange > 0) {
-          db.add(new SkillData(this, index - 1, netChange, effected, tile, tSet.tile));
+          db.add(new SkillData(this, index - 1, netChange, effected, activeSkills[index-1], tile, tSet.tile));
         }
       }
     }
