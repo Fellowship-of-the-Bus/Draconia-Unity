@@ -12,10 +12,10 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
 
   override public void init() {
     if (!onlyOnce) return;
-    attrView = InventoryController.get.attrView;
-    equipName = InventoryController.get.equipName;
-    equippedTo = InventoryController.get.equippedTo;
-    tipbox = InventoryController.get.tooltip;
+    attrView = OldManagementScreen.InventoryController.get.attrView;
+    equipName = OldManagementScreen.InventoryController.get.equipName;
+    equippedTo = OldManagementScreen.InventoryController.get.equippedTo;
+    tipbox = OldManagementScreen.InventoryController.get.tooltip;
     base.init();
   }
 

@@ -52,6 +52,10 @@ public abstract class Equipment {
     return tierName[tier] + " " + equipmentClass;
   }
 
+  public bool isEquipped() {
+     return equippedTo != null;
+  }
+
   public bool canUpgrade() {
     return tier < 5;
   }

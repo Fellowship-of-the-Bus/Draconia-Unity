@@ -4,13 +4,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-  protected float hoverTime = 0f;
-  protected bool mouseOver = false;
-  protected bool tooltipShown = false;
+  private float hoverTime = 0f;
+  private bool mouseOver = false;
+  private bool tooltipShown = false;
   [TextArea]
   public string tiptext = "Missing tooltip!";
   public GameObject tipbox;
-  protected float hoverThreshold = 0.25f;
+  private float hoverThreshold = 0.25f;
   protected RectTransform rectTrans;
 
   void Start() {
@@ -19,7 +19,6 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     }
     rectTrans = tipbox.GetComponent<RectTransform>();
     setTipbox();
-    //tipbox.SetActive(false);
   }
 
   void Update() {

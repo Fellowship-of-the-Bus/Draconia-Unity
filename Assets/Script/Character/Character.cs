@@ -110,6 +110,7 @@ public class Character {
     equip(Armour.defaultArmour);
   }
 
+  [Obsolete("unEquip is deprecated, because we no longer support characters without a weapon/armor.")]
   public void unEquip(Equipment e) {
     if (e == null) return;
     gear[e.type] = null;
