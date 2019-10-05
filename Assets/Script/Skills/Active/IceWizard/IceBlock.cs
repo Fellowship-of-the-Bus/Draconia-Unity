@@ -40,6 +40,6 @@ public class IceBlock: ActiveSkill, AoeSkill {
   }
 
   public override int damageFormula() {
-    return (int)(self.intelligence*(1+level*0.1));
+    return (int)(attributes.intelligence*(1+level*0.1));
   }
 }

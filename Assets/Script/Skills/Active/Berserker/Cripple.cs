@@ -19,7 +19,7 @@ public class Cripple: SingleTarget {
   }}
 
   public override int damageFormula() {
-    return (int)(self.strength*(1+level*0.05));
+    return (int)(attributes.strength*(1+level*0.05));
   }
 
   public override void additionalEffects (BattleCharacter target) {

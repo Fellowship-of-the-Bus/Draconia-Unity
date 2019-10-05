@@ -20,7 +20,7 @@ public class KillingBlow: SingleTarget {
     + "</color> damage based on the target's missing health"; }}
 
   public override int damageFormula() {
-    return (int)(self.strength*(1+level*0.1));
+    return (int)(attributes.strength*(1+level*0.1));
   }
 
   public override int calculateDamage(BattleCharacter target, Tile attackOrigin = null) {

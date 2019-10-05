@@ -29,8 +29,23 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   public int level {get; set;}
   public virtual BattleCharacter self {get; set;}
+
+  // Character used when outside of map
+  public Character character {get; set;}
+  protected Attributes attributes {
+    get {
+      if (self != null) {
+        return self.totalAttr;
+      } else {
+        return character.totalAttr;
+      }
+    }
+  }
   private int _range;
-  public int range {get {if (useWepRange) return self.weapon.range; else return _range;} set {_range = value;}}
+  public int range {get {
+    if (useWepRange) return self.weapon.range; else return _range;}
+    set {_range = value;}
+  }
   public bool useWepRange {get; set;}
   public bool useLos {get; set;} // Use line of sight for targeting
   public string name {get; set;}
@@ -88,7 +103,12 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   // Tooltip variables
   protected string tooltipRange { get {
-    string displayRange = range == 0 ? "Self" : range.ToString();
+    string displayRange;
+    if (useWepRange && self == null) {
+      displayRange = "Weapon Range";
+    } else {
+      displayRange = range == 0 ? "Self" : range.ToString();
+    }
     return "Range: " + displayRange + "\n";
   }}
   protected string tooltipDamageColor { get {
@@ -175,8 +195,10 @@ public abstract class ActiveSkill : EventListener, Skill {
   public virtual int damageFormula() { return 0; }
   private int augmentedFormula() {
     float multiplier = 1;
-    multiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
-    multiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
+    if (self != null) {
+      multiplier += self.baseChar.totalTraits.spec.wepSpec[self.weapon.equipmentClass];
+      multiplier += self.baseChar.totalTraits.spec.elementSpec[dEle];
+    }
     return (int)(damageFormula()*multiplier);
   }
   private const float heightDifferenceMultiplier = 0.2f;

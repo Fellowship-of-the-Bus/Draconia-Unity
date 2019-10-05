@@ -8,12 +8,22 @@ using System.Collections.Generic;
 public class SkillSelectController: MonoBehaviour {
   private const int NUM_EQUIPPED_SKILLS = 4;
 
-  public GameObject skillInfo;
-  public InvCharSelect charSelect;
-  public Transform skillView;
+  public CharSelect charSelect;
+
+  // Prefabs to populate content
+  public GameObject buttonPrefab;
+  public GameObject skillTreePrefab;
+  public GameObject skillRowPrefab;
+  public GameObject skillInfoPrefab;
+
+  // Panes to parent Content
+  public Transform skillTreeView;
+  public Transform treeSelectView;
   public Transform equippedSkillView;
 
-  List<SkillInfo> equippedSkills  = new List<SkillInfo>();
+  List<SkillInfo> equippedSkills = new List<SkillInfo>();
+
+  List<GameObject> treeViews = new List<GameObject>();
   List<SkillInfo> skills = new List<SkillInfo>();
 
   Character curChar;
@@ -21,13 +31,41 @@ public class SkillSelectController: MonoBehaviour {
   void Awake() {
     get = this;
 
-    foreach(Type t in SkillList.get.skills) {
-      GameObject o = Instantiate(skillInfo, skillView);
-      SkillInfo s = o.GetComponent<SkillInfo>();
-      s.init(t, false);
-      skills.Add(s);
+    foreach(KeyValuePair<String, Type[][]> entry in SkillList.skillsByClass) {
+      // Setup skill tree display
+      GameObject treeView = Instantiate(skillTreePrefab, skillTreeView);
+      treeViews.Add(treeView);
+      treeView.SetActive(false);
+
+      // Setup tab button
+      GameObject tab = Instantiate(buttonPrefab, treeSelectView);
+      tab.GetComponentInChildren<Text>().text = entry.Key;
+      Button tabButton = tab.GetComponent<Button>();
+      tabButton.onClick.AddListener(() => {
+        setTree(treeView);
+      });
+
+      // Populate skill tree display
+      foreach(Type[] skillTier in entry.Value) {
+        GameObject skillRow = Instantiate(skillRowPrefab, treeView.transform);
+
+        foreach(Type skillType in skillTier) {
+          GameObject skillInfo = Instantiate(skillInfoPrefab, skillRow.transform);
+          SkillInfo skill = skillInfo.GetComponent<SkillInfo>();
+          skill.init(skillType, false);
+          skills.Add(skill);
+        }
+      }
     }
 
+    treeViews[0].SetActive(true);
+  }
+
+  public void setTree(GameObject newTreeView) {
+    foreach (GameObject treeView in treeViews) {
+      treeView.SetActive(false);
+    }
+    newTreeView.SetActive(true);
   }
 
   public void setChar(Character c) {
@@ -37,7 +75,7 @@ public class SkillSelectController: MonoBehaviour {
     }
     equippedSkills.Clear();
     foreach (SkillInfo s in skills) {
-      s.update(c.skills);
+      s.update(c);
     }
     foreach(Type t in c.skills.getEquippedSkills()) {
       equip(t);
@@ -46,10 +84,10 @@ public class SkillSelectController: MonoBehaviour {
 
   public SkillInfo equip(Type t) {
     if (equippedSkills.Count < NUM_EQUIPPED_SKILLS) {
-      GameObject o = Instantiate(skillInfo, equippedSkillView);
+      GameObject o = Instantiate(skillInfoPrefab, equippedSkillView);
       SkillInfo s = o.GetComponent<SkillInfo>();
       s.init(t, true);
-      s.update(curChar.skills);
+      s.update(curChar);
       equippedSkills.Add(s);
       return s;
     }
