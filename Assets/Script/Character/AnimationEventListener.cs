@@ -8,4 +8,8 @@ public class AnimationEventListener : MonoBehaviour {
   public void continueSkill(AnimationEvent e) {
     battleCharacter.doFinishSkill();
   }
+
+  public void attachBowstring(AnimationEvent e) {
+    battleCharacter.attachBowstring();
+  }
 }
