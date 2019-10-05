@@ -9,7 +9,7 @@ public class CharSelect : MonoBehaviour {
   public Transform content;
   public AttrView attrView;
 
-  public ItemTooltipSimple[] items;
+  public Item[] items;
   public CharPanel selectedPanel {
     get { return selections[curSelection]; }
   }
@@ -35,15 +35,11 @@ public class CharSelect : MonoBehaviour {
       selections[index] = charPanel;
     }
     onButtonClick(curSelection);
-    foreach (ItemTooltip tooltip in items.Map(i => i as ItemTooltip).Filter(i => i != null)) {
-      tooltip.inCharacterView = true;
-    }
   }
 
-
+  // enable scrolling through characters with the vertical axis
   private const float fireDelta = 0.25F;
   private float curTime = 0.0F;
-
   void Update() {
     curTime += Time.deltaTime;
     if (curTime > fireDelta) {
@@ -66,7 +62,7 @@ public class CharSelect : MonoBehaviour {
     updateAttrView();
     //add new items and set up links
     foreach (Equipment e in selectedPanel.character.gear) {
-      items[e.type].setItem(e);
+      items[e.type].equipment = e;
     }
     skillSelectController.setChar(selectedPanel.character);
   }
@@ -82,7 +78,6 @@ public class CharSelect : MonoBehaviour {
       onButtonClick(curSelection+1);
     }
   }
-
 
   public void updateAttrView () {
     attrView.updateAttr(selectedPanel.character.totalAttr);

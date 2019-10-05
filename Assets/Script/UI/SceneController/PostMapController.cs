@@ -42,6 +42,10 @@ public class PostMapController: MonoBehaviour {
     // TODO: Display unlocked items and characters
   }
 
+  public void retry() {
+    LoadingScreen.load(data.mapName);
+  }
+
   public void loadGame() {
     loadBrowser.createOptions(SaveLoad.listSaveFiles());
   }
