@@ -62,6 +62,7 @@ public class CharSelect : MonoBehaviour {
     updateAttrView();
     //add new items and set up links
     foreach (Equipment e in selectedPanel.character.gear) {
+      // There are no "Item"s on the charater select prefab. Fix this.
       // items[e.type].equipment = e;
     }
     skillSelectController.setChar(selectedPanel.character);
