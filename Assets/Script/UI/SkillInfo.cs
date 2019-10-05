@@ -11,7 +11,6 @@ public class SkillInfo: MonoBehaviour {
   public Button equipButton;
   public Image displayImage;
 
-  public String skillName;
   public Type skillType;
   public int skillLevel {
     get {return tree.getSkillLevel(skillType);}
@@ -29,11 +28,7 @@ public class SkillInfo: MonoBehaviour {
   public bool equipped { get; private set; }
 
   public void init(Type type, bool isEquipped) {
-    if (!String.IsNullOrEmpty(skillName)) {
-      skillType = Assembly.GetExecutingAssembly().GetType(skillName);
-    } else {
-      skillType = type;
-    }
+    skillType = type;
     skillInstance = (Skill)Activator.CreateInstance(skillType);
 
     controller = SkillSelectController.get;
@@ -44,10 +39,6 @@ public class SkillInfo: MonoBehaviour {
   }
 
   public void update(Character newChar, SkillInfo caller = null) {
-    if (skillType == null) {
-      Debug.Log(skillName);
-      return;
-    }
     tree = newChar.skills;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
     equipButton.interactable = skillLevel > 0;

@@ -64,7 +64,11 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     tooltipShown = false;
     mouseOver = false;
     hoverTime = 0f;
-    tipbox.SetActive(false);
+
+    // Guard to prevent game crashing
+    if (tipbox != null) {
+      tipbox.SetActive(false);
+    }
   }
 
   public Vector3 tipPosition(Vector3 mousePosition, float width, float height) {
