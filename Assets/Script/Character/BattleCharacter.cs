@@ -277,6 +277,10 @@ public class BattleCharacter : Effected {
   public BattleCharacterUI ui;
   public MeshRenderer minimapIconRenderer;
 
+  public void attachBowstring() {
+    model.attachBowstring();
+  }
+
   public float calcMoveTime(float time, int turns = 1) {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
   }
@@ -332,9 +336,6 @@ public class BattleCharacter : Effected {
       skillBeingUsed = skill;
       targetedTile = target;
       skillTargets = targets;
-      if (skill.animation == "Shoot") {
-        model.attachBowstring();
-      }
       GameManager.get.waitFor(model.animator, skill.animation,
         () => {
           castingCircle.Stop();
