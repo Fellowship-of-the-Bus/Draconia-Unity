@@ -7,7 +7,8 @@ public class RealityDistortion : SingleTarget {
   public override Color castColor { get { return castColorWarlock; }}
 
   public RealityDistortion() {
-    useWepRange = true;
+    useWepRange = false;
+    range = 5;
     useLos = false;
     name = "Reality Distortion";
     maxCooldown = 0;
@@ -22,5 +23,9 @@ public class RealityDistortion : SingleTarget {
     debuff.caster = self;
     target.applyEffect(debuff);
   }
+
+  protected override string tooltipDescription { get {
+    return "Distort reality on the target, reversing the modifications made by stat changing effects for 2 turns";
+  }}
 }
 
