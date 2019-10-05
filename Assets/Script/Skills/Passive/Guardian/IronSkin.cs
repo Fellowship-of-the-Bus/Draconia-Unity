@@ -3,9 +3,22 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class IronSkin : PassiveSkill {
-  int numHits;
+  int numHits = 0;
   int addedDefense = 0;
   bool inTurn = false;
+
+  public IronSkin() {
+    name = "Iron Skin";
+  }
+
+  protected override string tooltipDescription { get {
+    string bonusTooltip = "";
+    if (addedDefense != 0) {
+      bonusTooltip = "\n\nHits Taken: " + numHits.ToString()
+        + "\nDefense Increase: " + addedDefense.ToString();
+    }
+    return "Increases physical defense by each time damage is taken." + bonusTooltip;
+  }}
 
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);

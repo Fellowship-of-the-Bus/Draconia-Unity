@@ -9,8 +9,22 @@ public abstract class PassiveSkill : Effect, Skill {
   // Character used when outside of map
   public Character character {get; set;}
 
+  protected Attributes attributes {
+    get {
+      if (self != null) {
+        return self.totalAttr;
+      } else {
+        return character.totalAttr;
+      }
+    }
+  }
+
   public int range {get; set;}
   public bool useLos {get; set;}
+
+  public override string tooltip { get {
+    return tooltipHeader + tooltipDescription + "\n\n<b>Passive</b>";
+  }}
 
   public void activate(BattleCharacter target) {
     this.caster = self;

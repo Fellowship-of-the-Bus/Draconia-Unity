@@ -3,6 +3,14 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class Vengeance : PassiveSkill {
+  public Vengeance() {
+    name = "Vengeance";
+  }
+
+  protected override string tooltipDescription { get {
+    return "Taking damage increases strength";
+  }}
+
   protected override void onActivate() {
     self.attrChange.strength += strBonus((float)self.curHealth / self.maxHealth);
     attachListener(owner, EventHook.postDamage);
