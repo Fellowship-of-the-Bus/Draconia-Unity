@@ -44,6 +44,7 @@ public class SkillSelectController: MonoBehaviour {
       tabButton.onClick.AddListener(() => {
         setTree(treeView);
       });
+      int tierLevel = 0;
 
       // Populate skill tree display
       foreach(Type[] skillTier in entry.Value) {
@@ -52,9 +53,10 @@ public class SkillSelectController: MonoBehaviour {
         foreach(Type skillType in skillTier) {
           GameObject skillInfo = Instantiate(skillInfoPrefab, skillRow.transform);
           SkillInfo skill = skillInfo.GetComponent<SkillInfo>();
-          skill.init(skillType, false);
+          skill.init(skillType, false, tierLevel, entry.Key);
           skills.Add(skill);
         }
+        tierLevel++;
       }
     }
 
@@ -86,7 +88,9 @@ public class SkillSelectController: MonoBehaviour {
     if (equippedSkills.Count < NUM_EQUIPPED_SKILLS) {
       GameObject o = Instantiate(skillInfoPrefab, equippedSkillView);
       SkillInfo s = o.GetComponent<SkillInfo>();
-      s.init(t, true);
+      // TODO: tier and spec are not easily available here or necessary for already equipped skills
+      // figure out a good way to avoid passing garbage here
+      s.init(t, true, 0, "Berserker");
       s.update(curChar);
       equippedSkills.Add(s);
       return s;
@@ -97,6 +101,12 @@ public class SkillSelectController: MonoBehaviour {
   public void unequip(SkillInfo s) {
     equippedSkills.Remove(s);
     GameObject.Destroy(s.gameObject);
+  }
+
+  public void recalculateTiers() {
+    foreach (SkillInfo s in skills) {
+      s.checkAvailability();
+    }
   }
 
   //Debug character level up

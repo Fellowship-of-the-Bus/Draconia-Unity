@@ -18,6 +18,8 @@ public class SkillInfo: MonoBehaviour {
   }
   public SkillTree tree;
   public Text equipText;
+  int skillTier;
+  string skillSpec; // Specialization the skill falls under
 
   SkillSelectController controller;
 
@@ -27,9 +29,11 @@ public class SkillInfo: MonoBehaviour {
 
   public bool equipped { get; private set; }
 
-  public void init(Type type, bool isEquipped) {
+  public void init(Type type, bool isEquipped, int tier, string spec) {
     skillType = type;
     skillInstance = (Skill)Activator.CreateInstance(skillType);
+    skillTier = tier;
+    skillSpec = spec;
 
     controller = SkillSelectController.get;
     equipped = isEquipped;
@@ -42,6 +46,7 @@ public class SkillInfo: MonoBehaviour {
     tree = newChar.skills;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
     equipButton.interactable = skillLevel > 0;
+    checkAvailability();
 
     foreach(SkillInfo s in children) {
       if (s != caller) s.update(newChar);
@@ -51,11 +56,16 @@ public class SkillInfo: MonoBehaviour {
     tooltip.tiptext = skillInstance.tooltip;
   }
 
+  public void checkAvailability() {
+    levelUpButton.interactable = skillTier <= tree.getSpecializationTier(skillSpec);
+  }
+
   public void levelup() {
     skillLevel = skillLevel + 1;
     skillInstance.level = skillLevel;
 
     update(skillInstance.character);
+    controller.recalculateTiers();
     if (parent) parent.update(skillInstance.character, this);
   }
 
