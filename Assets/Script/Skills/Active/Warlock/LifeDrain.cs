@@ -13,11 +13,14 @@ public class LifeDrain: SingleTarget {
     name = "Life Drain";
     maxCooldown = 2;
 
-
     dType = DamageType.magical;
     targetAlly(false);
     targetEnemy(true);
   }
+
+  protected override string tooltipDescription { get {
+    return "Drain " + tooltipDamage + " from the target and heal for the amount drained";
+  }}
 
   public override int damageFormula() {
     return (int)(attributes.intelligence*(1+level*0.1));

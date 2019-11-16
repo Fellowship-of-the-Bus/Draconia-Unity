@@ -5,11 +5,22 @@ using System.Collections.Generic;
 public class ExsanguinationAura: PassiveSkill {
   public int aoe {get; set;}
 
-  protected override void onApply(BattleCharacter c) {
+  public ExsanguinationAura() {
+    name = "Exsanguination Aura";
     aoe = 3;
     useLos = false;
-    name = "Exsanguination Aura";
+  }
 
+  protected override string tooltipDescription { get {
+    return "Range: " + aoe.ToString() + "\n"
+      + "Causes enemies to bleed while in range, taking " + effectDamageFormula().ToString() + " damage each turn";
+  }}
+
+  int effectDamageFormula() {
+    return attributes.intelligence;
+  }
+
+  protected override void onApply(BattleCharacter c) {
     Func<BleedEffect> f = () => {
       BleedEffect eff = new BleedEffect();
       eff.duration = -1;
@@ -17,7 +28,7 @@ public class ExsanguinationAura: PassiveSkill {
     };
 
     Aura<BleedEffect> e = new Aura<BleedEffect>(aoe, f, true);
-    e.effectValue = owner.attr.intelligence;
+    e.effectValue = effectDamageFormula();
     e.duration = -1;
     e.applyToSelf = true;
 
