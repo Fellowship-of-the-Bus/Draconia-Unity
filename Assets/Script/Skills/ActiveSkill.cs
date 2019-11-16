@@ -120,7 +120,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     }
     return "red";
   }}
-  protected string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + augmentedFormula().ToString() + "</color>"; }}
+  public string tooltipDamage { get { return "<color=" + tooltipDamageColor + ">" + augmentedFormula().ToString() + "</color>"; }}
   protected string tooltipHealing { get {
     HealingSkill heal = this as HealingSkill;
     return "<color=lime>" + heal.healingFormula().ToString() + "</color>";
