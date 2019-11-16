@@ -99,7 +99,7 @@ public abstract class ActiveSkill : EventListener, Skill {
   // Projectile Parameters
   public ProjectileType projectileType = ProjectileType.None;
   public ProjectileMovementType projectileMoveType = ProjectileMovementType.Straight;
-  public float projectileSpeed = 0.5f;
+  public float projectileSpeed = 2f;
 
   // Tooltip variables
   protected string tooltipRange { get {
