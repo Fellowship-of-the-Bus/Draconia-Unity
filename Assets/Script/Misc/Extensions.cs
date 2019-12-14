@@ -114,5 +114,12 @@ public static class Extensions {
     }
     return sb.ToString();
   }
+
+  public static GameObject InstantiateKeepScale(GameObject original, Transform parent) {
+    GameObject go = GameObject.Instantiate(original, parent, true);
+    go.transform.position = parent.position;
+    go.transform.localRotation = parent.rotation;
+    return go;
+  }
 }
 

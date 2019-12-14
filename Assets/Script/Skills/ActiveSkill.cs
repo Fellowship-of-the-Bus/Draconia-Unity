@@ -345,7 +345,8 @@ public abstract class ActiveSkill : EventListener, Skill {
         this.projectileType,
         this.projectileMoveType,
         this.projectileSpeed,
-        callback
+        callback,
+        self.model.projectile
       );
     } else {
       callback();
