@@ -8,7 +8,7 @@ public class ActionQueue : MonoBehaviour {
   public GameObject turnButton;
   public CharacterPortraitManager portraitManager;
 
-  private LinkedList<actionTime> queue = new LinkedList<actionTime>();
+  private LinkedList<ActionTime> queue = new LinkedList<ActionTime>();
   private List<BattleCharacter> pieces = new List<BattleCharacter>();
   private float curTime = 0;
 
@@ -16,13 +16,13 @@ public class ActionQueue : MonoBehaviour {
   private float buttonHeight = 0;
   public bool usePortraits = false;
 
-  private struct actionTime {
+  private struct ActionTime {
     public BattleCharacter piece;
     public ActionQueueElem button;
 
     public float time;
 
-    public actionTime(BattleCharacter p, ActionQueueElem b, float t) {
+    public ActionTime(BattleCharacter p, ActionQueueElem b, float t) {
       piece = p;
       button = b;
       time = t;
@@ -73,7 +73,7 @@ public class ActionQueue : MonoBehaviour {
   }
 
   private bool hasObject (BattleCharacter piece) {
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (n.Value.piece == piece) {
         return true;
       }
@@ -83,7 +83,7 @@ public class ActionQueue : MonoBehaviour {
 
   private int actionsCount (BattleCharacter piece) {
     int count = 0;
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (n.Value.piece == piece) {
         count++;
       }
@@ -126,10 +126,10 @@ public class ActionQueue : MonoBehaviour {
 
   public void remove(BattleCharacter piece) {
     int i = 0;
-    List<LinkedListNode<actionTime>> toRemove = new List<LinkedListNode<actionTime>>();
+    List<LinkedListNode<ActionTime>> toRemove = new List<LinkedListNode<ActionTime>>();
 
     pieces.Remove(piece);
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (n.Value.piece.Equals(piece)) {
         GameManager.get.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
         toRemove.Add(n);
@@ -138,13 +138,13 @@ public class ActionQueue : MonoBehaviour {
       i++;
     }
 
-    foreach (LinkedListNode<actionTime> n in toRemove) {
+    foreach (LinkedListNode<ActionTime> n in toRemove) {
       queue.Remove(n);
     }
   }
 
   public void highlight(BattleCharacter piece) {
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       Image buttonImg = n.Value.button.image;
 
       if (piece == null || n.Value.piece.Equals(piece)) {
@@ -158,7 +158,7 @@ public class ActionQueue : MonoBehaviour {
   private void removeFirst(BattleCharacter piece) {
     int i = 0;
 
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (n.Value.piece.Equals(piece)) {
         GameManager.get.StartCoroutine(SlideButton(n.Value.button, buttonWidth, 0, true));
         queue.Remove(n);
@@ -178,11 +178,11 @@ public class ActionQueue : MonoBehaviour {
 
     int i = 0;
     float newTime = piece.calcMoveTime(curTime, turn);
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       float time = n.Value.time;
       if (time > newTime) {
         buttonObject = makeButton(piece);
-        queue.AddBefore(n, new actionTime(piece, buttonObject, newTime));
+        queue.AddBefore(n, new ActionTime(piece, buttonObject, newTime));
         break;
       }
       i++;
@@ -192,7 +192,7 @@ public class ActionQueue : MonoBehaviour {
       isLast = true;
       if (turn == 1) {
         buttonObject = makeButton(piece);
-        queue.AddLast(new actionTime(piece, buttonObject, newTime));
+        queue.AddLast(new ActionTime(piece, buttonObject, newTime));
       }
     }
 
@@ -227,7 +227,7 @@ public class ActionQueue : MonoBehaviour {
 
   private void moveDown(int i) {
     int index = 0;
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (index > i) {
         ActionQueueElem o = n.Value.button;
         GameManager.get.StartCoroutine(SlideButton(o, 0, -buttonHeight));
@@ -238,7 +238,7 @@ public class ActionQueue : MonoBehaviour {
 
   private void moveUp(int i) {
     int index = 0;
-    foreach (LinkedListNode<actionTime> n in new NodeIterator<actionTime>(queue)) {
+    foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (index > i) {
         ActionQueueElem o = n.Value.button;
         GameManager.get.StartCoroutine(SlideButton(o, 0, buttonHeight));
