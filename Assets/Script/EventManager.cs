@@ -15,29 +15,28 @@ public enum EventHook {
   activateEffect, deactivateEffect,
   useBuffSkill, //for enhancer apply same buff to self when buffing others
   preSkill, postSkill,
+
+  NUM_EVENT_HOOKS // Must be last
 }
 
 public class EventManager : MonoBehaviour {
-  Queue<Draconia.Event> eventQueue;
-  Dictionary<EventHook, HashSet<EventListener>> listeners = new Dictionary<EventHook, HashSet<EventListener>>();
+  private Queue<Draconia.Event> eventQueue;
+  private HashSet<EventListener>[] listeners = new HashSet<EventListener>[(int)EventHook.NUM_EVENT_HOOKS];
 
   protected void Awake() {
-    foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
-      listeners.Add(i, new HashSet<EventListener>());
+    for (int i = 0; i < (int)EventHook.NUM_EVENT_HOOKS; i++) {
+      listeners[i] = new HashSet<EventListener>();
     }
     eventQueue = new Queue<Draconia.Event>();
-  }
-
-  public void setGlobal() {
     get = this;
   }
 
   public void addListener(EventListener listener, EventHook hook) {
-    listeners[hook].Add(listener);
+    listeners[(int)hook].Add(listener);
   }
 
   public void removeListener(EventListener listener){
-    foreach (EventHook i in Enum.GetValues(typeof(EventHook))) {
+    for (int i = 0; i < (int)EventHook.NUM_EVENT_HOOKS; ++i) {
       listeners[i].Remove(listener);
     }
   }
@@ -51,13 +50,13 @@ public class EventManager : MonoBehaviour {
     eventQueue.Enqueue(e);
     while (eventQueue.Count != 0) {
       e = eventQueue.Dequeue();
-      List<EventListener> l = new List<EventListener>(listeners[e.hook]);
-      foreach (EventListener listener in l) {
+      List<EventListener> list = new List<EventListener>(listeners[(int)e.hook]);
+      foreach (EventListener listener in list) {
         listener.onEvent(e);
       }
 
+      // remove expired DurationEffects
       if (e.hook == EventHook.endTurn) {
-        List<EventListener> list = new List<EventListener>(listeners[e.hook]);
         foreach (EventListener listener in list) {
           DurationEffect effect = listener as DurationEffect;
           if (effect != null && effect.duration == 0) {
