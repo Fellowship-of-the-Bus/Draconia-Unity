@@ -14,7 +14,8 @@ namespace Draconia.Collections.StaticAlloc {
     public GCHandle elem;
   }
 
-  [System.Serializable]
+  // A drop-in replacement for C#'s LinkedList that allocates space for all of its
+  //  nodes in one block to reduce heap fragmentation and GC pressure.
   public unsafe class LinkedList<T> : ICollection<T>, IEnumerable<T> {
     public struct Enumerator : IEnumerator<T> {
       public Enumerator(LinkedList<T> list) {
@@ -30,7 +31,7 @@ namespace Draconia.Collections.StaticAlloc {
 
       public T Current { get { return NodeToElem(node); } }
       object IEnumerator.Current { get { return Current; } }
-      public void Reset() { node = list.head; }
+      public void Reset() { node = null; }
 
       void IDisposable.Dispose() { }
     }
@@ -60,7 +61,7 @@ namespace Draconia.Collections.StaticAlloc {
     public void AddLast(T elem) {
       Node * node = AllocNode(elem);
       if (tail == node) return;
-      tail->next = node; 
+      tail->next = node;
       node->prev = tail;
       tail = node;
     }
@@ -118,6 +119,9 @@ namespace Draconia.Collections.StaticAlloc {
     public bool IsReadOnly { get { return false; } }
 
 
+    // ----------------------------------------------
+    // Private interface
+    // ----------------------------------------------
     private static T NodeToElem(Node * node) {
       return (T)node->elem.Target;
     }
@@ -175,4 +179,7 @@ namespace Draconia.Collections.StaticAlloc {
       FreeNode(node);
     }
   }
+
+  // TODO: define a serialization surrogate for LinkedList, since it will not serialize nicely by itself
+  // https://docs.microsoft.com/en-us/archive/msdn-magazine/2002/september/net-column-run-time-serialization-part-3#S1
 }
