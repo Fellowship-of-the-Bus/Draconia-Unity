@@ -492,10 +492,6 @@ public class BattleCharacter : Effected {
   }
 
   IEnumerator fadeOut() {
-
-    // Coroutine c =
-    // yield return GameManager.get.waitUntilPopped(c);
-
     SkinnedMeshRenderer r = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
     List<Pair<Material,Color>> matcolors = new List<Pair<Material,Color>>();
     foreach(Material m in r.materials) {

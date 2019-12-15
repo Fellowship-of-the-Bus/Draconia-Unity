@@ -190,8 +190,6 @@ public class GameManager : MonoBehaviour {
   private lockUICount UILock;
 
   void Awake() {
-    eventManager.setGlobal();
-
     get = this;
     moving = false;
     UILock = new lockUICount();
@@ -206,8 +204,6 @@ public class GameManager : MonoBehaviour {
       skillButtons[i].AddListener(() => selectSkill(i));
     });
 
-    //winningConditions.Add(new Rout());
-    //losingConditions.Add(new BrodricDies());
     foreach (string s in winObjs) {
       winningConditions.Add(ObjectiveFactory.makeObjective(s));
     }
@@ -308,11 +304,7 @@ public class GameManager : MonoBehaviour {
       // }
     // }
 
-    if (previewTarget == null) {
-      targetPanel.SetActive(false);
-    } else {
-      targetPanel.SetActive(true);
-    }
+    targetPanel.SetActive(previewTarget != null);
 
     if (SelectedSkill == -1)  return;
 
@@ -854,8 +846,6 @@ public class GameManager : MonoBehaviour {
   //sets skill buttons active/inactive depending on which skills exist
   //Right now only assumes that the 5th skill granted by BFElements are temporary
   public void updateSkillButtons() {
-
-
     for (int i = 0; i < skillButtons.Length; i++) {
       skillButtons[i].clearSkill();
     }
@@ -881,5 +871,4 @@ public class GameManager : MonoBehaviour {
   }
 
   public static GameManager get { get; set; }
-
 }
