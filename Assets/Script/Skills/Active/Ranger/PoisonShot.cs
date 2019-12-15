@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class PoisonShot: SingleTarget {
+  protected override string tooltipDescription { get {
+    return "Fire a poisonous arrow that deals " + tooltipDamage + " and poisons the target for "
+      + effectDuration() + " turns";
+  }}
 
   public override string animation { get { return "Shoot"; }}
 
@@ -18,12 +22,16 @@ public class PoisonShot: SingleTarget {
   }
 
   public override int damageFormula() {
-    return (int)(self.strength*(0.5+level*0.05));
+    return (int)(attributes.strength*(0.5+level*0.05));
+  }
+
+  int effectDuration() {
+    return (level+5)/2;
   }
 
   public override void additionalEffects (BattleCharacter target) {
     PoisonEffect debuff = new PoisonEffect();
-    debuff.duration = (level+5)/2;
+    debuff.duration = effectDuration();
     debuff.effectValue = (int)System.Math.Max((int)calculateDamage(target)*(0.2f + 0.1f*level), 1);
     debuff.caster = self;
     target.applyEffect(debuff);

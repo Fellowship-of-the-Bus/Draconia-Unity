@@ -5,6 +5,15 @@ using System.Collections.Generic;
 public class SlowAura: PassiveSkill {
   public int aoe {get; set;}
 
+  public SlowAura() {
+    name = "Slow Aura";
+  }
+
+  protected override string tooltipDescription { get {
+    // TODO: include the AoE and the amount of speed decrease
+    return "Decrease the speed of nearby enemies";
+  }}
+
   protected override void onApply(BattleCharacter c) {
     aoe = 2;
     useLos = false;

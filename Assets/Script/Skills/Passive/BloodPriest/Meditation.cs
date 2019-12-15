@@ -1,6 +1,14 @@
 ﻿using System;
 
 public class Meditation : PassiveSkill {
+  public Meditation() {
+    name = "Meditation";
+  }
+
+  protected override string tooltipDescription { get {
+    return "Heal <color=lime>" + healingFormula().ToString() + "</color> at the end of each turn.";
+  }}
+
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
   }
@@ -9,6 +17,10 @@ public class Meditation : PassiveSkill {
   }
 
   protected override void additionalEffect(Draconia.Event e) {
-    owner.takeHealing((int)(1*owner.healingMultiplier));
+    owner.takeHealing(healingFormula());
+  }
+
+  public int healingFormula() {
+    return (int)(1*attributes.healingMultiplier);
   }
 }

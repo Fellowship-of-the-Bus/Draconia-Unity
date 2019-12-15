@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EscapeMenu : MonoBehaviour {
   public Button overworldButton;
   public Button mainMenuButton;
+  public Button retryButton;
   public Canvas menuCanvas;
 
   private readonly string escapeAxis = "EscapeMenu";
@@ -38,6 +40,7 @@ public class EscapeMenu : MonoBehaviour {
   public void transitionScenes(string newScene) {
     mainMenuButton.gameObject.SetActive(newScene != "MainMenu");
     overworldButton.gameObject.SetActive(newScene != "MainMenu" && newScene != "OverWorld");
+    retryButton.gameObject.SetActive(newScene != "MainMenu" && newScene != "OverWorld" && newScene != "PostMap");
   }
 
   public void hide() {
@@ -66,5 +69,10 @@ public class EscapeMenu : MonoBehaviour {
 
   public void quitGameClicked() {
     Application.Quit();
+  }
+
+  public void retryClicked() {
+    Scene scene = SceneManager.GetActiveScene();
+    LoadingScreen.load(scene.name);
   }
 }

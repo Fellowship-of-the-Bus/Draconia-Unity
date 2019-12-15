@@ -44,7 +44,7 @@ public class BloodJudgement: CircleAoE {
   }
 
   int amount() {
-    return (int)(self.intelligence * 0.25f);
+    return (int)(attributes.intelligence * 0.25f);
   }
 
   public override void additionalEffects (BattleCharacter target) {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 
 // information about a skill's usage on a target - for use by AI
 public class SkillData : IComparable<SkillData> {
@@ -10,11 +11,11 @@ public class SkillData : IComparable<SkillData> {
   public Tile tile;  // location from which skill is used
   public Tile targetTile;  // tile targeted by the skill
 
-  public SkillData(BaseAI ai, int index, int score, List<Effected> effected, Tile tile, Tile targetTile) {
+  public SkillData(BaseAI ai, int index, int score, List<Effected> effected,  ActiveSkill skill, Tile tile, Tile targetTile) {
     this.index = index;
     this.score = score;
     this.effected = effected;
-    this.skill = ai.owner.equippedSkills[index];
+    this.skill = skill;
     this.tile = tile;
     this.targetTile = targetTile;
   }

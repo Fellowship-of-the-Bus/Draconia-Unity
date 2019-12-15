@@ -19,6 +19,8 @@ public class CharacterModel : MonoBehaviour {
   private Transform bowstring;
   private Transform grip;
 
+  public GameObject projectile;
+
   public void attachBowstring() {
     if (bowstring == null) bowstring = weapon.transform.findRecursive("String");
     if (grip == null) grip = weapon.transform.findRecursive("Grip");
@@ -29,5 +31,14 @@ public class CharacterModel : MonoBehaviour {
   public void detachBowstring() {
     if (!bowstringAttached) return;
     bowstring.SetParent(grip, false);
+  }
+
+  public void attachArrow() {
+    if (projectile == null) {
+      projectile = Projectile.createProjectileObject(ProjectileType.Arrow);
+    projectile.transform.SetParent(leftHand, true);
+    projectile.transform.position = leftHand.position;
+    projectile.transform.localRotation = leftHand.rotation;
+    }
   }
 }

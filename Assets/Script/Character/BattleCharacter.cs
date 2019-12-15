@@ -202,7 +202,7 @@ public class BattleCharacter : Effected {
 
     if (inGame) {
       GameObject weaponModel = weapon.getModel();
-      if (weaponModel) model.weapon = GameObject.Instantiate(weaponModel, model.rightHand);
+      if (weaponModel) model.weapon = Extensions.InstantiateKeepScale(weaponModel, model.rightHand);
     }
     gameObject.name = name;
 
@@ -277,6 +277,14 @@ public class BattleCharacter : Effected {
   public BattleCharacterUI ui;
   public MeshRenderer minimapIconRenderer;
 
+  public void attachBowstring() {
+    model.attachBowstring();
+  }
+
+  public void attachArrow() {
+    model.attachArrow();
+  }
+
   public float calcMoveTime(float time, int turns = 1) {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
   }
@@ -332,9 +340,6 @@ public class BattleCharacter : Effected {
       skillBeingUsed = skill;
       targetedTile = target;
       skillTargets = targets;
-      if (skill.animation == "Shoot") {
-        model.attachBowstring();
-      }
       GameManager.get.waitFor(model.animator, skill.animation,
         () => {
           castingCircle.Stop();
@@ -553,15 +558,21 @@ public class BattleCharacter : Effected {
     // Find direction
     Vector3 dir = posn - gameObject.transform.position;
     // Remove y
-    dir = new Vector3(dir.x, 0, dir.z);
+    dir = new Vector3(dir.x, 0, dir.z).normalized;
 
     // Set facing
     // The from vector needs the 0.01f in the x in order to make the 180 degree rotation unambiguous
     Quaternion angle = Quaternion.FromToRotation(new Vector3(0.01f, 0, 1), dir);
     model.transform.rotation = angle;
+
+    // Move model so it appears in the center of the tile
+    float xOffset = -(0.5f - (0.25f * model.transform.localScale.x));
+    float zOffset = -(0.5f - (0.25f * model.transform.localScale.z));
+    Vector3 pos = new Vector3(xOffset * dir.x, 0, zOffset * dir.z);
+    model.transform.localPosition = pos;
   }
 
-  private Attributes totalAttr { get { return attr + attrChange; } }
+  public Attributes totalAttr { get { return attr + attrChange; } }
 
   public int strength {
     get {return (int)Math.Max(0, totalAttr.strength);}

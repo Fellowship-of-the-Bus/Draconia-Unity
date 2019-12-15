@@ -4,14 +4,16 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-  protected float hoverTime = 0f;
-  protected bool mouseOver = false;
-  protected bool tooltipShown = false;
+  private float hoverTime = 0f;
+  private bool mouseOver = false;
+  private bool tooltipShown = false;
   [TextArea]
   public string tiptext = "Missing tooltip!";
   public GameObject tipbox;
-  protected float hoverThreshold = 0.25f;
+  private float hoverThreshold = 0.25f;
   protected RectTransform rectTrans;
+
+  Text textElement;
 
   void Start() {
     if (tipbox == null) {
@@ -19,7 +21,6 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     }
     rectTrans = tipbox.GetComponent<RectTransform>();
     setTipbox();
-    //tipbox.SetActive(false);
   }
 
   void Update() {
@@ -47,6 +48,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
       if (tipbox.transform.position.y + height/2 > Screen.height) {
         tipbox.transform.Translate(new Vector3(0,-height,0));
       }
+      setTipbox();
     }
   }
 
@@ -62,7 +64,11 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     tooltipShown = false;
     mouseOver = false;
     hoverTime = 0f;
-    tipbox.SetActive(false);
+
+    // Guard to prevent game crashing
+    if (tipbox != null) {
+      tipbox.SetActive(false);
+    }
   }
 
   public Vector3 tipPosition(Vector3 mousePosition, float width, float height) {
@@ -71,6 +77,9 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
   }
 
   protected virtual void setTipbox() {
-    tipbox.GetComponentsInChildren<Text>()[0].text = tiptext;
+    if (textElement == null) {
+      textElement = tipbox.GetComponentsInChildren<Text>()[0];
+    }
+    textElement.text = tiptext;
   }
 }

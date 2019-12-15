@@ -8,13 +8,18 @@ public class Disable : SingleTarget {
   public override Color castColor { get { return castColorWarlock; }}
 
   public Disable() {
-    useWepRange = true;
-    useLos = false;
     name = "Disable";
+    range = 3;
+    useLos = false;
     maxCooldown = 0;
     targetAlly(false);
     targetEnemy(true);
   }
+
+  protected override string tooltipDescription { get {
+    return "Disable a skill on the target";
+  }}
+
   // TODO: UI to select skill
   public override void additionalEffects (BattleCharacter target) {
     DisableEffect debuff = new DisableEffect();

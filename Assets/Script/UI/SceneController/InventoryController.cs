@@ -4,18 +4,20 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-public class InventoryController: MonoBehaviour {
+namespace OldManagementScreen {
+  public class InventoryController: MonoBehaviour {
 
-  //Inventory inv = GameData.gameData.inv;
+    //Inventory inv = GameData.gameData.inv;
 
-  public AttrView attrView;
-  public Text equipName;
-  public Text equippedTo;
-  public GameObject tooltip;
+    public AttrView attrView;
+    public Text equipName;
+    public Text equippedTo;
+    public GameObject tooltip;
 
-  void Awake() {
-    get = this;
+    void Awake() {
+      get = this;
+    }
+
+    public static InventoryController get { get; set; }
   }
-
-  public static InventoryController get { get; set; }
 }

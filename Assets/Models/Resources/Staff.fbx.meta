@@ -1,29 +1,71 @@
 fileFormatVersion: 2
 guid: 14d51895cf589c44284f327bb09e82ea
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Bone
-    100002: Bone_end
-    100004: Focus
-    100006: Head
-    100008: Staff
-    100010: //RootNode
-    400000: Bone
-    400002: Bone_end
-    400004: Focus
-    400006: Head
-    400008: Staff
-    400010: //RootNode
-    2300000: Focus
-    2300002: Head
-    2300004: Staff
-    3300000: Focus
-    3300002: Head
-    3300004: Staff
-    4300000: Staff
-    4300002: Head
-    4300004: Focus
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Bone
+  - first:
+      1: 100002
+    second: Bone_end
+  - first:
+      1: 100004
+    second: Focus
+  - first:
+      1: 100006
+    second: Head
+  - first:
+      1: 100008
+    second: Staff
+  - first:
+      1: 100010
+    second: //RootNode
+  - first:
+      4: 400000
+    second: Bone
+  - first:
+      4: 400002
+    second: Bone_end
+  - first:
+      4: 400004
+    second: Focus
+  - first:
+      4: 400006
+    second: Head
+  - first:
+      4: 400008
+    second: Staff
+  - first:
+      4: 400010
+    second: //RootNode
+  - first:
+      23: 2300000
+    second: Focus
+  - first:
+      23: 2300002
+    second: Head
+  - first:
+      23: 2300004
+    second: Staff
+  - first:
+      33: 3300000
+    second: Focus
+  - first:
+      33: 3300002
+    second: Head
+  - first:
+      33: 3300004
+    second: Staff
+  - first:
+      43: 4300000
+    second: Staff
+  - first:
+      43: 4300002
+    second: Head
+  - first:
+      43: 4300004
+    second: Focus
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -69,6 +111,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
@@ -76,18 +119,19 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -96,10 +140,11 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -109,6 +154,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.25
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
