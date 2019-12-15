@@ -6,7 +6,9 @@ namespace Draconia.Collections.StaticAlloc {
   internal unsafe struct PoolNode {
     public PoolNode * next;
   }
-
+  
+  // Simple pool allocator for a fixed number of elements of an unmanaged type T.
+  // Typically for internal use in allocating nodes for StaticAlloc data structures
   public unsafe class PoolAllocator<T> : IDisposable where T : unmanaged {
     private IntPtr mem;
     private PoolNode * freeList;
