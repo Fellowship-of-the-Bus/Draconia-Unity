@@ -12,4 +12,8 @@ public class AnimationEventListener : MonoBehaviour {
   public void attachBowstring(AnimationEvent e) {
     battleCharacter.attachBowstring();
   }
+
+  public void attachArrow(AnimationEvent e) {
+    battleCharacter.attachArrow();
+  }
 }

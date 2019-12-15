@@ -202,7 +202,7 @@ public class BattleCharacter : Effected {
 
     if (inGame) {
       GameObject weaponModel = weapon.getModel();
-      if (weaponModel) model.weapon = GameObject.Instantiate(weaponModel, model.rightHand);
+      if (weaponModel) model.weapon = Extensions.InstantiateKeepScale(weaponModel, model.rightHand);
     }
     gameObject.name = name;
 
@@ -279,6 +279,10 @@ public class BattleCharacter : Effected {
 
   public void attachBowstring() {
     model.attachBowstring();
+  }
+
+  public void attachArrow() {
+    model.attachArrow();
   }
 
   public float calcMoveTime(float time, int turns = 1) {
