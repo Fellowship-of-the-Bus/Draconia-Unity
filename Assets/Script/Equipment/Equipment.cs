@@ -31,6 +31,7 @@ public abstract class Equipment {
     Crude, Simple, Sturdy, Quality, Flawless, Enchanted
   }
 
+  public SerializableGuid guid;
   public Attributes attr = new Attributes();
   public int tier;
 
