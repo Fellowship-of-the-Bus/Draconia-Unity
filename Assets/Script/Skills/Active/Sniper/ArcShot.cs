@@ -7,7 +7,7 @@ public class ArcShot: SingleTarget {
 
   public ArcShot() {
     useWepRange = true;
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useLos = false;
     name = "Arc Shot";
     maxCooldown = 2;

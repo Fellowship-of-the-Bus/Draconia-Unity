@@ -6,7 +6,7 @@ public class FlameShot: SingleTarget {
   public override string animation { get { return "Shoot"; }}
 
   public FlameShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Flame Shot";

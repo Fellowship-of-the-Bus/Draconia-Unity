@@ -11,7 +11,7 @@ public class LegShot: SingleTarget {
   public override string animation { get { return "Shoot"; }}
 
   public LegShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Leg Shot";

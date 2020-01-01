@@ -222,14 +222,14 @@ public abstract class ActiveSkill : EventListener, Skill {
 
   // Returns whether a melee weapon is required for the skill
   public bool isMeleeRequired() {
-    return !usableWeapon[(int)Weapon.Kinds.Ranged];
+    return !usableWeapon[(int)Weapon.Kind.Ranged];
   }
 
   protected void requireMelee() {
-    usableWeapon[(int)Weapon.Kinds.Ranged] = false;
+    usableWeapon[(int)Weapon.Kind.Ranged] = false;
   }
 
-  protected void requireWeapon(Weapon.Kinds k) {
+  protected void requireWeapon(Weapon.Kind k) {
     for (int i = 0; i < usableWeapon.Length; i++) {
       usableWeapon[i] = i == (int)k;
     }

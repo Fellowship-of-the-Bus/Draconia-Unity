@@ -8,7 +8,7 @@ public class Volley: CircleAoE {
   public override string animation { get { return "Shoot"; }}
 
   public Volley() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     aoe = 2;
     useLos = false;

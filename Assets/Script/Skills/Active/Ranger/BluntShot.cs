@@ -7,7 +7,7 @@ public class BluntShot: SingleTarget {
   public override string animation { get { return "Shoot"; }}
 
   public BluntShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Blunt Shot";

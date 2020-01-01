@@ -23,8 +23,8 @@ public static class WeaponModels {
 [System.Serializable]
 public class Weapon : Equipment {
   public int range = 1;
-  public enum Kinds { Melee, Ranged };
-  public Kinds kind {
+  public enum Kind { Melee, Ranged };
+  public Kind kind {
     get {
       return equipmentClass.getWeaponKind();
     }

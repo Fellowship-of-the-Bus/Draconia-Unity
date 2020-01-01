@@ -10,7 +10,7 @@ public class SerratedShot: SingleTarget {
   public override string animation { get { return "Shoot"; }}
 
   public SerratedShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Serrated Shot";

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Ranged: SingleTarget {
   public Ranged() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Ranged";
