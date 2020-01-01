@@ -202,7 +202,7 @@ public class BattleCharacter : Effected {
 
     if (inGame) {
       GameObject weaponModel = weapon.getModel();
-      if (weaponModel) model.weapon = GameObject.Instantiate(weaponModel, model.rightHand);
+      if (weaponModel) model.weapon = Extensions.InstantiateKeepScale(weaponModel, model.rightHand);
     }
     gameObject.name = name;
 
@@ -277,6 +277,14 @@ public class BattleCharacter : Effected {
   public BattleCharacterUI ui;
   public MeshRenderer minimapIconRenderer;
 
+  public void attachBowstring() {
+    model.attachBowstring();
+  }
+
+  public void attachArrow() {
+    model.attachArrow();
+  }
+
   public float calcMoveTime(float time, int turns = 1) {
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
   }
@@ -332,9 +340,6 @@ public class BattleCharacter : Effected {
       skillBeingUsed = skill;
       targetedTile = target;
       skillTargets = targets;
-      if (skill.animation == "Shoot") {
-        model.attachBowstring();
-      }
       GameManager.get.waitFor(model.animator, skill.animation,
         () => {
           castingCircle.Stop();
@@ -567,7 +572,7 @@ public class BattleCharacter : Effected {
     model.transform.localPosition = pos;
   }
 
-  private Attributes totalAttr { get { return attr + attrChange; } }
+  public Attributes totalAttr { get { return attr + attrChange; } }
 
   public int strength {
     get {return (int)Math.Max(0, totalAttr.strength);}

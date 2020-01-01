@@ -27,7 +27,7 @@ public class FlameShot: SingleTarget {
   }}
 
   public override int damageFormula() {
-    return (int)(self.strength*(0.5+level*0.5));
+    return (int)(attributes.strength*(0.5+level*0.5));
   }
 
   int effectDamageFormula() {

@@ -59,19 +59,27 @@ public class Projectile {
     {ProjectileType.IceSpear, Projectile.IceShatter}
   };
 
-  public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback) {
+  public Projectile(BattleCharacter source, Effected target, ProjectileType projType, ProjectileMovementType moveType, float speed, Action callback, GameObject projectile = null) {
     this.source = source;
     this.target = target;
     this.callback = callback;
     if (Projectiles[projType]) {
-      projectile = GameObject.Instantiate(Projectiles[projType]) as GameObject;
-      projectile.transform.position = source.model.leftHand.position;
+      if (projectile == null) {
+        this.projectile = GameObject.Instantiate(Projectiles[projType]) as GameObject;
+        this.projectile.transform.position = source.model.leftHand.position;
+      } else {
+        this.projectile = projectile;
+      }
     } else {
-      projectile = null;
+      this.projectile = null;
     }
 
     direction = (target.transform.position - source.transform.position).normalized;
     GameManager.get.waitFor(GameManager.get.StartCoroutine(move(projType, moveType, speed)));
+  }
+
+  public static GameObject createProjectileObject(ProjectileType projType) {
+    return GameObject.Instantiate(Projectiles[projType]) as GameObject;
   }
 
   IEnumerator move(ProjectileType projType, ProjectileMovementType moveType, float speed) {

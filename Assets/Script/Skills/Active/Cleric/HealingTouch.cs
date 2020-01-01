@@ -22,6 +22,6 @@ public class HealingTouch: SingleTarget, HealingSkill {
   }}
 
   public int healingFormula() {
-    return (int)(self.intelligence*(1+level*0.5));
+    return (int)(attributes.intelligence*(1+level*0.5));
   }
 }

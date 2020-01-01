@@ -28,7 +28,7 @@ public class Blizzard: CircleAoE {
   }}
 
   public override int damageFormula() {
-    return (int)(self.intelligence*(1+level*0.1));
+    return (int)(attributes.intelligence*(1+level*0.1));
   }
 
   static GameObject effectObject = Resources.Load("ParticleEffects/Blizzard") as GameObject;

@@ -106,4 +106,36 @@ public class SkillTree {
     int remainder = level%10;
     return 5*quotient*(quotient+1) + remainder*(quotient+1) - 1;
   }
+
+  // Get the total number of skill points allocated to a given specialization
+  public int getSpecializationPoints(string spec) {
+    int totalLevel = 0;
+    Type[][] entry = SkillList.skillsByClass[spec];
+    foreach(Type[] skillTier in entry) {
+      foreach(Type skillType in skillTier) {
+        int skillLevel = 0;
+        if (passives.ContainsKey(skillType)) {
+          skillLevel = passives[skillType];
+        } else if (actives.ContainsKey(skillType)) {
+          skillLevel = actives[skillType];
+        }
+
+        totalLevel += skillLevel;
+      }
+    }
+
+    return totalLevel;
+  }
+
+  int[] tierRequirements = new int[] {0, 1, 4, 10, 20};
+  // Get the tier of skills available for a given specialization
+  public int getSpecializationTier(string spec) {
+    int specPoints = getSpecializationPoints(spec);
+    int tier = 0;
+    while (tier < tierRequirements.Length - 1 && specPoints >= tierRequirements[tier + 1]) {
+      tier++;
+    }
+
+    return tier;
+  }
 }

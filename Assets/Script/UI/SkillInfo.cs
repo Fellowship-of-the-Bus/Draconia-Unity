@@ -3,9 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Reflection;
 
 public class SkillInfo: MonoBehaviour {
-  public Text info;
+  public Tooltip tooltip;
   public Button levelUpButton;
   public Button equipButton;
   public Image displayImage;
@@ -16,41 +17,56 @@ public class SkillInfo: MonoBehaviour {
     set {tree.setSkillLevel(skillType, value);}
   }
   public SkillTree tree;
+  public Text equipText;
+  int skillTier;
+  string skillSpec; // Specialization the skill falls under
 
   SkillSelectController controller;
 
-  Text equipText;
-
   SkillInfo parent = null;
   List<SkillInfo> children = new List<SkillInfo>();
+  Skill skillInstance;
 
   public bool equipped { get; private set; }
 
-  public void init(Type type, bool isEquipped) {
-    controller = SkillSelectController.get;
-    equipText = equipButton.GetComponentInChildren<Text>();
-    equipped = isEquipped;
-    if (equipped) equipText.text = "Unequip";
-
+  public void init(Type type, bool isEquipped, int tier, string spec) {
     skillType = type;
-    info.GetComponent<Text>().text = type.FullName;
-    displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[type];
+    skillInstance = (Skill)Activator.CreateInstance(skillType);
+    skillTier = tier;
+    skillSpec = spec;
+
+    controller = SkillSelectController.get;
+    equipped = isEquipped;
+    if (equipped) equipText.text = "U";
+
+    displayImage.GetComponent<Image>().sprite = SkillList.get.skillImages[skillType];
   }
 
-  public void update(SkillTree t, SkillInfo caller = null) {
-    tree = t;
+  public void update(Character newChar, SkillInfo caller = null) {
+    tree = newChar.skills;
     equipButton.gameObject.SetActive(tree.isActive(skillType));
-    info.text = skillType.FullName + ", level " + skillLevel;
     equipButton.interactable = skillLevel > 0;
+    checkAvailability();
+
     foreach(SkillInfo s in children) {
-      if (s != caller) s.update(tree);
+      if (s != caller) s.update(newChar);
     }
+    skillInstance.character = newChar;
+    skillInstance.level = skillLevel;
+    tooltip.tiptext = skillInstance.tooltip;
+  }
+
+  public void checkAvailability() {
+    levelUpButton.interactable = skillTier <= tree.getSpecializationTier(skillSpec);
   }
 
   public void levelup() {
     skillLevel = skillLevel + 1;
-    update(tree);
-    if (parent) parent.update(tree, this);
+    skillInstance.level = skillLevel;
+
+    update(skillInstance.character);
+    controller.recalculateTiers();
+    if (parent) parent.update(skillInstance.character, this);
   }
 
   private void removeChild(SkillInfo s) {

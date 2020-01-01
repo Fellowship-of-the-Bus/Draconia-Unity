@@ -17,6 +17,10 @@ public class BloodSacrifice : SelfTarget {
     targetEnemy(false);
   }
 
+  protected override string tooltipDescription { get {
+    return "Sacrifice 2 health to gain bonus stats for 2 turns";
+  }}
+
   public override void additionalEffects(BattleCharacter target) {
     BloodSacrificeEffect e = new BloodSacrificeEffect();
     e.setValue(level);

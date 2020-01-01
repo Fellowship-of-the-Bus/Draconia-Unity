@@ -13,6 +13,7 @@ public class CharSelect : MonoBehaviour {
   public CharPanel selectedPanel {
     get { return selections[curSelection]; }
   }
+  public SkillSelectController skillSelectController;
 
   private int curSelection = 0;
   private CharPanel[] selections;
@@ -61,8 +62,10 @@ public class CharSelect : MonoBehaviour {
     updateAttrView();
     //add new items and set up links
     foreach (Equipment e in selectedPanel.character.gear) {
-      items[e.type].equipment = e;
+      // There are no "Item"s on the charater select prefab. Fix this.
+      // items[e.type].equipment = e;
     }
+    skillSelectController.setChar(selectedPanel.character);
   }
 
   private void prevSelection() {

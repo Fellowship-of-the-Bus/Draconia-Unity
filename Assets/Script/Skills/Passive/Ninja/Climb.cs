@@ -6,6 +6,10 @@ public class Climb : PassiveSkill {
     name = "Climb";
   }
 
+  protected override string tooltipDescription { get {
+    return "Increases maximum height difference during movement by 1 per level.";
+  }}
+
   protected override void onActivate() {
     owner.attrChange.moveTolerance += level;
   }

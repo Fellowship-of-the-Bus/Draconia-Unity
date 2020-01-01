@@ -7,15 +7,24 @@ public class Sentry : PassiveSkill {
 
   ActiveSkill skill = new ArcShot();
   public Sentry() {
+    name = "Sentry";
     aoe = 3;
     useLos = false;
     skill.level = level;
   }
 
+  protected override string tooltipDescription { get {
+    skill.character = character;
+    skill.level = level;
+
+    return "Range: " + aoe.ToString() + "\n"
+      + "When an enemy stops within range, fire an arrow dealing " + skill.tooltipDamage + " damage";
+  }}
+
   protected override void additionalEffect(Draconia.Event e) {
     List<Tile> tiles = GameManager.get.map.getTilesWithinRange(owner.curTile, aoe, false);
     if (e.sender.team == owner.team) return; // don't shoot teammates
-    if (tiles.Find(t => t.transform.position == e.position) != null) {
+    if (tiles.Find(t => t.position == e.sender.curTile.position) != null) {
       List<Tile> target = new List<Tile>();
       target.Add(e.sender.curTile);
       owner.useSkill(skill, new List<Tile>(target));
@@ -24,7 +33,7 @@ public class Sentry : PassiveSkill {
 
   protected override void onActivate() {
     Debug.AssertFormat(owner != null, "Sentry activated before owner is set.");
-    attachListener(EventManager.get, EventHook.enterTile);
+    attachListener(EventManager.get, EventHook.postMove);
     skill.self = owner;
   }
 

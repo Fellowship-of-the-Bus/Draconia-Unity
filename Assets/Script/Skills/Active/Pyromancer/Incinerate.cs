@@ -25,6 +25,6 @@ public class Incinerate: SingleTarget {
   }}
 
   public override int damageFormula() {
-    return (int)(self.intelligence*(1.5f+level*0.1));
+    return (int)(attributes.intelligence*(1.5f+level*0.1));
   }
 }
