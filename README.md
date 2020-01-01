@@ -1,5 +1,12 @@
 # Draconia (In Development)
 
+<a href="https://scan.coverity.com/projects/fellowship-of-the-bus-draconia-unity">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/20126/badge.svg"/>
+</a>
+
+[![](https://codescene.io/projects/6471/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/6471/jobs/latest-successful/results)
+
 A 3D strategy RPG developed with the [Unity] Game Engine
 
 ![Fellowship of the Bus][logo]
