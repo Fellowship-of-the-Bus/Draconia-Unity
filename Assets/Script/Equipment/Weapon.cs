@@ -28,6 +28,7 @@ public class Weapon : Equipment {
   } // MUST keep getWeaponKind consistent with this enum
 
   public int range = 1;
+  public EquipmentClass newEquipmentClass;
 
   public Kind kind {
     get {

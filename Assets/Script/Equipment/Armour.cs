@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Armour : Equipment {
+  public EquipmentClass newEquipmentClass;
+
   public enum EquipmentClass {
     Shield, Metal, Robe, Leather, Unarmed
   }

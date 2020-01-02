@@ -65,6 +65,12 @@ static class MapModifier {
   private static void currentMapSetStats() {
     setStats(EditorSceneManager.GetActiveScene().path);
   }
+
+  [MenuItem("Modify Map/Fix Weapon + Armor Equipment Classes (All Maps)")]
+  private static void allMapFixEquipClass() {
+    modifyAllMaps(fixEquipment);
+  }
+
   // This is commented because it will overwrite stats for all the maps
   // [MenuItem("Modify Map/Set Character Stats/Current Map")]
   // private static void allMapSetStats() {
@@ -102,6 +108,58 @@ static class MapModifier {
     }
     GameObject board = GameObject.Find("Board");
     board.transform.SetParent(null);
+    EditorSceneManager.SaveScene(currentScene);
+  }
+
+  // separated weapon/armor equipment classes into different enums.
+  // serialized values were not automatically updated, this fixes those values
+  private static void fixEquipment(string name) {
+    Scene currentScene = EditorSceneManager.OpenScene(name);
+    GameObject[] pieces = GameObject.FindGameObjectsWithTag("Unit");
+    foreach (GameObject piece in pieces) {
+      BattleCharacter bcharacter = piece.GetComponent<BattleCharacter>();
+      SerializedObject sObject = new SerializedObject(bcharacter);
+
+      Weapon weaponObj = bcharacter.baseChar.gear.weapon;
+      Armour armourObj = bcharacter.baseChar.gear.armour;
+
+      int weaponOriginal = (int)weaponObj.equipmentClass;
+      int armourOriginal = (int)armourObj.equipmentClass;
+
+      int weapon = weaponOriginal;
+      int armour = armourOriginal;
+      if (weapon == (int)EquipmentClass.Unarmed) { // old position of unarmed in combined enum
+        weapon = (int)Weapon.EquipmentClass.Unarmed;
+      }
+      armour -= 5; // 5 weapons before armor classes
+
+      //set equipment classes
+      if (Enum.IsDefined(typeof(Weapon.EquipmentClass), weapon)) {
+        SerializedProperty weaponProp = sObject.FindProperty("baseChar.gear.weapon.newEquipmentClass");
+        Debug.Assert(weaponProp != null);
+        weaponProp.intValue = weapon;
+        weaponObj.newEquipmentClass = (Weapon.EquipmentClass)weapon;
+      } else {
+        Debug.AssertFormat(
+          false,
+          "Invalid weapon class {1} on piece {0}", piece, weaponOriginal
+        );
+      }
+
+      if (Enum.IsDefined(typeof(Armour.EquipmentClass), armour)) {
+        SerializedProperty armourProp = sObject.FindProperty("baseChar.gear.armour.newEquipmentClass");
+        Debug.Assert(armourProp != null);
+        armourProp.intValue = armour;
+        armourObj.newEquipmentClass = (Armour.EquipmentClass)armour;
+      } else {
+        Debug.AssertFormat(
+          false,
+          "Invalid Armour class {1} on piece {0}", piece, armourOriginal
+        );
+      }
+
+      sObject.ApplyModifiedProperties();
+    }
     EditorSceneManager.SaveScene(currentScene);
   }
 
