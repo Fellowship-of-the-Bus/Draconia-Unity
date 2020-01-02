@@ -8,7 +8,7 @@ public class PointBlankShot: SingleTarget {
   public override string animation { get { return "Shoot"; }}
 
   public PointBlankShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Point Blank Shot";

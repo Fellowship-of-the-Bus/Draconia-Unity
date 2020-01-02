@@ -7,7 +7,7 @@ public class ForceShot: TargetMover {
   public override string animation { get { return "Shoot"; }}
 
   public ForceShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Force Shot";

@@ -22,16 +22,21 @@ public static class WeaponModels {
 
 [System.Serializable]
 public class Weapon : Equipment {
+  public enum Kind { Melee, Ranged };
+  public enum EquipmentClass {
+    Sword, Bow, Axe, Staff, Spear, Unarmed
+  } // MUST keep getWeaponKind consistent with this enum
+
   public int range = 1;
-  public enum Kinds { Melee, Ranged };
-  public Kinds kind {
+
+  public Kind kind {
     get {
       return equipmentClass.getWeaponKind();
     }
   }
 
   public static Weapon defaultWeapon {
-    get { return new Weapon(EquipmentClass.Unarmed, 1, 1); }
+    get { return new Weapon(global::EquipmentClass.Unarmed, 1, 1); }
   }
 
   public GameObject getModel() {
@@ -44,7 +49,7 @@ public class Weapon : Equipment {
     return new Weapon(equipmentClass, range, tier);
   }
 
-  public Weapon(EquipmentClass equipmentClass, int range, int tier) {
+  public Weapon(global::EquipmentClass equipmentClass, int range, int tier) {
     this.type = EquipType.weapon;
     this.equipmentClass = equipmentClass;
     this.range = range;

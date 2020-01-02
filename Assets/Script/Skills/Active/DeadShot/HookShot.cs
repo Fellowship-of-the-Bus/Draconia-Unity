@@ -7,7 +7,7 @@ public class HookShot: TargetMover {
   public override string animation { get { return "Shoot"; }}
 
   public HookShot() {
-    requireWeapon(Weapon.Kinds.Ranged);
+    requireWeapon(Weapon.Kind.Ranged);
     useWepRange = true;
     useLos = true;
     name = "Hook Shot";

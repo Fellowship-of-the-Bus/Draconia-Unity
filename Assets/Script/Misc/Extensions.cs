@@ -28,6 +28,15 @@ public static class Extensions {
     }
   }
 
+  public static T Find<T>(this IEnumerable<T> xs, Func<T, bool> pred) {
+    foreach (var x in xs) {
+      if (pred(x)) {
+        return x;
+      }
+    }
+    return default(T);
+  }
+
   // switch to this instead of NodeIterator?
   public static IEnumerable<LinkedListNode<T>> nodeIterate<T>(this LinkedList<T> l) {
     for (LinkedListNode<T> n = l.First; n != null; n = n.Next) {
