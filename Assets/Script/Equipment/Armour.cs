@@ -4,13 +4,8 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class Armour : Equipment {
-  public EquipmentClass equipmentClass { 
-    get { return newEquipmentClass; } 
-    set { newEquipmentClass = value; }
-  }
-
-  // [FormerlySerializedAs("newEquipmentClass")]
-  public EquipmentClass newEquipmentClass;
+  [FormerlySerializedAs("newEquipmentClass")]
+  public EquipmentClass equipmentClass;
 
   public enum EquipmentClass {
     Shield, Metal, Robe, Leather, Unarmed

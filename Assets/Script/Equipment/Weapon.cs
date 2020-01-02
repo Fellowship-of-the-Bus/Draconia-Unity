@@ -29,13 +29,9 @@ public class Weapon : Equipment {
   } // MUST keep getWeaponKind consistent with this enum
 
   public int range = 1;
-  public EquipmentClass equipmentClass { 
-    get { return newEquipmentClass; } 
-    set { newEquipmentClass = value; }
-  }
 
-  // [FormerlySerializedAs("newEquipmentClass")]
-  public EquipmentClass newEquipmentClass;
+  [FormerlySerializedAs("newEquipmentClass")]
+  public EquipmentClass equipmentClass;
 
   public Kind kind {
     get {

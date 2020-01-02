@@ -135,7 +135,7 @@ static class MapModifier {
 
       //set equipment classes
       if (Enum.IsDefined(typeof(Weapon.EquipmentClass), weapon)) {
-        SerializedProperty weaponProp = sObject.FindProperty("baseChar.gear.weapon.newEquipmentClass");
+        SerializedProperty weaponProp = sObject.FindProperty("baseChar.gear.weapon.equipmentClass");
         Debug.Assert(weaponProp != null);
         weaponProp.intValue = weapon;
         weaponObj.equipmentClass = (Weapon.EquipmentClass)weapon;
@@ -147,7 +147,7 @@ static class MapModifier {
       }
 
       if (Enum.IsDefined(typeof(Armour.EquipmentClass), armour)) {
-        SerializedProperty armourProp = sObject.FindProperty("baseChar.gear.armour.newEquipmentClass");
+        SerializedProperty armourProp = sObject.FindProperty("baseChar.gear.armour.equipmentClass");
         Debug.Assert(armourProp != null);
         armourProp.intValue = armour;
         armourObj.equipmentClass = (Armour.EquipmentClass)armour;
