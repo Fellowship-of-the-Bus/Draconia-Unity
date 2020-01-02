@@ -67,13 +67,11 @@ public struct SerializableGuid: IComparable, IComparable<SerializableGuid>, IEqu
 
   // pre unity serialize
   public void OnBeforeSerialize() {
-    Debug.LogFormat("Serializing: value: {0} & guid: {1}", value, guid);
     this.value = guid.ToByteArray();
   }
 
   // unity deserialization finished
   public void OnAfterDeserialize() {
-    Debug.LogFormat("Deserialized {0}", value);
     this.guid = new Guid(value);
   }
 }
