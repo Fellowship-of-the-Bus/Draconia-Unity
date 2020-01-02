@@ -1,8 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 
 [System.Serializable]
 public class Armour : Equipment {
+  public EquipmentClass equipmentClass { 
+    get { return newEquipmentClass; } 
+    set { newEquipmentClass = value; }
+  }
+
+  // [FormerlySerializedAs("newEquipmentClass")]
   public EquipmentClass newEquipmentClass;
 
   public enum EquipmentClass {
@@ -10,7 +17,7 @@ public class Armour : Equipment {
   }
 
   public static Armour defaultArmour {
-    get { return new Armour(global::EquipmentClass.Unarmed, 1); }
+    get { return new Armour(EquipmentClass.Unarmed, 1); }
   }
 
   public override Equipment getDefault() { return defaultArmour; }
@@ -19,9 +26,13 @@ public class Armour : Equipment {
     return new Armour(equipmentClass, tier);
   }
 
-  public Armour(global::EquipmentClass equipmentClass, int tier) {
+  public Armour(EquipmentClass equipmentClass, int tier) {
     this.equipmentClass = equipmentClass;
     this.tier = tier;
     this.type = EquipType.armour;
+  }
+
+  public override string name() {
+    return tier.ToString() + " " + equipmentClass;
   }
 }

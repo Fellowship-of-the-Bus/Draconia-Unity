@@ -128,17 +128,17 @@ static class MapModifier {
 
       int weapon = weaponOriginal;
       int armour = armourOriginal;
-      if (weapon == (int)EquipmentClass.Unarmed) { // old position of unarmed in combined enum
-        weapon = (int)Weapon.EquipmentClass.Unarmed;
+
+      if (weapon == (int)Weapon.EquipmentClass.Unarmed) {
+        weapon = (int)Weapon.EquipmentClass.Sword;
       }
-      armour -= 5; // 5 weapons before armor classes
 
       //set equipment classes
       if (Enum.IsDefined(typeof(Weapon.EquipmentClass), weapon)) {
         SerializedProperty weaponProp = sObject.FindProperty("baseChar.gear.weapon.newEquipmentClass");
         Debug.Assert(weaponProp != null);
         weaponProp.intValue = weapon;
-        weaponObj.newEquipmentClass = (Weapon.EquipmentClass)weapon;
+        weaponObj.equipmentClass = (Weapon.EquipmentClass)weapon;
       } else {
         Debug.AssertFormat(
           false,
@@ -150,7 +150,7 @@ static class MapModifier {
         SerializedProperty armourProp = sObject.FindProperty("baseChar.gear.armour.newEquipmentClass");
         Debug.Assert(armourProp != null);
         armourProp.intValue = armour;
-        armourObj.newEquipmentClass = (Armour.EquipmentClass)armour;
+        armourObj.equipmentClass = (Armour.EquipmentClass)armour;
       } else {
         Debug.AssertFormat(
           false,
@@ -252,5 +252,22 @@ static class MapModifier {
       sObject.ApplyModifiedProperties();
     }
     EditorSceneManager.SaveScene(currentScene);
+  }
+
+  // modified from: https://forum.unity.com/threads/formerlyserializedas-not-working-in-2018-3.607036/
+  [MenuItem("Assets/Reserialize Scene", false, 80)]
+  public static void ForceReserializeSceneObjects() {
+    Transform[] transforms = Resources.FindObjectsOfTypeAll<Transform>();
+    for (int i = 0; i < transforms.Length; i++) {
+      Transform transform = transforms[i];
+      MonoBehaviour[] components = transform.GetComponents<MonoBehaviour>();
+      for (int j = 0; j < components.Length; j++) {
+        EditorUtility.SetDirty(components[j]);
+      }
+      EditorUtility.SetDirty(transform.gameObject);
+    }
+    Scene scene = SceneManager.GetActiveScene();
+    EditorSceneManager.MarkSceneDirty(scene);
+    AssetDatabase.SaveAssets();
   }
 }

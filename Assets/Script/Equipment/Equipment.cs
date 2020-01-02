@@ -1,30 +1,6 @@
 ﻿using UnityEngine;
 using System;
 
-public enum EquipmentClass {
-  Sword, Bow, Axe, Staff, Spear, // Weapon
-  Shield, Metal, Robe, Leather, // Armor
-  Unarmed // Unarmed works for either, so keep it last
-} // MUST keep getWeaponKind consistent with this enum
-
-public static class EquipmentClassMethods {
-  public static Weapon.Kind getWeaponKind(this EquipmentClass e) {
-    switch (e) {
-      case EquipmentClass.Sword:
-      case EquipmentClass.Axe:
-      case EquipmentClass.Spear:
-      case EquipmentClass.Staff:
-      case EquipmentClass.Unarmed:
-        return Weapon.Kind.Melee;
-      case EquipmentClass.Bow:
-        return Weapon.Kind.Ranged;
-      default:
-        Debug.AssertFormat(false, "getWeaponKind called with non-weapon EquipmentClass: {0}", e);
-        return Weapon.Kind.Melee;
-    }
-  }
-}
-
 [Serializable]
 public abstract class Equipment {
   public enum Tier {
@@ -43,19 +19,15 @@ public abstract class Equipment {
     }
   }
 
-  public EquipmentClass equipmentClass;
-
-  public bool isDefaultEquipment { get { return equipmentClass == EquipmentClass.Unarmed; } }
+  public bool isDefaultEquipment { get { return Equals(getDefault()); } }
 
   // return the default of the same type as e
   public abstract Equipment getDefault();
 
   public abstract Equipment upgrade(Equipment e1, Equipment e2);
 
-  public string name() {
-    return tier.ToString() + " " + equipmentClass;
-  }
-
+  public abstract string name();
+  
   [Obsolete("Equipment.isEquipped is deprecated. Equipment is being deduplicated.")]
   public bool isEquipped() {
      return equippedTo != null;

@@ -46,15 +46,15 @@ public class Trait {
   }
   [System.Serializable]
   public class TraitSpec {
-    public static List<EquipmentClass> equips = new List<EquipmentClass>((IEnumerable<EquipmentClass>)Enum.GetValues(typeof(EquipmentClass)));
+    public static List<Weapon.EquipmentClass> equips = new List<Weapon.EquipmentClass>((IEnumerable<Weapon.EquipmentClass>)Enum.GetValues(typeof(Weapon.EquipmentClass)));
     public static List<EnemyType> enemies = new List<EnemyType>((IEnumerable<EnemyType>)Enum.GetValues(typeof(EnemyType)));
     public static List<DamageElement> elements = new List<DamageElement>((IEnumerable<DamageElement>)Enum.GetValues(typeof(DamageElement)));
     public float expGain = 0;
-    public Dictionary<EquipmentClass, float> wepSpec = new Dictionary<EquipmentClass, float>();
+    public Dictionary<Weapon.EquipmentClass, float> wepSpec = new Dictionary<Weapon.EquipmentClass, float>();
     public Dictionary<EnemyType, float> enemySpec = new Dictionary<EnemyType, float>();
     public Dictionary<DamageElement, float> elementSpec = new Dictionary<DamageElement, float>();
     public TraitSpec() {
-      foreach (EquipmentClass e in equips) {
+      foreach (Weapon.EquipmentClass e in equips) {
         wepSpec[e] = 0;
       }
       foreach (EnemyType e in enemies) {

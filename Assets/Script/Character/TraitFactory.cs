@@ -51,7 +51,7 @@ public class TraitFactory : MonoBehaviour {
     int num_wep = int.Parse(fields[curIndex]);
     curIndex++;
     for (int i = 0; i < num_wep; i++) {
-      EquipmentClass e;
+      Weapon.EquipmentClass e;
       if (Enum.TryParse(fields[curIndex + 2*i], true, out e)) {
         t.spec.wepSpec[e] += int.Parse(fields[curIndex + 2*i + 1])/100f;
       } else {
