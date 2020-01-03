@@ -9,7 +9,7 @@ public abstract class Equipment {
 
   public SerializableGuid guid;
   public Attributes attr = new Attributes();
-  public int tier;
+  public Tier tier;
 
   //could be null if not equipped.
   [Obsolete("Equipment.equippedTo is deprecated. Equipment is being deduplicated.")]
@@ -24,17 +24,11 @@ public abstract class Equipment {
   // return the default of the same type as e
   public abstract Equipment getDefault();
 
-  public abstract Equipment upgrade(Equipment e1, Equipment e2);
-
   public abstract string name();
   
   [Obsolete("Equipment.isEquipped is deprecated. Equipment is being deduplicated.")]
   public bool isEquipped() {
      return equippedTo != null;
-  }
-
-  public bool canUpgrade() {
-    return (int)tier < (int)Tier.Enchanted;
   }
 
   public Equipment clone() {

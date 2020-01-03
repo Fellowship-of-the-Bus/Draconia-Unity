@@ -49,16 +49,15 @@ public class EquipmentDB : MonoBehaviour {
     }
   }
 
-  // TODO: remove int casts from slowPred comparisons
   private bool slowPred(Weapon equipment, WeaponData data) {
     return data.kind == equipment.kind
-      && (int)data.tier == equipment.tier
-      && (int)data.equipmentClass == (int)equipment.equipmentClass;
+      && data.tier == equipment.tier
+      && data.equipmentClass == equipment.equipmentClass;
   }
 
   private bool slowPred(Armour equipment, ArmourData data) {
-    return (int)data.tier == equipment.tier
-      && (int)data.equipmentClass == (int)equipment.equipmentClass;
+    return data.tier == equipment.tier
+      && data.equipmentClass == equipment.equipmentClass;
   }
 #endif
 }

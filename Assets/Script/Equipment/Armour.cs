@@ -12,19 +12,20 @@ public class Armour : Equipment {
   }
 
   public static Armour defaultArmour {
-    get { return new Armour(EquipmentClass.Unarmed, 1); }
+    get; private set;
   }
 
   public override Equipment getDefault() { return defaultArmour; }
 
-  public override Equipment upgrade(Equipment e1, Equipment e2) {
-    return new Armour(equipmentClass, tier);
-  }
-
-  public Armour(EquipmentClass equipmentClass, int tier) {
-    this.equipmentClass = equipmentClass;
-    this.tier = tier;
+  public Armour(ArmourData armourData) {
+    this.equipmentClass = armourData.equipmentClass;
+    this.tier = armourData.tier;
     this.type = EquipType.armour;
+
+    // temp: take the first created armor as the default
+    if (defaultArmour == null) {
+      defaultArmour = this;
+    }
   }
 
   public override string name() {

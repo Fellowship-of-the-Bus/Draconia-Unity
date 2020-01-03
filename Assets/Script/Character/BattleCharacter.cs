@@ -17,7 +17,7 @@ public enum Team {
 };
 
 public class BattleCharacter : Effected {
-  public Character baseChar = new Character();
+  public Character baseChar;
   public AIType aiType = AIType.None;
   public EnemyType enemyType = EnemyType.Human;
   public AudioSource audio;

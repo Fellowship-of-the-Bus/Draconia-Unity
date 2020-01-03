@@ -13,22 +13,24 @@ public class GameData {
   public Inventory inv = new Inventory();
   public Dictionary<string,string> mapProgression = new Dictionary<string,string>();
 
-  public void newGame() {
+  public void newGame(NewGameSettings settings) {
   	String[] skills = {"Punch", "Knockback", "Knockback", "Knockback"};
   	SkillTree skillTree;
+
+    for (int i = 0; i < settings.weapons.Length; ++i) {
+      inv.addEquipment(new Weapon(settings.weapons[i]));
+    }
+
+    for (int i = 0; i < settings.armor.Length; ++i) {
+      inv.addEquipment(new Armour(settings.armor[i]));
+    }
 
     GameData.gameData.characters.Add(CharacterGenerator.generateBrodric());
     GameData.gameData.characters.Add(CharacterGenerator.generateSisdric());
 
-    for(int i = 0; i < 5; i++) {
+    for(int i = 0; i < settings.numGeneratedCharacters; i++) {
       GameData.gameData.characters.Add(CharacterGenerator.generateCharacter(1));
     }
-
-    inv.addEquipment(new Weapon(Weapon.EquipmentClass.Sword, 2, 1));
-    inv.addEquipment(new Weapon(Weapon.EquipmentClass.Bow, 4, 1));
-    inv.addEquipment(new Weapon(Weapon.EquipmentClass.Staff, 2, 1));
-    inv.addEquipment(new Weapon(Weapon.EquipmentClass.Spear, 2, 1));
-    inv.addEquipment(new Weapon(Weapon.EquipmentClass.Axe, 2, 1));
 
     foreach (Character c in  GameData.gameData.characters) {
       if (c.attr.strength == 0) c.attr.strength = 10;

@@ -40,7 +40,7 @@ public class Weapon : Equipment {
   }
 
   public static Weapon defaultWeapon {
-    get { return new Weapon(EquipmentClass.Unarmed, 1, 1); }
+    get; private set;
   }
 
   public GameObject getModel() {
@@ -49,15 +49,18 @@ public class Weapon : Equipment {
 
   public override Equipment getDefault() { return defaultWeapon; }
 
-  public override Equipment upgrade(Equipment e1, Equipment e2) {
-    return new Weapon(equipmentClass, range, tier);
-  }
-
-  public Weapon(EquipmentClass equipmentClass, int range, int tier) {
+  public Weapon(WeaponData weaponData) {
+    this.guid = weaponData.guid;
     this.type = EquipType.weapon;
-    this.equipmentClass = equipmentClass;
-    this.range = range;
-    this.tier = tier;
+    this.equipmentClass = weaponData.equipmentClass;
+    this.range = weaponData.range;
+    this.tier = weaponData.tier;
+
+    // temp: take the first created weapon as the default
+    if (defaultWeapon == null) {
+      Debug.Log("Set default weapon");
+      defaultWeapon = this;
+    }
   }
 
   public override string name() {
