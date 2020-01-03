@@ -14,9 +14,10 @@ static class MapModifier {
   static Dictionary<CharacterType, UnityEngine.Object> replacements = new Dictionary<CharacterType, UnityEngine.Object>();
 
   static MapModifier() {
-    replacements.Add(CharacterType.Human, Resources.Load("Characters/Human"));
-    replacements.Add(CharacterType.Lizard, Resources.Load("Characters/Lizard"));
-    replacements.Add(CharacterType.Snake, Resources.Load("Characters/Snake"));
+    // Warning: This loads 3 BattleCharacters every time we enter play mode
+    // replacements.Add(CharacterType.Human, Resources.Load("Characters/Human"));
+    // replacements.Add(CharacterType.Lizard, Resources.Load("Characters/Lizard"));
+    // replacements.Add(CharacterType.Snake, Resources.Load("Characters/Snake"));
   }
 
   private static void modifyAllMaps(Action<string> fun) {
