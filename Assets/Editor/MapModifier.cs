@@ -115,49 +115,46 @@ static class MapModifier {
   // serialized values were not automatically updated, this fixes those values
   private static void fixEquipment(string name) {
     Scene currentScene = EditorSceneManager.OpenScene(name);
+    EquipmentDB db = (EquipmentDB)AssetDatabase.LoadAssetAtPath("Assets/Prefab/Resources/Map/EquipmentDB.prefab", typeof(EquipmentDB));
     GameObject[] pieces = GameObject.FindGameObjectsWithTag("Unit");
     foreach (GameObject piece in pieces) {
       BattleCharacter bcharacter = piece.GetComponent<BattleCharacter>();
       SerializedObject sObject = new SerializedObject(bcharacter);
+      Undo.RecordObject(bcharacter, "Set weapon/armor guid");
 
       Weapon weaponObj = bcharacter.baseChar.gear.weapon;
       Armour armourObj = bcharacter.baseChar.gear.armour;
 
-      int weaponOriginal = (int)weaponObj.equipmentClass;
-      int armourOriginal = (int)armourObj.equipmentClass;
-
-      int weapon = weaponOriginal;
-      int armour = armourOriginal;
-
-      if (weapon == (int)Weapon.EquipmentClass.Unarmed) {
-        weapon = (int)Weapon.EquipmentClass.Sword;
-      }
-
-      //set equipment classes
-      if (Enum.IsDefined(typeof(Weapon.EquipmentClass), weapon)) {
-        SerializedProperty weaponProp = sObject.FindProperty("baseChar.gear.weapon.equipmentClass");
-        Debug.Assert(weaponProp != null);
-        weaponProp.intValue = weapon;
-        weaponObj.equipmentClass = (Weapon.EquipmentClass)weapon;
+      WeaponData wdata;
+      if (weaponObj != null) {
+        weaponObj.type = EquipType.weapon;
+        wdata = (WeaponData)db.slowFind(weaponObj);
       } else {
-        Debug.AssertFormat(
-          false,
-          "Invalid weapon class {1} on piece {0}", piece, weaponOriginal
-        );
+        Debug.Assert(false);
+        wdata = db.weapons[0];
       }
+      Debug.AssertFormat(wdata != null, "No weapon data for {0} in scene {1}", weaponObj, name);
+      SerializedProperty weaponGuidProp = sObject.FindProperty("baseChar.gear.weapon.guid");
+      // weaponDataProp.objectReferenceValue = (WeaponData)wdata;
+      weaponObj.guid = wdata.guid;
 
-      if (Enum.IsDefined(typeof(Armour.EquipmentClass), armour)) {
-        SerializedProperty armourProp = sObject.FindProperty("baseChar.gear.armour.equipmentClass");
-        Debug.Assert(armourProp != null);
-        armourProp.intValue = armour;
-        armourObj.equipmentClass = (Armour.EquipmentClass)armour;
+      ArmourData adata;
+      if (armourObj != null) {
+        armourObj.type = EquipType.armour;
+        adata = (ArmourData)db.slowFind(armourObj);
       } else {
-        Debug.AssertFormat(
-          false,
-          "Invalid Armour class {1} on piece {0}", piece, armourOriginal
-        );
+        Debug.Assert(false);
+        adata = db.armour[0];
       }
+      Debug.AssertFormat(adata != null, "No armour data for {0} in scene {1}", armourObj, name);
+      SerializedProperty armourDataProp = sObject.FindProperty("baseChar.gear.armourData");
+      // armourDataProp.objectReferenceValue = adata;
+      armourObj.guid = adata.guid;
 
+      // Notice that if the call to RecordPrefabInstancePropertyModifications is not present,
+      // all changes to scale will be lost when saving the Scene, and reopening the Scene
+      // would revert the scale back to its previous value.
+      PrefabUtility.RecordPrefabInstancePropertyModifications(bcharacter);
       sObject.ApplyModifiedProperties();
     }
     EditorSceneManager.SaveScene(currentScene);
