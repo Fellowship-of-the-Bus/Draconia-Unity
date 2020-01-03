@@ -56,15 +56,12 @@ public class CharacterGenerator : MonoBehaviour {
 
   public static Character generateCharacter(int level) {
     Character character = new Character();
-
     character.name = generateName();
-
     character.attr = generateBaseAttributes();
-
     character.setLevel(level);
-
     character.traits = generateTraits();
-
+    character.equip(Weapon.defaultWeapon);
+    character.equip(Armour.defaultArmour);
     return character;
   }
 

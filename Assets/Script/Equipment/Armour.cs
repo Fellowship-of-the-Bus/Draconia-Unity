@@ -12,7 +12,7 @@ public class Armour : Equipment {
   }
 
   public static Armour defaultArmour {
-    get; private set;
+    get { return new Armour(EquipmentDB.get.armour[0]); }
   }
 
   public override Equipment getDefault() { return defaultArmour; }
@@ -21,11 +21,6 @@ public class Armour : Equipment {
     this.equipmentClass = armourData.equipmentClass;
     this.tier = armourData.tier;
     this.type = EquipType.armour;
-
-    // temp: take the first created armor as the default
-    if (defaultArmour == null) {
-      defaultArmour = this;
-    }
   }
 
   public override string name() {

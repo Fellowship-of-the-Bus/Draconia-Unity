@@ -40,7 +40,7 @@ public class Weapon : Equipment {
   }
 
   public static Weapon defaultWeapon {
-    get; private set;
+    get { return new Weapon(EquipmentDB.get.weapons[0]); }
   }
 
   public GameObject getModel() {
@@ -55,12 +55,6 @@ public class Weapon : Equipment {
     this.equipmentClass = weaponData.equipmentClass;
     this.range = weaponData.range;
     this.tier = weaponData.tier;
-
-    // temp: take the first created weapon as the default
-    if (defaultWeapon == null) {
-      Debug.Log("Set default weapon");
-      defaultWeapon = this;
-    }
   }
 
   public override string name() {
