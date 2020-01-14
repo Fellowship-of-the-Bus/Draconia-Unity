@@ -13,12 +13,19 @@ public class InvItemSelect: MonoBehaviour {
   private GameObject currentScrollView; // currently visible scroll view
   public GameObject scrollArea; // content area
 
-  private LinkedList<Equipment> ownedEquipment;
+  private List<Equipment> ownedEquipment;
   private Dictionary<Equipment, ItemTooltip> tooltips;
 
 
   void Awake() {
-    ownedEquipment = GameData.gameData.inv.equipments;
+    ownedEquipment = new List<Equipment>();
+    ownedEquipment.Capacity = GameData.gameData.inv.weapons.Count + GameData.gameData.inv.armour.Count;
+    for (int i = 0; i < GameData.gameData.inv.weapons.Count; ++i) {
+      ownedEquipment.Add(GameData.gameData.inv.weapons[i]);
+    }
+    for (int i = 0; i < GameData.gameData.inv.armour.Count; ++i) {
+      ownedEquipment.Add(GameData.gameData.inv.armour[i]);
+    }
 
     get = this;
   }

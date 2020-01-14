@@ -6,85 +6,49 @@ using System.Collections;
 
 public class InventoryController : MonoBehaviour {
   public CharSelect charSelect;
+  public GameObject itemPrefab;
+  public Transform content;
 
-  public class Selection {
-    public Text text;
-    public Image background;
-    public Character character;
+  public List<Item> items;
+
+  private void addItems<T>(List<T> equips) where T : Equipment {
+    for (int i = 0; i < equips.Count; ++i) {
+      int idx = i;
+      Item item = Instantiate(itemPrefab, content).GetComponent<Item>();
+      item.equipment = equips[i];
+      item.button.onClick.AddListener(() => equip(equips[idx]));
+      items.Add(item);
+    }    
   }
-
-  public GameObject panel;
-  public Transform parent;
-  public AttrView attrView;
-
-  public Item[] items;
-  public Selection selectedPanel;
-
-  public Text equipName;
-  public Text equippedTo;
-  public Tooltip tooltip;
-  public GameObject tipbox;
-
 
   void Awake() {
-    //Assumes that gameData.characters is not empty. (reasonable)
-    bool firstIter = true;
-    foreach (Character character in GameData.gameData.characters) {
-      CharPanel charPanel = Instantiate(panel, parent).GetComponent<CharPanel>();
-      Selection sel = new Selection();
-      sel.text = charPanel.text;
-      sel.background = charPanel.background;
-      sel.character = character;
-      sel.text.text = character.name;
-      //todo set image.
-      charPanel.button.onClick.AddListener(() => {
-        onButtonClick(sel);
-      });
-      if (firstIter) {
-        selectedPanel = sel;
-        firstIter = false;
-      }
-    }
-  }
-
-  void Start() {
-    onButtonClick(selectedPanel);
-  }
-
-  protected virtual void onButtonClick(Selection newSelection){
-    selectedPanel.background.color = Color.clear;
-    newSelection.background.color = Color.red;
-    selectedPanel = newSelection;
-    updateAttrView();
-    //add new items and set up links
-    foreach (Equipment e in newSelection.character.gear) {
-      items[e.type] = getItem(e);
-    }
+    List<Weapon> weapons = GameData.gameData.inv.weapons;
+    List<Armour> armour = GameData.gameData.inv.armour;
+    items = new List<Item>();
+    items.Capacity = weapons.Count + armour.Count;
+    addItems(weapons);
+    addItems(armour);
   }
 
   public void equip(Equipment equipment) {
     var item = charSelect.items[equipment.type];
     var currentlyEquipped = item.equipment;
     if (currentlyEquipped != null && ! currentlyEquipped.isDefaultEquipment) {
-      getItem(currentlyEquipped).updateColor();
+      getItem(currentlyEquipped).updateColor(Color.white);
     }
     charSelect.selectedPanel.character.equip(equipment);
     item.equipment = equipment;
-    item.updateColor();
-    updateAttrView();
+    getItem(equipment).updateColor(Color.green);
+    charSelect.updateAttrView();
   }
 
   private Item getItem(Equipment eq) {
-    for (int i = 0; i < items.Length; ++i) {
+    for (int i = 0; i < items.Count; ++i) {
       if (items[i].equipment == eq) {
         return items[i];
       }
     }
     Debug.AssertFormat(false, "Could not find equipment in inventory: {0}", eq);
     return null;
-  }
-
-  public void updateAttrView () {
-    attrView.updateAttr(selectedPanel.character.totalAttr);
   }
 }
