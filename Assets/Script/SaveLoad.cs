@@ -25,10 +25,6 @@ public static class SaveLoad {
   private static CustomSampler sampler = CustomSampler.Create("SaveLoadSampler");
 
   private static void doSave(string saveName) {
-    // Register the thread for profiling
-    Profiler.BeginThreadProfiling("Tasks", "Save Task");
-    sampler.Begin();
-
     channel.Log("Saving to {0}", saveName);
 
     Debug.AssertFormat(! active, "Saving {0}: previously {1}", saveName, currentMode);
@@ -42,15 +38,27 @@ public static class SaveLoad {
     file.Close();
     currentMode = Mode.Inactive;
     active = false;
+  }
 
-    // Unregister the thread before exit
-    sampler.End();
-    Profiler.EndThreadProfiling();
+  private static void runSave(string saveName) {
+    try {
+      // Register the thread for profiling
+      Profiler.BeginThreadProfiling("Tasks", "Save Task");
+
+      doSave(saveName);
+
+      // Unregister the thread before exit
+      sampler.End();
+      Profiler.EndThreadProfiling();
+    } catch (System.Exception e) {
+      channel.LogError("Exception when saving {0}: {1}", saveName, e);
+      throw e;
+    }
   }
 
   public static void save(string saveName) {
     // run on a worker thread
-    Task.Run(() => doSave(saveName));
+    Task.Run(() => runSave(saveName));
   }
 
   public static void saveAuto() {
@@ -58,10 +66,6 @@ public static class SaveLoad {
   }
 
   private static void doLoad(string saveName) {
-    // Register the thread for profiling
-    Profiler.BeginThreadProfiling("Tasks", "Load Task");
-    sampler.Begin();
-
     channel.Log("Loading {0}", saveName);
 
     Debug.AssertFormat(! active, "Loading {0}: previously {1}", saveName, currentMode);
@@ -79,15 +83,28 @@ public static class SaveLoad {
       file.Close();
     } else channel.Log(saveName + " doesn't exist");
     active = false;
+  }
 
-    // Unregister the thread before exit
-    sampler.End();
-    Profiler.EndThreadProfiling();
+  private static void runLoad(string saveName) {
+    try {
+      // Register the thread for profiling
+      Profiler.BeginThreadProfiling("Tasks", "Load Task");
+      sampler.Begin();
+
+      doLoad(saveName);
+
+      // Unregister the thread before exit
+      sampler.End();
+      Profiler.EndThreadProfiling();
+    } catch (System.Exception e) {
+      channel.LogError("Exception when loading {0}: {1}", saveName, e);
+      throw e;
+    }
   }
 
   public static void load(string saveName) {
     // run on a worker thread
-    Task.Run(() => doLoad(saveName));
+    Task.Run(() => runLoad(saveName));
   }
 
   public static void loadAuto() {
