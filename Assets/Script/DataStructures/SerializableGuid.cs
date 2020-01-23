@@ -3,9 +3,12 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 // From: https://druss.co/2016/04/unity3d-serialize-and-deserialize-system-guid-using-jsonutility/
-
+// TODO: Change SerializableGuid from class to struct
+// BODY: There is a bug in Mono that prevents deserializing structs with array members. There is
+// no reason for this type to be heap allocated, so once the bug is fixed we should change it back.
+// See: https://github.com/mono/mono/issues/8915
 [Serializable]
-public struct SerializableGuid: IComparable, IComparable<SerializableGuid>, IEquatable<SerializableGuid>, ISerializationCallbackReceiver {
+public class SerializableGuid: IComparable, IComparable<SerializableGuid>, IEquatable<SerializableGuid>, ISerializationCallbackReceiver {
   [SerializeField]
   private byte[] value;
 
