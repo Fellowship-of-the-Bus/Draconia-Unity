@@ -6,12 +6,7 @@ public class EquipmentDB : MonoBehaviour {
   public static EquipmentDB get;
 
   void Awake() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
-    DontDestroyOnLoad(gameObject);
+    if (!Singleton.makeSingleton(ref get, this)) return;
   }
 
   public ItemData find(Equipment e) {

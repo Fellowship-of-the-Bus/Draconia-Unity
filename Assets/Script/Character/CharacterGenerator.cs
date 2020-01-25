@@ -20,13 +20,8 @@ public class CharacterGenerator : MonoBehaviour {
   public static CharacterGenerator get;
 
   void Awake() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
+    if (!Singleton.makeSingleton(ref get, this)) return;
     names = namesFile.text.Split(new string[]{ "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
-    DontDestroyOnLoad(gameObject);
   }
 
   private static Attributes generateBaseAttributes() {

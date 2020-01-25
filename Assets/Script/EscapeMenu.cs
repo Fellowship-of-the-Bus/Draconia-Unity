@@ -16,13 +16,9 @@ public class EscapeMenu : MonoBehaviour {
   public static EscapeMenu get { get; private set; }
 
   void Start() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
-    DontDestroyOnLoad(gameObject);
-
+    EscapeMenu temp = get;
+    if (!Singleton.makeSingleton(ref temp, this)) return;
+    get = temp;
     transitionScenes("MainMenu");
   }
 

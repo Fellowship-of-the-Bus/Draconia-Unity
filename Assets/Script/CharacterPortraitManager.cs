@@ -6,12 +6,7 @@ public class CharacterPortraitManager : MonoBehaviour {
   public CharacterPortraitGenerator generator;
 
   void Awake() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
-    DontDestroyOnLoad(gameObject);
+    if (!Singleton.makeSingleton(ref get, this)) return;
   }
 
   public static string getCanonicalName(BattleCharacter character) {

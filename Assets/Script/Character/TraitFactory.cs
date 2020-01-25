@@ -7,12 +7,7 @@ public class TraitFactory : MonoBehaviour {
   public static TraitFactory get = null;
   public TextAsset traitInfo;
   void Awake() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
-    DontDestroyOnLoad(gameObject);
+    if (!Singleton.makeSingleton(ref get, this)) return;
     buildTraits();
   }
   private void buildTraits() {

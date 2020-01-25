@@ -18,15 +18,7 @@ public class DebugDataView : MonoBehaviour {
   public SaveLoadData saveloadData;
 
   void Awake() {
-    // can't call DontDestroyOnLoad outside of playmode
-    if (Application.IsPlaying(gameObject)) {
-      if (get != null) {
-        Destroy(gameObject);
-        return;
-      }
-      get = this;
-      DontDestroyOnLoad(gameObject);      
-    }
+    if (!Singleton.makeSingleton(ref get, this)) return;
   }
 
   void Update() {
