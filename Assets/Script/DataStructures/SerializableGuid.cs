@@ -75,6 +75,9 @@ public class SerializableGuid: IComparable, IComparable<SerializableGuid>, IEqua
 
   // unity deserialization finished
   public void OnAfterDeserialize() {
+    if (value == null || value.Length != 16) {
+      Debug.LogErrorFormat("Bad guid OnAfterDeserialize: {0} {1}", value, value != null ? value.Length : 0);
+    }
     this.guid = new Guid(value);
   }
 }
