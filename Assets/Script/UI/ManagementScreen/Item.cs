@@ -14,9 +14,9 @@ public class Item : MonoBehaviour {
     }
   }
 
-  public Tooltip tooltip;
   public Button button;
   public Image image;
+  public Tooltip tooltip;
 
   private bool showTip() {
     return equipment != null && !equipment.isDefaultEquipment;
@@ -24,11 +24,11 @@ public class Item : MonoBehaviour {
 
   private void setTipbox(Equipment equipment) {
     if (equipment == null) return;
-    if (equipment.isDefaultEquipment) tooltip.gameObject.SetActive(false);
     // equipName.text = equipment.name();
     // if (equipment.image != null) {
     //   image.sprite = equipment.image;
     // }
+    gameObject.name = equipment.name();
   }
 
   public void updateColor(Color c) {

@@ -48,7 +48,7 @@ public class InventoryController : MonoBehaviour {
         return items[i];
       }
     }
-    Debug.AssertFormat(false, "Could not find equipment in inventory: {0}", eq);
+    Debug.AssertFormat(false, "Could not find equipment in inventory: {0}", eq.name());
     return null;
   }
 }

@@ -25,6 +25,7 @@ public class CharSelect : MonoBehaviour {
     for (int index = 0; index < numCharacters; ++index) {
       Character character = GameData.gameData.characters[index];
       CharPanel charPanel = Instantiate(panel, content).GetComponent<CharPanel>();
+      charPanel.gameObject.name = character.name;
       charPanel.character = character;
       int curIndex = index;
       //todo set image.
