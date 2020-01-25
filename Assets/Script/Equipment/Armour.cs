@@ -21,6 +21,8 @@ public class Armour : Equipment {
     this.equipmentClass = armourData.equipmentClass;
     this.tier = armourData.tier;
     this.type = EquipType.armour;
+
+    this.itemData = armourData;
   }
 
   public override string name() {

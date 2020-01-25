@@ -25,13 +25,13 @@ public class Item : MonoBehaviour {
   private void setTipbox(Equipment equipment) {
     if (equipment == null) return;
     // equipName.text = equipment.name();
-    // if (equipment.image != null) {
-    //   image.sprite = equipment.image;
-    // }
     gameObject.name = equipment.name();
+    if (equipment.image != null) {
+      image.sprite = equipment.image;
+    }
   }
 
   public void updateColor(Color c) {
-    gameObject.GetComponent<Image>().color = c;
+    image.color = c;
   }
 }

@@ -16,6 +16,7 @@ public class InventoryController : MonoBehaviour {
       Equipment equipment = equips[i];
       item.equipment = equipment;
       item.button.onClick.AddListener(() => equip(equipment));
+      item.tooltip.tiptext = equipment.tooltip;
       items.Add(item);
     }    
   }

@@ -55,6 +55,8 @@ public class Weapon : Equipment {
     this.equipmentClass = weaponData.equipmentClass;
     this.range = weaponData.range;
     this.tier = weaponData.tier;
+
+    this.itemData = weaponData;
   }
 
   public override string name() {
