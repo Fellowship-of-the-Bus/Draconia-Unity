@@ -2,6 +2,7 @@
 using UnityEngine.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 public static class WeaponModels {
   static GameObject Sword = Resources.Load("Sword") as GameObject;
@@ -61,6 +62,13 @@ public class Weapon : Equipment {
 
   public override string name() {
     return tier.ToString() + " " + equipmentClass;
+  }
+
+  // C# deserialization finished
+  [OnDeserialized]
+  private void onPostDeserialize(StreamingContext context) {
+    this.guid.onPostDeserialize(context); // ensure guid is deserialized first
+    this.itemData = EquipmentDB.get.findWeapon(guid);
   }
 }
 

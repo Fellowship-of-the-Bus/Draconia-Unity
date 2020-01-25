@@ -20,7 +20,7 @@ public abstract class Equipment : IEquatable<Equipment> {
 
   public GameObject model { get { return itemData.model; } }
 
-  public string tooltip { get { return itemData.tooltip; } }
+  public string tooltip { get { return name() + "\n" + itemData.tooltip; } }
 
   //could be null if not equipped.
   [Obsolete("Equipment.equippedTo is deprecated. Equipment is being deduplicated.")]

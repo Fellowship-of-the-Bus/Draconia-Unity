@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 [System.Serializable]
 public class Armour : Equipment {
@@ -18,6 +19,7 @@ public class Armour : Equipment {
   public override Equipment getDefault() { return defaultArmour; }
 
   public Armour(ArmourData armourData) {
+    this.guid = armourData.guid;
     this.equipmentClass = armourData.equipmentClass;
     this.tier = armourData.tier;
     this.type = EquipType.armour;
@@ -27,5 +29,12 @@ public class Armour : Equipment {
 
   public override string name() {
     return tier.ToString() + " " + equipmentClass;
+  }
+
+  // C# deserialization finished
+  [OnDeserialized]
+  private void onPostDeserialize(StreamingContext context) {
+    this.guid.onPostDeserialize(context); // ensure guid is deserialized first
+    this.itemData = EquipmentDB.get.findArmour(guid);
   }
 }

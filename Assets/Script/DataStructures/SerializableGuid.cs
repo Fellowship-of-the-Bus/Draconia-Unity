@@ -64,7 +64,7 @@ public class SerializableGuid: IComparable, IComparable<SerializableGuid>, IEqua
 
   // C# deserialization finished
   [OnDeserialized]
-  private void onPostDeserialize(StreamingContext context) {
+  public void onPostDeserialize(StreamingContext context) {
     this.guid = new Guid(value);
   }
 
