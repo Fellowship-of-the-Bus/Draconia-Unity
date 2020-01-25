@@ -18,6 +18,9 @@ public class CharSelect : MonoBehaviour {
   private int curSelection = 0;
   private CharPanel[] selections;
 
+  public delegate void OnCharacterChangeHandler(Character oldCharacter, Character newCharacter);
+  public event OnCharacterChangeHandler onCharacterChange;
+
   void Start() {
     //Assumes that gameData.characters is not empty. (reasonable)
     int numCharacters = GameData.gameData.characters.Count;
@@ -57,15 +60,18 @@ public class CharSelect : MonoBehaviour {
   }
 
   private void onButtonClick(int index) {
+    Character oldCharacter = selectedPanel.character;
     selectedPanel.background.color = Color.clear;
     curSelection = index;
+    Character newCharacter = selectedPanel.character;
     selectedPanel.background.color = Color.red;
     updateAttrView();
     //add new items and set up links
-    foreach (Equipment e in selectedPanel.character.gear) {
+    foreach (Equipment e in newCharacter.gear) {
       items[e.type].equipment = e;
     }
-    skillSelectController.setChar(selectedPanel.character);
+    skillSelectController.setChar(newCharacter);
+    onCharacterChange?.Invoke(oldCharacter, newCharacter);
   }
 
   private void prevSelection() {

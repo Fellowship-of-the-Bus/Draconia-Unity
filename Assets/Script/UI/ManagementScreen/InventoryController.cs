@@ -10,6 +10,9 @@ public class InventoryController : MonoBehaviour {
   public Transform content;
   public List<Item> items;
 
+  public readonly Color selectedColor = Color.green;
+  public readonly Color unselectedColor = Color.white;
+
   private void addItems<T>(List<T> equips) where T : Equipment {
     for (int i = 0; i < equips.Count; ++i) {
       Item item = Instantiate(itemPrefab, content).GetComponent<Item>();
@@ -28,17 +31,17 @@ public class InventoryController : MonoBehaviour {
     items.Capacity = weapons.Count + armour.Count;
     addItems(weapons);
     addItems(armour);
+    charSelect.onCharacterChange += characterChanged;
   }
 
   public void equip(Equipment equipment) {
     var item = charSelect.items[equipment.type];
     var currentlyEquipped = item.equipment;
-    if (currentlyEquipped != null && ! currentlyEquipped.isDefaultEquipment) {
-      getItem(currentlyEquipped).updateColor(Color.white);
-    }
+    Debug.Assert(currentlyEquipped != null);
+    getItem(currentlyEquipped).updateColor(unselectedColor);
     charSelect.selectedPanel.character.equip(equipment);
     item.equipment = equipment;
-    getItem(equipment).updateColor(Color.green);
+    getItem(equipment).updateColor(selectedColor);
     charSelect.updateAttrView();
   }
 
@@ -50,5 +53,14 @@ public class InventoryController : MonoBehaviour {
     }
     Debug.AssertFormat(false, "Could not find equipment in inventory: {0}", eq.name());
     return null;
+  }
+
+  private void characterChanged(Character oldCharacter, Character newCharacter) {
+    foreach (Equipment e in oldCharacter.gear) {
+      getItem(e).updateColor(unselectedColor);
+    }
+    foreach (Equipment e in newCharacter.gear) {
+      getItem(e).updateColor(selectedColor);
+    }
   }
 }
