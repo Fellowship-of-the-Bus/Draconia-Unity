@@ -8,15 +8,14 @@ public class InventoryController : MonoBehaviour {
   public CharSelect charSelect;
   public GameObject itemPrefab;
   public Transform content;
-
   public List<Item> items;
 
   private void addItems<T>(List<T> equips) where T : Equipment {
     for (int i = 0; i < equips.Count; ++i) {
-      int idx = i;
       Item item = Instantiate(itemPrefab, content).GetComponent<Item>();
-      item.equipment = equips[i];
-      item.button.onClick.AddListener(() => equip(equips[idx]));
+      Equipment equipment = equips[i];
+      item.equipment = equipment;
+      item.button.onClick.AddListener(() => equip(equipment));
       items.Add(item);
     }    
   }

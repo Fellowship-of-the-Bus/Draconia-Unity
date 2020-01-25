@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
   public GameObject mainUI;
 
   //skillbutton tooltip
-  public GameObject tooltip;
+  public Tipbox tooltip;
 
   //tile information
   public TileInfo tInfo;

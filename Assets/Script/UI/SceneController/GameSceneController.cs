@@ -7,15 +7,11 @@ using System.Collections.Generic;
 
 public class GameSceneController: MonoBehaviour {
 
-  /*To make a map: set player start locations by dragging some cubes into it
-   *
-   */
+  // To make a map: set player start locations by dragging some cubes into it
   public Transform parent;
 
   public List<Tile> pStartLocTiles;
   public PlayerControl pControl;
-  public GameObject battleCanvasTooltip;
-  public GameObject charSelectTooltip;
 
   // Canvases
   public GameObject positioningCanvas;
@@ -59,7 +55,6 @@ public class GameSceneController: MonoBehaviour {
     //enable player control
     //disable positioning control
     pControl.preGame = false;
-    GameManager.get.tooltip = battleCanvasTooltip;
     // setStartTileColour(Color.clear);
     //need to reenable battleChars
     GameManager.get.enabled = true;
@@ -77,7 +72,6 @@ public class GameSceneController: MonoBehaviour {
     positioningCanvas.SetActive(true);
     tileInfoCanvas.SetActive(false);
     pControl.preGame = true;
-    GameManager.get.tooltip = charSelectTooltip;
 
     //set colour for start locations for tile variable
     List<Tile> tileStartLocs = GameManager.get.map.getStartTiles();
