@@ -13,7 +13,18 @@ public abstract class Equipment : IEquatable<Equipment> {
   public Tier tier;
 
   [NonSerialized]
-  public ItemData itemData;
+  private ItemData data;
+  public ItemData itemData {
+    get { return data; }
+    set { 
+      if (value != null) {
+        data = value;
+        refresh();
+      } else {
+        Debug.LogErrorFormat("Setting ItemData to null is not allowed: {0}", name());
+      }
+    }
+  }
   public EquipType type;
 
   public Sprite image { get { return itemData.image; } }
@@ -22,6 +33,12 @@ public abstract class Equipment : IEquatable<Equipment> {
 
   public string tooltip { get { return name() + "\n" + itemData.tooltip; } }
 
+  protected virtual void refresh() {
+    guid = itemData.guid;
+    // attr = itemData.attr;
+    tier = itemData.tier;
+  }
+  
   //could be null if not equipped.
   [Obsolete("Equipment.equippedTo is deprecated. Equipment is being deduplicated.")]
   public Character equippedTo {

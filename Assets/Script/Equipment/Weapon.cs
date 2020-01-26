@@ -48,16 +48,22 @@ public class Weapon : Equipment {
     return WeaponModels.weaponModels[equipmentClass];
   }
 
+  public WeaponData weaponData { 
+    get { return (WeaponData)itemData; }
+    set { weaponData = value; }
+  }
+
   public override Equipment getDefault() { return defaultWeapon; }
 
   public Weapon(WeaponData weaponData) {
-    this.guid = weaponData.guid;
+    this.itemData = weaponData;
+  }
+
+  protected override void refresh() {
+    base.refresh();
     this.type = EquipType.weapon;
     this.equipmentClass = weaponData.equipmentClass;
     this.range = weaponData.range;
-    this.tier = weaponData.tier;
-
-    this.itemData = weaponData;
   }
 
   public override string name() {

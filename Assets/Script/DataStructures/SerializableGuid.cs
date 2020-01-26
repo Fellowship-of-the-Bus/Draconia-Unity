@@ -60,6 +60,10 @@ public class SerializableGuid: IComparable, IComparable<SerializableGuid>, IEqua
     return guid.ToString();
   }
 
+  public bool isValid() {
+    return guid != Guid.Empty;
+  }
+
   // TODO: do we need both unity and C# derialization callbacks?
 
   // C# deserialization finished
