@@ -18,8 +18,14 @@ public class CharSelect : MonoBehaviour {
   private int curSelection = 0;
   private CharPanel[] selections;
 
+  private ScrollInputTimer scrollTimer;
+
   public delegate void OnCharacterChangeHandler(Character oldCharacter, Character newCharacter);
   public event OnCharacterChangeHandler onCharacterChange;
+
+  void Awake() {
+    scrollTimer = new ScrollInputTimer(this);
+  }
 
   void Start() {
     //Assumes that gameData.characters is not empty. (reasonable)
@@ -42,21 +48,28 @@ public class CharSelect : MonoBehaviour {
   }
 
   // enable scrolling through characters with the vertical axis
-  private const float fireDelta = 0.25F;
-  private float curTime = 0.0F;
-  void Update() {
-    curTime += Time.deltaTime;
-    if (curTime > fireDelta) {
+  private class ScrollInputTimer : Timer {
+    private CharSelect charSelect;
 
+    public ScrollInputTimer(CharSelect charSelect) : base(0.25f) {
+      this.charSelect = charSelect;
+    }
+
+    protected override bool Fire() {
       float vert = Input.GetAxis("Vertical");
       if (vert > 0) {
-        curTime = 0.0F;
-        prevSelection();
+        charSelect.prevSelection();
+        return true;
       } else if (vert < 0) {
-        curTime = 0.0F;
-        nextSelection();
+        charSelect.nextSelection();
+        return true;
       }
+      return false;
     }
+  }
+
+  void Update() {
+    scrollTimer.Update();
   }
 
   private void onButtonClick(int index) {
