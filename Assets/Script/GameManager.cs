@@ -276,9 +276,12 @@ public class GameManager : MonoBehaviour {
     line.enabled = gameState == GameState.attacking;
     ActiveSkill s;
     int netChange = 0;
+    // TODO: GameManager.Update: why do we copy effects?
     List<Effect> effects = new List<Effect>(SelectedCharacter.getEffects());
     effects.AddRange(new List<Effect>(SelectedCharacter.curTile.getEffects()));
 
+    // TODO: GameManager.Update: useless loop?
+    // BODY: Looks like this loop does nothing - net change is unused
     foreach(Effect e in effects) {
       if (e is HealthChangingEffect) {
         netChange += (e as HealthChangingEffect).healthChange();
@@ -323,6 +326,7 @@ public class GameManager : MonoBehaviour {
         tiles = (s as AoeSkill).getTargetsInAoe(currTile.position);
       }
 
+      // TODO: Preview change: is currTile ignored for non-aoe skills?
       foreach(Tile t in tiles) {
         BattleCharacter c = t.occupant;
         if (c == null) continue;
@@ -331,6 +335,9 @@ public class GameManager : MonoBehaviour {
         } else {
           c.PreviewChange = -1 * s.calculateDamage(c);
         }
+        // TODO: Possibly refactor preview change
+        // BODY: Slightly weird pattern where data is
+        // BODY: stored in the character and passed as a parameter.
         c.updateLifeBars(c.PreviewChange);
         aoePreviewTargets.Add(c);
       }
