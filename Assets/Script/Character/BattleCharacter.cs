@@ -95,6 +95,10 @@ public class BattleCharacter : Effected {
   public bool isEnemyOf(BattleCharacter other) {
     return isEnemyOf(other.team);
   }
+
+  // TODO: Change Team comparison to use array of bitmasks
+  // BODY: This will simplify isEnemyOf, making it easier to add new
+  // BODY: teams and easier to reason about.
   public bool isEnemyOf(Team other) {
     if (team == Team.Enemy) {
       return other == Team.Player || other == Team.Ally || other == Team.None;
@@ -129,6 +133,8 @@ public class BattleCharacter : Effected {
   }
 
   public override void removeEffect(Effect effect) {
+    // TODO: Why does BattleCharacter need its own list of effects?
+    // BODY: Effected has its own list of effects, do we really need both?
     base.removeEffect(effect);
     allEffects.Remove(effect);
   }
