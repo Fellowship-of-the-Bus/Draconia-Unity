@@ -14,9 +14,10 @@ static class MapModifier {
   static Dictionary<CharacterType, UnityEngine.Object> replacements = new Dictionary<CharacterType, UnityEngine.Object>();
 
   static MapModifier() {
-    replacements.Add(CharacterType.Human, Resources.Load("Characters/Human"));
-    replacements.Add(CharacterType.Lizard, Resources.Load("Characters/Lizard"));
-    replacements.Add(CharacterType.Snake, Resources.Load("Characters/Snake"));
+    // Warning: This loads 3 BattleCharacters every time we enter play mode
+    // replacements.Add(CharacterType.Human, Resources.Load("Characters/Human"));
+    // replacements.Add(CharacterType.Lizard, Resources.Load("Characters/Lizard"));
+    // replacements.Add(CharacterType.Snake, Resources.Load("Characters/Snake"));
   }
 
   private static void modifyAllMaps(Action<string> fun) {
@@ -65,6 +66,12 @@ static class MapModifier {
   private static void currentMapSetStats() {
     setStats(EditorSceneManager.GetActiveScene().path);
   }
+
+  [MenuItem("Modify Map/Fix Weapon + Armor Equipment Classes (All Maps)")]
+  private static void allMapFixEquipClass() {
+    modifyAllMaps(fixEquipment);
+  }
+
   // This is commented because it will overwrite stats for all the maps
   // [MenuItem("Modify Map/Set Character Stats/Current Map")]
   // private static void allMapSetStats() {
@@ -102,6 +109,55 @@ static class MapModifier {
     }
     GameObject board = GameObject.Find("Board");
     board.transform.SetParent(null);
+    EditorSceneManager.SaveScene(currentScene);
+  }
+
+  // separated weapon/armor equipment classes into different enums.
+  // serialized values were not automatically updated, this fixes those values
+  private static void fixEquipment(string name) {
+    Scene currentScene = EditorSceneManager.OpenScene(name);
+    EquipmentDB db = (EquipmentDB)AssetDatabase.LoadAssetAtPath("Assets/Prefab/Resources/Map/EquipmentDB.prefab", typeof(EquipmentDB));
+    GameObject[] pieces = GameObject.FindGameObjectsWithTag("Unit");
+    foreach (GameObject piece in pieces) {
+      BattleCharacter bcharacter = piece.GetComponent<BattleCharacter>();
+      SerializedObject sObject = new SerializedObject(bcharacter);
+      Undo.RecordObject(bcharacter, "Set weapon/armor guid");
+
+      Weapon weaponObj = bcharacter.baseChar.gear.weapon;
+      Armour armourObj = bcharacter.baseChar.gear.armour;
+
+      WeaponData wdata;
+      if (weaponObj != null) {
+        weaponObj.type = EquipType.weapon;
+        wdata = (WeaponData)db.slowFind(weaponObj);
+      } else {
+        Debug.Assert(false);
+        wdata = db.weapons[0];
+      }
+      Debug.AssertFormat(wdata != null, "No weapon data for {0} in scene {1}", weaponObj, name);
+      SerializedProperty weaponGuidProp = sObject.FindProperty("baseChar.gear.weapon.guid");
+      // weaponDataProp.objectReferenceValue = (WeaponData)wdata;
+      weaponObj.guid = wdata.guid;
+
+      ArmourData adata;
+      if (armourObj != null) {
+        armourObj.type = EquipType.armour;
+        adata = (ArmourData)db.slowFind(armourObj);
+      } else {
+        Debug.Assert(false);
+        adata = db.armour[0];
+      }
+      Debug.AssertFormat(adata != null, "No armour data for {0} in scene {1}", armourObj, name);
+      SerializedProperty armourDataProp = sObject.FindProperty("baseChar.gear.armourData");
+      // armourDataProp.objectReferenceValue = adata;
+      armourObj.guid = adata.guid;
+
+      // Notice that if the call to RecordPrefabInstancePropertyModifications is not present,
+      // all changes to scale will be lost when saving the Scene, and reopening the Scene
+      // would revert the scale back to its previous value.
+      PrefabUtility.RecordPrefabInstancePropertyModifications(bcharacter);
+      sObject.ApplyModifiedProperties();
+    }
     EditorSceneManager.SaveScene(currentScene);
   }
 
@@ -194,5 +250,22 @@ static class MapModifier {
       sObject.ApplyModifiedProperties();
     }
     EditorSceneManager.SaveScene(currentScene);
+  }
+
+  // modified from: https://forum.unity.com/threads/formerlyserializedas-not-working-in-2018-3.607036/
+  [MenuItem("Assets/Reserialize Scene", false, 80)]
+  public static void ForceReserializeSceneObjects() {
+    Transform[] transforms = Resources.FindObjectsOfTypeAll<Transform>();
+    for (int i = 0; i < transforms.Length; i++) {
+      Transform transform = transforms[i];
+      MonoBehaviour[] components = transform.GetComponents<MonoBehaviour>();
+      for (int j = 0; j < components.Length; j++) {
+        EditorUtility.SetDirty(components[j]);
+      }
+      EditorUtility.SetDirty(transform.gameObject);
+    }
+    Scene scene = SceneManager.GetActiveScene();
+    EditorSceneManager.MarkSceneDirty(scene);
+    AssetDatabase.SaveAssets();
   }
 }

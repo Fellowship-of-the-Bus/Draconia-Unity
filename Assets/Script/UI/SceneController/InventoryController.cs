@@ -12,7 +12,6 @@ namespace OldManagementScreen {
     public AttrView attrView;
     public Text equipName;
     public Text equippedTo;
-    public GameObject tooltip;
 
     void Awake() {
       get = this;

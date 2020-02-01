@@ -75,8 +75,6 @@ public class Character {
     traits = new List<Trait>();
     attr.maxHealth = CharacterGenerator.HEALTH_BASE;
     attr.moveRange = CharacterGenerator.MRANGE_BASE;
-    equip(Weapon.defaultWeapon);
-    equip(Armour.defaultArmour);
   }
 
   [Obsolete("unEquip is deprecated, because we no longer support characters without a weapon/armor.")]

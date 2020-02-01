@@ -15,7 +15,6 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
     attrView = OldManagementScreen.InventoryController.get.attrView;
     equipName = OldManagementScreen.InventoryController.get.equipName;
     equippedTo = OldManagementScreen.InventoryController.get.equippedTo;
-    tipbox = OldManagementScreen.InventoryController.get.tooltip;
     base.init();
   }
 
@@ -56,7 +55,7 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
       Equipment def = equip.getDefault();
       c.equip(def);
       if (!equip.isDefaultEquipment){
-        InvItemSelect.get.getTooltipWithEquipment(equip).updateColour();
+        // InvItemSelect.get.getTooltipWithEquipment(equip).updateColour();
       }
       equip = def;
     } else {
@@ -68,7 +67,7 @@ public class ItemTooltip : ItemTooltipSimple, IPointerClickHandler {
       if (charEquip != null) {
         charEquip.equippedTo.unEquip(charEquip);
         if (! charEquip.isDefaultEquipment) {
-          InvItemSelect.get.getTooltipWithEquipment(charEquip).updateColour();
+          // InvItemSelect.get.getTooltipWithEquipment(charEquip).updateColour();
         }
       }
       inv.selectedPanel.c.equip(equip);

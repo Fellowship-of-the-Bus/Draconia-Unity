@@ -13,12 +13,10 @@ public class Item : MonoBehaviour {
       setTipbox(_equipment);
     }
   }
-  public CharSelect charSelect;
-  public AttrView attrView;
-  public Text equipName;
-  public Text equippedTo;
+
+  public Button button;
+  public Image image;
   public Tooltip tooltip;
-  public GameObject tipbox;
 
   private bool showTip() {
     return equipment != null && !equipment.isDefaultEquipment;
@@ -26,30 +24,14 @@ public class Item : MonoBehaviour {
 
   private void setTipbox(Equipment equipment) {
     if (equipment == null) return;
-    if (equipment.isDefaultEquipment) tooltip.gameObject.SetActive(false);
-    attrView.updateAttr(equipment.attr);
-    equipName.text = equipment.name();
-    if (equipment.equippedTo != null) {
-      equippedTo.text = "Equipped To: " + equipment.equippedTo.name;
-    } else {
-      equippedTo.text = "Equipped To: No one.";
+    // equipName.text = equipment.name();
+    gameObject.name = equipment.name();
+    if (equipment.image != null) {
+      image.sprite = equipment.image;
     }
   }
 
-  public void setTooltip(InventoryController controller) {
-    attrView = controller.attrView;
-    equipName = controller.equipName;
-    equippedTo = controller.equippedTo;
-    tipbox = controller.tooltip.tipbox;
-  }
-
-  public void updateColor() {
-    Color c;
-    if (equipment.isEquipped()) {
-      c = Color.green;
-    } else {
-      c = Color.white;
-    }
-    gameObject.GetComponent<Image>().color = c;
+  public void updateColor(Color c) {
+    image.color = c;
   }
 }

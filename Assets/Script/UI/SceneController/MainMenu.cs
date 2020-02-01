@@ -14,9 +14,9 @@ public class MainMenu: MonoBehaviour {
     loadBrowser.createOptions(SaveLoad.listSaveFiles());
   }
 
-  public void newGame() {
+  public void newGame(NewGameSettings settings) {
     GameData.gameData = new GameData();
-    GameData.gameData.newGame();
+    GameData.gameData.newGame(settings);
 
     LoadingScreen.load("OverWorld");
   }

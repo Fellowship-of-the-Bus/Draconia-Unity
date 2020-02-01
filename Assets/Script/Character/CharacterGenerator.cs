@@ -20,13 +20,8 @@ public class CharacterGenerator : MonoBehaviour {
   public static CharacterGenerator get;
 
   void Awake() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
+    if (!Singleton.makeSingleton(ref get, this)) return;
     names = namesFile.text.Split(new string[]{ "\n" }, System.StringSplitOptions.RemoveEmptyEntries);
-    DontDestroyOnLoad(gameObject);
   }
 
   private static Attributes generateBaseAttributes() {
@@ -54,25 +49,25 @@ public class CharacterGenerator : MonoBehaviour {
     return get.names[index];
   }
 
-  public static Character generateCharacter(int level) {
+  private static Character generateBaseCharacter(int level) {
     Character character = new Character();
-
-    character.name = generateName();
-
     character.attr = generateBaseAttributes();
-
     character.setLevel(level);
+    character.equip(Weapon.defaultWeapon);
+    character.equip(Armour.defaultArmour);
+    return character;
+  }
 
+  public static Character generateCharacter(int level) {
+    Character character = generateBaseCharacter(level);
+    character.name = generateName();
     character.traits = generateTraits();
-
     return character;
   }
 
   public static Character generateBrodric() {
-    Character character = new Character();
+    Character character = generateBaseCharacter(1);
     character.name = "Brodric";
-    character.attr = generateBaseAttributes();
-    character.setLevel(1);
     //give additional stats unique to brodric
     character.attr.strength += 5;
     character.attr.physicalDefense += 3;
@@ -83,9 +78,8 @@ public class CharacterGenerator : MonoBehaviour {
   }
 
   public static Character generateSisdric() {
-    Character character = new Character();
+    Character character = generateBaseCharacter(1);
     character.name = "Sisdric";
-    character.attr = generateBaseAttributes();
     character.setLevel(1);
     //give additional stats unique to brodric
     character.attr.intelligence += 5;

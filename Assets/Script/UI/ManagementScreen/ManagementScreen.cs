@@ -15,10 +15,12 @@ public class ManagementScreen : MonoBehaviour {
   private void show(CanvasGroup group) {
     group.alpha = 1;
     group.interactable = true;
+    group.blocksRaycasts = true;
   }
 
   private void hide(CanvasGroup group) {
     group.alpha = 0;
     group.interactable = false;
+    group.blocksRaycasts = false;
   }
 }

@@ -1,40 +1,44 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 
-public enum EquipmentClass {
-  Sword, Bow, Axe, Staff, Spear, // Weapon
-  Shield, Metal, Robe, Leather, // Armor
-  Unarmed // Unarmed works for either, so keep it last
-} // MUST keep getWeaponKind consistent with this enum
-
-public static class EquipmentClassMethods {
-  public static Weapon.Kind getWeaponKind(this EquipmentClass e) {
-    switch (e) {
-      case EquipmentClass.Sword:
-      case EquipmentClass.Axe:
-      case EquipmentClass.Spear:
-      case EquipmentClass.Staff:
-      case EquipmentClass.Unarmed:
-        return Weapon.Kind.Melee;
-      case EquipmentClass.Bow:
-        return Weapon.Kind.Ranged;
-      default:
-        Debug.AssertFormat(false, "getWeaponKind called with non-weapon EquipmentClass: {0}", e);
-        return Weapon.Kind.Melee;
-    }
-  }
-}
-
 [Serializable]
-public abstract class Equipment {
+public abstract class Equipment : IEquatable<Equipment> {
   public enum Tier {
     Crude, Simple, Sturdy, Quality, Flawless, Enchanted
   }
 
   public SerializableGuid guid;
   public Attributes attr = new Attributes();
-  public int tier;
+  public Tier tier;
 
+  [NonSerialized]
+  private ItemData data;
+  public ItemData itemData {
+    get { return data; }
+    set { 
+      if (value != null) {
+        data = value;
+        refresh();
+      } else {
+        Debug.LogErrorFormat("Setting ItemData to null is not allowed: {0}", name());
+      }
+    }
+  }
+  public EquipType type;
+
+  public Sprite image { get { return itemData.image; } }
+
+  public GameObject model { get { return itemData.model; } }
+
+  public string tooltip { get { return name() + "\n" + itemData.tooltip; } }
+
+  protected virtual void refresh() {
+    guid = itemData.guid;
+    // attr = itemData.attr;
+    tier = itemData.tier;
+  }
+  
   //could be null if not equipped.
   [Obsolete("Equipment.equippedTo is deprecated. Equipment is being deduplicated.")]
   public Character equippedTo {
@@ -43,31 +47,43 @@ public abstract class Equipment {
     }
   }
 
-  public EquipmentClass equipmentClass;
-
-  public bool isDefaultEquipment { get { return equipmentClass == EquipmentClass.Unarmed; } }
+  public bool isDefaultEquipment { get { return Equals(getDefault()); } }
 
   // return the default of the same type as e
   public abstract Equipment getDefault();
 
-  public abstract Equipment upgrade(Equipment e1, Equipment e2);
-
-  public string name() {
-    return tier.ToString() + " " + equipmentClass;
-  }
-
+  public abstract string name();
+  
   [Obsolete("Equipment.isEquipped is deprecated. Equipment is being deduplicated.")]
   public bool isEquipped() {
      return equippedTo != null;
-  }
-
-  public bool canUpgrade() {
-    return (int)tier < (int)Tier.Enchanted;
   }
 
   public Equipment clone() {
     return MemberwiseClone() as Equipment;
   }
 
-  public EquipType type;
+  public override bool Equals(object obj) {
+    return Equals(obj as Equipment);
+  }
+
+  public bool Equals(Equipment other) {
+    if (object.ReferenceEquals(other, null)) return false;
+    return guid == other.guid;
+  }
+
+  public override int GetHashCode() {
+    return guid.GetHashCode();
+  }
+
+  public static bool operator==(Equipment a, Equipment b) {
+    if (object.ReferenceEquals(a, null)) {
+      return object.ReferenceEquals(b, null);
+    } 
+    return a.Equals(b);
+  }
+
+  public static bool operator!=(Equipment a, Equipment b) {
+      return !(a == b);
+  }
 }

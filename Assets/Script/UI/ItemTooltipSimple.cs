@@ -19,7 +19,6 @@ public class ItemTooltipSimple : Tooltip {
   protected bool onlyOnce = true;
   virtual public void init() {
     if (!onlyOnce) return;
-    rectTrans = tipbox.GetComponent<RectTransform>();
     onlyOnce = false;
   }
 
@@ -37,7 +36,7 @@ public class ItemTooltipSimple : Tooltip {
 
   protected override void setTipbox() {
     if (equip == null) return;
-    if (equip.isDefaultEquipment) tipbox.SetActive(false);
+    if (equip.isDefaultEquipment) Tipbox.get.gameObject.SetActive(false);
     attrView.updateAttr(equip.attr);
     equipName.text = equip.name();
     if (equip.equippedTo != null) {

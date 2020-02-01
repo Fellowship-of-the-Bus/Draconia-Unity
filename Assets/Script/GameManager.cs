@@ -69,9 +69,6 @@ public class GameManager : MonoBehaviour {
   public GameObject targetPanel;
   public GameObject mainUI;
 
-  //skillbutton tooltip
-  public GameObject tooltip;
-
   //tile information
   public TileInfo tInfo;
 

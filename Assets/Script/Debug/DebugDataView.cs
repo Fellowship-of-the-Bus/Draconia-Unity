@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 
 // Make statics visible in the editor
+// ExecuteAlways so that Update is called outside of playmode
+[ExecuteAlways]
 public class DebugDataView : MonoBehaviour {
   public GameData gameData;
   public Options.OptionData options;
@@ -16,12 +18,7 @@ public class DebugDataView : MonoBehaviour {
   public SaveLoadData saveloadData;
 
   void Awake() {
-    if (get != null) {
-      Destroy(gameObject);
-      return;
-    }
-    get = this;
-    DontDestroyOnLoad(gameObject);
+    if (!Singleton.makeSingleton(ref get, this)) return;
   }
 
   void Update() {

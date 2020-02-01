@@ -18,6 +18,15 @@ public class CharSelect : MonoBehaviour {
   private int curSelection = 0;
   private CharPanel[] selections;
 
+  private ScrollInputTimer scrollTimer;
+
+  public delegate void OnCharacterChangeHandler(Character oldCharacter, Character newCharacter);
+  public event OnCharacterChangeHandler onCharacterChange;
+
+  void Awake() {
+    scrollTimer = new ScrollInputTimer(this);
+  }
+
   void Start() {
     //Assumes that gameData.characters is not empty. (reasonable)
     int numCharacters = GameData.gameData.characters.Count;
@@ -25,6 +34,7 @@ public class CharSelect : MonoBehaviour {
     for (int index = 0; index < numCharacters; ++index) {
       Character character = GameData.gameData.characters[index];
       CharPanel charPanel = Instantiate(panel, content).GetComponent<CharPanel>();
+      charPanel.gameObject.name = character.name;
       charPanel.character = character;
       int curIndex = index;
       //todo set image.
@@ -38,34 +48,43 @@ public class CharSelect : MonoBehaviour {
   }
 
   // enable scrolling through characters with the vertical axis
-  private const float fireDelta = 0.25F;
-  private float curTime = 0.0F;
-  void Update() {
-    curTime += Time.deltaTime;
-    if (curTime > fireDelta) {
+  private class ScrollInputTimer : Timer {
+    private CharSelect charSelect;
 
+    public ScrollInputTimer(CharSelect charSelect) : base(0.25f) {
+      this.charSelect = charSelect;
+    }
+
+    protected override bool Fire() {
       float vert = Input.GetAxis("Vertical");
       if (vert > 0) {
-        curTime = 0.0F;
-        prevSelection();
+        charSelect.prevSelection();
+        return true;
       } else if (vert < 0) {
-        curTime = 0.0F;
-        nextSelection();
+        charSelect.nextSelection();
+        return true;
       }
+      return false;
     }
   }
 
+  void Update() {
+    scrollTimer.Update();
+  }
+
   private void onButtonClick(int index) {
+    Character oldCharacter = selectedPanel.character;
     selectedPanel.background.color = Color.clear;
     curSelection = index;
+    Character newCharacter = selectedPanel.character;
     selectedPanel.background.color = Color.red;
     updateAttrView();
     //add new items and set up links
-    foreach (Equipment e in selectedPanel.character.gear) {
-      // There are no "Item"s on the charater select prefab. Fix this.
-      // items[e.type].equipment = e;
+    foreach (Equipment e in newCharacter.gear) {
+      items[e.type].equipment = e;
     }
-    skillSelectController.setChar(selectedPanel.character);
+    skillSelectController.setChar(newCharacter);
+    onCharacterChange?.Invoke(oldCharacter, newCharacter);
   }
 
   private void prevSelection() {

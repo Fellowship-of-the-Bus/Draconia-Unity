@@ -23,7 +23,12 @@ public class PostMapController: MonoBehaviour {
       winCanvas.SetActive(true);
       displayLoot();
       foreach (Equipment e in data.loot) {
-        GameData.gameData.inv.addEquipment(e);
+        Weapon w = e as Weapon;
+        if (w != null) {
+          GameData.gameData.inv.addEquipment(w);
+        } else {
+          GameData.gameData.inv.addEquipment(e as Armour);
+        }
       }
 
       GameData.gameData.mapProgression[data.mapName] = "";

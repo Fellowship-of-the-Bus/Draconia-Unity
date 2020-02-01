@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 // fake enum: we are doing this instead of just casting to allow implicit casts...
 [System.Serializable]
@@ -15,6 +16,17 @@ public class EquipType {
     return x.type;
   }
 
+  public override string ToString() {
+    if (this == weapon) {
+      return "Weapon";
+    } else if (this == armour) {
+      return "Armour";
+    } else {
+      Debug.LogErrorFormat("ToString: Invalid equipment: {0}", type);
+      return "InvalidEquipment";
+    }
+  }
+
   //assume we are comparing non-null types.
   public static bool operator==(EquipType a, EquipType b) {
     return a.type == b.type;
@@ -23,7 +35,7 @@ public class EquipType {
     return a.type != b.type;
   }
 
-  public override bool Equals(Object other) {
+  public override bool Equals(object other) {
     return other is EquipType && ((EquipType)other).type == type;
   }
 

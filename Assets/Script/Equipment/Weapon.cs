@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 public static class WeaponModels {
   static GameObject Sword = Resources.Load("Sword") as GameObject;
@@ -10,13 +12,13 @@ public static class WeaponModels {
   static GameObject Bow = Resources.Load("BowPrefab") as GameObject;
   static GameObject Staff = Resources.Load("Staff") as GameObject;
 
-  public static Dictionary<EquipmentClass,GameObject> weaponModels = new Dictionary<EquipmentClass,GameObject>() {
-    {EquipmentClass.Unarmed, null},
-    {EquipmentClass.Sword, Sword},
-    {EquipmentClass.Axe, Axe},
-    {EquipmentClass.Bow, Bow},
-    {EquipmentClass.Staff, Staff},
-    {EquipmentClass.Spear, Spear},
+  public static Dictionary<Weapon.EquipmentClass,GameObject> weaponModels = new Dictionary<Weapon.EquipmentClass,GameObject>() {
+    {Weapon.EquipmentClass.Unarmed, null},
+    {Weapon.EquipmentClass.Sword, Sword},
+    {Weapon.EquipmentClass.Axe, Axe},
+    {Weapon.EquipmentClass.Bow, Bow},
+    {Weapon.EquipmentClass.Staff, Staff},
+    {Weapon.EquipmentClass.Spear, Spear},
   };
 }
 
@@ -29,6 +31,9 @@ public class Weapon : Equipment {
 
   public int range = 1;
 
+  [FormerlySerializedAs("newEquipmentClass")]
+  public EquipmentClass equipmentClass;
+
   public Kind kind {
     get {
       return equipmentClass.getWeaponKind();
@@ -36,23 +41,57 @@ public class Weapon : Equipment {
   }
 
   public static Weapon defaultWeapon {
-    get { return new Weapon(global::EquipmentClass.Unarmed, 1, 1); }
+    get { return new Weapon(EquipmentDB.get.weapons[0]); }
   }
 
   public GameObject getModel() {
     return WeaponModels.weaponModels[equipmentClass];
   }
 
-  public override Equipment getDefault() { return defaultWeapon; }
-
-  public override Equipment upgrade(Equipment e1, Equipment e2) {
-    return new Weapon(equipmentClass, range, tier);
+  public WeaponData weaponData { 
+    get { return (WeaponData)itemData; }
+    set { weaponData = value; }
   }
 
-  public Weapon(global::EquipmentClass equipmentClass, int range, int tier) {
+  public override Equipment getDefault() { return defaultWeapon; }
+
+  public Weapon(WeaponData weaponData) {
+    this.itemData = weaponData;
+  }
+
+  protected override void refresh() {
+    base.refresh();
     this.type = EquipType.weapon;
-    this.equipmentClass = equipmentClass;
-    this.range = range;
-    this.tier = tier;
+    this.equipmentClass = weaponData.equipmentClass;
+    this.range = weaponData.range;
+  }
+
+  public override string name() {
+    return tier.ToString() + " " + equipmentClass;
+  }
+
+  // C# deserialization finished
+  [OnDeserialized]
+  private void onPostDeserialize(StreamingContext context) {
+    this.guid.onPostDeserialize(context); // ensure guid is deserialized first
+    this.itemData = EquipmentDB.get.findWeapon(guid);
+  }
+}
+
+public static class EquipmentClassMethods {
+  public static Weapon.Kind getWeaponKind(this Weapon.EquipmentClass e) {
+    switch (e) {
+      case Weapon.EquipmentClass.Sword:
+      case Weapon.EquipmentClass.Axe:
+      case Weapon.EquipmentClass.Spear:
+      case Weapon.EquipmentClass.Staff:
+      case Weapon.EquipmentClass.Unarmed:
+        return Weapon.Kind.Melee;
+      case Weapon.EquipmentClass.Bow:
+        return Weapon.Kind.Ranged;
+      default:
+        Debug.AssertFormat(false, "getWeaponKind called with non-weapon EquipmentClass: {0}", e);
+        return Weapon.Kind.Melee;
+    }
   }
 }
