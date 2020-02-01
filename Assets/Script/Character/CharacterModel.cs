@@ -22,6 +22,7 @@ public class CharacterModel : MonoBehaviour {
   public GameObject projectile;
 
   public void attachBowstring() {
+    // TODO: Update equipment to tell model about special parts
     if (bowstring == null) bowstring = weapon.transform.findRecursive("String");
     if (grip == null) grip = weapon.transform.findRecursive("Grip");
     bowstring.SetParent(leftHand, false);
