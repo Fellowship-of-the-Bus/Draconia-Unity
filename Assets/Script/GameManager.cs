@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour {
   public PlayerControl pControl;
   public Material[] tileMaterials;
 
-  //TODO: Finish handling of portal skll
   public class UndoAction {
     Action act;
     bool pushedBySkill;
