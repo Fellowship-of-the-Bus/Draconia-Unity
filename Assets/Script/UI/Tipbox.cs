@@ -29,4 +29,8 @@ public class Tipbox : MonoBehaviour {
   private Vector3 tipPosition(Vector3 mouseRelative, float width, float height) {
     return new Vector3(mouseRelative.x - width / 2, mouseRelative.y + height / 2, 0);
   }
+
+  public void hide() {
+    gameObject.SetActive(false);
+  }
 }
