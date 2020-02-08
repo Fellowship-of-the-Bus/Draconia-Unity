@@ -20,8 +20,8 @@ class MinimapCamera : MonoBehaviour {
         }
       }
     }
-    // Center the minimap camera based on the map dimensions. Subtract 1 because the center
-    // of a tile is its origin.
+    // Center the minimap camera based on the map dimensions. Subtract 1 because the origin
+    // of a tile is its center.
     float x = (dimX-1) / 2f;
     float z = (dimZ-1) / 2f;
     const float y = 50f;  // arbitrary - as long as it's high enough the actual value doesn't matter
