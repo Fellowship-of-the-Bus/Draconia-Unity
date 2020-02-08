@@ -13,7 +13,6 @@ public class CharSelect : MonoBehaviour {
   public CharPanel selectedPanel {
     get { return selections[curSelection]; }
   }
-  public SkillSelectController skillSelectController;
 
   private int curSelection = 0;
   private CharPanel[] selections;
@@ -83,7 +82,6 @@ public class CharSelect : MonoBehaviour {
     foreach (Equipment e in newCharacter.gear) {
       items[e.type].equipment = e;
     }
-    skillSelectController.setChar(newCharacter);
     onCharacterChange?.Invoke(oldCharacter, newCharacter);
   }
 

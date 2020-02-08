@@ -61,6 +61,8 @@ public class SkillSelectController: MonoBehaviour {
     }
 
     treeViews[0].SetActive(true);
+
+    charSelect.onCharacterChange += characterChanged;
   }
 
   public void setTree(GameObject newTreeView) {
@@ -115,6 +117,10 @@ public class SkillSelectController: MonoBehaviour {
       curChar.setLevelUp();
       charSelect.updateAttrView();
     }
+  }
+
+  private void characterChanged(Character oldCharacter, Character newCharacter) {
+    setChar(newCharacter);
   }
 
   public static SkillSelectController get { get; set; }
