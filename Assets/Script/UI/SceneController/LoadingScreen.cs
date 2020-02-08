@@ -22,6 +22,7 @@ public class LoadingScreen : MonoBehaviour {
   void Start() {
     active = true;
     EscapeMenu.get.hide();
+    Tipbox.get.hide();
 
     async = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
     // Run the garbage collector now to clean up the previous scene, to make GC less likely during the next scene
