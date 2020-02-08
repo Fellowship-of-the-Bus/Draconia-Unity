@@ -77,16 +77,10 @@ public class Character {
     attr.moveRange = CharacterGenerator.MRANGE_BASE;
   }
 
-  [Obsolete("unEquip is deprecated, because we no longer support characters without a weapon/armor.")]
-  public void unEquip(Equipment e) {
-    if (e == null) return;
-    gear[e.type] = null;
-  }
-
   public void equip(Equipment e) {
-    unEquip(gear[e.type]);
     gear[e.type] = e;
   }
+  
   public Attributes gearAttr() {
     Attributes attr = new Attributes();
     foreach (Equipment e in gear) {

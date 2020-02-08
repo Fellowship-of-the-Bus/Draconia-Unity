@@ -1,8 +1,8 @@
 using UnityEngine;
 
 [ExecuteAlways]
-class MinimapCamera : MonoBehaviour {
-  public Camera camera;
+public class MinimapCamera : MonoBehaviour {
+  public new Camera camera;
   [Tooltip("Multiplier for minimap zoom level. Smaller numbers zoom farther")]
   public float scaleFactor;
 

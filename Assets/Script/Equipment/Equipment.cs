@@ -39,14 +39,6 @@ public abstract class Equipment : IEquatable<Equipment> {
     tier = itemData.tier;
   }
   
-  //could be null if not equipped.
-  [Obsolete("Equipment.equippedTo is deprecated. Equipment is being deduplicated.")]
-  public Character equippedTo {
-    get {
-      return GameData.gameData.getCharacterWithItem(this);
-    }
-  }
-
   public bool isDefaultEquipment { get { return Equals(getDefault()); } }
 
   // return the default of the same type as e
@@ -54,11 +46,6 @@ public abstract class Equipment : IEquatable<Equipment> {
 
   public abstract string name();
   
-  [Obsolete("Equipment.isEquipped is deprecated. Equipment is being deduplicated.")]
-  public bool isEquipped() {
-     return equippedTo != null;
-  }
-
   public Equipment clone() {
     return MemberwiseClone() as Equipment;
   }
