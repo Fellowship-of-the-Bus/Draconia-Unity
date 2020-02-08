@@ -40,7 +40,7 @@ public class DialogueReader {
   //name line
   //name line ....
   //where type is time for BFTimeEvent
-  //              turn for BFTurnEvent
+  //              bossTurn or broTurn for BFTurnEvent
   //first number is the turn/time
   //second is the number of dialogue lines
 
@@ -78,8 +78,11 @@ public class DialogueReader {
       i = i + numLines;
       if (format[0] == "time") {
         e = new TimeDialogue(Int32.Parse(format[1]), dialogues);
-      } else if (format[0] == "turn") {
+      } else if (format[0] == "bossTurn") {
         e = new TurnDialogue(GameManager.get.boss, Int32.Parse(format[1]), dialogues);
+      } else if (format[0] == "broTurn") {
+        // Brodric doesn't exist at this point, so send null and check on events
+        e = new TurnDialogue(null, Int32.Parse(format[1]), dialogues);
       } else {
         Debug.AssertFormat(false, "Got a bad trigger identifier " + format[0] + " in file " + fileName);
       }

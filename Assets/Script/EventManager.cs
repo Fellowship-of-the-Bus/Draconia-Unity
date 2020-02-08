@@ -28,7 +28,6 @@ public class EventManager : MonoBehaviour {
       listeners[i] = new HashSet<EventListener>();
     }
     eventQueue = new Queue<Draconia.Event>();
-    get = this;
   }
 
   public void addListener(EventListener listener, EventHook hook) {
@@ -51,6 +50,7 @@ public class EventManager : MonoBehaviour {
     while (eventQueue.Count != 0) {
       e = eventQueue.Dequeue();
       List<EventListener> list = new List<EventListener>(listeners[(int)e.hook]);
+
       foreach (EventListener listener in list) {
         listener.onEvent(e);
       }

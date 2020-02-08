@@ -33,12 +33,12 @@ public class Sentry : PassiveSkill {
 
   protected override void onActivate() {
     Debug.AssertFormat(owner != null, "Sentry activated before owner is set.");
-    attachListener(EventManager.get, EventHook.postMove);
+    attachListener(GameManager.get.eventManager, EventHook.postMove);
     skill.self = owner;
   }
 
   protected override void onDeactivate() {
-    detachListener(EventManager.get);
+    detachListener(GameManager.get.eventManager);
   }
 }
 

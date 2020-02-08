@@ -6,8 +6,8 @@ using System;
 public abstract class BFEvent : EventListener{
   public int triggerTime;
 
-  public void init() {
-    attachListener(EventManager.get, EventHook.endTurn);
+  public virtual void init() {
+    attachListener(GameManager.get.eventManager, EventHook.endTurn);
   }
 
   public abstract void trigger();

@@ -207,12 +207,9 @@ public class GameManager : MonoBehaviour {
       losingConditions.Add(ObjectiveFactory.makeObjective(s));
     }
 
-    string mapName = SceneManager.GetActiveScene().name;
+    string mapName = gameObject.scene.name;
     reader = new DialogueReader(mapName);
-  }
-  //should begin in character select phase, probably using a different camera...
-  void Start() {
-    //startTurn();
+
     BFevents = reader.inBattle;
     foreach (BFEvent e in BFevents) {
       e.init();
@@ -283,16 +280,6 @@ public class GameManager : MonoBehaviour {
         netChange += (e as HealthChangingEffect).healthChange();
       }
     }
-
-
-/*    if (netChange < 0) {
-      selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth + netChange);
-    } else if (netChange > 0) {
-      selectedCharacter.updateLifeBar(selectedHealingBar, selectedCharacter.curHealth + netChange);
-    } else {
-      selectedCharacter.updateLifeBar(selectedHealthBar, selectedCharacter.curHealth);
-    }
-    */
 
     // Uncomment this code if you need to change skills via the editor ingame.
     // if (Options.debugMode && selectedCharacter.team == 0) {
@@ -386,7 +373,9 @@ public class GameManager : MonoBehaviour {
     //get character whose turn it is
     //do something different for ai
     SelectedCharacter = actionQueue.getNext();
-    SelectedCharacter.onEvent(new Draconia.Event(SelectedCharacter, EventHook.startTurn));
+    Draconia.Event startTurnEvent = new Draconia.Event(SelectedCharacter, EventHook.startTurn);
+    eventManager.onEvent(startTurnEvent);
+    SelectedCharacter.onEvent(startTurnEvent);
     moveRange = SelectedCharacter.moveRange;
     activeBuffBar.update(SelectedCharacter);
     selectedHealth.setCharacter(SelectedCharacter);
@@ -523,11 +512,11 @@ public class GameManager : MonoBehaviour {
       yield return StartCoroutine(waitUntilEmpty());
 
       //send endTurn Draconia.Event to the current piece
-      Draconia.Event e = new Draconia.Event(null, EventHook.endTurn);
+      Draconia.Event e = new Draconia.Event(SelectedCharacter, EventHook.endTurn);
       e.endTurnChar = SelectedCharacter;
       e.nextCharTime = actionQueue.peekNext();
       eventManager.onEvent(e);
-      SelectedCharacter.onEvent(new Draconia.Event(SelectedCharacter, EventHook.endTurn));
+      SelectedCharacter.onEvent(e);
 
       // Wait for end turn events to complete
       yield return StartCoroutine(waitUntilEmpty());
@@ -619,7 +608,7 @@ public class GameManager : MonoBehaviour {
       // tell listeners that this character moved
       Draconia.Event enterEvent = new Draconia.Event(character, EventHook.enterTile);
       enterEvent.position = destination.transform.position;
-      EventManager.get.onEvent(enterEvent);
+      eventManager.onEvent(enterEvent);
       if (enterEvent.interruptMove) {
         cancelStack.Clear();
         yield return new WaitForSeconds(0.5f);

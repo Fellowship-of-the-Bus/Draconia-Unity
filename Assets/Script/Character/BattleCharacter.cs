@@ -292,6 +292,7 @@ public class BattleCharacter : Effected {
   }
 
   public float calcMoveTime(float time, int turns = 1) {
+    Debug.Assert(speed > 0);
     return time + ((maxAction - curAction) / speed) + ((turns - 1) * (maxAction / speed));
   }
 

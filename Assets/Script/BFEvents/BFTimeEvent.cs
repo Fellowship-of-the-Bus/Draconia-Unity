@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 public abstract class BFTimeEvent : BFEvent{
-  int previousTime;
+  int previousTime = 0;
 
   public BFTimeEvent(int t) {
     triggerTime = t;
