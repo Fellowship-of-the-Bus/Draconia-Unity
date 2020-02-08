@@ -78,7 +78,6 @@ public class GameManager : MonoBehaviour {
   //Map Boss
   public BattleCharacter boss;
 
-  public List<BattleCharacter> allCharacters;
   public Dictionary<Team, List<BattleCharacter>> characters = new Dictionary<Team, List<BattleCharacter>>();
   public List<BattleCharacter> players { get{ return characters[Team.Player]; } }
   public List<BattleCharacter> enemies { get{ return characters[Team.Enemy]; } }
@@ -224,7 +223,6 @@ public class GameManager : MonoBehaviour {
     dialogue.setOnExit(() => GameSceneController.get.pControl.enabled = true);
 
     var chars = GameObject.FindGameObjectsWithTag("Unit").Select(x => x.GetComponent<BattleCharacter>());
-    allCharacters = new List<BattleCharacter>(chars);
     var objs = chars.GroupBy(x => x.team);
     foreach (var x in objs) {
       characters[x.Key] = new List<BattleCharacter>(x);
