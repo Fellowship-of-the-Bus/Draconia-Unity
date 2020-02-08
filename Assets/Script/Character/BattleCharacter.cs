@@ -20,7 +20,7 @@ public class BattleCharacter : Effected {
   public Character baseChar;
   public AIType aiType = AIType.None;
   public EnemyType enemyType = EnemyType.Human;
-  public AudioSource audio;
+  public new AudioSource audio;
   public new string name {
     get { return baseChar.name; }
     set { baseChar.name = value; }

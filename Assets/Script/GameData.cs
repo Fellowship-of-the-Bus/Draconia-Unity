@@ -45,13 +45,6 @@ public class GameData {
     }
   }
 
-  public Character getCharacterWithItem(Equipment e) {
-    foreach (Character c in characters) {
-      if (c.gear[e.type] == e) return c;
-    }
-    return null;
-  }
-
   public Character getCharacterByName(string name) {
     foreach(Character c in characters) {
       if (c.name == name) return c;
