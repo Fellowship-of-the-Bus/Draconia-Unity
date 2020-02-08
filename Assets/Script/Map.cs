@@ -343,7 +343,7 @@ public class Map {
     path.Clear();
   }
 
-  public void getDimensions(out int x, out int z) {
+  public void getDimensions(out float x, out float z) {
     x = map.GetLength(0);
     z = map.GetLength(1);
   }
