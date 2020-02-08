@@ -15,11 +15,6 @@ public class Tile : Effected {
   private bool isClear = false;
   public bool isWall = false;
 
-  // TODO: Tile.cs: Is the Awake override necessary?
-  new void Awake() {
-    base.Awake();
-  }
-
   public bool occupied() {
     return occupant != null;
   }
