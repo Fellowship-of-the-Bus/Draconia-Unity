@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
 
 public class NodeIterator<T> : IEnumerable<LinkedListNode<T>>, IEnumerator<LinkedListNode<T>> {
   LinkedList<T> list;
