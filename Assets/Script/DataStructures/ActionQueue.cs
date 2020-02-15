@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 public class ActionQueue {
@@ -22,6 +23,10 @@ public class ActionQueue {
   }
 
   public float peekNext() {
+    if (queue.Count == 0) {
+      return Mathf.Infinity;
+    }
+
     return queue.First.Value.time;
   }
 
