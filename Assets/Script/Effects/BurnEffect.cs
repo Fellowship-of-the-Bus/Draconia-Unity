@@ -5,6 +5,7 @@ public class BurnEffect : DurationEffect, HealthChangingEffect {
   const float baseMultiplier = 1.0f;
   public float multiplier = baseMultiplier;
   private GameObject particle;
+  private static GameObject particlePrefab = null;
 
   public BurnEffect() {
     name = "On Fire!";
@@ -13,8 +14,10 @@ public class BurnEffect : DurationEffect, HealthChangingEffect {
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
 
-    // TODO: See about loading this once for the game
-    particle = owner.applyParticle((GameObject)Resources.Load("ParticleEffects/Burning"));
+    if (particlePrefab == null) {
+      particlePrefab = (GameObject)Resources.Load("ParticleEffects/Burning");
+    }
+    particle = owner.applyParticle(particlePrefab);
   }
 
   protected override void onDeactivateListeners() {
