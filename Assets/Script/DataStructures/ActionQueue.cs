@@ -46,7 +46,10 @@ public class ActionQueue {
   }
 
   public void endTurn() {
-  	// TODO: Fix crash here when everyone dies
+    if (queue.Count == 0) {
+      return;
+    }
+
     Elem SelectedCharacter = queue.First.Value.piece;
     removeFirst(SelectedCharacter);
 
