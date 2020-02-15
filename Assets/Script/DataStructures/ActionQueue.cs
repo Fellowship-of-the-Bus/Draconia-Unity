@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 public class ActionQueue {
@@ -22,6 +23,10 @@ public class ActionQueue {
   }
 
   public float peekNext() {
+    if (queue.Count == 0) {
+      return Mathf.Infinity;
+    }
+
     return queue.First.Value.time;
   }
 
@@ -41,7 +46,10 @@ public class ActionQueue {
   }
 
   public void endTurn() {
-  	// TODO: Fix crash here when everyone dies
+    if (queue.Count == 0) {
+      return;
+    }
+
     Elem SelectedCharacter = queue.First.Value.piece;
     removeFirst(SelectedCharacter);
 

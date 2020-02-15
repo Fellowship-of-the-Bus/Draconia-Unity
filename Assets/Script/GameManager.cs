@@ -429,38 +429,44 @@ public class GameManager : MonoBehaviour {
     }, true));
   }
 
-  // Preview of targeting a character
-  public void selectTarget(GameObject target, Tile sourceTile = null) {
+  private void resetPreviewTarget() {
     if (previewTarget) {
       previewTarget.PreviewChange = 0;
-      // if (targetHealth != null) targetHealth.update();
       selectedHealth.update(previewTarget.PreviewChange);
       previewTarget.updateLifeBars();
       previewTarget = null;
     }
+  }
 
-    if (target != null) {
-      BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
-      if (previewTarget != targetChar) {
-        previewTarget = targetChar;
-        targetHealth.setCharacter(previewTarget);
-        targetBuffBar.update(previewTarget);
-      }
-
-      if (targetChar == null) {
-        actionBar.highlight(null);
-        return;
-      }
-
-      actionBar.highlight(targetChar);
-      if (SelectedSkill != -1) {
-        ActiveSkill skill = SelectedCharacter.equippedSkills[SelectedSkill];
-        HealingSkill hskill = skill as HealingSkill;
-        if (hskill != null) previewTarget.PreviewChange = skill.calculateHealing(previewTarget);
-        else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget, sourceTile);
-      }
-      if (previewTarget == SelectedCharacter) selectedHealth.update(previewTarget.PreviewChange);
+  // Preview of targeting a character
+  public void selectTarget(GameObject target, Tile sourceTile = null) {
+    if (target == null) {
+      resetPreviewTarget();
+      return;
     }
+
+    BattleCharacter targetChar = target.GetComponent<BattleCharacter>();
+    if (targetChar == null) {
+      resetPreviewTarget();
+      actionBar.highlight(null);
+      return;
+    }
+
+    if (previewTarget != targetChar) {
+      resetPreviewTarget();
+      previewTarget = targetChar;
+      targetHealth.setCharacter(previewTarget);
+      targetBuffBar.update(previewTarget);
+    }
+
+    actionBar.highlight(targetChar);
+    if (SelectedSkill != -1) {
+      ActiveSkill skill = SelectedCharacter.equippedSkills[SelectedSkill];
+      HealingSkill hskill = skill as HealingSkill;
+      if (hskill != null) previewTarget.PreviewChange = skill.calculateHealing(previewTarget);
+      else previewTarget.PreviewChange = -1 * skill.calculateDamage(previewTarget, sourceTile);
+    }
+    if (previewTarget == SelectedCharacter) selectedHealth.update(previewTarget.PreviewChange);
   }
 
   [HideInInspector]

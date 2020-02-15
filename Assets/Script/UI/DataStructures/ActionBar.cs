@@ -35,6 +35,10 @@ public class ActionBar : MonoBehaviour {
   }
 
   public float peekNext() {
+    if (queue.Count == 0) {
+      return Mathf.Infinity;
+    }
+
     return queue.First.Value.time;
   }
 
@@ -54,7 +58,10 @@ public class ActionBar : MonoBehaviour {
   }
 
   public void endTurn() {
-  	// TODO: Fix crash here when everyone dies
+    if (queue.Count == 0) {
+      return;
+    }
+
     BattleCharacter SelectedCharacter = queue.First.Value.piece;
     removeFirst(SelectedCharacter);
 

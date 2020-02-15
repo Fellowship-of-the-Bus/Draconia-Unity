@@ -3,12 +3,15 @@ using UnityEngine;
 public class PoisonEffect : DurationEffect, HealthChangingEffect {
   public float multiplier = 1.0f;
   private GameObject particle;
+  private static GameObject particlePrefab = null;
 
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
 
-    // TODO: See about loading this once for the game
-    particle = owner.applyParticle((GameObject)Resources.Load("ParticleEffects/Poison"));
+    if (particlePrefab == null) {
+      particlePrefab = (GameObject)Resources.Load("ParticleEffects/Poison");
+    }
+    particle = owner.applyParticle(particlePrefab);
   }
   protected override void onDeactivateListeners() {
     detachListener(owner);

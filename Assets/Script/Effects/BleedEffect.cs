@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BleedEffect : DurationEffect, HealthChangingEffect {
   private GameObject particle;
+  private static GameObject particlePrefab = null;
   public BleedEffect() {
     name = "Bleeding";
   }
@@ -13,8 +14,10 @@ public class BleedEffect : DurationEffect, HealthChangingEffect {
   protected override void onActivate() {
     attachListener(owner, EventHook.endTurn);
 
-    // TODO: See about loading this once for the game
-    particle = owner.applyParticle((GameObject)Resources.Load("ParticleEffects/Bleeding"));
+    if (particlePrefab == null) {
+      particlePrefab = (GameObject)Resources.Load("ParticleEffects/Bleeding");
+    }
+    particle = owner.applyParticle(particlePrefab);
   }
   protected override void onDeactivateListeners() {
     detachListener(owner);
