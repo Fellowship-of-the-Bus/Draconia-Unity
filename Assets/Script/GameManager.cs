@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
   public Map map = new Map();
   public SkillButton[] skillButtons;
   LineRenderer line;
-  public ActionQueue actionQueue;
+  public ActionBar actionBar;
   public BuffBar activeBuffBar;
   public BuffBar targetBuffBar;
   public GameObject buffButton;
@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour {
         bchar.init();
         bchar.ai.init(); // sentry AI needs curTile, which is set just above
         characterListener.attachListener(bchar, EventHook.postDeath);
-        actionQueue.add(bchar); //Needs to be done here since it relies on characters having their attribute set
+        actionBar.add(bchar); //Needs to be done here since it relies on characters having their attribute set
       }
     }
     List<BattleCharacter> users = new List<BattleCharacter>(players.Filter(x => x.aiType == AIType.None));
@@ -370,7 +370,7 @@ public class GameManager : MonoBehaviour {
 
     //get character whose turn it is
     //do something different for ai
-    SelectedCharacter = actionQueue.getNext();
+    SelectedCharacter = actionBar.getNext();
     Draconia.Event startTurnEvent = new Draconia.Event(SelectedCharacter, EventHook.startTurn);
     eventManager.onEvent(startTurnEvent);
     SelectedCharacter.onEvent(startTurnEvent);
@@ -448,11 +448,11 @@ public class GameManager : MonoBehaviour {
       }
 
       if (targetChar == null) {
-        actionQueue.highlight(null);
+        actionBar.highlight(null);
         return;
       }
 
-      actionQueue.highlight(targetChar);
+      actionBar.highlight(targetChar);
       if (SelectedSkill != -1) {
         ActiveSkill skill = SelectedCharacter.equippedSkills[SelectedSkill];
         HealingSkill hskill = skill as HealingSkill;
@@ -512,14 +512,14 @@ public class GameManager : MonoBehaviour {
       //send endTurn Draconia.Event to the current piece
       Draconia.Event e = new Draconia.Event(SelectedCharacter, EventHook.endTurn);
       e.endTurnChar = SelectedCharacter;
-      e.nextCharTime = actionQueue.peekNext();
+      e.nextCharTime = actionBar.peekNext();
       eventManager.onEvent(e);
       SelectedCharacter.onEvent(e);
 
       // Wait for end turn events to complete
       yield return StartCoroutine(waitUntilEmpty());
 
-      actionQueue.endTurn();
+      actionBar.endTurn();
       map.clearColour();
       startTurn();
     }

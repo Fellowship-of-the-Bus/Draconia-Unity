@@ -7,7 +7,7 @@ public class WarCryEffect : DurationEffect {
   protected override void onActivate() {
     owner.attrChange.speed += effectValue;
     owner.curAction = (float)Math.Min(owner.curAction + (amount * scaling), BattleCharacter.maxAction);
-    ActionQueue.get.updateTime(owner);
+    ActionBar.get.updateTime(owner);
   }
   protected override void onDeactivateEffects() {
     owner.attrChange.speed -= effectValue;

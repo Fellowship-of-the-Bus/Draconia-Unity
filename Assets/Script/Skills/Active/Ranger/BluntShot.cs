@@ -28,6 +28,6 @@ public class BluntShot: SingleTarget {
 
   public override void additionalEffects (BattleCharacter target) {
     target.curAction = Math.Max(0, target.curAction - actionReduction);
-    ActionQueue.get.updateTime(target);
+    ActionBar.get.updateTime(target);
   }
 }

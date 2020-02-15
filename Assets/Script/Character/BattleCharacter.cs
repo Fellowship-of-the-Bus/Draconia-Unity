@@ -514,7 +514,7 @@ public class BattleCharacter : Effected {
   }
 
   public void onDeath(BattleCharacter source) {
-    ActionQueue.get.remove(this);
+    ActionBar.get.remove(this);
     Draconia.Event e = new Draconia.Event(this, EventHook.postDeath);
     e.killer = source;
     onEvent(e);

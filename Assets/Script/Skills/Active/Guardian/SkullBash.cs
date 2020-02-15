@@ -31,6 +31,6 @@ public class SkullBash: SingleTarget {
     debuff.duration = 3;
     debuff.caster = self;
     target.applyEffect(debuff);
-    ActionQueue.get.updateTime(target);
+    ActionBar.get.updateTime(target);
   }
 }

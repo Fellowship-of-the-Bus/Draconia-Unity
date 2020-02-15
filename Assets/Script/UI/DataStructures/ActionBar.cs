@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 
-public class ActionQueue : MonoBehaviour {
+public class ActionBar : MonoBehaviour {
   public GameObject turnButton;
-  public CharacterPortraitManager portraitManager;
 
   private LinkedList<ActionTime> queue = new LinkedList<ActionTime>();
   private List<BattleCharacter> pieces = new List<BattleCharacter>();
@@ -14,15 +13,14 @@ public class ActionQueue : MonoBehaviour {
 
   private float buttonWidth = 0;
   private float buttonHeight = 0;
-  public bool usePortraits = false;
 
   private struct ActionTime {
     public BattleCharacter piece;
-    public ActionQueueElem button;
+    public ActionBarElem button;
 
     public float time;
 
-    public ActionTime(BattleCharacter p, ActionQueueElem b, float t) {
+    public ActionTime(BattleCharacter p, ActionBarElem b, float t) {
       piece = p;
       button = b;
       time = t;
@@ -174,7 +172,7 @@ public class ActionQueue : MonoBehaviour {
   // Returns whether the requested marker belongs at the end of the queue
   private bool enqueue(BattleCharacter piece, int turn = 1) {
     bool isLast = false;
-    ActionQueueElem buttonObject = null;
+    ActionBarElem buttonObject = null;
 
     int i = 0;
     float newTime = piece.calcMoveTime(curTime, turn);
@@ -207,17 +205,15 @@ public class ActionQueue : MonoBehaviour {
     return isLast;
   }
 
-  private ActionQueueElem makeButton(BattleCharacter piece) {
+  private ActionBarElem makeButton(BattleCharacter piece) {
     GameObject buttonObject = GameObject.Instantiate(turnButton, new Vector3 (0,0,0), Quaternion.identity) as GameObject;
     buttonObject.transform.SetParent(gameObject.transform, false);
-    ActionQueueElem elem = buttonObject.GetComponent<ActionQueueElem>();
+    ActionBarElem elem = buttonObject.GetComponent<ActionBarElem>();
     Button button = elem.button;
     button.onClick.AddListener(delegate {
       GameManager.get.cam.panTo(piece.gameObject.transform.position);
     });
-    if (usePortraits) {
-      elem.image.sprite = CharacterPortraitManager.getPortrait(piece);
-    }
+    elem.image.sprite = CharacterPortraitManager.getPortrait(piece);
     return elem;
   }
 
@@ -229,7 +225,7 @@ public class ActionQueue : MonoBehaviour {
     int index = 0;
     foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (index > i) {
-        ActionQueueElem o = n.Value.button;
+        ActionBarElem o = n.Value.button;
         GameManager.get.StartCoroutine(SlideButton(o, 0, -buttonHeight));
       }
       index++;
@@ -240,14 +236,14 @@ public class ActionQueue : MonoBehaviour {
     int index = 0;
     foreach (LinkedListNode<ActionTime> n in new NodeIterator<ActionTime>(queue)) {
       if (index > i) {
-        ActionQueueElem o = n.Value.button;
+        ActionBarElem o = n.Value.button;
         GameManager.get.StartCoroutine(SlideButton(o, 0, buttonHeight));
       }
       index++;
     }
   }
 
-  private IEnumerator SlideButton(ActionQueueElem button, float x, float y, bool deleteAfter = false) {
+  private IEnumerator SlideButton(ActionBarElem button, float x, float y, bool deleteAfter = false) {
     const float time = 0.25f;
 
     GameManager.get.lockUI();
@@ -263,5 +259,5 @@ public class ActionQueue : MonoBehaviour {
     }
     GameManager.get.unlockUI();
   }
-  public static ActionQueue get { get; private set; }
+  public static ActionBar get { get; private set; }
 }
