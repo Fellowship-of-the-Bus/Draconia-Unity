@@ -164,30 +164,9 @@ static class MapModifier {
   private static void changeHeight(string name){
     Scene currentScene = EditorSceneManager.OpenScene(name);
     GameObject[] pieces = GameObject.FindGameObjectsWithTag("Unit");
-    //GameObject pieces = GameObject.Find("Enemies");
-    //Transform pTransform = pieces.transform;
-    // List<Transform> toAdd = new List<Transform>();
-    // List<GameObject> toDelete = new List<GameObject>();
     GameManager gameManager = GameObject.Find("__GameManager").GetComponent<GameManager>();
-    // foreach (Transform child in pTransform) {
-      // GameObject childObject = child.gameObject;
+
     foreach (GameObject childObject in pieces) {
-      // toDelete.Add(childObject);
-      // BattleCharacter character = childObject.GetComponent<BattleCharacter>();
-      // GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(replacements[character.characterType]);
-      // toAdd.Add(newObject.transform);
-      // newObject.name = childObject.name;
-      // newObject.transform.position = childObject.transform.position;
-      // newObject.transform.rotation = childObject.transform.rotation;
-      // newObject.transform.localScale = childObject.transform.localScale;
-      // BattleCharacter newCharacter = newObject.GetComponent<BattleCharacter>();
-      // newCharacter.baseChar = character.baseChar;
-      // newCharacter.aiType = character.aiType;
-      // newCharacter.skillSet = character.skillSet;
-      // newCharacter.team = character.team;
-      // if (gameManager.boss == character) {
-      //   gameManager.boss = newCharacter;
-      // }
       GameObject board = GameObject.Find("Board");
       foreach(Transform row in board.transform) {
         if (row.gameObject.name != "Row") continue;
@@ -197,9 +176,6 @@ static class MapModifier {
             if (child.position.z == childObject.transform.position.z) {
               childObject.transform.position = new Vector3(childObject.transform.position.x, child.gameObject.GetComponent<Tile>().position.y, childObject.transform.position.z);
               SerializedObject sObject = new SerializedObject(childObject.GetComponent<BattleCharacter>());
-              SerializedProperty team = sObject.FindProperty("team");
-              team.intValue = 1;
-              sObject.ApplyModifiedProperties();
               break;
             }
           }
