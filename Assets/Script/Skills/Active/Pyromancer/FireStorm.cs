@@ -20,7 +20,7 @@ public class FireStorm: CircleAoE {
 
     dType = DamageType.magical;
     dEle = DamageElement.fire;
-    targetAlly(false);
+    targetAlly(true);
     targetEnemy(true);
   }
 
