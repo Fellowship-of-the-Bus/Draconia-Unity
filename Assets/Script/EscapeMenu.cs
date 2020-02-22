@@ -9,6 +9,8 @@ public class EscapeMenu : MonoBehaviour {
   public Button mainMenuButton;
   public Button retryButton;
   public Canvas menuCanvas;
+  public FileBrowser saveBrowser;
+  public FileBrowser loadBrowser;
 
   private readonly string escapeAxis = "EscapeMenu";
   private bool isAxisDown = false;
@@ -20,6 +22,10 @@ public class EscapeMenu : MonoBehaviour {
     if (!Singleton.makeSingleton(ref temp, this)) return;
     get = temp;
     transitionScenes("MainMenu");
+
+    // ensure that referenced external objects are not deleted
+    GameObject.DontDestroyOnLoad(saveBrowser.gameObject);
+    GameObject.DontDestroyOnLoad(loadBrowser.gameObject);
   }
 
   void Update() {
@@ -49,18 +55,22 @@ public class EscapeMenu : MonoBehaviour {
 
   public void optionsClicked() {
     Debug.Log("optionsClicked");
+    hide();
   }
 
   public void loadGameClicked() {
-    Debug.Log("loadGameClicked");
+    loadBrowser.openBrowser();
+    hide();
   }
 
   public void returnToOverworldClicked() {
     LoadingScreen.load("OverWorld");
+    hide();
   }
 
   public void returnToMainMenuClicked() {
     LoadingScreen.load("MainMenu");
+    hide();
   }
 
   public void quitGameClicked() {
@@ -70,5 +80,6 @@ public class EscapeMenu : MonoBehaviour {
   public void retryClicked() {
     Scene scene = SceneManager.GetActiveScene();
     LoadingScreen.load(scene.name);
+    hide();
   }
 }

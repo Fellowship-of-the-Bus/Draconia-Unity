@@ -22,7 +22,11 @@ public class FileBrowser : MonoBehaviour {
   public GameObject saveButton;
   public GameObject loadButton;
 
-  public void createOptions(IEnumerable<FileInfo> files) {
+  public void openBrowser() {
+    createOptions(SaveLoad.listSaveFiles());
+  }
+
+  private void createOptions(IEnumerable<FileInfo> files) {
     // fill scrollbar content area
     content.clear();
     foreach (FileInfo f in files) {
