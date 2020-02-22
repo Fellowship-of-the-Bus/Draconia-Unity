@@ -21,4 +21,22 @@ public class OptionController: MonoBehaviour {
     Options.gridTransparency = newValue;
     gridTransparencyText.text = newValue.ToString();
   }
+
+  public GameObject deleteSaveDataPanel;
+  public void deleteSaveDataClicked() {
+    deleteSaveDataPanel.SetActive(true);
+  }
+
+  public void deleteSaveDataConfirmClicked() {
+    SaveLoad.deleteAllSaveData();
+    deleteSaveDataPanel.SetActive(false);
+  }
+
+  public void deleteSaveDataCancelClicked() {
+    deleteSaveDataPanel.SetActive(false);
+  }
+
+  public void show() {
+    gameObject.SetActive(true);
+  }
 }

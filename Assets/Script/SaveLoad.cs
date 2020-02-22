@@ -114,4 +114,11 @@ public static class SaveLoad {
   public static IEnumerable<FileInfo> listSaveFiles() {
     return dir.GetFiles("*.bro");
   }
+
+  public static void deleteAllSaveData() {
+    DirectoryInfo persistentDataDir = System.IO.Directory.CreateDirectory(Application.persistentDataPath);
+    persistentDataDir.Delete(true);
+    // temporarily recreate save data path to prevent crashes
+    dir = System.IO.Directory.CreateDirectory(dirPath);
+  }
 }

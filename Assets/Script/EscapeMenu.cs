@@ -11,6 +11,7 @@ public class EscapeMenu : MonoBehaviour {
   public Canvas menuCanvas;
   public FileBrowser saveBrowser;
   public FileBrowser loadBrowser;
+  public OptionController optionsMenu;
 
   private readonly string escapeAxis = "EscapeMenu";
   private bool isAxisDown = false;
@@ -26,6 +27,7 @@ public class EscapeMenu : MonoBehaviour {
     // ensure that referenced external objects are not deleted
     GameObject.DontDestroyOnLoad(saveBrowser.gameObject);
     GameObject.DontDestroyOnLoad(loadBrowser.gameObject);
+    GameObject.DontDestroyOnLoad(optionsMenu.gameObject);
   }
 
   void Update() {
@@ -54,7 +56,7 @@ public class EscapeMenu : MonoBehaviour {
   }
 
   public void optionsClicked() {
-    Debug.Log("optionsClicked");
+    optionsMenu.show();
     hide();
   }
 
