@@ -54,7 +54,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1085400666051856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -63,8 +63,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 25
@@ -134,7 +132,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1424939023640782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -143,8 +141,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
@@ -154,6 +150,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &4819643272442553991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +201,8 @@ MonoBehaviour:
         expGain: 0
     gear:
       weapon:
+        guid:
+          value: 00000000000000000000000000000000
         attr:
           strength: 0
           intelligence: 0
@@ -218,9 +217,11 @@ MonoBehaviour:
           iceResistance: 0
           lightningResistance: 0
         tier: 1
-        equipmentClass: 9
         range: 1
+        equipmentClass: 9
       armour:
+        guid:
+          value: 00000000000000000000000000000000
         attr:
           strength: 0
           intelligence: 0
@@ -251,7 +252,7 @@ GameObject:
   - component: {fileID: 114535990683223956}
   - component: {fileID: 3260629050636485027}
   m_Layer: 5
-  m_Name: CharacterSelection
+  m_Name: CharPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,7 +278,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 183, y: 60}
+  m_SizeDelta: {x: 180, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &114535990683223956
 MonoBehaviour:
@@ -288,7 +289,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1580384906634098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -322,8 +323,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &3260629050636485027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,6 +373,8 @@ MonoBehaviour:
         expGain: 0
     gear:
       weapon:
+        guid:
+          value: 00000000000000000000000000000000
         attr:
           strength: 0
           intelligence: 0
@@ -388,9 +389,11 @@ MonoBehaviour:
           iceResistance: 0
           lightningResistance: 0
         tier: 1
-        equipmentClass: 9
         range: 1
+        equipmentClass: 9
       armour:
+        guid:
+          value: 00000000000000000000000000000000
         attr:
           strength: 0
           intelligence: 0
@@ -463,7 +466,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1914891805546222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -472,8 +475,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -483,3 +484,4 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
