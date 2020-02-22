@@ -8,7 +8,20 @@ public class Options {
   public struct OptionData {
     public float gridTransparency;
     public bool displayAnimation;
+    public TextOptions text;
   }
+
+  [Serializable]
+  public struct TextOptions {
+    public TMP_FontAsset font;
+    public int fontSize;
+
+    public delegate void FontChangedEvent(TMP_FontAsset newFont);
+    public delegate void FontSizeChangedEvent(int newSize);
+    public static FontChangedEvent onFontChange;
+    public static FontSizeChangedEvent onSizeChange;
+  }
+
 
   public static OptionData init() {
     OptionData data = new OptionData();
@@ -31,15 +44,21 @@ public class Options {
     }
   }
 
-  [Serializable]
-  public struct TextOptions {
-    public Font font;
-    public delegate void FontChangedEvent(TMP_FontAsset newFont);
-    public delegate void FontSizeChangedEvent(int newSize);
-    public event FontChangedEvent onFontChange;
-    public event FontSizeChangedEvent onSizeChange;
+  public static TMP_FontAsset font {
+    get { return instance.text.font; }
+    set {
+      instance.text.font = value;
+      Options.TextOptions.onFontChange?.Invoke(value);
+    }
   }
-  public static TextOptions Text = new TextOptions();
+
+  public static int fontSize {
+    get { return instance.text.fontSize; }
+    set {
+      instance.text.fontSize = value;
+      Options.TextOptions.onSizeChange?.Invoke(value);
+    }
+  }
 
   // internal use fields - not serialized
   public static int FPS = 60;

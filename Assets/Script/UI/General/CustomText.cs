@@ -8,13 +8,13 @@ public class CustomText : MonoBehaviour {
   public bool updateSize;
 
   void OnEnable() {
-    if (updateFont) Options.Text.onFontChange += onFontChange;
-    if (updateSize) Options.Text.onSizeChange += onSizeChange;
+    if (updateFont) Options.TextOptions.onFontChange += onFontChange;
+    if (updateSize) Options.TextOptions.onSizeChange += onSizeChange;
   }
 
   void OnDisable() {
-    if (updateFont) Options.Text.onFontChange -= onFontChange;
-    if (updateSize) Options.Text.onSizeChange -= onSizeChange;
+    if (updateFont) Options.TextOptions.onFontChange -= onFontChange;
+    if (updateSize) Options.TextOptions.onSizeChange -= onSizeChange;
   }
 
   void onFontChange(TMP_FontAsset newFont) {
