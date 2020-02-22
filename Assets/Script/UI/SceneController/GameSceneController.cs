@@ -86,7 +86,6 @@ public class GameSceneController: MonoBehaviour {
 
     dialogue.setOnExit(() => unlockUI());
     lockUI();
-    Debug.Log(GameManager.get.reader);
     dialogue.loadDialogue(GameManager.get.reader.start);
 
     setMandatoryChars();

@@ -7,8 +7,7 @@ using System.Reflection;
 
 
 public class AttrView: MonoBehaviour {
-
-  public Dictionary<string, Text> attrDict = new Dictionary<string,Text>();
+  public Dictionary<string, CustomText> attrDict = new Dictionary<string,CustomText>();
   public GameObject text;
   public Attributes curAttr;
 
@@ -20,8 +19,12 @@ public class AttrView: MonoBehaviour {
   public void initFields() {
     if (!onceOnly) return;
     foreach(FieldInfo f in typeof(Attributes).GetFields()) {
-      Text t = Instantiate(text, transform).GetComponent<Text>();
-      attrDict.Add(f.Name, t);
+      GameObject attrField = Instantiate(text, transform);
+      CustomText attrName = attrField.transform.Find("AttrName").GetComponent<CustomText>();
+      attrName.text = f.Name;
+
+      CustomText attrValue = attrField.transform.Find("AttrValue").GetComponent<CustomText>();
+      attrDict.Add(f.Name, attrValue);
     }
     onceOnly = false;
   }
@@ -33,8 +36,7 @@ public class AttrView: MonoBehaviour {
     foreach(FieldInfo f in typeof(Attributes).GetFields()) {
       if (attrDict.ContainsKey(f.Name)) {
         var value = f.GetValue(attr);
-        attrDict[f.Name].text = f.Name + " " + value;
-        attrDict[f.Name].enabled = !value.Equals(f.GetValue(baseAttr));
+        attrDict[f.Name].text = value.ToString();
       } else {
         throw(new Exception(f.Name));
       }
