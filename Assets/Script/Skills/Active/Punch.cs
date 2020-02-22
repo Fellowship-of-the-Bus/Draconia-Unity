@@ -15,7 +15,7 @@ public class Punch: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage to the target";
   }}
 

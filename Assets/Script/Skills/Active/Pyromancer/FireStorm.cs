@@ -24,7 +24,7 @@ public class FireStorm: CircleAoE {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Summon a storm of flames from the sky dealing " + tooltipDamage + " damage."
     + " Does not require line of sight.";
   }}

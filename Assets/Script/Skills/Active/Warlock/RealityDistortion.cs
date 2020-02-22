@@ -24,7 +24,7 @@ public class RealityDistortion : SingleTarget {
     target.applyEffect(debuff);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Distort reality on the target, reversing the modifications made by stat changing effects for 2 turns";
   }}
 }

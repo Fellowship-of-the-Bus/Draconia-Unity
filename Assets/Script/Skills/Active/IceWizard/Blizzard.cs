@@ -23,7 +23,7 @@ public class Blizzard: CircleAoE {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage to all characters in the affected area";
   }}
 

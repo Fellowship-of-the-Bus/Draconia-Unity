@@ -13,7 +13,7 @@ public class WarCry: CircleAoE {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Let loose an inspiring cry, increasing the speed of all allies within range by 1";
   }}
 

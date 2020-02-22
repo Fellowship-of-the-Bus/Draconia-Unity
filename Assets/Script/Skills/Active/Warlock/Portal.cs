@@ -23,7 +23,7 @@ public class Portal : ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Conjure a portal between two targeted positions allowing characters to move between them";
   }}
 

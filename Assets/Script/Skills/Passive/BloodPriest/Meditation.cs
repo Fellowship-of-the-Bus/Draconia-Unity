@@ -5,7 +5,7 @@ public class Meditation : PassiveSkill {
     name = "Meditation";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Heal <color=lime>" + healingFormula().ToString() + "</color> at the end of each turn.";
   }}
 

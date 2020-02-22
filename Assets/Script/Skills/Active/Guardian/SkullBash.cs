@@ -15,7 +15,7 @@ public class SkullBash: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Unleash a dizzying blow dealing " + tooltipDamage + " damage to the target, "
     + "decreasing their speed for 3 turns and delaying their next turn";
   }}

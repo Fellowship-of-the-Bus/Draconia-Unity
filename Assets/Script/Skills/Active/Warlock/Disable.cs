@@ -16,7 +16,7 @@ public class Disable : SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Disable a skill on the target";
   }}
 

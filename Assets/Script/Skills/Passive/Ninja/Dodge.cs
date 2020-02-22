@@ -7,7 +7,7 @@ public class Dodge : PassiveSkill {
     name = "Dodge";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return (100 * triggerChance()).ToString() + "% chance to avoid damage." ;
   }}
 

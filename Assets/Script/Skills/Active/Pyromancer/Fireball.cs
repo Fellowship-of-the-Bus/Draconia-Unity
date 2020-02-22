@@ -23,7 +23,7 @@ public class Fireball: SingleTarget {
     projectileSpeed = 1.5f;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Hurl a ball of fire that deals " + tooltipDamage + " damage to the target";
   }}
 

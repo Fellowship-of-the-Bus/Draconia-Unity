@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class Volley: CircleAoE {
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Fire a volley of arrows dealing " + tooltipDamage + " to all characters in the area";
   }}
   public override string animation { get { return "Shoot"; }}

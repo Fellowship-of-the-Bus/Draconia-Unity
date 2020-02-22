@@ -11,7 +11,7 @@ public class ExsanguinationAura: PassiveSkill {
     useLos = false;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Range: " + aoe.ToString() + "\n"
       + "Causes enemies to bleed while in range, taking " + effectDamageFormula().ToString() + " damage each turn";
   }}

@@ -20,7 +20,7 @@ public class Transfusion: SingleTarget, HealingSkill {
     return (int)(attributes.intelligence*(1+level*0.1));
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Transfer " + tooltipHealing + " life from yourself to the target";
   }}
 

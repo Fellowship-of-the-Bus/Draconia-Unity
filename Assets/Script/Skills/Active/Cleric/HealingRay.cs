@@ -21,7 +21,7 @@ public class HealingRay: SingleTarget, HealingSkill {
     projectileSpeed = 3f;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Project a ray of energy that heals the target by " + tooltipHealing;
   }}
 

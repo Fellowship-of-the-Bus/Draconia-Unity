@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class PoisonShot: SingleTarget {
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Fire a poisonous arrow that deals " + tooltipDamage + " and poisons the target for "
       + effectDuration() + " turns";
   }}

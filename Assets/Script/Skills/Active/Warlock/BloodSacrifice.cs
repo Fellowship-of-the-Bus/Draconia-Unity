@@ -17,7 +17,7 @@ public class BloodSacrifice : SelfTarget {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Sacrifice 2 health to gain bonus stats for 2 turns";
   }}
 

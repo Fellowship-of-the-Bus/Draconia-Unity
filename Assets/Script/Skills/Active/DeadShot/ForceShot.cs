@@ -20,7 +20,7 @@ public class ForceShot: TargetMover {
     projectileType = ProjectileType.Arrow;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage and knock the target back 2 spaces";
   }}
 

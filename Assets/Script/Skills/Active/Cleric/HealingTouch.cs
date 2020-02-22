@@ -17,7 +17,7 @@ public class HealingTouch: SingleTarget, HealingSkill {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Touch a target, healing them by " + tooltipHealing;
   }}
 

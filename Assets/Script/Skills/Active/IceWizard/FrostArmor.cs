@@ -18,7 +18,7 @@ public class FrostArmor: SingleTarget {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Shield the target with armor of magical ice";
   }}
 

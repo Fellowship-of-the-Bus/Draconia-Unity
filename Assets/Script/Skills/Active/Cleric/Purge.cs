@@ -17,7 +17,7 @@ public class Purge: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Purge the target of all temporary buffs and debuffs";
   }}
 

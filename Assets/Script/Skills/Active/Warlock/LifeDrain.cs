@@ -18,7 +18,7 @@ public class LifeDrain: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Drain " + tooltipDamage + " from the target and heal for the amount drained";
   }}
 

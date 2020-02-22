@@ -11,7 +11,7 @@ public class IronSkin : PassiveSkill {
     name = "Iron Skin";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     string bonusTooltip = "";
     if (addedDefense != 0) {
       bonusTooltip = "\n\nHits Taken: " + numHits.ToString()

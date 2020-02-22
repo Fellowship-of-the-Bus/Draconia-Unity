@@ -22,7 +22,7 @@ public class CircleSlash: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage to all characters in range";
   }}
 

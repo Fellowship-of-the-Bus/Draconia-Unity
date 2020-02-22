@@ -44,7 +44,7 @@ public class PiercingShot: ActiveSkill, AoeSkill {
     }
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage to all targets in a straight line";
   }}
 

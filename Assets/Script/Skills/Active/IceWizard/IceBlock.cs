@@ -23,7 +23,7 @@ public class IceBlock: ActiveSkill, AoeSkill {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Coalesce a block of ice at the target location, raising the terrain height by 1";
   }}
 

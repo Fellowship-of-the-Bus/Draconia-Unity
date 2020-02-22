@@ -18,7 +18,7 @@ public class BluntShot: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Fire a blunt arrow that deals " + tooltipDamage + " and reduces the target's action by " + actionReduction.ToString();
   }}
 

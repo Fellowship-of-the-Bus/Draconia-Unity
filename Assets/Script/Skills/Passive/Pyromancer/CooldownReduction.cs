@@ -7,7 +7,7 @@ public class CooldownReduction : PassiveSkill {
     name = "Cooldown Reduction";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Reduce maximum cooldown of all skills by 1";
   }}
 

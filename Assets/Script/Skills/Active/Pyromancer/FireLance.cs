@@ -28,7 +28,7 @@ public class FireLance: ActiveSkill, AoeSkill {
     projectileSpeed = 3f;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage to all targets in a straight line";
   }}
 

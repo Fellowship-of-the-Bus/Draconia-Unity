@@ -7,7 +7,7 @@ public class BleedEffect : DurationEffect, HealthChangingEffect {
     name = "Bleeding";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Taking " + effectValue + " damage at the end of each turn";
   }}
 

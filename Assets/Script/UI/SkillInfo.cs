@@ -26,12 +26,14 @@ public class SkillInfo: MonoBehaviour {
   SkillInfo parent = null;
   List<SkillInfo> children = new List<SkillInfo>();
   Skill skillInstance;
+  Skill leveledSkillInstance;
 
   public bool equipped { get; private set; }
 
   public void init(Type type, bool isEquipped, int tier, string spec) {
     skillType = type;
     skillInstance = (Skill)Activator.CreateInstance(skillType);
+    leveledSkillInstance = (Skill)Activator.CreateInstance(skillType);
     skillTier = tier;
     skillSpec = spec;
 
@@ -51,9 +53,17 @@ public class SkillInfo: MonoBehaviour {
     foreach(SkillInfo s in children) {
       if (s != caller) s.update(newChar);
     }
+
+    // Update tooltip text
     skillInstance.character = newChar;
     skillInstance.level = skillLevel;
-    tooltip.tiptext = skillInstance.tooltip;
+    leveledSkillInstance.character = newChar;
+    leveledSkillInstance.level = skillLevel + 1;
+    if (skillLevel == 0) {
+      tooltip.tiptext = leveledSkillInstance.tooltip;
+    } else {
+      tooltip.tiptext = skillInstance.tooltip + "\n\n<b>Next Level:</b>\n" + leveledSkillInstance.tooltipDescription;
+    }
   }
 
   public void checkAvailability() {
@@ -63,6 +73,7 @@ public class SkillInfo: MonoBehaviour {
   public void levelup() {
     skillLevel = skillLevel + 1;
     skillInstance.level = skillLevel;
+    leveledSkillInstance.level = skillLevel + 1;
 
     update(skillInstance.character);
     controller.recalculateTiers();

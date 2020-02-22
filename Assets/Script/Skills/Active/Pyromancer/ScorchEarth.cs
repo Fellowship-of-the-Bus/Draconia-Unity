@@ -25,7 +25,7 @@ public class ScorchEarth: ActiveSkill, AoeSkill {
     projectileMoveType = ProjectileMovementType.Parabolic;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Set the ground ablaze dealing " + tooltipDamage + " damage"
     + " and leaving fire on the ground that deals";
   }}

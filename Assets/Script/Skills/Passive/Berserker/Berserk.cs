@@ -7,7 +7,7 @@ public class Berserk : PassiveSkill {
     name = "Berserk";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Taking damage increases current action by an amount equal to the percentage of maximum health lost.";
   }}
 

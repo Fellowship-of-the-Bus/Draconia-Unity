@@ -11,4 +11,5 @@ public interface Skill {
   bool useLos {get; set;}
   string name {get; set;}
   string tooltip {get;}
+  string tooltipDescription {get;}
 }

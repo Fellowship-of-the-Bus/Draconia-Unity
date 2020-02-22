@@ -20,7 +20,7 @@ public class FlameShot: SingleTarget {
     projectileSpeed = 1.5f;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Fire a flaming arrow that deals " + tooltipDamage + " and sets the target aflame, dealing "
     + formatDamage(effectDamageFormula()) + " on their next turn and decreasing over " + fireDuration + " turns.\n" +
       "Total damage of fire effect: " + formatDamage(BurnEffect.totalDamage(effectDamageFormula(), fireDuration));

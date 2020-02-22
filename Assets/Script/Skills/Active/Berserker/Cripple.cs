@@ -14,7 +14,7 @@ public class Cripple: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage and cripple the target, reducing their movement range by 2";
   }}
 

@@ -5,7 +5,7 @@ public class CrippleEffect : DurationEffect {
     name = "Crippled";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
   	return "Movement range reduced by 2";
   }}
 

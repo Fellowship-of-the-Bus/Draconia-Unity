@@ -14,7 +14,7 @@ public class KillingBlow: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get { return
+  public override string tooltipDescription { get { return
     "Attempt a finishing blow, dealing " + tooltipDamage
     + " to <color=" + tooltipDamageColor + ">" + (damageFormula() * 2)
     + "</color> damage based on the target's missing health"; }}

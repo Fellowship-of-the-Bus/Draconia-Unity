@@ -9,7 +9,7 @@ public class SlowAura: PassiveSkill {
     name = "Slow Aura";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     // TODO: include the AoE and the amount of speed decrease
     return "Decrease the speed of nearby enemies";
   }}

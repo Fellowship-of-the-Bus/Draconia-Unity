@@ -7,7 +7,7 @@ public class Vengeance : PassiveSkill {
     name = "Vengeance";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Taking damage increases strength";
   }}
 

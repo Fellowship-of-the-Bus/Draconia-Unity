@@ -16,7 +16,7 @@ public class IgniteWeapon: SingleTarget {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Imbue the target's weapon with fire";
   }}
 

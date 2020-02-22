@@ -22,7 +22,7 @@ public class PointBlankShot: SingleTarget {
     return (int)(attributes.strength*(1+level*0.1));
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal up to <color=" + tooltipDamageColor + ">" + (int)(damageFormula() * rangeMultiplier)
     + "</color> damage, decreasing against targets further away.";
   }}

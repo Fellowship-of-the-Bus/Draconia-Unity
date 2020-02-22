@@ -20,7 +20,7 @@ public class ArcShot: SingleTarget {
     projectileMoveType = ProjectileMovementType.Parabolic;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Fire an arcing shot that ignores line of sight and deals " + tooltipDamage + " damage to the target";
   }}
 

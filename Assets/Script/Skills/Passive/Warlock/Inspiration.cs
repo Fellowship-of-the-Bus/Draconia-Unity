@@ -7,7 +7,7 @@ public class Inspiration : PassiveSkill {
     name = "Inspiration";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Grants a " + (100 * triggerChance()).ToString() + "% chance not to trigger the cooldown of a skill that was used.";
   }}
 

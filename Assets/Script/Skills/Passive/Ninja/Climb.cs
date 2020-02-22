@@ -6,7 +6,7 @@ public class Climb : PassiveSkill {
     name = "Climb";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Increases maximum height difference during movement by 1 per level.";
   }}
 

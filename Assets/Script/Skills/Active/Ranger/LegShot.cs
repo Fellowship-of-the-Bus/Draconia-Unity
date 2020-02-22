@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class LegShot: SingleTarget {
   const int crippleDuration = 2;
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Shoot the target in the leg dealing " + tooltipDamage + " and crippling them for " + crippleDuration + " turns";
   }}
 

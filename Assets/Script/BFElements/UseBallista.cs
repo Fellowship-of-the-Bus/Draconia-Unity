@@ -16,7 +16,7 @@ public class UseBallista : SingleTarget {
       projectileType = ProjectileType.Arrow;
       projectileMoveType = ProjectileMovementType.Parabolic;
     }
-    protected override string tooltipDescription { get {
+    public override string tooltipDescription { get {
       string s = "Deal " + tooltipDamage + " damage from afar.";
       if (weapon.numUses >= 0) {
         s += " Has " + weapon.numUses + " arrow(s) remaining.";

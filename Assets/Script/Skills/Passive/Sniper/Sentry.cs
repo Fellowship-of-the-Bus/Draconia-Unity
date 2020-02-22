@@ -13,7 +13,7 @@ public class Sentry : PassiveSkill {
     skill.level = level;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     skill.character = character;
     skill.level = level;
 

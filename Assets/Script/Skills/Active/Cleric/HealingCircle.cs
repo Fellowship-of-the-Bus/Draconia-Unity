@@ -18,7 +18,7 @@ public class HealingCircle: CircleAoE, HealingSkill {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Heal allies in the affected area by " + tooltipHealing;
   }}
 

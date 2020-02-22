@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class SerratedShot: SingleTarget {
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Fire a serrated arrow that deals " + tooltipDamage + " and causes the target to bleed dealing an additional "
     + formatDamage(effectDamageFormula()) + " over " + bleedDuration() + " turns";
   }}

@@ -10,7 +10,7 @@ public class Adrenaline : PassiveSkill {
     name = "Adrenaline";
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     string tooltipCooldown = "";
     if (timeToActivate != 0) {
       tooltipCooldown = "\nCooldown remaining: " + timeToActivate.ToString();

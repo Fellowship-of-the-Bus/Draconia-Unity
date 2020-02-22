@@ -19,7 +19,7 @@ public class HookShot: TargetMover {
     setDirection(TargetMover.Direction.towards);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Deal " + tooltipDamage + " damage and pull the target up to 2 spaces closer";
   }}
 

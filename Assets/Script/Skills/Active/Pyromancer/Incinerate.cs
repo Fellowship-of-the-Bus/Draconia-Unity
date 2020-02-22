@@ -19,7 +19,7 @@ public class Incinerate: SingleTarget {
     targetEnemy(true);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Envelop the target in fire dealing " + tooltipDamage + " damage."
     + " Does not require line of sight.";
   }}

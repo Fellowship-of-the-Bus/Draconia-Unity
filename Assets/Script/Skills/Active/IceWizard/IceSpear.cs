@@ -22,7 +22,7 @@ public class IceSpear: SingleTarget {
     projectileSpeed = 2f;
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Hurl a spear of ice dealing " + tooltipDamage + " damage to the target";
   }}
 

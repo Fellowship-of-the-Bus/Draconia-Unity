@@ -18,7 +18,7 @@ public class HealWhenHit : CircleAoE {
     targetEnemy(false);
   }
 
-  protected override string tooltipDescription { get {
+  public override string tooltipDescription { get {
     return "Heal the target by <color=lime>" + level.ToString() + "</color> each time they take damage";
   }}
 
