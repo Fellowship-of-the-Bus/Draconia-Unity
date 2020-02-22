@@ -109,7 +109,7 @@ public abstract class ActiveSkill : EventListener, Skill {
     } else {
       displayRange = range == 0 ? "Self" : range.ToString();
     }
-    return "Range: " + displayRange + "\n";
+    return "<b>Range:</b> " + displayRange + "\n";
   }}
   protected string tooltipDamageColor { get {
     if (dEle ==  DamageElement.ice) {
