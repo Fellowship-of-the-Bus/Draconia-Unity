@@ -11,7 +11,7 @@ public class MainMenu: MonoBehaviour {
   }
 
   public void loadGame() {
-    loadBrowser.createOptions(SaveLoad.listSaveFiles());
+    loadBrowser.openBrowser();
   }
 
   public void newGame(NewGameSettings settings) {

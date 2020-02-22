@@ -65,6 +65,6 @@ public class OverWorld: MonoBehaviour {
   }
 
   public void save() {
-    saveBrowser.createOptions(SaveLoad.listSaveFiles());
+    saveBrowser.openBrowser();
   }
 }

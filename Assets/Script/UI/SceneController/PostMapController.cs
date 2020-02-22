@@ -52,7 +52,7 @@ public class PostMapController: MonoBehaviour {
   }
 
   public void loadGame() {
-    loadBrowser.createOptions(SaveLoad.listSaveFiles());
+    loadBrowser.openBrowser();
   }
 
   public void loadAuto() {
