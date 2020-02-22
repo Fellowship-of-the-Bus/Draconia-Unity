@@ -45,10 +45,23 @@ public class Dialogue : MonoBehaviour {
       nextButton.GetComponentInChildren<Text>().text = "End";
       gameObject.transform.Find("skipButton").gameObject.SetActive(false);
     }
-    nextButton.interactable = false;
+    float boxWidth = ((RectTransform)textBox.gameObject.transform).rect.width;
+    string currentLine = "";
+    string finalStr = "";
+    foreach (string word in text.Split(' ')) {
+      if (textBox.theText.GetPreferredValues(currentLine + word).x >= boxWidth) {
+        //remove trailing space before adding newline
+        finalStr += currentLine.Substring(0,currentLine.Length-1) + "\n";
+        currentLine = word + " ";
+      } else {
+        currentLine += word +  " ";
+      }
+    }
+    finalStr += currentLine;
     int curChar = 0;
-    while (curChar <= text.Length) {
-      textBox.text = text.Substring(0, curChar);
+    nextButton.interactable = false;
+    while (curChar <= finalStr.Length) {
+      textBox.text = finalStr.Substring(0, curChar);
       yield return new WaitForSeconds(1/Options.FPS);
       curChar += charactersPerFrame;
     }
