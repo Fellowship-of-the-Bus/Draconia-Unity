@@ -7,6 +7,12 @@ public class CustomText : MonoBehaviour {
   public bool updateFont;
   public bool updateSize;
 
+  void Start() {
+    Options.TextOptions options = Options.instance.text;
+    if (updateFont) onFontChange(options.font);
+    if (updateSize) onSizeChange(options.fontSize);
+  }
+
   void OnEnable() {
     if (updateFont) Options.TextOptions.onFontChange += onFontChange;
     if (updateSize) Options.TextOptions.onSizeChange += onSizeChange;
@@ -18,11 +24,11 @@ public class CustomText : MonoBehaviour {
   }
 
   void onFontChange(TMP_FontAsset newFont) {
-    font = newFont;
+    // font = newFont;
   }
 
-  void onSizeChange(int newSize) {
-    fontSize = newSize;
+  void onSizeChange(float newSize) {
+    // fontSize = newSize;
   }
 
   // provide some accessors so we don't have direct references to TextMeshPro throughout the code

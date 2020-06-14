@@ -39,4 +39,9 @@ public class OptionController: MonoBehaviour {
   public void show() {
     gameObject.SetActive(true);
   }
+
+  public void saveAndClose() {
+    gameObject.SetActive(false);
+    SaveLoad.saveOptions();
+  }
 }
