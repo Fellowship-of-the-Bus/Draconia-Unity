@@ -208,7 +208,7 @@ public class BattleCharacter : Effected {
 
     if (inGame) {
       GameObject weaponModel = weapon.getModel();
-      if (weaponModel) model.weapon = Extensions.InstantiateKeepScale(weaponModel, model.rightHand);
+      if (weaponModel) model.weapon = weaponModel.InstantiateKeepScale(model.rightHand);
     }
     gameObject.name = name;
 
