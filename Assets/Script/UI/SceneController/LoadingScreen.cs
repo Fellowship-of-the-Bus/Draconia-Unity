@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,20 +21,16 @@ public class LoadingScreen : MonoBehaviour {
   public static bool active { get; private set; }
 
   void Start() {
-    active = true;
-    EscapeMenu.get.hide();
-    Tipbox.get.hide();
-
+    preLoad();
     async = SceneManager.LoadSceneAsync(nextScene, LoadSceneMode.Additive);
-    // Run the garbage collector now to clean up the previous scene, to make GC less likely during the next scene
-    System.GC.Collect();
-    // Don't let the Scene activate until you allow it to
     async.allowSceneActivation = false;
-    loadingFinished = false;
     StartCoroutine(updateLoadingScreen());
   }
 
   IEnumerator updateLoadingScreen() {
+    // Run the garbage collector now to clean up the previous scene, to make GC less likely during the next scene
+    System.GC.Collect();
+
     while (! async.allowSceneActivation) {
       // Output the current progress
       loadingBar.transform.localScale = new Vector3(async.progress, 1f, 1f);
@@ -64,12 +61,24 @@ public class LoadingScreen : MonoBehaviour {
       group.alpha -= 1f/nFramesToFade;
       yield return null;
     }
+    postLoad();
+  }
 
+  private void preLoad() {
+    active = true;
+    loadingFinished = false;
+    InputSystem.Disable();
+    EscapeMenu.get.hide();
+    Tipbox.get.hide();
+  }
+
+  private void postLoad() {
     canvas.enabled = false;
-    active = false;
     EscapeMenu.get.transitionScenes(nextScene);
     SceneManager.SetActiveScene(newScene);
     SceneManager.UnloadSceneAsync(loadingScene);
+    InputSystem.Enable();
+    active = false;
   }
 
   public static void load(string scene) {

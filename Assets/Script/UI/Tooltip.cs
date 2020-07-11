@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
   private float hoverTime = 0f;
   private bool mouseOver = false;
-  private bool tooltipShown = false;
   [TextArea]
   public string tiptext = "Missing tooltip!";
   private float hoverThreshold = 0.25f;
@@ -15,18 +14,20 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
     if (mouseOver && hoverTime <= hoverThreshold) {
       hoverTime += Time.deltaTime;
       if (hoverTime >= hoverThreshold) {
-        tooltipShown = true;
-        if (showTip()) {
-          Tipbox.get.gameObject.SetActive(showTip());
-          setTipbox();
-        }
+        show();
       }
     }
+  }
 
-    if (tooltipShown) {
-      Tipbox.get.setPosition();
+  public void show() {
+    if (showTip()) {
+      Tipbox.get.gameObject.SetActive(true);
       setTipbox();
     }
+  }
+
+  public void hide() {
+    Tipbox.get.gameObject.SetActive(false);
   }
 
   protected virtual bool showTip() {
@@ -38,10 +39,9 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler 
   }
 
   public virtual void OnPointerExit(PointerEventData eventData) {
-    tooltipShown = false;
+    hide();
     mouseOver = false;
     hoverTime = 0f;
-    Tipbox.get.gameObject.SetActive(false);
   }
 
   protected virtual void setTipbox() {

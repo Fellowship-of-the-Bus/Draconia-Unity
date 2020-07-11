@@ -82,8 +82,7 @@ public static class MenuItemGenerator {
       generateMenuItem(AssetDatabase.GUIDToAssetPath(guid));
     }
     // refresh the asset database so that the new items are loaded in
-    // TODO: is it better to do this or import each asset that was actually generated?
-    AssetDatabase.Refresh();
+    EditorApplication.delayCall += AssetDatabase.Refresh;
   }
 
   static MenuItemGenerator() {

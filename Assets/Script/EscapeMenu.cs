@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -13,15 +14,14 @@ public class EscapeMenu : MonoBehaviour {
   public FileBrowser loadBrowser;
   public OptionController optionsMenu;
 
-  private readonly string escapeAxis = "EscapeMenu";
-  private bool isAxisDown = false;
-
   public static EscapeMenu get { get; private set; }
 
   void Start() {
     EscapeMenu temp = get;
     if (!Singleton.makeSingleton(ref temp, this)) return;
     get = temp;
+
+    InputSystem.AddCallback((InputActions actions) => actions.Default.EscapeMenu, onEscapeMenuTriggered);
     transitionScenes("MainMenu");
 
     // ensure that referenced external objects are not deleted
@@ -30,15 +30,8 @@ public class EscapeMenu : MonoBehaviour {
     GameObject.DontDestroyOnLoad(optionsMenu.gameObject);
   }
 
-  void Update() {
-    if (!LoadingScreen.active) {
-      if (! isAxisDown && Input.GetButtonDown(escapeAxis)) {
-        menuCanvas.enabled = ! menuCanvas.enabled;
-        isAxisDown = true;
-      } else if (isAxisDown && Input.GetButtonUp(escapeAxis)) {
-        isAxisDown = false;
-      }
-    }
+  private void onEscapeMenuTriggered(InputAction.CallbackContext context) {
+    menuCanvas.enabled = ! menuCanvas.enabled;
   }
 
   public void transitionScenes(string newScene) {

@@ -1,23 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Tipbox : MonoBehaviour {
   public static Tipbox get;
 
-  public Text textElement;  
+  public Text textElement;
   public RectTransform rectTrans;
 
   void Awake() {
     if (!Singleton.makeSingleton(ref get, this)) return;
   }
 
-  public void setPosition() {
-    Vector3[] corners = new Vector3[4];
-    rectTrans.GetWorldCorners(corners);
-    float width = corners[2].x - corners[0].x;
-    float height = corners[1].y - corners[0].y;
-
-    rectTrans.position = tipPosition(Input.mousePosition, width, height);
+  public void setPosition(Vector2 position) {
+    float width = rectTrans.rect.width;
+    float height = rectTrans.rect.height;
+    rectTrans.position = tipPosition(position, width, height);
     if (rectTrans.TransformPoint(rectTrans.position).x - width  < 0) {
       rectTrans.Translate(new Vector3(width,0,0));
     }
@@ -28,6 +27,18 @@ public class Tipbox : MonoBehaviour {
 
   private Vector3 tipPosition(Vector3 mouseRelative, float width, float height) {
     return new Vector3(mouseRelative.x - width / 2, mouseRelative.y + height / 2, 0);
+  }
+
+  private void onPointerMove(InputAction.CallbackContext context) {
+    setPosition(context.ReadValue<Vector2>());
+  }
+
+  void OnEnable() {
+    InputSystem.AddCallback(actions => actions.Default.MousePosition, onPointerMove);
+  }
+
+  void OnDisable() {
+    InputSystem.RemoveCallback(actions => actions.Default.MousePosition, onPointerMove);
   }
 
   public void hide() {
