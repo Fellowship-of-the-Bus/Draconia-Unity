@@ -8,6 +8,7 @@ public class MainMenu: MonoBehaviour {
   void Start() {
     SkillList.get.createDict();
     LootGenerator.init();
+    Application.targetFrameRate = Options.FPS;
   }
 
   public void loadGame() {
