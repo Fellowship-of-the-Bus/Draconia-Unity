@@ -1,190 +1,538 @@
 fileFormatVersion: 2
 guid: 2083377860b003a4e99e35fed01b8254
-timeCreated: 1521318636
-licenseType: Free
 ModelImporter:
-  serializedVersion: 19
-  fileIDToRecycleName:
-    100000: Arm IK.L
-    100002: Arm IK.R
-    100004: Armature
-    100006: Control
-    100008: Elbow.L
-    100010: Elbow.L_end
-    100012: Elbow.R
-    100014: Elbow.R_end
-    100016: Foot IK.L
-    100018: Foot IK.R
-    100020: Foot Rotation.L
-    100022: Foot Rotation.L_end
-    100024: Foot Rotation.R
-    100026: Foot Rotation.R_end
-    100028: Foot.L
-    100030: Foot.L_end
-    100032: Foot.R
-    100034: Foot.R_end
-    100036: Hand Rotation.L
-    100038: Hand Rotation.L_end
-    100040: Hand Rotation.R
-    100042: Hand Rotation.R_end
-    100044: Hand.L
-    100046: Hand.L_end
-    100048: Hand.R
-    100050: Hand.R_end
-    100052: Head
-    100054: Head_end
-    100056: //RootNode
-    100058: Knee.L
-    100060: Knee.L_end
-    100062: Knee.R
-    100064: Knee.R_end
-    100066: Lower Arm.L
-    100068: Lower Arm.R
-    100070: Lower Leg.L
-    100072: Lower Leg.R
-    100074: Lower Torso
-    100076: Model
-    100078: Neck
-    100080: Upper Arm.L
-    100082: Upper Arm.R
-    100084: Upper Leg.L
-    100086: Upper Leg.R
-    100088: Upper Torso
-    100090: Eye.L
-    100092: Eye.L_end
-    100094: Eye.R
-    100096: Eye.R_end
-    100098: Tail Base
-    100100: Tail Tip
-    100102: Tail Tip_end
-    100104: Tail.IK
-    100106: Tail.IK_end
-    100108: FunnyHead
-    100110: FunnyHead_MeshPart0
-    100112: FunnyHead_MeshPart1
-    100114: Head 1
-    100116: Mohawk
-    100118: Sun
-    100120: Yugi Hair
-    400000: Arm IK.L
-    400002: Arm IK.R
-    400004: Armature
-    400006: Control
-    400008: Elbow.L
-    400010: Elbow.L_end
-    400012: Elbow.R
-    400014: Elbow.R_end
-    400016: Foot IK.L
-    400018: Foot IK.R
-    400020: Foot Rotation.L
-    400022: Foot Rotation.L_end
-    400024: Foot Rotation.R
-    400026: Foot Rotation.R_end
-    400028: Foot.L
-    400030: Foot.L_end
-    400032: Foot.R
-    400034: Foot.R_end
-    400036: Hand Rotation.L
-    400038: Hand Rotation.L_end
-    400040: Hand Rotation.R
-    400042: Hand Rotation.R_end
-    400044: Hand.L
-    400046: Hand.L_end
-    400048: Hand.R
-    400050: Hand.R_end
-    400052: Head
-    400054: Head_end
-    400056: //RootNode
-    400058: Knee.L
-    400060: Knee.L_end
-    400062: Knee.R
-    400064: Knee.R_end
-    400066: Lower Arm.L
-    400068: Lower Arm.R
-    400070: Lower Leg.L
-    400072: Lower Leg.R
-    400074: Lower Torso
-    400076: Model
-    400078: Neck
-    400080: Upper Arm.L
-    400082: Upper Arm.R
-    400084: Upper Leg.L
-    400086: Upper Leg.R
-    400088: Upper Torso
-    400090: Eye.L
-    400092: Eye.L_end
-    400094: Eye.R
-    400096: Eye.R_end
-    400098: Tail Base
-    400100: Tail Tip
-    400102: Tail Tip_end
-    400104: Tail.IK
-    400106: Tail.IK_end
-    400108: FunnyHead
-    400110: FunnyHead_MeshPart0
-    400112: FunnyHead_MeshPart1
-    400114: Head 1
-    400116: Mohawk
-    400118: Sun
-    400120: Yugi Hair
-    2300000: Mohawk
-    2300002: Yugi Hair
-    2300004: FunnyHead_MeshPart0
-    2300006: FunnyHead_MeshPart1
-    2300008: Model
-    3300000: Mohawk
-    3300002: Yugi Hair
-    3300004: FunnyHead_MeshPart0
-    3300006: FunnyHead_MeshPart1
-    3300008: Model
-    4300000: Model
-    4300002: FunnyHead_MeshPart0
-    4300004: FunnyHead_MeshPart1
-    4300006: Head
-    4300008: FunnyHead
-    7400000: Armature|Attack
-    7400002: Armature|Cast
-    7400004: Armature|ClericCast
-    7400006: Armature|Death
-    7400008: Armature|Idle
-    7400010: Armature|Move
-    7400012: Armature|Shoot
-    7400014: Armature|TakeDamage
-    7400016: Armature|CircleSlash
-    7400018: Armature|NinjaMove
-    7400020: Armature|PlaneAction.002
-    9500000: //RootNode
-    13700000: Model
-    13700002: FunnyHead_MeshPart0
-    13700004: FunnyHead_MeshPart1
-    13700006: Head
-    13700008: FunnyHead
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Arm IK.L
+  - first:
+      1: 100002
+    second: Arm IK.R
+  - first:
+      1: 100004
+    second: Armature
+  - first:
+      1: 100006
+    second: Control
+  - first:
+      1: 100008
+    second: Elbow.L
+  - first:
+      1: 100010
+    second: Elbow.L_end
+  - first:
+      1: 100012
+    second: Elbow.R
+  - first:
+      1: 100014
+    second: Elbow.R_end
+  - first:
+      1: 100016
+    second: Foot IK.L
+  - first:
+      1: 100018
+    second: Foot IK.R
+  - first:
+      1: 100020
+    second: Foot Rotation.L
+  - first:
+      1: 100022
+    second: Foot Rotation.L_end
+  - first:
+      1: 100024
+    second: Foot Rotation.R
+  - first:
+      1: 100026
+    second: Foot Rotation.R_end
+  - first:
+      1: 100028
+    second: Foot.L
+  - first:
+      1: 100030
+    second: Foot.L_end
+  - first:
+      1: 100032
+    second: Foot.R
+  - first:
+      1: 100034
+    second: Foot.R_end
+  - first:
+      1: 100036
+    second: Hand Rotation.L
+  - first:
+      1: 100038
+    second: Hand Rotation.L_end
+  - first:
+      1: 100040
+    second: Hand Rotation.R
+  - first:
+      1: 100042
+    second: Hand Rotation.R_end
+  - first:
+      1: 100044
+    second: Hand.L
+  - first:
+      1: 100046
+    second: Hand.L_end
+  - first:
+      1: 100048
+    second: Hand.R
+  - first:
+      1: 100050
+    second: Hand.R_end
+  - first:
+      1: 100052
+    second: Head
+  - first:
+      1: 100054
+    second: Head_end
+  - first:
+      1: 100056
+    second: //RootNode
+  - first:
+      1: 100058
+    second: Knee.L
+  - first:
+      1: 100060
+    second: Knee.L_end
+  - first:
+      1: 100062
+    second: Knee.R
+  - first:
+      1: 100064
+    second: Knee.R_end
+  - first:
+      1: 100066
+    second: Lower Arm.L
+  - first:
+      1: 100068
+    second: Lower Arm.R
+  - first:
+      1: 100070
+    second: Lower Leg.L
+  - first:
+      1: 100072
+    second: Lower Leg.R
+  - first:
+      1: 100074
+    second: Lower Torso
+  - first:
+      1: 100076
+    second: Model
+  - first:
+      1: 100078
+    second: Neck
+  - first:
+      1: 100080
+    second: Upper Arm.L
+  - first:
+      1: 100082
+    second: Upper Arm.R
+  - first:
+      1: 100084
+    second: Upper Leg.L
+  - first:
+      1: 100086
+    second: Upper Leg.R
+  - first:
+      1: 100088
+    second: Upper Torso
+  - first:
+      1: 100090
+    second: Eye.L
+  - first:
+      1: 100092
+    second: Eye.L_end
+  - first:
+      1: 100094
+    second: Eye.R
+  - first:
+      1: 100096
+    second: Eye.R_end
+  - first:
+      1: 100098
+    second: Tail Base
+  - first:
+      1: 100100
+    second: Tail Tip
+  - first:
+      1: 100102
+    second: Tail Tip_end
+  - first:
+      1: 100104
+    second: Tail.IK
+  - first:
+      1: 100106
+    second: Tail.IK_end
+  - first:
+      1: 100108
+    second: FunnyHead
+  - first:
+      1: 100110
+    second: FunnyHead_MeshPart0
+  - first:
+      1: 100112
+    second: FunnyHead_MeshPart1
+  - first:
+      1: 100114
+    second: Head 1
+  - first:
+      1: 100116
+    second: Mohawk
+  - first:
+      1: 100118
+    second: Sun
+  - first:
+      1: 100120
+    second: Yugi Hair
+  - first:
+      4: 400000
+    second: Arm IK.L
+  - first:
+      4: 400002
+    second: Arm IK.R
+  - first:
+      4: 400004
+    second: Armature
+  - first:
+      4: 400006
+    second: Control
+  - first:
+      4: 400008
+    second: Elbow.L
+  - first:
+      4: 400010
+    second: Elbow.L_end
+  - first:
+      4: 400012
+    second: Elbow.R
+  - first:
+      4: 400014
+    second: Elbow.R_end
+  - first:
+      4: 400016
+    second: Foot IK.L
+  - first:
+      4: 400018
+    second: Foot IK.R
+  - first:
+      4: 400020
+    second: Foot Rotation.L
+  - first:
+      4: 400022
+    second: Foot Rotation.L_end
+  - first:
+      4: 400024
+    second: Foot Rotation.R
+  - first:
+      4: 400026
+    second: Foot Rotation.R_end
+  - first:
+      4: 400028
+    second: Foot.L
+  - first:
+      4: 400030
+    second: Foot.L_end
+  - first:
+      4: 400032
+    second: Foot.R
+  - first:
+      4: 400034
+    second: Foot.R_end
+  - first:
+      4: 400036
+    second: Hand Rotation.L
+  - first:
+      4: 400038
+    second: Hand Rotation.L_end
+  - first:
+      4: 400040
+    second: Hand Rotation.R
+  - first:
+      4: 400042
+    second: Hand Rotation.R_end
+  - first:
+      4: 400044
+    second: Hand.L
+  - first:
+      4: 400046
+    second: Hand.L_end
+  - first:
+      4: 400048
+    second: Hand.R
+  - first:
+      4: 400050
+    second: Hand.R_end
+  - first:
+      4: 400052
+    second: Head
+  - first:
+      4: 400054
+    second: Head_end
+  - first:
+      4: 400056
+    second: //RootNode
+  - first:
+      4: 400058
+    second: Knee.L
+  - first:
+      4: 400060
+    second: Knee.L_end
+  - first:
+      4: 400062
+    second: Knee.R
+  - first:
+      4: 400064
+    second: Knee.R_end
+  - first:
+      4: 400066
+    second: Lower Arm.L
+  - first:
+      4: 400068
+    second: Lower Arm.R
+  - first:
+      4: 400070
+    second: Lower Leg.L
+  - first:
+      4: 400072
+    second: Lower Leg.R
+  - first:
+      4: 400074
+    second: Lower Torso
+  - first:
+      4: 400076
+    second: Model
+  - first:
+      4: 400078
+    second: Neck
+  - first:
+      4: 400080
+    second: Upper Arm.L
+  - first:
+      4: 400082
+    second: Upper Arm.R
+  - first:
+      4: 400084
+    second: Upper Leg.L
+  - first:
+      4: 400086
+    second: Upper Leg.R
+  - first:
+      4: 400088
+    second: Upper Torso
+  - first:
+      4: 400090
+    second: Eye.L
+  - first:
+      4: 400092
+    second: Eye.L_end
+  - first:
+      4: 400094
+    second: Eye.R
+  - first:
+      4: 400096
+    second: Eye.R_end
+  - first:
+      4: 400098
+    second: Tail Base
+  - first:
+      4: 400100
+    second: Tail Tip
+  - first:
+      4: 400102
+    second: Tail Tip_end
+  - first:
+      4: 400104
+    second: Tail.IK
+  - first:
+      4: 400106
+    second: Tail.IK_end
+  - first:
+      4: 400108
+    second: FunnyHead
+  - first:
+      4: 400110
+    second: FunnyHead_MeshPart0
+  - first:
+      4: 400112
+    second: FunnyHead_MeshPart1
+  - first:
+      4: 400114
+    second: Head 1
+  - first:
+      4: 400116
+    second: Mohawk
+  - first:
+      4: 400118
+    second: Sun
+  - first:
+      4: 400120
+    second: Yugi Hair
+  - first:
+      23: 2300000
+    second: Mohawk
+  - first:
+      23: 2300002
+    second: Yugi Hair
+  - first:
+      23: 2300004
+    second: FunnyHead_MeshPart0
+  - first:
+      23: 2300006
+    second: FunnyHead_MeshPart1
+  - first:
+      23: 2300008
+    second: Model
+  - first:
+      33: 3300000
+    second: Mohawk
+  - first:
+      33: 3300002
+    second: Yugi Hair
+  - first:
+      33: 3300004
+    second: FunnyHead_MeshPart0
+  - first:
+      33: 3300006
+    second: FunnyHead_MeshPart1
+  - first:
+      33: 3300008
+    second: Model
+  - first:
+      43: 4300000
+    second: Model
+  - first:
+      43: 4300002
+    second: FunnyHead_MeshPart0
+  - first:
+      43: 4300004
+    second: FunnyHead_MeshPart1
+  - first:
+      43: 4300006
+    second: Head
+  - first:
+      43: 4300008
+    second: FunnyHead
+  - first:
+      74: 7400000
+    second: Armature|Attack
+  - first:
+      74: 7400002
+    second: Armature|Cast
+  - first:
+      74: 7400004
+    second: Armature|ClericCast
+  - first:
+      74: 7400006
+    second: Armature|Death
+  - first:
+      74: 7400008
+    second: Armature|Idle
+  - first:
+      74: 7400010
+    second: Armature|Move
+  - first:
+      74: 7400012
+    second: Armature|Shoot
+  - first:
+      74: 7400014
+    second: Armature|TakeDamage
+  - first:
+      74: 7400016
+    second: Armature|CircleSlash
+  - first:
+      74: 7400018
+    second: Armature|NinjaMove
+  - first:
+      74: 7400020
+    second: Armature|PlaneAction.002
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Model
+  - first:
+      137: 13700002
+    second: FunnyHead_MeshPart0
+  - first:
+      137: 13700004
+    second: FunnyHead_MeshPart1
+  - first:
+      137: 13700006
+    second: Head
+  - first:
+      137: 13700008
+    second: FunnyHead
+  - first:
+      74: 1317418451534354747
+    second: Armature|LizardTail
+  - first:
+      74: -7782990165199884569
+    second: Armature|EyeRotation
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black.001
+    second: {fileID: 2100000, guid: 9b05e43f1ea1d55449608fccec4c3c51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye.001
+    second: {fileID: 2100000, guid: 0238e75a8720f914b9185f191706fdce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lip.001
+    second: {fileID: 2100000, guid: ca0b41f5908616645a0326041fad7dc5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pants.001
+    second: {fileID: 2100000, guid: 75108372d938f5a4a83f2b20d93113a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shirt.001
+    second: {fileID: 2100000, guid: f7cefd05268452748b54edce7fda338d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin.001
+    second: {fileID: 2100000, guid: 3787eb68b03e5964e8b99433bca88187, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName:
-    rigImportErrors:
-    rigImportWarnings:
-    animationImportErrors:
-    animationImportWarnings:
-    animationRetargetingWarnings:
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
       name: Armature|Attack
       takeName: Armature|Attack
+      internalID: 0
       firstFrame: 0
       lastFrame: 90
       wrapMode: 0
@@ -205,9 +553,16 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.5568182
+        functionName: continueSkill
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -319,6 +674,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Cast
       takeName: Armature|Cast
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -339,9 +695,16 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.4318182
+        functionName: continueSkill
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -453,6 +816,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|CircleSlash
       takeName: Armature|CircleSlash
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -473,9 +837,16 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.5056818
+        functionName: continueSkill
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -587,6 +958,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|ClericCast
       takeName: Armature|ClericCast
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -607,9 +979,16 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.57954544
+        functionName: continueSkill
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -721,6 +1100,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Death
       takeName: Armature|Death
+      internalID: 0
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -743,141 +1123,7 @@ ModelImporter:
       curves: []
       events: []
       transformMask:
-      - path:
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Control
-        weight: 1
-      - path: Armature/Control/Arm IK.L
-        weight: 1
-      - path: Armature/Control/Arm IK.L/Hand Rotation.L
-        weight: 1
-      - path: Armature/Control/Arm IK.L/Hand Rotation.L/Hand Rotation.L_end
-        weight: 1
-      - path: Armature/Control/Arm IK.R
-        weight: 1
-      - path: Armature/Control/Arm IK.R/Hand Rotation.R
-        weight: 1
-      - path: Armature/Control/Arm IK.R/Hand Rotation.R/Hand Rotation.R_end
-        weight: 1
-      - path: Armature/Control/Elbow.L
-        weight: 1
-      - path: Armature/Control/Elbow.L/Elbow.L_end
-        weight: 1
-      - path: Armature/Control/Elbow.R
-        weight: 1
-      - path: Armature/Control/Elbow.R/Elbow.R_end
-        weight: 1
-      - path: Armature/Control/Foot IK.L
-        weight: 1
-      - path: Armature/Control/Foot IK.L/Foot Rotation.L
-        weight: 1
-      - path: Armature/Control/Foot IK.L/Foot Rotation.L/Foot Rotation.L_end
-        weight: 1
-      - path: Armature/Control/Foot IK.R
-        weight: 1
-      - path: Armature/Control/Foot IK.R/Foot Rotation.R
-        weight: 1
-      - path: Armature/Control/Foot IK.R/Foot Rotation.R/Foot Rotation.R_end
-        weight: 1
-      - path: Armature/Control/Knee.L
-        weight: 1
-      - path: Armature/Control/Knee.L/Knee.L_end
-        weight: 1
-      - path: Armature/Control/Knee.R
-        weight: 1
-      - path: Armature/Control/Knee.R/Knee.R_end
-        weight: 1
-      - path: Armature/Control/Lower Torso
-        weight: 1
-      - path: Armature/Control/Lower Torso/Tail Base
-        weight: 1
-      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip
-        weight: 1
-      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip/Tail Tip_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L/Foot.L_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R/Foot.R_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L/Eye.L_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R/Eye.R_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L/Hand.L_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end
-        weight: 1
-      - path: Armature/Control/Tail.IK
-        weight: 1
-      - path: Armature/Control/Tail.IK/Tail.IK_end
-        weight: 1
-      - path: Model
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|PlaneAction.002
-      takeName: Armature|PlaneAction.002
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -989,6 +1235,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Move
       takeName: Armature|Move
+      internalID: 0
       firstFrame: 0
       lastFrame: 80
       wrapMode: 0
@@ -1011,7 +1258,7 @@ ModelImporter:
       curves: []
       events: []
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -1123,6 +1370,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Shoot
       takeName: Armature|Shoot
+      internalID: 0
       firstFrame: 0
       lastFrame: 150
       wrapMode: 0
@@ -1143,9 +1391,30 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.66898954
+        functionName: continueSkill
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.27272728
+        functionName: attachBowString
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: attachArrow
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -1257,6 +1526,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|TakeDamage
       takeName: Armature|TakeDamage
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1278,119 +1548,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask:
-      - path:
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Control
-        weight: 1
-      - path: Armature/Control/Arm IK.L
-        weight: 1
-      - path: Armature/Control/Arm IK.L/Hand Rotation.L
-        weight: 1
-      - path: Armature/Control/Arm IK.L/Hand Rotation.L/Hand Rotation.L_end
-        weight: 1
-      - path: Armature/Control/Arm IK.R
-        weight: 1
-      - path: Armature/Control/Arm IK.R/Hand Rotation.R
-        weight: 1
-      - path: Armature/Control/Arm IK.R/Hand Rotation.R/Hand Rotation.R_end
-        weight: 1
-      - path: Armature/Control/Elbow.L
-        weight: 1
-      - path: Armature/Control/Elbow.L/Elbow.L_end
-        weight: 1
-      - path: Armature/Control/Elbow.R
-        weight: 1
-      - path: Armature/Control/Elbow.R/Elbow.R_end
-        weight: 1
-      - path: Armature/Control/Foot IK.L
-        weight: 1
-      - path: Armature/Control/Foot IK.L/Foot Rotation.L
-        weight: 1
-      - path: Armature/Control/Foot IK.L/Foot Rotation.L/Foot Rotation.L_end
-        weight: 1
-      - path: Armature/Control/Foot IK.R
-        weight: 1
-      - path: Armature/Control/Foot IK.R/Foot Rotation.R
-        weight: 1
-      - path: Armature/Control/Foot IK.R/Foot Rotation.R/Foot Rotation.R_end
-        weight: 1
-      - path: Armature/Control/Knee.L
-        weight: 1
-      - path: Armature/Control/Knee.L/Knee.L_end
-        weight: 1
-      - path: Armature/Control/Knee.R
-        weight: 1
-      - path: Armature/Control/Knee.R/Knee.R_end
-        weight: 1
-      - path: Armature/Control/Lower Torso
-        weight: 1
-      - path: Armature/Control/Lower Torso/Tail Base
-        weight: 1
-      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip
-        weight: 1
-      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip/Tail Tip_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L/Foot.L_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R/Foot.R_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L/Eye.L_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R/Eye.R_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L/Hand.L_end
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R
-        weight: 1
-      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end
-        weight: 1
-      - path: Armature/Control/Tail.IK
-        weight: 1
-      - path: Armature/Control/Tail.IK/Tail.IK_end
-        weight: 1
-      - path: Model
-        weight: 1
+      transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Armature|NinjaMove
       takeName: Armature|NinjaMove
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1413,7 +1578,7 @@ ModelImporter:
       curves: []
       events: []
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -1525,6 +1690,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Idle
       takeName: Armature|Idle
+      internalID: 0
       firstFrame: 0
       lastFrame: 75
       wrapMode: 0
@@ -1547,7 +1713,7 @@ ModelImporter:
       curves: []
       events: []
       transformMask:
-      - path:
+      - path: 
         weight: 1
       - path: Armature
         weight: 1
@@ -1652,19 +1818,320 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|LizardTail
+      takeName: Armature|LizardTail
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 75
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 0
+      - path: Armature/Control
+        weight: 0
+      - path: Armature/Control/Arm IK.L
+        weight: 0
+      - path: Armature/Control/Arm IK.L/Hand Rotation.L
+        weight: 0
+      - path: Armature/Control/Arm IK.L/Hand Rotation.L/Hand Rotation.L_end
+        weight: 0
+      - path: Armature/Control/Arm IK.R
+        weight: 0
+      - path: Armature/Control/Arm IK.R/Hand Rotation.R
+        weight: 0
+      - path: Armature/Control/Arm IK.R/Hand Rotation.R/Hand Rotation.R_end
+        weight: 0
+      - path: Armature/Control/Elbow.L
+        weight: 0
+      - path: Armature/Control/Elbow.L/Elbow.L_end
+        weight: 0
+      - path: Armature/Control/Elbow.R
+        weight: 0
+      - path: Armature/Control/Elbow.R/Elbow.R_end
+        weight: 0
+      - path: Armature/Control/Eye Rotation.L
+        weight: 0
+      - path: Armature/Control/Eye Rotation.L/Eye Rotation.L_end
+        weight: 0
+      - path: Armature/Control/Eye Rotation.R
+        weight: 0
+      - path: Armature/Control/Eye Rotation.R/Eye Rotation.R_end
+        weight: 0
+      - path: Armature/Control/Foot IK.L
+        weight: 0
+      - path: Armature/Control/Foot IK.L/Foot Rotation.L
+        weight: 0
+      - path: Armature/Control/Foot IK.L/Foot Rotation.L/Foot Rotation.L_end
+        weight: 0
+      - path: Armature/Control/Foot IK.R
+        weight: 0
+      - path: Armature/Control/Foot IK.R/Foot Rotation.R
+        weight: 0
+      - path: Armature/Control/Foot IK.R/Foot Rotation.R/Foot Rotation.R_end
+        weight: 0
+      - path: Armature/Control/Knee.L
+        weight: 0
+      - path: Armature/Control/Knee.L/Knee.L_end
+        weight: 0
+      - path: Armature/Control/Knee.R
+        weight: 0
+      - path: Armature/Control/Knee.R/Knee.R_end
+        weight: 0
+      - path: Armature/Control/Lower Torso
+        weight: 0
+      - path: Armature/Control/Lower Torso/Tail Base
+        weight: 1
+      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip
+        weight: 1
+      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip/Tail Tip_end
+        weight: 1
+      - path: Armature/Control/Lower Torso/Upper Leg.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L/Foot.L_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R/Foot.R_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L/Eye.L_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R/Eye.R_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L/Hand.L_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end
+        weight: 0
+      - path: Armature/Control/Tail.IK
+        weight: 1
+      - path: Armature/Control/Tail.IK/Tail.IK_end
+        weight: 1
+      - path: FunnyHead
+        weight: 0
+      - path: Model
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: da3223df36c2d402d93322b3060221c7, type: 2}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|EyeRotation
+      takeName: Armature|EyeRotation
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 270
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 0
+      - path: Armature/Control
+        weight: 0
+      - path: Armature/Control/Arm IK.L
+        weight: 0
+      - path: Armature/Control/Arm IK.L/Hand Rotation.L
+        weight: 0
+      - path: Armature/Control/Arm IK.L/Hand Rotation.L/Hand Rotation.L_end
+        weight: 0
+      - path: Armature/Control/Arm IK.R
+        weight: 0
+      - path: Armature/Control/Arm IK.R/Hand Rotation.R
+        weight: 0
+      - path: Armature/Control/Arm IK.R/Hand Rotation.R/Hand Rotation.R_end
+        weight: 0
+      - path: Armature/Control/Elbow.L
+        weight: 0
+      - path: Armature/Control/Elbow.L/Elbow.L_end
+        weight: 0
+      - path: Armature/Control/Elbow.R
+        weight: 0
+      - path: Armature/Control/Elbow.R/Elbow.R_end
+        weight: 0
+      - path: Armature/Control/Eye Rotation.L
+        weight: 1
+      - path: Armature/Control/Eye Rotation.L/Eye Rotation.L_end
+        weight: 1
+      - path: Armature/Control/Eye Rotation.R
+        weight: 1
+      - path: Armature/Control/Eye Rotation.R/Eye Rotation.R_end
+        weight: 1
+      - path: Armature/Control/Foot IK.L
+        weight: 0
+      - path: Armature/Control/Foot IK.L/Foot Rotation.L
+        weight: 0
+      - path: Armature/Control/Foot IK.L/Foot Rotation.L/Foot Rotation.L_end
+        weight: 0
+      - path: Armature/Control/Foot IK.R
+        weight: 0
+      - path: Armature/Control/Foot IK.R/Foot Rotation.R
+        weight: 0
+      - path: Armature/Control/Foot IK.R/Foot Rotation.R/Foot Rotation.R_end
+        weight: 0
+      - path: Armature/Control/Knee.L
+        weight: 0
+      - path: Armature/Control/Knee.L/Knee.L_end
+        weight: 0
+      - path: Armature/Control/Knee.R
+        weight: 0
+      - path: Armature/Control/Knee.R/Knee.R_end
+        weight: 0
+      - path: Armature/Control/Lower Torso
+        weight: 0
+      - path: Armature/Control/Lower Torso/Tail Base
+        weight: 0
+      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip
+        weight: 0
+      - path: Armature/Control/Lower Torso/Tail Base/Tail Tip/Tail Tip_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.L/Lower Leg.L/Foot.L/Foot.L_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Leg.R/Lower Leg.R/Foot.R/Foot.R_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L
+        weight: 1
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.L/Eye.L_end
+        weight: 1
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R
+        weight: 1
+      - path: Armature/Control/Lower Torso/Upper Torso/Neck/Head/Eye.R/Eye.R_end
+        weight: 1
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.L/Lower Arm.L/Hand.L/Hand.L_end
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R
+        weight: 0
+      - path: Armature/Control/Lower Torso/Upper Torso/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end
+        weight: 0
+      - path: Armature/Control/Tail.IK
+        weight: 0
+      - path: Armature/Control/Tail.IK/Tail.IK_end
+        weight: 0
+      - path: FunnyHead
+        weight: 0
+      - path: Model
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: 366db84dafec34a0b9203b0fb55c9478, type: 2}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -1674,10 +2141,14 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -1687,15 +2158,17 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName:
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    globalScale: 1
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

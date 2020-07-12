@@ -37,9 +37,9 @@ public class CharacterModel : MonoBehaviour {
   public void attachArrow() {
     if (projectile == null) {
       projectile = Projectile.createProjectileObject(ProjectileType.Arrow);
-    projectile.transform.SetParent(leftHand, true);
-    projectile.transform.position = leftHand.position;
-    projectile.transform.localRotation = leftHand.rotation;
+      projectile.transform.SetParent(leftHand, true);
+      projectile.transform.position = leftHand.position;
+      projectile.transform.localRotation = leftHand.rotation;
     }
   }
 }

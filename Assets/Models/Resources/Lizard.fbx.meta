@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 5124425ce7dc00e4289be24410282ecc
 ModelImporter:
-  serializedVersion: 26
+  serializedVersion: 19301
   internalIDToNameTable:
   - first:
       1: 100000
@@ -613,7 +613,7 @@ ModelImporter:
       name: LizardSkin
     second: {fileID: 2100000, guid: e0b111d572350e947b28f6137a803b0a, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -651,6 +651,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -677,7 +678,6 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 0
-  copyAvatar: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -695,8 +695,10 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
