@@ -17,6 +17,8 @@ public class HookShot: TargetMover {
     targetAlly(false);
     targetEnemy(true);
     setDirection(TargetMover.Direction.towards);
+    projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   public override string tooltipDescription { get {

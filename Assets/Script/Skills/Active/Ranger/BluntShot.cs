@@ -16,6 +16,8 @@ public class BluntShot: SingleTarget {
 
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   public override string tooltipDescription { get {

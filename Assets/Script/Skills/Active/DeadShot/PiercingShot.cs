@@ -16,6 +16,8 @@ public class PiercingShot: ActiveSkill, AoeSkill {
 
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   public List<Tile> getTargetsInAoe(Vector3 position) {

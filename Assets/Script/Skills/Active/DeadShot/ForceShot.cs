@@ -18,6 +18,7 @@ public class ForceShot: TargetMover {
     targetEnemy(true);
     setDirection(TargetMover.Direction.away);
     projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   public override string tooltipDescription { get {

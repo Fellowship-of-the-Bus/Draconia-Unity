@@ -19,6 +19,8 @@ public class SerratedShot: SingleTarget {
 
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   public override int damageFormula() {

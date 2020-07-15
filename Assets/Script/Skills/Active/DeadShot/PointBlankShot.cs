@@ -17,6 +17,8 @@ public class PointBlankShot: SingleTarget {
 
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Arrow;
+    projectileMoveType = ProjectileMovementType.Straight;
   }
   public override int damageFormula() {
     return (int)(attributes.strength*(1+level*0.1));

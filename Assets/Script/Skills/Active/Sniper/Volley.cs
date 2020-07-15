@@ -19,6 +19,9 @@ public class Volley: CircleAoE {
 
     targetAlly(false);
     targetEnemy(true);
+    projectileType = ProjectileType.Arrow;
+    // TODO: Volley should have its own ProjectileMovementType
+    projectileMoveType = ProjectileMovementType.Straight;
   }
 
   public override int damageFormula() {
